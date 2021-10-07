@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import Api
 from flask_migrate import Migrate
 from db import db
@@ -39,8 +39,8 @@ api = Api(app)
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def render_vue():
+    return render_template("index.html")
 
 
 if __name__ == '__main__':

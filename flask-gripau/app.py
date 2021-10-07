@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_migrate import Migrate
-#from db import db
+from db import db
 from flask_cors import CORS
 
 #Imports de resources
@@ -30,8 +30,8 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 # with app.app_context():
 #    app.config['SECRET_KEY'] = current_app.secret_key
 
-#migrate = Migrate(app, db)
-#db.init_app(app)
+migrate = Migrate(app, db)
+db.init_app(app)
 
 api = Api(app)
 
@@ -44,4 +44,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5000, debug=True)

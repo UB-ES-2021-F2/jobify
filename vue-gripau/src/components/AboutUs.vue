@@ -12,16 +12,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent-333" style="font-size:18px;
        font-family:'Work Sans SemiBold'">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="onHome()">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Job postings</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onAboutUs()">About us</a>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">About us</a>
           </li>
         </ul>
         <ul v-if="!logged" class="navbar-nav ml-auto">
@@ -51,11 +51,14 @@
 export default {
   data () {
     return {
-      message: 'Homepage',
+      message: 'About Us',
       logged: false
     }
   },
   methods: {
+    onHome () {
+      this.$router.replace({path: '/'})
+    },
     onUserProfile () {
       this.$router.replace({ path: '/user' })
     },
@@ -64,11 +67,11 @@ export default {
     },
     onLogOut () {
       this.logged = false
-    },
-    onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
     }
   }
 }
-
 </script>
+
+<style scoped>
+
+</style>

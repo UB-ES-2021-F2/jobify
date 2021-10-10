@@ -20,7 +20,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Job postings</a>
           </li>
-          <li class="nav-item" @click="onAboutUs()">
+          <li class="nav-item active">
             <a class="nav-link" href="#">About us</a>
           </li>
         </ul>
@@ -33,8 +33,8 @@
           </li>
         </ul>
         <ul v-if="logged" class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">User</a>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="onUserProfile()">User</a>
           </li>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </ul>
@@ -42,7 +42,7 @@
     </nav>
     <!--/.Navbar -->
 
-    <h1 style="font-family: 'Vollkorn"> {{ name }} </h1>
+    <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
   </div>
 </template>
 
@@ -51,24 +51,27 @@
 export default {
   data () {
     return {
-      name: 'Name Surname',
-      logged: true
+      message: 'About Us',
+      logged: false
     }
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.replace({path: '/'})
+    },
+    onUserProfile () {
+      this.$router.replace({ path: '/user' })
     },
     onLogIn () {
       this.logged = true
     },
     onLogOut () {
       this.logged = false
-    },
-    onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
     }
   }
 }
-
 </script>
+
+<style scoped>
+
+</style>

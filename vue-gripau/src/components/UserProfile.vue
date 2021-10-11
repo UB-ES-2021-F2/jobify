@@ -47,7 +47,7 @@
     <div class="m-5">
       <div class="p-3 text-left">
         <h3 style="font-family: 'Vollkorn'; display:inline-block"> Work experience </h3>
-        <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px">Add work experience</button>
+        <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()">Add work experience</button>
         <div class="card mb-3" style="max-width: 700px"  v-for="work in work_experience" :key="work.id">
           <div class="card-header align-items-center">
             <div class="row align-items-center">
@@ -55,8 +55,8 @@
                 <h5 class="card-title">{{work.jobName}}</h5>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-danger m-1">Delete</button>
-                <button class="btn btn-sm m-1">Edit</button>
+                <button class="btn btn-sm btn-danger m-1" @click="deleteWork(work)">Delete</button>
+                <!-- <button class="btn btn-sm m-1">Edit</button> -->
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
 
       <div class="p-3 text-left">
         <h3 style="font-family: 'Vollkorn'; display:inline-block"> Education </h3>
-        <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px">Add education</button>
+        <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()">Add education</button>
         <div class="card mb-3" style="max-width: 700px"  v-for="ed in education" :key="ed.id">
           <div class="card-body">
             <div class="row align-items-center">
@@ -78,8 +78,8 @@
                 <h5 class="card-title">{{ed.title}}</h5>
               </div>
               <div class="d-flex flex-row-reverse">
-                <button class="btn btn-sm btn-danger m-1">Delete</button>
-                <button class="btn btn-sm m-1">Edit</button>
+                <button class="btn btn-sm btn-danger m-1" @click="deleteEducation(ed)">Delete</button>
+                <!-- <button class="btn btn-sm m-1">Edit</button> -->
               </div>
             </div>
             <h6 class="card-title">{{ed.institution}}</h6>
@@ -97,8 +97,72 @@
           <span class="badge badge-pill badge-warning" style="font-size: 15px">SQL</span>
         </div>
       </div>
-
     </div>
+
+    <b-modal hide-footer="true" hide-backdrop="false"  ref="addWorkModal">
+      <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
+      <b-form ref="addWorkForm" @submit.prevent="submitAddWork" @reset.prevent="resetAddWork" style="font-family: 'Work Sans SemiBold'">
+        <div class="form-group">
+          <label for="jobTitle">Job Title </label>
+          <input type="text" class="form-control" id="jobTitle" placeholder="Enter job title" v-model="addWork.jobName">
+        </div>
+        <div class="form-group">
+          <label for="companyName">Company </label>
+          <input type="text" class="form-control" id="companyName" placeholder="Enter company name" v-model="addWork.company">
+        </div>
+        <div class="form-group">
+          <label>Description </label>
+          <textarea class="form-control" id="description" rows="3" placeholder="Enter job description"
+                    v-model="addWork.description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="startYear">Start month </label>
+          <input type="month" class="form-control" id="startYear" v-model="addWork.startDate">
+        </div>
+        <div class="form-group">
+          <label for="endYear">End month </label>
+          <input type="month" class="form-control" id="endYear" v-model="addWork.endDate">
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="currentlyCheckbox" v-model="addWork.currently">
+          <label class="form-check-label" for="currentlyCheckbox">Currently in this job</label>
+        </div>
+        <div class="float-right">
+          <b-button variant="primary" type="submit">Submit</b-button>
+          <b-button variant="secondary" type="reset">Reset</b-button>
+        </div>
+      </b-form>
+    </b-modal>
+
+    <b-modal hide-footer="true" hide-backdrop="false"  ref="addEducationModal">
+      <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
+      <b-form ref="addEducationForm" @submit.prevent="submitAddEducation" @reset.prevent="resetAddEducation" style="font-family: 'Work Sans SemiBold'">
+        <div class="form-group">
+          <label for="title">Title </label>
+          <input type="text" class="form-control" id="title" placeholder="Enter job title" v-model="addEducation.title">
+        </div>
+        <div class="form-group">
+          <label for="institution">Institution </label>
+          <input type="text" class="form-control" id="institution" placeholder="Enter institution" v-model="addEducation.institution">
+        </div>
+        <div class="form-group">
+          <label for="startYearEd">Start month </label>
+          <input type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate">
+        </div>
+        <div class="form-group">
+          <label for="endYearEd">End month </label>
+          <input type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate">
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="currentlyCheckboxEd" v-model="addEducation.currently">
+          <label class="form-check-label" for="currentlyCheckboxEd">Currently enrolled</label>
+        </div>
+        <div class="float-right">
+          <b-button variant="primary" type="submit">Submit</b-button>
+          <b-button variant="secondary" type="reset">Reset</b-button>
+        </div>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
@@ -129,23 +193,39 @@ export default {
           'endDate': '2021',
           'currently': false
         }],
-      education: [{
-        'id': 0,
-        'title': ' BSc in Computer Science',
-        'institution': 'Universitat de Barcelona',
-        'startDate': '2015',
-        'endDate': '2019',
-        'currently': false
+      education: [
+        {
+          'id': 0,
+          'title': ' BSc in Computer Science',
+          'institution': 'Universitat de Barcelona',
+          'startDate': '2015',
+          'endDate': '2019',
+          'currently': false
+        },
+        {
+          'id': 1,
+          'title': ' MSc in Data Science',
+          'institution': 'Universitat de Barcelona',
+          'startDate': '2019',
+          'endDate': '2020',
+          'currently': false
+        }],
+      skills: ['Python', 'Java', 'SQL'],
+      addWork: {
+        jobName: '',
+        company: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        currently: false
       },
-      {
-        'id': 1,
-        'title': ' MSc in Data Science',
-        'institution': 'Universitat de Barcelona',
-        'startDate': '2019',
-        'endDate': '2020',
-        'currently': false
-      }],
-      skills: ['Python', 'Java', 'SQL']
+      addEducation: {
+        title: '',
+        institution: '',
+        startDate: '',
+        endDate: '',
+        currently: false
+      }
     }
   },
   methods: {
@@ -157,11 +237,64 @@ export default {
     },
     onLogOut () {
       this.logged = false
+      console.log('LogOut')
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
+    },
+    onAddWork () {
+      this.$refs.addWorkModal.show()
+    },
+    getWorkExperience () {
+      // TODO: GET to API
+    },
+    getEducation () {
+      // TODO: GET to API
+    },
+    submitAddWork () {
+      console.log('Submit ' + this.addWork.jobName)
+      // TODO: POST to API
+    },
+    deleteWork (work) {
+      console.log('Delete ' + work.jobName)
+      // TODO: DELETE to API
+    },
+    onAddEducation () {
+      this.$refs.addEducationModal.show()
+    },
+    submitAddEducation () {
+      console.log('Submit ' + this.addEducation.title)
+      // TODO: POST to API
+    },
+    deleteEducation (ed) {
+      console.log('Delete ' + ed.title)
+      // TODO: DELETE to API
+    },
+    resetAddWork () {
+      this.addWork = {
+        jobName: '',
+        company: '',
+        startDate: '',
+        endDate: '',
+        currently: false
+      }
+    },
+    resetAddEducation () {
+      this.addEducation = {
+        title: '',
+        institution: '',
+        startDate: '',
+        endDate: '',
+        currently: false
+      }
     }
   }
 }
 
 </script>
+
+<style>
+.modal-backdrop.show {
+  opacity: 0.7;
+}
+</style>

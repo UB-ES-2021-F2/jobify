@@ -63,7 +63,8 @@
           <div class="card-body">
             <h5 class="card-title">{{work.company}}</h5>
             <p class="card-text">{{work.description}}</p>
-            <p class="card-text"><small class="text-muted">{{work.startDate}}-{{work.endDate}}</small></p>
+            <p class="card-text" v-if="!work.currently"><small class="text-muted">{{work.startDate}} - {{work.endDate}}</small></p>
+            <p class="card-text" v-if="work.currently"><small class="text-muted">{{work.startDate}} - now</small></p>
           </div>
         </div>
       </div>
@@ -83,7 +84,8 @@
               </div>
             </div>
             <h6 class="card-title">{{ed.institution}}</h6>
-            <p class="card-text"><small class="text-muted">{{ed.startDate}}-{{ed.endDate}}</small></p>
+            <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.startDate}} - {{ed.endDate}}</small></p>
+            <p class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.startDate}} - now</small></p>
           </div>
         </div>
       </div>
@@ -195,19 +197,19 @@ export default {
         }],
       education: [
         {
-          'id': 0,
-          'title': ' BSc in Computer Science',
-          'institution': 'Universitat de Barcelona',
-          'startDate': '2015',
-          'endDate': '2019',
-          'currently': false
-        },
-        {
           'id': 1,
           'title': ' MSc in Data Science',
           'institution': 'Universitat de Barcelona',
           'startDate': '2019',
           'endDate': '2020',
+          'currently': false
+        },
+        {
+          'id': 0,
+          'title': ' BSc in Computer Science',
+          'institution': 'Universitat de Barcelona',
+          'startDate': '2015',
+          'endDate': '2019',
           'currently': false
         }],
       skills: ['Python', 'Java', 'SQL'],
@@ -242,14 +244,17 @@ export default {
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
     },
-    onAddWork () {
-      this.$refs.addWorkModal.show()
+    getName () {
+      // TODO: GET to API
     },
     getWorkExperience () {
       // TODO: GET to API
     },
     getEducation () {
       // TODO: GET to API
+    },
+    onAddWork () {
+      this.$refs.addWorkModal.show()
     },
     submitAddWork () {
       console.log('Submit ' + this.addWork.jobName)

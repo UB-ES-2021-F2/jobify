@@ -23,7 +23,6 @@ class CompanyModel(db.Model):
         self.email = email
         self.is_admin = is_admin
         self.description = description
-        self.password = 'test'
 
     def json(self):
         return {'id': self.id, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
@@ -73,16 +72,16 @@ class CompanyModel(db.Model):
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 
-    @auth.verify_password
-    def verify_password(token, password):
-        account = CompanyModel.verify_auth_token(token)
-        if account:
-            g.user = account
-            return account
+@auth.verify_password
+def verify_password(token, password):
+    account = CompanyModel.verify_auth_token(token)
+    if account:
+        g.user = account
+        return account
 
-    @auth.get_user_roles
-    def get_user_roles(user):
-        if user.is_admin == 1:
-            return ['admin']
-        else:
-            return ['user']
+@auth.get_user_roles
+def get_user_roles(user):
+    if user.is_admin == 1:
+        return ['admin']
+    else:
+        return ['user']

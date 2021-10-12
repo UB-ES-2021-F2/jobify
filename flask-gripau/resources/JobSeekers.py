@@ -49,4 +49,4 @@ class JobSeekers(Resource):
             account.delete_from_db(db)
             return {'message': "Account deleted"}, 200
 
-        return {'message': "Account don't exists"}, 400
+        return {'message': "Account doesn't exist"}, 400

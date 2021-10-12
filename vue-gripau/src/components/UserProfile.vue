@@ -2,7 +2,7 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky="true" toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#">
+      <b-navbar-brand href="#" @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -224,7 +224,6 @@ export default {
     },
     onLogOut () {
       this.logged = false
-      console.log('LogOut')
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })

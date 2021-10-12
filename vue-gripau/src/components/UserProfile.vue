@@ -1,45 +1,30 @@
 <template>
   <div id="app">
     <!--Navbar -->
-    <nav class="mb-1 navbar navbar-expand-lg navbar-light bg-white py-4">
-      <a class="navbar-brand">
+    <b-navbar sticky="true" toggleable="lg" type="light" variant="light">
+      <b-navbar-brand href="#">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-              aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent-333" style="font-size:18px;
-       font-family:'Work Sans SemiBold'">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onHome()">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Job postings</a>
-          </li>
-          <li class="nav-item" @click="onAboutUs()">
-            <a class="nav-link" href="#">About us</a>
-          </li>
-        </ul>
-        <ul v-if="!logged" class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sign up</a>
-          </li>
-        </ul>
-        <ul v-if="logged" class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">User</a>
-          </li>
+      </b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item href="#" @click="onHome()">Home</b-nav-item>
+          <b-nav-item href="#">Job postings</b-nav-item>
+          <b-nav-item href="#" @click="onAboutUs()">About Us</b-nav-item>
+        </b-navbar-nav>
+
+        <b-navbar-nav v-if="!logged" class="ml-auto">
+          <b-nav-item href="#" @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item href="#">Sign up</b-nav-item>
+        </b-navbar-nav>
+
+        <b-navbar-nav v-if="logged" class="ml-auto">
+          <b-nav-item active href="#">{{ this.name }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
-        </ul>
-      </div>
-    </nav>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
     <!--/.Navbar -->
 
     <h1 style="font-family: 'Vollkorn"> {{ name }} </h1>
@@ -181,8 +166,8 @@ export default {
           'jobName': 'Product Owner',
           'company': 'Apple',
           'description': 'I\'m currently enjoying working at Apple as a Product Owner',
-          'startDate': '2021',
-          'endDate': '2022',
+          'startDate': '09-2021', // MM-YYYY
+          'endDate': null,
           'currently': true
         },
         {
@@ -191,8 +176,8 @@ export default {
           'company': 'Google',
           'description': 'I worked in the Google Maps team as front end developer and I developed my software\n' +
             '              dev abilities at Google.',
-          'startDate': '2020',
-          'endDate': '2021',
+          'startDate': '08-2020',
+          'endDate': '08-2021',
           'currently': false
         }],
       education: [
@@ -200,16 +185,16 @@ export default {
           'id': 1,
           'title': ' MSc in Data Science',
           'institution': 'Universitat de Barcelona',
-          'startDate': '2019',
-          'endDate': '2020',
+          'startDate': '09-2019',
+          'endDate': '08-2020',
           'currently': false
         },
         {
           'id': 0,
           'title': ' BSc in Computer Science',
           'institution': 'Universitat de Barcelona',
-          'startDate': '2015',
-          'endDate': '2019',
+          'startDate': '09-2015',
+          'endDate': '06-2019',
           'currently': false
         }],
       skills: ['Python', 'Java', 'SQL'],
@@ -298,8 +283,11 @@ export default {
 
 </script>
 
-<style>
-.modal-backdrop.show {
-  opacity: 0.7;
+<style >
+.navbar.navbar-light{
+  font-family: "Work Sans SemiBold";
+  font-size: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 </style>

@@ -1,45 +1,30 @@
 <template>
   <div id="app">
     <!--Navbar -->
-    <nav class="mb-1 navbar navbar-expand-lg navbar-light bg-white py-4">
-      <a class="navbar-brand">
+    <b-navbar sticky="true" toggleable="lg" type="light" variant="light">
+      <b-navbar-brand href="#">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
-              aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent-333" style="font-size:18px;
-       font-family:'Work Sans SemiBold'">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onHome()">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Job postings</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#">About us</a>
-          </li>
-        </ul>
-        <ul v-if="!logged" class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sign up</a>
-          </li>
-        </ul>
-        <ul v-if="logged" class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onUserProfile()">User</a>
-          </li>
+      </b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item href="#" @click="onHome()">Home</b-nav-item>
+          <b-nav-item href="#">Job postings</b-nav-item>
+          <b-nav-item active href="#">About Us</b-nav-item>
+        </b-navbar-nav>
+
+        <b-navbar-nav v-if="!logged" class="ml-auto">
+          <b-nav-item href="#" @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item href="#">Sign up</b-nav-item>
+        </b-navbar-nav>
+
+        <b-navbar-nav v-if="logged" class="ml-auto">
+          <b-nav-item href="#" @click="onUserProfile()">{{ this.name }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
-        </ul>
-      </div>
-    </nav>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
     <!--/.Navbar -->
 
     <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
@@ -51,6 +36,7 @@
 export default {
   data () {
     return {
+      name: 'Name Surname',
       message: 'About Us',
       logged: false
     }
@@ -67,11 +53,19 @@ export default {
     },
     onLogOut () {
       this.logged = false
+    },
+    getName () {
+      // TODO: GET to API
     }
   }
 }
 </script>
 
 <style scoped>
-
+.navbar.navbar-light.navbar-light{
+  font-family: "Work Sans SemiBold";
+  font-size: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
 </style>

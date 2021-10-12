@@ -30,7 +30,7 @@
             <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sign up</a>
+            <a class="nav-link" href="#" v-b-modal.event-modal>Sign up</a>
           </li>
         </ul>
         <ul v-if="logged" class="navbar-nav ml-auto">
@@ -45,8 +45,6 @@
 
     <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
 
-    <button class="btn btn-primary btn-lg" @click="onUserProfile()"> User Profile </button>
-    <button class="btn btn-lg" v-b-modal.event-modal>Register</button>
     <b-modal ref="editShowModal"
              id="event-modal"
              title="Become a member"

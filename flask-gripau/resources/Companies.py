@@ -27,7 +27,7 @@ class Companies(Resource):
         if CompanyModel.find_by_company(data.company):
             return {'message': "User already exists"}, 400
 
-        account = CompanyModel(data.username, data.email, data.description)
+        account = CompanyModel(data.company, data.email, data.description)
 
         account.hash_password(data.password)
 

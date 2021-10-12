@@ -3855,7 +3855,9 @@ tbody.collapse.show {
 }
 
 .nav-link:hover, .nav-link:focus {
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: #ffc107;
+  text-decoration-thickness: 5px;
 }
 
 .nav-link.disabled {
@@ -4354,6 +4356,9 @@ tbody.collapse.show {
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
   color: rgba(0, 0, 0, 0.9);
+  text-decoration: underline;
+  text-decoration-thickness: 5px;
+  text-decoration-color: #ffc107;
 }
 
 .navbar-light .navbar-toggler {
@@ -8972,4 +8977,5 @@ a.text-dark:hover, a.text-dark:focus {
     border: 1px solid #ddd !important;
   }
 }
+
 /*# sourceMappingURL=bootstrap.css.map */

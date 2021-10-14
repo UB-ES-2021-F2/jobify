@@ -17,11 +17,11 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onJobPostings()">Job postings</a>
-          </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">About us</a>
+            <a class="nav-link" href="#">Job postings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="onAboutUs()">About us</a>
           </li>
         </ul>
         <ul v-if="!logged" class="navbar-nav ml-auto">
@@ -51,7 +51,7 @@
 export default {
   data () {
     return {
-      message: 'About Us',
+      message: 'Job Postings',
       logged: false
     }
   },
@@ -68,8 +68,8 @@ export default {
     onLogOut () {
       this.logged = false
     },
-    onJobPostings () {
-      this.$router.replace({path: '/job_postings'})
+    onAboutUs () {
+      this.$router.replace({path: '/about_us'})
     }
   }
 }

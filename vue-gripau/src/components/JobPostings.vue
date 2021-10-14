@@ -46,14 +46,17 @@
     <b-container fluid>
       <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
         <b-card
-          :title="job_offer.title"
+          :title="job_offer.jobName"
           tag="article"
           class="mb-2"
-          style="width: inherit"
+          style="width: 90%; max-width: 600px"
         >
           <b-card-text>
-            Some quick example text to build on the card title and make up the bulk of the card's content.
+            {{ job_offer.description }}
           </b-card-text>
+          <footer>
+            <b-icon icon="building"></b-icon> {{ job_offer.company }}
+          </footer>
 
           <b-button href="#" variant="primary">See more</b-button>
         </b-card>
@@ -69,7 +72,7 @@ export default {
     return {
       message: 'Job Postings',
       logged: false,
-      job_offers: [{'id': 0, 'title': 'Waiter'}, {'id': 1, 'title': 'Journalist'}, {'id': 2, 'title': 'Data Scientist'}]
+      job_offers: [{'id': 0, 'jobName': 'Waiter', 'company': 'Terra Restaurant', 'description': 'This offer is fake', 'type': 'Part time'}, {'id': 1, 'jobName': 'Journalist', 'company': 'The Sun', 'description': 'This offer is fake', 'type': 'Part time'}]
     }
   },
   methods: {

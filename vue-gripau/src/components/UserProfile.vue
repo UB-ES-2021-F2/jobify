@@ -18,7 +18,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Job postings</a>
+            <a class="nav-link" href="#" @click="onJobPostings()">Job postings</a>
           </li>
           <li class="nav-item" @click="onAboutUs()">
             <a class="nav-link" href="#">About us</a>
@@ -64,6 +64,9 @@ export default {
     },
     onLogOut () {
       this.logged = false
+    },
+    onJobPostings () {
+      this.$router.replace({ path: '/job_postings' })
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })

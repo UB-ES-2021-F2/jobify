@@ -43,6 +43,22 @@
     <!--/.Navbar -->
 
     <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
+    <b-container fluid>
+      <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
+        <b-card
+          :title="job_offer.title"
+          tag="article"
+          class="mb-2"
+          style="width: inherit"
+        >
+          <b-card-text>
+            Some quick example text to build on the card title and make up the bulk of the card's content.
+          </b-card-text>
+
+          <b-button href="#" variant="primary">See more</b-button>
+        </b-card>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -52,7 +68,8 @@ export default {
   data () {
     return {
       message: 'Job Postings',
-      logged: false
+      logged: false,
+      job_offers: [{'id': 0, 'title': 'Waiter'}, {'id': 1, 'title': 'Journalist'}, {'id': 2, 'title': 'Data Scientist'}]
     }
   },
   methods: {

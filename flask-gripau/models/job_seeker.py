@@ -51,6 +51,13 @@ class JobSeekersModel(db.Model):
         s = Serializer(current_app.secret_key, expires_in=expiration)
         return s.dumps({'username': self.username})
 
+    def delete_education(self, id):
+        for e in self.educations:
+            if e.id == id:
+                self.educations.remove(e)
+                return e
+        return None
+
     @classmethod
     def verify_auth_token(cls, token):
         s = Serializer(current_app.secret_key)
@@ -73,6 +80,8 @@ class JobSeekersModel(db.Model):
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 
+
+
 @auth.verify_password
 def verify_password(token, password):
     account = JobSeekersModel.verify_auth_token(token)
@@ -86,3 +95,5 @@ def get_user_roles(user):
         return ['admin']
     else:
         return ['user']
+
+

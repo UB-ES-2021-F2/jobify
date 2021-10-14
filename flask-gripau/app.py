@@ -44,7 +44,7 @@ api = Api(app)
 api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
 api.add_resource(Companies, '/company/<string:company>', '/company')
 api.add_resource(Login, '/login')
-api.add_resource(Educations, '/<string:username>/education')
+api.add_resource(Educations, '/education/<string:username>')
 
 @app.route('/')
 def render_vue():

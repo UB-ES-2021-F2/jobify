@@ -1,7 +1,7 @@
 from db import db
 
 
-class EducationModel(db.Model):
+class EducationsModel(db.Model):
     __tablename__ = 'educations'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -21,7 +21,7 @@ class EducationModel(db.Model):
         self.currently = currently
 
     def json(self):
-        return {'username': self.username, 'title': self.title, 'insitution': self.institution,
+        return {'username': self.username, 'title': self.title, 'institution': self.institution,
                 'start_date': self.start_date, 'end_date': self.end_date,'currently': self.currently}
 
     def delete_from_db(self, database=None):
@@ -33,3 +33,7 @@ class EducationModel(db.Model):
     @classmethod
     def show_educations(cls):
         return {'educations': [education.json() for education in cls.query.all()]}
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()

@@ -17,6 +17,7 @@ class JobSeekersModel(db.Model):
     password = db.Column(db.String(128), nullable=False)
     # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False, default=False)
+    educations = db.relationship('EducationsModel', backref='educations', lazy=True)
 
     def __init__(self, username, email, bio, is_admin=0):
         self.username = username

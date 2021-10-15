@@ -63,7 +63,7 @@ export default {
       this.$router.replace({ path: '/user' })
     },
     onLogIn () {
-      this.logged = true
+      this.$router.replace({ path: '/login' })
     },
     onLogOut () {
       this.logged = false

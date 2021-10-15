@@ -8,9 +8,13 @@ from flask_cors import CORS
 from resources import JobSeekers
 from resources import Companies
 from resources import Login
+from resources import Educations
+from resources import WorkExperiences
 #Imports de models
 from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
+from models.education import EducationsModel
+from models.work_experience import WorkExperiencesModel
 
 from flask import g, current_app
 from decouple import config as config_decouple
@@ -42,7 +46,8 @@ api = Api(app)
 api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
 api.add_resource(Companies, '/company/<string:company>', '/company')
 api.add_resource(Login, '/login')
-
+api.add_resource(Educations, '/education/<string:username>')
+api.add_resource(WorkExperiences, '/work_experience/<string:username>')
 
 
 @app.route('/')

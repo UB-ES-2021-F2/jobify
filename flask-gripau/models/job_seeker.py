@@ -85,6 +85,10 @@ class JobSeekersModel(db.Model):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 

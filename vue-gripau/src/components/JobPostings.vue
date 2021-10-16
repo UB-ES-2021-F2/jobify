@@ -50,15 +50,15 @@
           tag="article"
           class="mb-2"
           style="width: 90%; max-width: 600px"
+          align="left"
         >
           <b-card-text>
             {{ job_offer.description }}
           </b-card-text>
           <footer>
-            <b-icon icon="building"></b-icon> {{ job_offer.company }}
+            <b-icon icon="alarm"></b-icon> {{ job_offer.type}}
+            <b-icon icon="building"></b-icon> {{ job_offer.company}}
           </footer>
-
-          <b-button href="#" variant="primary">See more</b-button>
         </b-card>
       </b-row>
     </b-container>
@@ -66,13 +66,12 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
       message: 'Job Postings',
       logged: false,
-      job_offers: [{'id': 0, 'jobName': 'Waiter', 'company': 'Terra Restaurant', 'description': 'This offer is fake', 'type': 'Part time'}, {'id': 1, 'jobName': 'Journalist', 'company': 'The Sun', 'description': 'This offer is fake', 'type': 'Part time'}]
+      job_offers: [{'id': 0, 'jobName': 'Waiter', 'company': 'Terra Restaurant', 'description': 'This offer is fake and it will be deleted in the next update', 'type': 'Part time'}, {'id': 1, 'jobName': 'Journalist', 'company': 'The Sun', 'description': 'This offer is fake and it will be deleted in the next update', 'type': 'Part time'}]
     }
   },
   methods: {

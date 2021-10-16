@@ -3,7 +3,7 @@ from Testing import BaseTestCase
 from db import db
 
 
-class TestApp(BaseTestCase):
+class TestJobSeeker(BaseTestCase):
 
     def _add_data_to_db(self, data):
         db.session.add(data)
@@ -23,6 +23,21 @@ class TestApp(BaseTestCase):
         self._add_data_to_db(new_job_seeker)
         find = JobSeekersModel.find_by_username('test')
         assert find.json()['username'] == 'test'
+
+    def test_json(self):
+        new_job_seeker = JobSeekersModel('test', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        ret = {'id': None, 'username': 'test', 'email': 'test@hotmail.com', 'is_admin': 0,
+               'bio': 'hola, soc un test'}
+        assert new_job_seeker.json() == ret
+
+    def test_delete_from_db(self):
+        new_job_seeker = JobSeekersModel('test', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        self._add_data_to_db(new_job_seeker)
+        new_job_seeker.delete_from_db(db)
+        result = db.session.query(JobSeekersModel).first()
+        self.assertIsNone(result, 'Nothing in the database')
 
 
 if __name__ == '__main__':

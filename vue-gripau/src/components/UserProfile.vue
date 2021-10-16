@@ -37,7 +37,7 @@
           <div class="card-header align-items-center">
             <div class="row align-items-center">
               <div class="col">
-                <h5 class="card-title">{{work.jobName}}</h5>
+                <h5 class="card-title">{{work.job_name}}</h5>
               </div>
               <div class="d-flex flex-row-reverse">
                 <button class="btn btn-sm btn-danger m-1" @click="deleteWork(work)">Delete</button>
@@ -48,8 +48,8 @@
           <div class="card-body">
             <h5 class="card-title">{{work.company}}</h5>
             <p class="card-text">{{work.description}}</p>
-            <p class="card-text" v-if="!work.currently"><small class="text-muted">{{work.startDate}} - {{work.endDate}}</small></p>
-            <p class="card-text" v-if="work.currently"><small class="text-muted">{{work.startDate}} - now</small></p>
+            <p class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
+            <p class="card-text" v-if="work.currently"><small class="text-muted">{{work.start_date}} - now</small></p>
           </div>
         </div>
       </div>
@@ -69,8 +69,8 @@
               </div>
             </div>
             <h6 class="card-title">{{ed.institution}}</h6>
-            <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.startDate}} - {{ed.endDate}}</small></p>
-            <p class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.startDate}} - now</small></p>
+            <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
+            <p class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
           </div>
         </div>
       </div>
@@ -154,49 +154,16 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   data () {
     return {
       name: 'Name Surname',
+      username: 'sergi',
       logged: true,
-      work_experience: [
-        {
-          'id': 0,
-          'jobName': 'Product Owner',
-          'company': 'Apple',
-          'description': 'I\'m currently enjoying working at Apple as a Product Owner',
-          'startDate': '09-2021', // MM-YYYY
-          'endDate': null,
-          'currently': true
-        },
-        {
-          'id': 1,
-          'jobName': 'Frontend Engineer',
-          'company': 'Google',
-          'description': 'I worked in the Google Maps team as front end developer and I developed my software\n' +
-            '              dev abilities at Google.',
-          'startDate': '08-2020',
-          'endDate': '08-2021',
-          'currently': false
-        }],
-      education: [
-        {
-          'id': 1,
-          'title': ' MSc in Data Science',
-          'institution': 'Universitat de Barcelona',
-          'startDate': '09-2019',
-          'endDate': '08-2020',
-          'currently': false
-        },
-        {
-          'id': 0,
-          'title': ' BSc in Computer Science',
-          'institution': 'Universitat de Barcelona',
-          'startDate': '09-2015',
-          'endDate': '06-2019',
-          'currently': false
-        }],
+      work_experience: [],
+      education: [],
       skills: ['Python', 'Java', 'SQL'],
       addWork: {
         jobName: '',
@@ -232,32 +199,108 @@ export default {
       // TODO: GET to API
     },
     getWorkExperience () {
-      // TODO: GET to API
+      const path = 'http://localhost:5000/work_experience/' + this.username
+      axios.get(path)
+        .then((res) => {
+          this.work_experience = res.data
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     },
     getEducation () {
-      // TODO: GET to API
+      const path = 'http://localhost:5000/education/' + this.username
+      axios.get(path)
+        .then((res) => {
+          this.education = res.data
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     },
     onAddWork () {
       this.$refs.addWorkModal.show()
     },
     submitAddWork () {
       console.log('Submit ' + this.addWork.jobName)
-      // TODO: POST to API
+      const path = 'http://localhost:5000/work_experience/' + this.username
+      const parameters = {
+        job_name: this.addWork.jobName,
+        company: this.addWork.company,
+        start_date: this.addWork.startDate,
+        end_date: this.addWork.endDate,
+        description: this.addWork.description,
+        currently: this.addWork.currently
+      }
+      axios.post(path, parameters) // TODO: add token
+        .then((res) => {
+          this.getWorkExperience()
+          this.addWork = {
+            jobName: '',
+            company: '',
+            description: '',
+            startDate: '',
+            endDate: '',
+            currently: false
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error adding work experience')
+        })
     },
     deleteWork (work) {
-      console.log('Delete ' + work.jobName)
-      // TODO: DELETE to API
+      console.log('Delete ' + work.id)
+      const path = 'http://localhost:5000/work_experience/' + this.username
+      const parameters = {data: { id: work.id }}
+      axios.delete(path, parameters) // TODO: add token
+        .then((res) => {
+          this.getWorkExperience()
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error deleting work experience')
+        })
     },
     onAddEducation () {
       this.$refs.addEducationModal.show()
     },
     submitAddEducation () {
-      console.log('Submit ' + this.addEducation.title)
-      // TODO: POST to API
+      const path = 'http://localhost:5000/education/' + this.username
+      const parameters = {
+        title: this.addEducation.title,
+        institution: this.addEducation.institution,
+        start_date: this.addEducation.startDate,
+        end_date: this.addEducation.endDate,
+        currently: this.addEducation.currently
+      }
+      axios.post(path, parameters) // TODO: add token
+        .then((res) => {
+          this.getEducation()
+          this.addEducation = {
+            title: '',
+            institution: '',
+            startDate: '',
+            endDate: '',
+            currently: false
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error adding education')
+        })
     },
     deleteEducation (ed) {
-      console.log('Delete ' + ed.title)
-      // TODO: DELETE to API
+      const path = 'http://localhost:5000/education/' + this.username
+      const parameters = {data: { id: ed.id }}
+      axios.delete(path, parameters) // TODO: add token
+        .then((res) => {
+          this.getEducation()
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error deleting education')
+        })
     },
     resetAddWork () {
       this.addWork = {
@@ -277,6 +320,10 @@ export default {
         currently: false
       }
     }
+  },
+  created () {
+    this.getWorkExperience()
+    this.getEducation()
   }
 }
 

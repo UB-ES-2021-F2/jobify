@@ -80,7 +80,7 @@ export default {
     return {
       name: 'Name Surname',
       message: 'Homepage',
-      logged: false
+      logged: false,
       register: {
         fName: '',
         lName: '',

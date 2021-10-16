@@ -4,3 +4,4 @@ from resources.Login import Login
 from resources.Register import Register
 from resources.Educations import Educations
 from resources.WorkExperiences import WorkExperiences
+from resources.CompanyList import CompanyList

@@ -54,7 +54,8 @@ html, body{
     outline: 0 none;
   }
 
-  .btn-login{
+  .btn-login/*, .btn-signup, .btn-signup:hover*/{
+    color: #000;
     background-color: #ffcd01;
     border: 0;
     border-radius: 5px;
@@ -64,9 +65,42 @@ html, body{
     padding: 0;
     cursor: pointer;
   }
+/*
+  .btn-signup{
+    color: #fff;
+    background-color: #6c757d;
+  }*/
+
+  .signup-container{
+    color: #000;
+  }
+    .btn-signup{
+      background-color: transparent;
+      border: 0px;
+      color: #000;
+      font-weight: bold;
+    }
+    .btn-signup:hover, .btn-signup:focus{
+      text-decoration: underline;
+      color: #ffcd01;
+      background-color: transparent;
+      border: 0px;
+    }
 
     .btn-login:focus{
       outline: none;
+    }
+
+    .btn-signup:focus{
+      border-color: transparent !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    .btn-signup:active{
+      background-color: transparent !important;
+      border: transparent !important;
+      color: #ffcd01 !important;
     }
 
     .btn-login:hover{

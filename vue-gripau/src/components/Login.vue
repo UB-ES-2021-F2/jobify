@@ -44,7 +44,7 @@
       <div class = 'row justify-content-center'>
         <div class = 'content-table'>
           <div class  = 'content-table-cell'>
-            <div class = 'col-5 login-container'>
+            <div class = 'col-9 col-md-5 login-container'>
 
              <div class = 'logo-container'>
                <img style="max-width: 150px" :src="require('../assets/logo.svg')">
@@ -60,9 +60,12 @@
                   <b-form-input id="password-input" v-model="loginForm.password" type="password" placeholder="Password" required>
                   </b-form-input>
                 </b-form-group>
-
-                <b-button type="submit" variant="primary" class='btn-login' >Login</b-button>
-                <b-button v-b-modal.register-modal variant="secondary" class='btn-signup' >Sign Up</b-button>
+                <div>
+                  <b-button type="submit" variant="primary" class='btn-login' >Login</b-button>
+                </div>
+                <div class="signup-container">
+                  You don't have an account?<b-button v-b-modal.register-modal variant="secondary" class='btn-signup'>Sign Up</b-button>
+                </div>
               </b-form>
 
             </div>

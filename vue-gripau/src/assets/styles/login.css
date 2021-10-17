@@ -91,6 +91,18 @@ html, body{
       outline: none;
     }
 
+    .btn-signup:focus{
+      border-color: transparent !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    .btn-signup:active{
+      background-color: transparent !important;
+      border: transparent !important;
+      color: #ffcd01 !important;
+    }
+
     .btn-login:hover{
       background-color: #ffcd01;
     }

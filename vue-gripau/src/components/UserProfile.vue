@@ -1,26 +1,26 @@
 <template>
   <div id="app">
     <!--Navbar -->
-    <b-navbar sticky="true" toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#" @click="onHome()">
+    <b-navbar sticky toggleable="lg" type="light" variant="light">
+      <b-navbar-brand @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#" @click="onHome()">Home</b-nav-item>
-          <b-nav-item href="#" @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item href="#" @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item @click="onHome()">Home</b-nav-item>
+          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item href="#" @click="onLogIn()">Log in</b-nav-item>
-          <b-nav-item href="#">Sign up</b-nav-item>
+          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item >Sign up</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item active href="#">{{ this.name }}</b-nav-item>
+          <b-nav-item active >{{ this.username }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -29,7 +29,7 @@
 
     <b-container>
 
-      <h2 style="font-family: 'Vollkorn"> {{ name }} </h2>
+      <h2 style="font-family: 'Vollkorn', serif"> {{ username }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
         <div class="bio-text">
@@ -161,11 +161,11 @@ export default {
       is_company: false,
       is_admin: false,
       token: '',
-      username: ''
+      username: '',
       work_experience: [],
       education: [],
       skills: ['Python', 'Java', 'SQL'],
-      bio: 'I’m living the dream. I’ve always been a great problem solver, an independent introvert, and a technophile obsessed with the latest devices.\n' +
+      bio: 'Example bio: I’ve always been a great problem solver, an independent introvert, and a technophile obsessed with the latest devices.\n' +
         'Today, I’m working from home as a software engineer for Google, and I get to show off all these elements of who I am.\n' +
         ' I’m also eager to meet other software engineers in the area, so feel free to connect!',
       addWork: {
@@ -372,7 +372,7 @@ export default {
 </script>
 
 <style >
-.navbar.navbar-light{
+.b-navbar{
   font-family: "Work Sans SemiBold", sans-serif;
   font-size: 18px;
   padding: 20px;
@@ -406,5 +406,11 @@ export default {
   font-family: "Vollkorn",serif;
   font-size: 26px;
   display:inline-block
+}
+.user-link {
+  text-decoration: underline;
+  text-decoration-color: #ffc107;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 }
 </style>

@@ -2,7 +2,7 @@
   <div id="app">
 
     <!--Navbar -->
-    <b-navbar sticky="true" toggleable="lg" type="light" variant="light">
+    <b-navbar sticky toggleable="lg" type="light" variant="light">
       <b-navbar-brand href="#">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
@@ -11,23 +11,23 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item active href="#">Home</b-nav-item>
-          <b-nav-item href="#" @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item href="#" @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item href="#" @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item href="#" @click="onUserProfile()">{{ this.username }}</b-nav-item>
+          <b-nav-item @click="onUserProfile()"><span class="user-link">{{ this.username }}</span></b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
     <!--/.Navbar -->
 
-    <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
+    <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
   </div>
 </template>
 
@@ -109,9 +109,15 @@ export default {
 
 <style>
 .navbar.navbar-light{
-  font-family: "Work Sans SemiBold";
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.user-link {
+  text-decoration: underline;
+  text-decoration-color: #ffc107;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 }
 </style>

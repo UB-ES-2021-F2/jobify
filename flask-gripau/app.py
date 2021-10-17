@@ -23,8 +23,13 @@ from flask import g, current_app
 from decouple import config as config_decouple
 from config import config
 
-app = Flask(__name__)
 
+def create_app():
+    app = Flask(__name__)
+    return app
+
+
+app = create_app()
 environment = config['development']
 if config_decouple('PRODUCTION', cast=bool, default=False):
     environment = config['production']
@@ -45,7 +50,7 @@ migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
-#api.add_resource(Artist, '/artist/<int:id>', '/artist')
+# api.add_resource(Artist, '/artist/<int:id>', '/artist')
 api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
 api.add_resource(Companies, '/company/<string:company>', '/company')
 api.add_resource(CompanyList, '/companies')

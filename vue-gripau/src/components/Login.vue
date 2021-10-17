@@ -44,7 +44,7 @@
       <div class = 'row justify-content-center'>
         <div class = 'content-table'>
           <div class  = 'content-table-cell'>
-            <div class = 'col-5 login-container'>
+            <div class = 'col-9 col-md-5 login-container'>
 
              <div class = 'logo-container'>
                <img style="max-width: 150px" :src="require('../assets/logo.svg')">

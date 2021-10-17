@@ -10,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="#" @click="onHome()">Home</b-nav-item>
-          <b-nav-item href="#">Job postings</b-nav-item>
+          <b-nav-item href="#" @click="onJobPostings()">Job postings</b-nav-item>
           <b-nav-item href="#" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -156,8 +156,12 @@ export default {
   data () {
     return {
       name: 'Name Surname',
-      username: 'sergi',
       logged: false,
+      is_jobseeker: true,
+      is_company: false,
+      is_admin: false,
+      token: '',
+      username: ''
       work_experience: [],
       education: [],
       skills: ['Python', 'Java', 'SQL'],
@@ -183,19 +187,52 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.replace({ path: '/',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onLogIn () {
-      this.logged = true
+      this.$router.replace({ path: '/login' })
     },
     onLogOut () {
+      this.$router.replace({path: '/user'})
       this.logged = false
+      this.username = ''
+      this.token = ''
+      this.is_jobseeker = true
+      this.is_company = false
+      this.is_admin = false
+    },
+    onJobPostings () {
+      this.$router.replace({ path: '/job_postings',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
-    },
-    getName () {
-      // TODO: GET to API
+      this.$router.replace({ path: '/about_us',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     getWorkExperience () {
       const path = 'http://localhost:5000/work_experience/' + this.username
@@ -321,6 +358,12 @@ export default {
     }
   },
   created () {
+    this.logged = this.$route.query.logged === 'true'
+    this.username = this.$route.query.username ? this.$route.query.username : ''
+    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
+    this.is_company = this.$route.query.is_company === 'true'
+    this.token = this.$route.query.token ? this.$route.query.token : ''
+    this.is_admin = this.$route.query.is_admin === 'true'
     this.getWorkExperience()
     this.getEducation()
   }

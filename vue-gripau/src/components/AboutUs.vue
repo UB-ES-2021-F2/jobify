@@ -10,13 +10,12 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="#" @click="onHome()">Home</b-nav-item>
-          <b-nav-item href="#">Job postings</b-nav-item>
+          <b-nav-item href="#" @click="onJobPostings()">Job postings</b-nav-item>
           <b-nav-item active href="#">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
           <b-nav-item href="#" @click="onLogIn()">Log in</b-nav-item>
-          <b-nav-item href="#">Sign up</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
@@ -38,25 +37,71 @@ export default {
     return {
       name: 'Name Surname',
       message: 'About Us',
-      logged: false
+      logged: false,
+      username: '',
+      is_admin: false,
+      is_jobseeker: true,
+      is_company: false,
+      token: ''
     }
   },
   methods: {
     onHome () {
-      this.$router.replace({path: '/'})
+      this.$router.replace({path: '/',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onUserProfile () {
-      this.$router.replace({ path: '/user' })
+      this.$router.replace({ path: '/user',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onLogIn () {
-      this.logged = true
+      this.$router.replace({ path: '/login' })
     },
     onLogOut () {
+      this.$router.replace({ path: '/about_us' })
       this.logged = false
+      this.username = ''
+      this.token = ''
+      this.is_jobseeker = true
+      this.is_company = false
+      this.is_admin = false
     },
-    getName () {
-      // TODO: GET to API
+    onJobPostings () {
+      this.$router.replace({path: '/job_postings',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     }
+  },
+  created () {
+    this.logged = this.$route.query.logged === 'true'
+    this.username = this.$route.query.username ? this.$route.query.username : ''
+    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
+    this.is_company = this.$route.query.is_company === 'true'
+    this.token = this.$route.query.token ? this.$route.query.token : ''
+    this.is_admin = this.$route.query.is_admin === 'true'
   }
 }
 </script>

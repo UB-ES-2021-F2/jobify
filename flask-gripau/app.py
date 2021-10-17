@@ -4,13 +4,15 @@ from flask_migrate import Migrate
 from db import db
 from flask_cors import CORS
 
-#Imports de resources
+# Imports de resources
 from resources import JobSeekers
 from resources import Companies
 from resources import Login
+from resources import Register
 from resources import Educations
 from resources import WorkExperiences
-#Imports de models
+
+# Imports de models
 from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
 from models.education import EducationsModel
@@ -20,8 +22,13 @@ from flask import g, current_app
 from decouple import config as config_decouple
 from config import config
 
-app = Flask(__name__)
 
+def create_app():
+    app = Flask(__name__)
+    return app
+
+
+app = create_app()
 environment = config['development']
 if config_decouple('PRODUCTION', cast=bool, default=False):
     environment = config['production']
@@ -42,10 +49,11 @@ migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
-#api.add_resource(Artist, '/artist/<int:id>', '/artist')
+# api.add_resource(Artist, '/artist/<int:id>', '/artist')
 api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
 api.add_resource(Companies, '/company/<string:company>', '/company')
 api.add_resource(Login, '/login')
+api.add_resource(Register, '/register')
 api.add_resource(Educations, '/education/<string:username>')
 api.add_resource(WorkExperiences, '/work_experience/<string:username>')
 

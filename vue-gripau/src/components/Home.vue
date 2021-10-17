@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+
     <!--Navbar -->
     <b-navbar sticky="true" toggleable="lg" type="light" variant="light">
       <b-navbar-brand href="#">
@@ -10,17 +11,16 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item active href="#">Home</b-nav-item>
-          <b-nav-item href="#">Job postings</b-nav-item>
+          <b-nav-item href="#" @click="onJobPostings()">Job postings</b-nav-item>
           <b-nav-item href="#" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
           <b-nav-item href="#" @click="onLogIn()">Log in</b-nav-item>
-          <b-nav-item href="#">Sign up</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item href="#" @click="onUserProfile()">{{ this.name }}</b-nav-item>
+          <b-nav-item href="#" @click="onUserProfile()">{{ this.username }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -28,48 +28,6 @@
     <!--/.Navbar -->
 
     <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
-
-    <b-modal ref="editShowModal"
-             id="event-modal"
-             title="Become a member"
-             hide-footer
-    >
-      <b-form style="font-family:'Work Sans'" @submit="onSubmit" @reset="onReset">
-        <label style="color: #5a6268">All fields are needed.</label>
-
-        <b-form-group id="input-group-0" label="First name:" label-for="input-0">
-          <b-form-input v-model="register.fName" placeholder="" type="text" required></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-1" label="Last name:" label-for="input-1">
-          <b-form-input v-model="register.lName" placeholder="" type="text" required></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Email:" label-for="input-2">
-          <b-form-input v-model="register.email" placeholder="" type="email" required></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-          <b-form-input v-model="register.password" placeholder="" type="password" required></b-form-input>
-          <b-form-text id="password-help-block">
-            Your password should be 8-20 characters long.
-          </b-form-text>
-        </b-form-group>
-
-        <b-form-checkbox id="checkbox-1" :state="termsAndCState" v-model="register.rTandC" name="checkbox-1" required>
-          I have read and accept the terms and conditions and privacy policy.
-        </b-form-checkbox>
-
-        <b-form-checkbox id="checkbox-2" v-model="register.newsletter" name="checkbox-2">
-          I do not want to receive the Jungle Newsletter and tips to optimise my job search.
-        </b-form-checkbox>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-warning justify-content-md-end">Submit</button>
-        </div>
-
-      </b-form>
-    </b-modal>
   </div>
 </template>
 
@@ -78,57 +36,72 @@
 export default {
   data () {
     return {
-      name: 'Name Surname',
-      message: 'Homepage',
+      message: 'Home',
       logged: false,
-      register: {
-        fName: '',
-        lName: '',
-        email: '',
-        password: '',
-        rTandC: false,
-        newsletter: false
-      }
+      username: '',
+      is_admin: false,
+      is_jobseeker: true,
+      is_company: false,
+      token: ''
     }
   },
   methods: {
     onUserProfile () {
-      this.$router.replace({ path: '/user' })
-    },
-    onSubmit () {
-      alert('Form submitted!')
-    },
-    initForm () {
-      this.register.fName = ''
-      this.register.lName = ''
-      this.register.email = ''
-      this.register.password = ''
-    },
-    onReset (evt) {
-      evt.preventDefault()
-      this.initForm()
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
+      this.$router.replace({ path: '/user',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
       })
     },
     onLogIn () {
-      this.logged = true
+      this.$router.replace({path: '/login'})
     },
     onLogOut () {
+      this.$router.replace({path: '/'})
       this.logged = false
+      this.username = ''
+      this.token = ''
+      this.is_jobseeker = true
+      this.is_company = false
+      this.is_admin = false
+    },
+    onJobPostings () {
+      this.$router.replace({path: '/job_postings',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
-    },
-    getName () {
-      // TODO: GET to API
+      this.$router.replace({ path: '/about_us',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     }
   },
-  computed: {
-    termsAndCState () {
-      return this.register.rTandC
-    }
+  created () {
+    this.logged = this.$route.query.logged === 'true'
+    this.username = this.$route.query.username ? this.$route.query.username : ''
+    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
+    this.is_company = this.$route.query.is_company === 'true'
+    this.token = this.$route.query.token ? this.$route.query.token : ''
+    this.is_admin = this.$route.query.is_admin === 'true'
   }
 }
 

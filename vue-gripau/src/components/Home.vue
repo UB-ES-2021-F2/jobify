@@ -29,9 +29,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" v-b-modal.event-modal>Sign up</a>
-          </li>
         </ul>
         <ul v-if="logged" class="navbar-nav ml-auto">
           <li class="nav-item">
@@ -44,183 +41,64 @@
     <!--/.Navbar -->
 
     <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
-
-    <b-modal ref="editShowModal"
-             id="event-modal"
-             title="Become a member"
-             hide-footer
-    >
-      <b-tabs v-model="tabIndex" content-class="mt-3" fill>
-        <!--Job Seeker form -->
-        <b-tab title="Job Seeker" active>
-          <b-form style="font-family:'Work Sans'" @submit="onSubmit">
-            <label style="color: #5a6268">All fields are needed.</label>
-
-            <b-form-group id="input-group-0" label="Username:" label-for="input-0">
-              <b-form-input v-model="registerS.username" placeholder="" type="text" required></b-form-input>
-            </b-form-group>
-
-            <b-form-group id="input-group-2" label="Email:" label-for="input-2">
-              <b-form-input v-model="registerS.email" placeholder="" type="email" required></b-form-input>
-            </b-form-group>
-
-            <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-              <b-form-input v-model="registerS.password" placeholder="" type="password" required></b-form-input>
-              <b-form-text id="password-help-block">
-                Your password should be 8-20 characters long.
-              </b-form-text>
-            </b-form-group>
-
-            <b-form-checkbox id="checkbox-1" :state="termsAndCStateS" v-model="registerS.rTandC" name="checkbox-1" required>
-              I have read and accept the terms and conditions and privacy policy.
-            </b-form-checkbox>
-
-            <b-form-checkbox id="checkbox-2" v-model="registerS.newsletter" name="checkbox-2">
-              I do not want to receive the Jungle Newsletter and tips to optimise my job search.
-            </b-form-checkbox>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-warning justify-content-md-end">Submit</button>
-            </div>
-          </b-form>
-        </b-tab>
-        <!--/Job Seeker form -->
-        <!--Company form -->
-        <b-tab title="Company">
-          <b-form style="font-family:'Work Sans'" @submit="onSubmit" >
-            <label style="color: #5a6268">All fields are needed.</label>
-
-            <b-form-group id="input-group-0C" label="Company name:" label-for="input-0C">
-              <b-form-input v-model="registerC.company" placeholder="" type="text" required></b-form-input>
-            </b-form-group>
-
-            <b-form-group id="input-group-2C" label="Email:" label-for="input-2C">
-              <b-form-input v-model="registerC.email" placeholder="" type="email" required></b-form-input>
-            </b-form-group>
-
-            <b-form-group id="input-group-3C" label="Password:" label-for="input-3C">
-              <b-form-input v-model="registerC.password" placeholder="" type="password" required></b-form-input>
-              <b-form-text id="password-help-blockC">
-                Your password should be 8-20 characters long.
-              </b-form-text>
-            </b-form-group>
-
-            <b-form-checkbox id="checkbox-1C" :state="termsAndCStateC" v-model="registerC.rTandC" name="checkbox-1C" required>
-              I have read and accept the terms and conditions and privacy policy.
-            </b-form-checkbox>
-
-            <b-form-checkbox id="checkbox-2C" v-model="registerC.newsletter" name="checkbox-2C">
-              I do not want to receive the Jungle Newsletter and tips to optimise my company interests.
-            </b-form-checkbox>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-warning justify-content-md-end">Submit</button>
-            </div>
-          </b-form>
-        </b-tab>
-        <!--/Company form -->
-      </b-tabs>
-
-    </b-modal>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data () {
     return {
       message: 'Home',
-      tabIndex: 0,
       logged: false,
-      registerS: {
-        username: '',
-        email: '',
-        password: '',
-        rTandC: false,
-        newsletter: false
-      },
-      registerC: {
-        company: '',
-        email: '',
-        password: '',
-        rTandC: false,
-        newsletter: false
-      }
-
+      username: '',
+      is_admin: false,
+      is_jobseeker: true,
+      is_company: false,
+      token: ''
     }
   },
   methods: {
     onUserProfile () {
-      this.$router.replace({ path: '/user' })
-    },
-    onSubmit () {
-      const pathS = 'http://127.0.0.1:5000/jobseeker'
-      const pathC = 'http://127.0.0.1:5000/company'
-      if (this.tabIndex === 0) {
-        const values = {
-          username: this.registerS.username,
-          password: this.registerS.password,
-          email: this.registerS.email
+      this.$router.replace({ path: '/user',
+        query: {
+          username: this.loginForm.username,
+          logged: this.logged,
+          is_company: true,
+          is_jobseeker: false,
+          is_admin: this.is_admin,
+          token: this.token
         }
-        axios.post(pathS, values)
-          .then((res) => {
-            alert('Form submitted! ' + this.registerS.username)
-          })
-          .catch((error) => {
-            console.error(error)
-            alert(' An error occurred creating the account')
-          })
-      } else {
-        const values = {
-          company: this.registerC.company,
-          password: this.registerC.password,
-          email: this.registerC.email
-        }
-        axios.post(pathC, values)
-          .then((res) => {
-            alert('Form submitted! ' + this.registerC.company)
-          })
-          .catch((error) => {
-            console.error(error)
-            alert(' An error occurred creating the account')
-          })
-      }
-      this.onReset()
-      this.$bvModal.hide('event-modal')
-    },
-    initForm () {
-      this.registerS.username = ''
-      this.registerS.email = ''
-      this.registerS.password = ''
-      this.registerS.rTandC = false
-      this.registerS.newsletter = false
-      this.registerC.company = ''
-      this.registerC.email = ''
-      this.registerC.password = ''
-      this.registerC.rTandC = false
-      this.registerC.newsletter = false
-    },
-    onReset () {
-      this.initForm()
+      })
     },
     onLogIn () {
       this.$router.replace({path: '/login'})
     },
     onLogOut () {
       this.logged = false
+      this.username = ''
+      this.token = ''
+      this.is_jobseeker = true
+      this.is_company = false
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.replace({ path: '/about_us',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: true,
+          is_jobseeker: false,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     }
   },
-  computed: {
-    termsAndCStateS () {
-      return this.registerS.rTandC
-    },
-    termsAndCStateC () {
-      return this.registerC.rTandC
-    }
+  created () {
+    this.logged = this.$route.query.logged === 'true'
+    this.username = this.$route.query.username ? this.$route.query.username : ''
+    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
+    this.is_company = this.$route.query.is_company === 'true'
+    this.token = this.$route.query.token ? this.$route.query.token : ''
   }
 }
 

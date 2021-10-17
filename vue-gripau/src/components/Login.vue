@@ -50,7 +50,7 @@
                <img style="max-width: 150px" :src="require('../assets/logo.svg')">
              </div>
 
-              <b-form ref="form" @submit="checkLogin">
+              <b-form ref="form" @submit.prevent="checkLogin">
                 <b-form-group label-for="username-input">
                   <b-form-input id="username-input" v-model="loginForm.username" type="text" placeholder="Username" required>
                   </b-form-input>
@@ -62,6 +62,7 @@
                 </b-form-group>
 
                 <b-button type="submit" variant="primary" class='btn-login' >Login</b-button>
+                <b-button v-b-modal.register-modal variant="secondary" class='btn-signup' >Sign Up</b-button>
               </b-form>
 
             </div>
@@ -70,7 +71,83 @@
 
       </div>
     </div>
+    <b-modal ref="registerModal"
+             id="register-modal"
+             title="Become a member"
+             hide-footer
+    >
+      <b-tabs v-model="tabIndex" content-class="mt-3" fill>
+        <!--Job Seeker form -->
+        <b-tab title="Job Seeker" active>
+          <b-form style="font-family:'Work Sans'" @submit="onSubmit">
+            <label style="color: #5a6268">All fields are needed.</label>
 
+            <b-form-group id="input-group-0" label="Username:" label-for="input-0">
+              <b-form-input v-model="registerS.username" placeholder="" type="text" required></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-2" label="Email:" label-for="input-2">
+              <b-form-input v-model="registerS.email" placeholder="" type="email" required></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-3" label="Password:" label-for="input-3">
+              <b-form-input v-model="registerS.password" placeholder="" type="password" required></b-form-input>
+              <b-form-text id="password-help-block">
+                Your password should be 8-20 characters long.
+              </b-form-text>
+            </b-form-group>
+
+            <b-form-checkbox id="checkbox-1" :state="termsAndCStateS" v-model="registerS.rTandC" name="checkbox-1" required>
+              I have read and accept the terms and conditions and privacy policy.
+            </b-form-checkbox>
+
+            <b-form-checkbox id="checkbox-2" v-model="registerS.newsletter" name="checkbox-2">
+              I do not want to receive the Jungle Newsletter and tips to optimise my job search.
+            </b-form-checkbox>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-warning justify-content-md-end">Submit</button>
+            </div>
+          </b-form>
+        </b-tab>
+        <!--/Job Seeker form -->
+        <!--Company form -->
+        <b-tab title="Company">
+          <b-form style="font-family:'Work Sans'" @submit="onSubmit" >
+            <label style="color: #5a6268">All fields are needed.</label>
+
+            <b-form-group id="input-group-0C" label="Company name:" label-for="input-0C">
+              <b-form-input v-model="registerC.company" placeholder="" type="text" required></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-2C" label="Email:" label-for="input-2C">
+              <b-form-input v-model="registerC.email" placeholder="" type="email" required></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-3C" label="Password:" label-for="input-3C">
+              <b-form-input v-model="registerC.password" placeholder="" type="password" required></b-form-input>
+              <b-form-text id="password-help-blockC">
+                Your password should be 8-20 characters long.
+              </b-form-text>
+            </b-form-group>
+
+            <b-form-checkbox id="checkbox-1C" :state="termsAndCStateC" v-model="registerC.rTandC" name="checkbox-1C" required>
+              I have read and accept the terms and conditions and privacy policy.
+            </b-form-checkbox>
+
+            <b-form-checkbox id="checkbox-2C" v-model="registerC.newsletter" name="checkbox-2C">
+              I do not want to receive the Jungle Newsletter and tips to optimise my company interests.
+            </b-form-checkbox>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-warning justify-content-md-end">Submit</button>
+            </div>
+          </b-form>
+        </b-tab>
+        <!--/Company form -->
+      </b-tabs>
+
+    </b-modal>
   </div>
 </template>
 
@@ -85,9 +162,26 @@ export default {
       token: '',
       find_match: false,
       is_admin: false,
+      is_jobseeker: false,
+      is_company: false,
+      tabIndex: 0,
       loginForm: {
         username: '',
         password: ''
+      },
+      registerS: {
+        username: '',
+        email: '',
+        password: '',
+        rTandC: false,
+        newsletter: false
+      },
+      registerC: {
+        company: '',
+        email: '',
+        password: '',
+        rTandC: false,
+        newsletter: false
       }
     }
   },
@@ -97,6 +191,7 @@ export default {
         username: this.loginForm.username,
         password: this.loginForm.password
       }
+      console.log('checkLogin')
       const path = `http://localhost:5000/login`
       axios.post(path, parameters)
         .then((res) => {
@@ -123,34 +218,112 @@ export default {
       const pathJobseeker = `http://localhost:5000/jobseeker/${this.loginForm.username}` // to change check endpoints backend
       axios.get(pathJobseeker)
         .then((res) => {
+          console.log(res)
+          this.is_jobseeker = true
           this.is_admin = res.data.account.is_admin !== 0
           alert('Sign in done. Welcome ' + this.loginForm.username + '!')
-          this.$router.replace({ path: '/', query: { username: this.loginForm.username, logged: this.logged, is_admin: this.is_admin, token: this.token } })
+          this.$router.replace({ path: '/',
+            query: {
+              username: this.loginForm.username,
+              is_company: false,
+              is_jobseeker: true,
+              logged: this.logged,
+              is_admin: this.is_admin,
+              token: this.token } })
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
           // to change: now check for companies
         })
-
-      const pathCompany = `http://localhost:5000/company/${this.loginForm.username}` // to change check endpoints backend
-      axios.get(pathCompany)
-        .then((res) => {
-          this.is_admin = res.data.account.is_admin !== 0
-          alert('Sign in done. Welcome ' + this.loginForm.username + '!')
-          this.$router.replace({ path: '/', query: { username: this.loginForm.username, logged: this.logged, is_admin: this.is_admin, token: this.token } })
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error)
-          alert('There is no jobseeker or company with this username')
-          // to change: now check for companies
-        })
+      if (!this.logged) {
+        const pathCompany = `http://localhost:5000/company/${this.loginForm.username}` // to change check endpoints backend
+        axios.get(pathCompany)
+          .then((res) => {
+            this.is_company = true
+            this.is_admin = res.data.account.is_admin !== 0
+            alert('Sign in done. Welcome ' + this.loginForm.username + '!')
+            this.$router.replace({path: '/',
+              query: {
+                username: this.loginForm.username,
+                logged: this.logged,
+                is_company: true,
+                is_jobseeker: false,
+                is_admin: this.is_admin,
+                token: this.token
+              }
+            })
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.error(error)
+            alert('There is no jobseeker or company with this username')
+            // to change: now check for companies
+          })
+      }
+    },
+    onSubmit () {
+      const pathS = 'http://127.0.0.1:5000/jobseeker'
+      const pathC = 'http://127.0.0.1:5000/company'
+      if (this.tabIndex === 0) {
+        const values = {
+          username: this.registerS.username,
+          password: this.registerS.password,
+          email: this.registerS.email
+        }
+        axios.post(pathS, values)
+          .then((res) => {
+            alert('Form submitted! ' + this.registerS.username)
+          })
+          .catch((error) => {
+            console.error(error)
+            alert(' An error occurred creating the account')
+          })
+      } else {
+        const values = {
+          company: this.registerC.company,
+          password: this.registerC.password,
+          email: this.registerC.email
+        }
+        axios.post(pathC, values)
+          .then((res) => {
+            alert('Form submitted! ' + this.registerC.company)
+          })
+          .catch((error) => {
+            console.error(error)
+            alert(' An error occurred creating the account')
+          })
+      }
+      this.onReset()
+      this.$bvModal.hide('register-modal')
+    },
+    initRegisterForm () {
+      this.registerS.username = ''
+      this.registerS.email = ''
+      this.registerS.password = ''
+      this.registerS.rTandC = false
+      this.registerS.newsletter = false
+      this.registerC.company = ''
+      this.registerC.email = ''
+      this.registerC.password = ''
+      this.registerC.rTandC = false
+      this.registerC.newsletter = false
+    },
+    onReset () {
+      this.initRegisterForm()
     },
 
-    initForm () {
+    initLoginForm () {
       this.loginForm.username = ''
       this.loginForm.password = ''
+    }
+  },
+  computed: {
+    termsAndCStateS () {
+      return this.registerS.rTandC
+    },
+    termsAndCStateC () {
+      return this.registerC.rTandC
     }
   }
 }

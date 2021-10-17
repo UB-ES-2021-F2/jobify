@@ -14,7 +14,7 @@ class JobOfferModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company = db.Column(db.String(30), db.ForeignKey('companies.company'), nullable=False)
     job_name = db.Column(db.String(128), unique=False, nullable=False)
-    description = db.Column(db.String(1000), unique=False, nullable=False)
+    description = db.Column(db.String(1000), unique=False)
     publication_date = db.Column(db.DateTime, unique=False, nullable=False)
     salary = db.Column(db.Float, unique=False)
     vacancy_number = db.Column(db.Integer, unique=False)
@@ -22,8 +22,8 @@ class JobOfferModel(db.Model):
     working_hours = db.Column(db.Enum(*working_hours_types, name='working_hours_types'))
     minimum_experience = db.Column(db.Integer)
 
-    def __init__(self, job_name, description, publication_date, salary, vacancy_number, location,
-                 working_hours, minimum_experience):
+    def __init__(self, job_name, description, publication_date, location, salary=0, vacancy_number=0,
+                 working_hours='FLEXIBLE', minimum_experience=0):
         """
         Initializer of a job offer
         :param job_name: name of the job offer

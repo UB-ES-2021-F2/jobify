@@ -17,6 +17,8 @@ class JobSeekersModel(db.Model):
     password = db.Column(db.String(128), nullable=False)
     # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False, default=False)
+    educations = db.relationship('EducationsModel', backref='educations', lazy=True)
+    work_experiences = db.relationship('WorkExperiencesModel', backref='work_experiences', lazy=True)
 
     def __init__(self, username, email, bio, is_admin=0):
         self.username = username
@@ -50,6 +52,20 @@ class JobSeekersModel(db.Model):
         s = Serializer(current_app.secret_key, expires_in=expiration)
         return s.dumps({'username': self.username})
 
+    def delete_education(self, id):
+        for e in self.educations:
+            if e.id == id:
+                self.educations.remove(e)
+                return e
+        return None
+
+    def delete_work_experience(self, id):
+        for w in self.work_experiences:
+            if w.id == id:
+                self.work_experiences.remove(w)
+                return w
+        return None
+
     @classmethod
     def verify_auth_token(cls, token):
         s = Serializer(current_app.secret_key)
@@ -69,8 +85,13 @@ class JobSeekersModel(db.Model):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
+
 
 @auth.verify_password
 def verify_password(token, password):
@@ -78,6 +99,7 @@ def verify_password(token, password):
     if account:
         g.user = account
         return account
+
 
 @auth.get_user_roles
 def get_user_roles(user):

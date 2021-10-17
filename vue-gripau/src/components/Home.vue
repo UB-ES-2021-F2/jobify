@@ -29,9 +29,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" v-b-modal.event-modal>Sign up</a>
-          </li>
         </ul>
         <ul v-if="logged" class="navbar-nav ml-auto">
           <li class="nav-item">
@@ -44,48 +41,6 @@
     <!--/.Navbar -->
 
     <h1 style="font-family: 'Vollkorn"> {{ message }} </h1>
-
-    <b-modal ref="editShowModal"
-             id="event-modal"
-             title="Become a member"
-             hide-footer
-    >
-      <b-form style="font-family:'Work Sans'" @submit="onSubmit" @reset="onReset">
-        <label style="color: #5a6268">All fields are needed.</label>
-
-        <b-form-group id="input-group-0" label="First name:" label-for="input-0">
-          <b-form-input v-model="register.fName" placeholder="" type="text" required></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-1" label="Last name:" label-for="input-1">
-          <b-form-input v-model="register.lName" placeholder="" type="text" required></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-2" label="Email:" label-for="input-2">
-          <b-form-input v-model="register.email" placeholder="" type="email" required></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-          <b-form-input v-model="register.password" placeholder="" type="password" required></b-form-input>
-          <b-form-text id="password-help-block">
-            Your password should be 8-20 characters long.
-          </b-form-text>
-        </b-form-group>
-
-        <b-form-checkbox id="checkbox-1" :state="termsAndCState" v-model="register.rTandC" name="checkbox-1" required>
-          I have read and accept the terms and conditions and privacy policy.
-        </b-form-checkbox>
-
-        <b-form-checkbox id="checkbox-2" v-model="register.newsletter" name="checkbox-2">
-          I do not want to receive the Jungle Newsletter and tips to optimise my job search.
-        </b-form-checkbox>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-warning justify-content-md-end">Submit</button>
-        </div>
-
-      </b-form>
-    </b-modal>
   </div>
 </template>
 
@@ -95,54 +50,60 @@ export default {
     return {
       message: 'Home',
       logged: false,
-      register: {
-        fName: '',
-        lName: '',
-        email: '',
-        password: '',
-        rTandC: false,
-        newsletter: false
-      }
+      username: '',
+      is_admin: false,
+      is_jobseeker: true,
+      is_company: false,
+      token: ''
     }
   },
   methods: {
     onUserProfile () {
-      this.$router.replace({ path: '/user' })
-    },
-    onSubmit () {
-      alert('Form submitted!')
-    },
-    initForm () {
-      this.register.fName = ''
-      this.register.lName = ''
-      this.register.email = ''
-      this.register.password = ''
-    },
-    onReset (evt) {
-      evt.preventDefault()
-      this.initForm()
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
+      this.$router.replace({ path: '/user',
+        query: {
+          username: this.loginForm.username,
+          logged: this.logged,
+          is_company: true,
+          is_jobseeker: false,
+          is_admin: this.is_admin,
+          token: this.token
+        }
       })
     },
     onLogIn () {
-      this.logged = true
+      this.$router.replace({path: '/login'})
     },
     onLogOut () {
+      this.$router.replace({path: '/'})
       this.logged = false
+      this.username = ''
+      this.token = ''
+      this.is_jobseeker = true
+      this.is_company = false
+      this.is_admin = false
     },
     onJobPostings () {
       this.$router.replace({path: '/job_postings'})
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.replace({ path: '/about_us',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: true,
+          is_jobseeker: false,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     }
   },
-  computed: {
-    termsAndCState () {
-      return this.register.rTandC
-    }
+  created () {
+    this.logged = this.$route.query.logged === 'true'
+    this.username = this.$route.query.username ? this.$route.query.username : ''
+    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
+    this.is_company = this.$route.query.is_company === 'true'
+    this.token = this.$route.query.token ? this.$route.query.token : ''
   }
 }
 

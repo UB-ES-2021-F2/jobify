@@ -69,6 +69,10 @@ class CompanyModel(db.Model):
         return cls.query.filter_by(company=company).first()
 
     @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 

@@ -18,7 +18,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Job postings</a>
+            <a class="nav-link" href="#" @click="onJobPostings()">Job postings</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="#">About us</a>
@@ -31,7 +31,7 @@
         </ul>
         <ul v-if="logged" class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#" @click="onUserProfile()">User</a>
+            <a class="nav-link" href="#" @click="onUserProfile()">{{ this.username }}</a>
           </li>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </ul>
@@ -63,8 +63,8 @@ export default {
         query: {
           username: this.username,
           logged: this.logged,
-          is_company: true,
-          is_jobseeker: false,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
           is_admin: this.is_admin,
           token: this.token
         }
@@ -75,8 +75,8 @@ export default {
         query: {
           username: this.username,
           logged: this.logged,
-          is_company: true,
-          is_jobseeker: false,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
           is_admin: this.is_admin,
           token: this.token
         }
@@ -93,6 +93,18 @@ export default {
       this.is_jobseeker = true
       this.is_company = false
       this.is_admin = false
+    },
+    onJobPostings () {
+      this.$router.replace({path: '/job_postings',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: this.is_company,
+          is_jobseeker: this.is_jobseeker,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     }
   },
   created () {
@@ -101,6 +113,7 @@ export default {
     this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
     this.is_company = this.$route.query.is_company === 'true'
     this.token = this.$route.query.token ? this.$route.query.token : ''
+    this.is_admin = this.$route.query.is_admin === 'true'
   }
 }
 </script>

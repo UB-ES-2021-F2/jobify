@@ -198,7 +198,6 @@ export default {
           this.logged = true
           this.token = res.data.token
           this.getAccount()
-          alert('User correctly logged')
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -214,32 +213,38 @@ export default {
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
     },
-    getAccount () {
-      const pathJobseeker = `http://localhost:5000/jobseeker/${this.loginForm.username}` // to change check endpoints backend
-      axios.get(pathJobseeker)
-        .then((res) => {
-          console.log(res)
-          this.is_jobseeker = true
-          this.is_admin = res.data.account.is_admin !== 0
-          alert('Sign in done. Welcome ' + this.loginForm.username + '!')
-          this.$router.replace({ path: '/',
-            query: {
-              username: this.loginForm.username,
-              is_company: false,
-              is_jobseeker: true,
-              logged: this.logged,
-              is_admin: this.is_admin,
-              token: this.token } })
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error)
-          // to change: now check for companies
-        })
-      if (!this.logged) {
+    getAccount (type = 'jobseeker') {
+      if (type === 'jobseeker') {
+        const pathJobseeker = `http://localhost:5000/jobseeker/${this.loginForm.username}` // to change check endpoints backend
+        axios.get(pathJobseeker)
+          .then((res) => {
+            console.log(res)
+            this.is_jobseeker = true
+            this.is_admin = res.data.account.is_admin !== 0
+            alert('Sign in done. Welcome ' + this.loginForm.username + '!')
+            this.$router.replace({
+              path: '/',
+              query: {
+                username: this.loginForm.username,
+                is_company: false,
+                is_jobseeker: true,
+                logged: this.logged,
+                is_admin: this.is_admin,
+                token: this.token
+              }
+            })
+          })
+          .catch(() => {
+            // eslint-disable-next-line
+            this.is_jobseeker = false
+            this.getAccount('company')
+            // to change: now check for companies
+          })
+      } else {
         const pathCompany = `http://localhost:5000/company/${this.loginForm.username}` // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
+            this.is_jobseeker = false
             this.is_company = true
             this.is_admin = res.data.account.is_admin !== 0
             alert('Sign in done. Welcome ' + this.loginForm.username + '!')
@@ -257,7 +262,6 @@ export default {
           .catch((error) => {
             // eslint-disable-next-line
             console.error(error)
-            alert('There is no jobseeker or company with this username')
             // to change: now check for companies
           })
       }

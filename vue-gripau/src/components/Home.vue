@@ -74,11 +74,13 @@ export default {
       this.$router.replace({path: '/login'})
     },
     onLogOut () {
+      this.$router.replace({path: '/'})
       this.logged = false
       this.username = ''
       this.token = ''
       this.is_jobseeker = true
       this.is_company = false
+      this.is_admin = false
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us',

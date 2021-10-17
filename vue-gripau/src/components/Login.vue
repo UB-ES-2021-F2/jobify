@@ -50,7 +50,7 @@
                <img style="max-width: 150px" :src="require('../assets/logo.svg')">
              </div>
 
-              <b-form ref="form" @submit="onSubmit">
+              <b-form ref="form" @submit="checkLogin">
                 <b-form-group label-for="username-input">
                   <b-form-input id="username-input" v-model="loginForm.username" type="text" placeholder="Username" required>
                   </b-form-input>
@@ -97,7 +97,7 @@ export default {
         username: this.loginForm.username,
         password: this.loginForm.password
       }
-      const path = `http://localhost:8080/login`
+      const path = `http://localhost:5000/login`
       axios.post(path, parameters)
         .then((res) => {
           this.logged = true
@@ -108,7 +108,8 @@ export default {
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
-          this.user = ''
+          this.loginForm.username = ''
+          this.loginForm.password = ''
           alert('Username or Password incorrect')
         })
     },
@@ -119,12 +120,12 @@ export default {
       this.$router.replace({ path: '/about_us' })
     },
     getAccount () {
-      const pathJobseeker = `http://localhost:8080/jobseeker/${this.username}` // to change check endpoints backend
+      const pathJobseeker = `http://localhost:5000/jobseeker/${this.loginForm.username}` // to change check endpoints backend
       axios.get(pathJobseeker)
         .then((res) => {
           this.is_admin = res.data.account.is_admin !== 0
-          alert('Sign in done. Welcome ' + this.username + '!')
-          this.$router.replace({ path: '/', query: { username: this.username, logged: this.logged, is_admin: this.is_admin, token: this.token } })
+          alert('Sign in done. Welcome ' + this.loginForm.username + '!')
+          this.$router.replace({ path: '/', query: { username: this.loginForm.username, logged: this.logged, is_admin: this.is_admin, token: this.token } })
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -132,12 +133,12 @@ export default {
           // to change: now check for companies
         })
 
-      const pathCompany = `http://localhost:8080/company/${this.username}` // to change check endpoints backend
+      const pathCompany = `http://localhost:5000/company/${this.loginForm.username}` // to change check endpoints backend
       axios.get(pathCompany)
         .then((res) => {
           this.is_admin = res.data.account.is_admin !== 0
-          alert('Sign in done. Welcome ' + this.username + '!')
-          this.$router.replace({ path: '/', query: { username: this.username, logged: this.logged, is_admin: this.is_admin, token: this.token } })
+          alert('Sign in done. Welcome ' + this.loginForm.username + '!')
+          this.$router.replace({ path: '/', query: { username: this.loginForm.username, logged: this.logged, is_admin: this.is_admin, token: this.token } })
         })
         .catch((error) => {
           // eslint-disable-next-line

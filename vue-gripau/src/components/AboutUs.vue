@@ -28,9 +28,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sign up</a>
-          </li>
         </ul>
         <ul v-if="logged" class="navbar-nav ml-auto">
           <li class="nav-item">
@@ -52,22 +49,58 @@ export default {
   data () {
     return {
       message: 'About Us',
-      logged: false
+      logged: false,
+      username: '',
+      is_admin: false,
+      is_jobseeker: true,
+      is_company: false,
+      token: ''
     }
   },
   methods: {
     onHome () {
-      this.$router.replace({path: '/'})
+      this.$router.replace({path: '/',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: true,
+          is_jobseeker: false,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onUserProfile () {
-      this.$router.replace({ path: '/user' })
+      this.$router.replace({ path: '/user',
+        query: {
+          username: this.username,
+          logged: this.logged,
+          is_company: true,
+          is_jobseeker: false,
+          is_admin: this.is_admin,
+          token: this.token
+        }
+      })
     },
     onLogIn () {
-      this.logged = true
+      this.$router.replace({ path: '/login' })
     },
     onLogOut () {
+      this.$router.replace({ path: '/about_us' })
       this.logged = false
+      this.username = ''
+      this.token = ''
+      this.is_jobseeker = true
+      this.is_company = false
+      this.is_admin = false
     }
+  },
+  created () {
+    this.logged = this.$route.query.logged === 'true'
+    this.username = this.$route.query.username ? this.$route.query.username : ''
+    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
+    this.is_company = this.$route.query.is_company === 'true'
+    this.token = this.$route.query.token ? this.$route.query.token : ''
   }
 }
 </script>

@@ -17,25 +17,11 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Job postings</a>
+            <a class="nav-link" href="#" @click="onJobPostings()">Job postings</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" @click="onAboutUs()">About us</a>
           </li>
-        </ul>
-        <ul v-if="!logged" class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#" @click="onLogIn()">Log in</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" v-b-modal.event-modal>Sign up</a>
-          </li>
-        </ul>
-        <ul v-if="logged" class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" @click="onUserProfile()">User</a>
-          </li>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </ul>
       </div>
     </nav>
@@ -215,6 +201,9 @@ export default {
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
+    },
+    onJobPostings () {
+      this.$router.replace({ path: '/job_postings' })
     },
     getAccount (type = 'jobseeker') {
       if (type === 'jobseeker') {

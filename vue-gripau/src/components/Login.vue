@@ -60,9 +60,12 @@
                   <b-form-input id="password-input" v-model="loginForm.password" type="password" placeholder="Password" required>
                   </b-form-input>
                 </b-form-group>
-
-                <b-button type="submit" variant="primary" class='btn-login' >Login</b-button>
-                <b-button v-b-modal.register-modal variant="secondary" class='btn-signup' >Sign Up</b-button>
+                <div>
+                  <b-button type="submit" variant="primary" class='btn-login' >Login</b-button>
+                </div>
+                <div class="signup-container">
+                  You don't have an account?<b-button v-b-modal.register-modal variant="secondary" class='btn-signup'>Sign Up</b-button>
+                </div>
               </b-form>
 
             </div>

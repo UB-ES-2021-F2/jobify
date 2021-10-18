@@ -40,10 +40,10 @@ app.config.from_object(environment)
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-with app.app_context():
-   app.config['SECRET_KEY'] = current_app.secret_key
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#with app.app_context():
+#   app.config['SECRET_KEY'] = current_app.secret_key
 
 migrate = Migrate(app, db)
 db.init_app(app)

@@ -89,7 +89,7 @@ export default {
       })
     },
     onLogIn () {
-      this.$router.replace({ path: '/loginuser' })
+      this.$router.replace({ path: '/login' })
     },
     onLogOut () {
       this.$router.replace({ path: '/job_postings' })

@@ -1,0 +1,110 @@
+html, body{
+  height: 100%;
+}
+
+#app{
+  height: 100%;
+}
+
+.container{
+  align-content: center;
+  height: calc(100% - 250px);
+}
+
+.row{
+  height: 100%;
+}
+
+/* Center Vertically */
+.content-table{
+  height: 100%;
+  width: 100%;
+  display: table;
+}
+
+.content-table-cell{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/*CSS classes for login page*/
+.login-container{
+  border: 1px solid #9e9e9d;
+  border-radius: 20px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+  .logo-container{
+    margin: 25px 0;
+  }
+
+  .login-container input{
+    /*font-family: Montserrat-Light;*/
+    margin: auto;
+    border: 1px solid #9e9e9d;
+    border-radius: 5px;
+    padding: 5px;
+    width: 188px;
+  }
+  .login-container input:focus{
+    border-color: rgba(255,205, 0, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255,205, 0, 0.6);
+    outline: 0 none;
+  }
+
+  .btn-login/*, .btn-signup, .btn-signup:hover*/{
+    color: #000;
+    background-color: #ffcd01;
+    border: 0;
+    border-radius: 5px;
+    width: 188px;
+    margin: 10px 0;
+    height: 30px;
+    padding: 0;
+    cursor: pointer;
+  }
+/*
+  .btn-signup{
+    color: #fff;
+    background-color: #6c757d;
+  }*/
+
+  .signup-container{
+    color: #000;
+  }
+    .btn-signup{
+      background-color: transparent;
+      border: 0px;
+      color: #000;
+      font-weight: bold;
+    }
+    .btn-signup:hover, .btn-signup:focus{
+      text-decoration: underline;
+      color: #ffcd01;
+      background-color: transparent;
+      border: 0px;
+    }
+
+    .btn-login:focus{
+      outline: none;
+    }
+
+    .btn-signup:focus{
+      border-color: transparent !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    .btn-signup:active{
+      background-color: transparent !important;
+      border: transparent !important;
+      color: #ffcd01 !important;
+    }
+
+    .btn-login:hover{
+      background-color: #ffcd01;
+    }
+
+

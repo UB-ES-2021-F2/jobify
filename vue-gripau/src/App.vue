@@ -19,11 +19,11 @@ export default {
 @font-face {
   font-family: "Work Sans";
   src: local("Work Sans"),
-  url(./fonts/WorkSans/WorkSans-Medium.ttf) format("truetype");
+  url(./fonts/WorkSans/WorkSans-Regular.ttf) format("truetype");
 }
 @font-face {
   font-family: "Work Sans SemiBold";
-  src: local("Work Sans"),
+  src: local("Work Sans SemiBold"),
   url(./fonts/WorkSans/WorkSans-SemiBold.ttf) format("truetype");
 }
 @font-face {

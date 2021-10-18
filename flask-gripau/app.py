@@ -42,14 +42,13 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# with app.app_context():
-#    app.config['SECRET_KEY'] = current_app.secret_key
+with app.app_context():
+   app.config['SECRET_KEY'] = current_app.secret_key
 
 migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
-# api.add_resource(Artist, '/artist/<int:id>', '/artist')
 api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
 api.add_resource(Companies, '/company/<string:company>', '/company')
 api.add_resource(Login, '/login')

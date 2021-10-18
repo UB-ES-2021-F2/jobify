@@ -93,7 +93,7 @@
         <!--/Job Seeker form -->
         <!--Company form -->
         <b-tab title="Company">
-          <b-form style="font-family:'Work Sans'" @submit="onSubmit" >
+          <b-form style="font-family:'Work Sans'" @submit.prevent="onSubmit" >
             <label style="color: #5a6268">All fields are needed.</label>
 
             <b-form-group id="input-group-0C" label="Company name:" label-for="input-0C">

@@ -19,7 +19,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onUserProfile()"><span class="user-link">{{ this.username }}</span></b-nav-item>
+          <b-nav-item @click="onUserProfile()">{{ this.username }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -112,11 +112,5 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
-}
-.user-link {
-  text-decoration: underline;
-  text-decoration-color: #ffc107;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 2px;
 }
 </style>

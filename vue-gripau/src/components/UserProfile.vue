@@ -407,10 +407,4 @@ export default {
   font-size: 26px;
   display:inline-block
 }
-.user-link {
-  text-decoration: underline;
-  text-decoration-color: #ffc107;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 2px;
-}
 </style>

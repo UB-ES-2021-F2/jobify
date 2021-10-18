@@ -317,10 +317,5 @@ export default {
 </script>
 
 <style scoped>
-.user-link {
-  text-decoration: underline;
-  text-decoration-color: #ffc107;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 2px;
-}
+
 </style>

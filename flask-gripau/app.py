@@ -50,13 +50,13 @@ migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
-api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
-api.add_resource(Companies, '/company/<string:company>', '/company')
-api.add_resource(CompanyList, '/companies')
-api.add_resource(Login, '/login')
-api.add_resource(Register, '/register')
-api.add_resource(Educations, '/education/<string:username>')
-api.add_resource(WorkExperiences, '/work_experience/<string:username>')
+api.add_resource(JobSeekers, '/api/jobseeker/<string:username>', '/api/jobseeker')
+api.add_resource(Companies, '/api/company/<string:company>', '/api/company')
+api.add_resource(CompanyList, '/api/companies')
+api.add_resource(Login, '/api/login')
+api.add_resource(Register, '/api/register')
+api.add_resource(Educations, '/api/education/<string:username>')
+api.add_resource(WorkExperiences, '/api/work_experience/<string:username>')
 
 
 

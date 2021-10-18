@@ -16,7 +16,6 @@
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
           <b-nav-item @click="onLogIn()">Log in</b-nav-item>
-          <b-nav-item >Sign up</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
@@ -202,13 +201,16 @@ export default {
       this.$router.replace({ path: '/login' })
     },
     onLogOut () {
-      this.$router.replace({path: '/user'})
-      this.logged = false
-      this.username = ''
-      this.token = ''
-      this.is_jobseeker = true
-      this.is_company = false
-      this.is_admin = false
+      this.$router.replace({path: '/',
+        query: {
+          username: '',
+          logged: false,
+          is_company: false,
+          is_jobseeker: true,
+          is_admin: false,
+          token: ''
+        }
+      })
     },
     onJobPostings () {
       this.$router.replace({ path: '/job_postings',

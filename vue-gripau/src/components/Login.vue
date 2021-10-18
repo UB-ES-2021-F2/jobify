@@ -59,7 +59,7 @@
       <b-tabs v-model="tabIndex" content-class="mt-3" fill>
         <!--Job Seeker form -->
         <b-tab title="Job Seeker" active>
-          <b-form style="font-family:'Work Sans'" @submit="onSubmit">
+          <b-form style="font-family:'Work Sans'" @submit.prevent="onSubmit">
             <label style="color: #5a6268">All fields are needed.</label>
 
             <b-form-group id="input-group-0" label="Username:" label-for="input-0">

@@ -11,6 +11,7 @@ from resources import Login
 from resources import Register
 from resources import Educations
 from resources import WorkExperiences
+from resources import CompanyList
 
 # Imports de models
 from models.job_seeker import JobSeekersModel
@@ -51,10 +52,12 @@ api = Api(app)
 
 api.add_resource(JobSeekers, '/jobseeker/<string:username>', '/jobseeker')
 api.add_resource(Companies, '/company/<string:company>', '/company')
+api.add_resource(CompanyList, '/companies')
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(Educations, '/education/<string:username>')
 api.add_resource(WorkExperiences, '/work_experience/<string:username>')
+
 
 
 @app.route('/')

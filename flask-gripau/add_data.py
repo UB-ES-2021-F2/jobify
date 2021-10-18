@@ -11,9 +11,11 @@ db = SQLAlchemy(app)
 db.init_app(app)
 
 new_job_seeker = JobSeekersModel('sergi','sergi@gmail.com', 'hola, soc estudiant')
+new_job_seeker.hash_password('sergi1234')
 db.session.add(new_job_seeker)
 
 new_company = CompanyModel('UB','ub@gmail.com', 'hola, som la UB')
+new_company.hash_password('ub1234')
 db.session.add(new_company)
 
 db.session.commit()

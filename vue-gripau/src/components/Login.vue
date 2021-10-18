@@ -172,7 +172,7 @@ export default {
         password: this.loginForm.password
       }
       console.log('checkLogin')
-      const path = `http://localhost:5000/login`
+      const path = 'https://ub-jobify.herokuapp.com/login'
       axios.post(path, parameters)
         .then((res) => {
           this.logged = true
@@ -198,7 +198,7 @@ export default {
     },
     getAccount (type = 'jobseeker') {
       if (type === 'jobseeker') {
-        const pathJobseeker = `http://localhost:5000/jobseeker/${this.loginForm.username}` // to change check endpoints backend
+        const pathJobseeker = `https://ub-jobify.herokuapp.com/jobseeker/${this.loginForm.username}` // to change check endpoints backend
         axios.get(pathJobseeker)
           .then((res) => {
             console.log(res)
@@ -224,7 +224,7 @@ export default {
             // to change: now check for companies
           })
       } else {
-        const pathCompany = `http://localhost:5000/company/${this.loginForm.username}` // to change check endpoints backend
+        const pathCompany = `https://ub-jobify.herokuapp.com/company/${this.loginForm.username}` // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
             this.is_jobseeker = false
@@ -250,8 +250,8 @@ export default {
       }
     },
     onSubmit () {
-      const pathS = 'http://127.0.0.1:5000/jobseeker'
-      const pathC = 'http://127.0.0.1:5000/company'
+      const pathS = 'https://ub-jobify.herokuapp.com/jobseeker'
+      const pathC = 'https://ub-jobify.herokuapp.com/company'
       if (this.tabIndex === 0) {
         const values = {
           username: this.registerS.username,

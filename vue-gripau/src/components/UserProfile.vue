@@ -235,7 +235,7 @@ export default {
       })
     },
     getWorkExperience () {
-      const path = 'http://localhost:5000/work_experience/' + this.username
+      const path = 'https://ub-jobify.herokuapp.com/work_experience/' + this.username
       axios.get(path)
         .then((res) => {
           this.work_experience = res.data
@@ -245,7 +245,7 @@ export default {
         })
     },
     getEducation () {
-      const path = 'http://localhost:5000/education/' + this.username
+      const path = 'https://ub-jobify.herokuapp.com/education/' + this.username
       axios.get(path)
         .then((res) => {
           this.education = res.data
@@ -259,7 +259,7 @@ export default {
     },
     submitAddWork () {
       console.log('Submit ' + this.addWork.jobName)
-      const path = 'http://localhost:5000/work_experience/' + this.username
+      const path = 'https://ub-jobify.herokuapp.com/work_experience/' + this.username
       const parameters = {
         job_name: this.addWork.jobName,
         company: this.addWork.company,
@@ -287,7 +287,7 @@ export default {
     },
     deleteWork (work) {
       console.log('Delete ' + work.id)
-      const path = 'http://localhost:5000/work_experience/' + this.username
+      const path = 'https://ub-jobify.herokuapp.com/work_experience/' + this.username
       const parameters = {data: { id: work.id }}
       axios.delete(path, parameters) // TODO: add token
         .then((res) => {
@@ -302,7 +302,7 @@ export default {
       this.$refs.addEducationModal.show()
     },
     submitAddEducation () {
-      const path = 'http://localhost:5000/education/' + this.username
+      const path = 'https://ub-jobify.herokuapp.com/education/' + this.username
       const parameters = {
         title: this.addEducation.title,
         institution: this.addEducation.institution,
@@ -327,7 +327,7 @@ export default {
         })
     },
     deleteEducation (ed) {
-      const path = 'http://localhost:5000/education/' + this.username
+      const path = 'https://ub-jobify.herokuapp.com/education/' + this.username
       const parameters = {data: { id: ed.id }}
       axios.delete(path, parameters) // TODO: add token
         .then((res) => {

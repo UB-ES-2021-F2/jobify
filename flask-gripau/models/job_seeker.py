@@ -92,14 +92,12 @@ class JobSeekersModel(db.Model):
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 
-
 @auth.verify_password
 def verify_password(token, password):
     account = JobSeekersModel.verify_auth_token(token)
     if account:
         g.user = account
         return account
-
 
 @auth.get_user_roles
 def get_user_roles(user):

@@ -23,6 +23,7 @@ new_company = CompanyModel('UB', 'ub@gmail.com', 'hola, som la UB')
 new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.strptime('2021-07-04', "%Y-%m-%d"), 'Barcelona')
 new_company.hash_password('password')
 new_company.job_offers.append(new_job_offer)
+
 db.session.add(new_company)
 
 db.session.commit()

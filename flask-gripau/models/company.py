@@ -17,6 +17,7 @@ class CompanyModel(db.Model):
     password = db.Column(db.String(128), nullable=False)
     # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False, default=False)
+    job_offers = db.relationship('JobOfferModel', backref='job_offer', lazy=True)
 
     def __init__(self, company, email, description, is_admin=0):
         self.company = company

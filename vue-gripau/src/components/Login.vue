@@ -2,7 +2,7 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#">
+      <b-navbar-brand href="#" @click="onHome">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

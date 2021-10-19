@@ -62,6 +62,14 @@
           <b-form style="font-family:'Work Sans'" @submit.prevent="onSubmit">
             <label style="color: #5a6268">All fields are needed.</label>
 
+            <b-form-group id="input-group-0" label="First Name:" label-for="input-1">
+              <b-form-input v-model="registerS.fName" placeholder="" type="text" required></b-form-input>
+            </b-form-group>
+
+            <b-form-group id="input-group-0" label="Last Name:" label-for="input-4">
+              <b-form-input v-model="registerS.lName" placeholder="" type="text" required></b-form-input>
+            </b-form-group>
+
             <b-form-group id="input-group-0" label="Username:" label-for="input-0">
               <b-form-input v-model="registerS.username" placeholder="" type="text" required></b-form-input>
             </b-form-group>
@@ -151,6 +159,8 @@ export default {
         password: ''
       },
       registerS: {
+        fName: '',
+        lName: '',
         username: '',
         email: '',
         password: '',
@@ -169,7 +179,7 @@ export default {
   methods: {
     checkLogin () {
       const parameters = {
-        username: this.loginForm.username,
+        username: this.loginForm.username.toLowerCase(),
         password: this.loginForm.password
       }
       console.log('checkLogin')
@@ -199,12 +209,14 @@ export default {
     },
     getAccount (type = 'jobseeker') {
       if (type === 'jobseeker') {
-        const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.loginForm.username // to change check endpoints backend
+        const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathJobseeker)
           .then((res) => {
             console.log(res)
             this.is_jobseeker = true
             this.is_admin = res.data.account.is_admin !== 0
+            this.registerS.fName = res.data.account.name
+            this.registerS.lName = res.data.account.surname
             this.$router.replace({
               path: '/',
               query: {
@@ -224,7 +236,7 @@ export default {
             // to change: now check for companies
           })
       } else {
-        const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.loginForm.username // to change check endpoints backend
+        const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
             this.is_jobseeker = false
@@ -253,8 +265,10 @@ export default {
       const pathC = Vue.prototype.$API_BASE_URL + 'company'
       if (this.tabIndex === 0) {
         const values = {
-          username: this.registerS.username,
+          username: this.registerS.username.toLowerCase(),
           password: this.registerS.password,
+          name: this.registerS.fName,
+          surname: this.registerS.lName,
           email: this.registerS.email
         }
         axios.post(pathS, values)
@@ -285,6 +299,8 @@ export default {
     },
     initRegisterForm () {
       this.registerS.username = ''
+      this.registerS.lName = ''
+      this.registerS.fName = ''
       this.registerS.email = ''
       this.registerS.password = ''
       this.registerS.rTandC = false

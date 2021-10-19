@@ -28,7 +28,7 @@
 
     <b-container>
 
-      <h2 style="font-family: 'Vollkorn', serif"> {{ username_profile }} </h2>
+      <h2 style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
         <div class="bio-text">
@@ -155,7 +155,8 @@ import Vue from 'vue'
 export default {
   data () {
     return {
-      name: 'Name Surname',
+      name: '',
+      surname: '',
       logged: false,
       is_jobseeker: true,
       is_company: false,
@@ -376,6 +377,19 @@ export default {
         endDate: '',
         currently: false
       }
+    },
+    getName () {
+      const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile.toLowerCase()
+      axios.get(pathJobseeker)
+        .then((res) => {
+          console.log(res)
+          this.name = res.data.account.name
+          this.surname = res.data.account.surname
+        })
+        .catch(() => {
+          this.name = 'Name'
+          this.surname = 'Surname'
+        })
     }
   },
   created () {
@@ -387,6 +401,7 @@ export default {
     this.token = this.$route.query.token ? this.$route.query.token : ''
     this.is_admin = this.$route.query.is_admin === 'true'
     this.edit_mode = this.username === this.username_profile
+    this.getName()
     this.getWorkExperience()
     this.getEducation()
   }

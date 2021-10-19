@@ -287,7 +287,8 @@ export default {
         description: this.addWork.description,
         currently: this.addWork.currently
       }
-      axios.post(path, parameters) // TODO: add token
+      axios.post(path, parameters, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getWorkExperience()
           this.addWork = {
@@ -300,15 +301,15 @@ export default {
           }
         })
         .catch((error) => {
-          console.error(error)
-          alert('Error adding work experience')
+          alert(error.response.data.message)
         })
     },
     deleteWork (work) {
       console.log('Delete ' + work.id)
       const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username
       const parameters = {data: { id: work.id }}
-      axios.delete(path, parameters) // TODO: add token
+      axios.delete(path, parameters, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getWorkExperience()
         })
@@ -329,7 +330,8 @@ export default {
         end_date: this.addEducation.endDate,
         currently: this.addEducation.currently
       }
-      axios.post(path, parameters) // TODO: add token
+      axios.post(path, parameters, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getEducation()
           this.addEducation = {
@@ -347,8 +349,8 @@ export default {
     },
     deleteEducation (ed) {
       const path = Vue.prototype.$API_BASE_URL + 'education/' + this.username
-      const parameters = {data: { id: ed.id }}
-      axios.delete(path, parameters) // TODO: add token
+      const parameters = {data: { id: ed.id }, headers: {token: this.token}}
+      axios.delete(path, parameters)
         .then((res) => {
           this.getEducation()
         })

@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+
 # import models here
+from models import EducationsModel, JobOfferModel
 from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
 from models.education import EducationsModel

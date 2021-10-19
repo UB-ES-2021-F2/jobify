@@ -13,10 +13,10 @@ class WorkExperiences(Resource):
             return {'account': None}, 404
         return [work_experience.json() for work_experience in account.work_experiences], 200
 
-#@auth.login_required(role='user')
+    @auth.login_required(role='user')
     def post(self, username):
-        #if username != g.user.username:
-         #   return {'message': 'Access denied'}, 400
+        if username != g.user.username:
+            return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()
 
@@ -31,8 +31,17 @@ class WorkExperiences(Resource):
 
         user = JobSeekersModel.find_by_username(username)
 
+        if data.job_name.isspace():
+            return {"message": "Job name cannot be blank"}, 400
+
         if not user:
             return {'user': None}, 404
+
+        start_year, start_month = data.start_date.split('-')
+        end_year, end_month = data.end_date.split('-')
+        if not data.currently and int(start_year) >= int(end_year):
+            if int(start_month) > int(end_month):
+                return {"message": "Start date cannot be later than end date"}, 400
 
         new_work_experience = WorkExperiencesModel(data.job_name, data.description, data.company, data.start_date, data.end_date, data.currently)
         user.work_experiences.append(new_work_experience)
@@ -46,8 +55,12 @@ class WorkExperiences(Resource):
             db.session.rollback()
             return {"message": "An error occurred inserting the order."}, 500
 
-   # @auth.login_required(role='user')
+    #@auth.login_required(role='user')
     def delete(self, username):
+
+        #if username != g.user.username:
+            #return {'message': 'Access denied'}, 400
+
         parser = reqparse.RequestParser()
 
         parser.add_argument('id', type=int, required=True, help="This field cannot be left blank")

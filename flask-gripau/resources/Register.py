@@ -8,11 +8,13 @@ class Register(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('username', type=str, required=True, help="This field cannot be left blanck")
-        parser.add_argument('password', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('name', type=str, required=False, help="This field cannot be left blank")
+        parser.add_argument('surname', type=str, required=False, help="This field cannot be left blank")
+        parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         #1 -> JobSeeker / 0 -> Company
-        parser.add_argument('is_job_seeker', type=int, required=True, help="This field cannot be left blanck")
-        parser.add_argument('email', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('is_job_seeker', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('description', type=str, required=False)
 
         data = parser.parse_args()
@@ -31,7 +33,7 @@ class Register(Resource):
 
         # Create account
         if data.is_job_seeker:
-            account = JobSeekersModel(data.username, data.email, data.description)
+            account = JobSeekersModel(data.username, data.name, data.surname, data.email, data.description)
         else:
             account = CompanyModel(data.username, data.email, data.description)
         account.hash_password(data.password)

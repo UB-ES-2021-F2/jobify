@@ -29,7 +29,7 @@ class JobSeekers(Resource):
         if JobSeekersModel.find_by_username(data.username):
             return {'message': "User already exists"}, 400
 
-        account = JobSeekersModel(data.username, data.email, data.bio)
+        account = JobSeekersModel(data.username, data.name, data.surname, data.email, data.bio)
 
         account.hash_password(data.password)
 

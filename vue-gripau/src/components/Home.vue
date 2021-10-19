@@ -42,9 +42,7 @@ export default {
       is_admin: false,
       is_jobseeker: true,
       is_company: false,
-      token: '',
-      name: '',
-      surname: ''
+      token: ''
     }
   },
   methods: {
@@ -57,9 +55,7 @@ export default {
             is_company: this.is_company,
             is_jobseeker: this.is_jobseeker,
             is_admin: this.is_admin,
-            token: this.token,
-            name: this.name,
-            surname: this.surname
+            token: this.token
           }
         })
       }
@@ -75,8 +71,6 @@ export default {
       this.is_jobseeker = true
       this.is_company = false
       this.is_admin = false
-      this.name = ''
-      this.surname = ''
     },
     onJobPostings () {
       this.$router.replace({path: '/job_postings',
@@ -110,8 +104,6 @@ export default {
     this.is_company = this.$route.query.is_company === 'true'
     this.token = this.$route.query.token ? this.$route.query.token : ''
     this.is_admin = this.$route.query.is_admin === 'true'
-    this.name = this.$route.query.name ? this.$route.query.name : ''
-    this.surname = this.$route.query.surname ? this.$route.query.surname : ''
   }
 }
 

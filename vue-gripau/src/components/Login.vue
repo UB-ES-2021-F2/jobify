@@ -225,9 +225,7 @@ export default {
                 is_jobseeker: true,
                 logged: this.logged,
                 is_admin: this.is_admin,
-                token: this.token,
-                name: this.registerS.fName,
-                surname: this.registerS.lName
+                token: this.token
               }
             })
           })

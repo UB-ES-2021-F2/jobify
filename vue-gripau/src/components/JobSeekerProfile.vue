@@ -28,7 +28,7 @@
 
     <b-container>
 
-      <h2 style="font-family: 'Vollkorn', serif"> {{ username_profile }} </h2>
+      <h2 style="font-family: 'Vollkorn', serif"> {{ name }}{{ surname }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
         <div class="bio-text">
@@ -155,7 +155,8 @@ import Vue from 'vue'
 export default {
   data () {
     return {
-      name: 'Name Surname',
+      name: '',
+      surname: '',
       logged: false,
       is_jobseeker: true,
       is_company: false,
@@ -385,6 +386,8 @@ export default {
     this.token = this.$route.query.token ? this.$route.query.token : ''
     this.is_admin = this.$route.query.is_admin === 'true'
     this.edit_mode = this.username === this.username_profile
+    this.name = this.$route.query.name ? this.$route.query.name : ''
+    this.surname = this.$route.query.surname ? this.$route.query.surname : ''
     this.getWorkExperience()
     this.getEducation()
   }

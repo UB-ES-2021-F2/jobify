@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <b-modal hide-footer="true" hide-backdrop="false"  ref="addWorkModal">
+      <b-modal hide-footer hide-backdrop  ref="addWorkModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
         <b-form ref="addWorkForm" @submit.prevent="submitAddWork" @reset.prevent="resetAddWork" style="font-family: 'Work Sans SemiBold'">
           <div class="form-group">
@@ -114,7 +114,7 @@
         </b-form>
       </b-modal>
 
-      <b-modal hide-footer="true" hide-backdrop="false"  ref="addEducationModal">
+      <b-modal hide-footer hide-backdrop  ref="addEducationModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
         <b-form ref="addEducationForm" @submit.prevent="submitAddEducation" @reset.prevent="resetAddEducation" style="font-family: 'Work Sans SemiBold'">
           <div class="form-group">
@@ -409,9 +409,9 @@ export default {
 
 </script>
 
-<style >
-.b-navbar{
-  font-family: "Work Sans SemiBold", sans-serif;
+<style>
+.navbar.navbar-light{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;

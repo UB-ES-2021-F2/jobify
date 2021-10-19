@@ -331,6 +331,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.navbar.navbar-light{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
 </style>

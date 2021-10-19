@@ -410,8 +410,8 @@ export default {
 </script>
 
 <style>
-.navbar{
-  font-family: "Work Sans SemiBold", sans-serif;
+.navbar.navbar-light{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;

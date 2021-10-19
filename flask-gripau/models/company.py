@@ -18,16 +18,20 @@ class CompanyModel(db.Model):
     # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False, default=False)
     job_offers = db.relationship('JobOfferModel', backref='job_offer', lazy=True)
+    sector = db.Column(db.String(30))
+    location = db.Column(db.String(30))
 
-    def __init__(self, company, email, description, is_admin=0):
+    def __init__(self, company, email, description, is_admin=0, sector="Unknown", location="Unknown"):
         self.company = company
         self.email = email
         self.is_admin = is_admin
         self.description = description
+        self.sector = sector
+        self.location = location
 
     def json(self):
         return {'id': self.id, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
-                'description': self.description}
+                'description': self.description, 'sector': self.sector, 'location': self.location}
 
     def save_to_db(self, database=None):
         if database is None:
@@ -77,12 +81,14 @@ class CompanyModel(db.Model):
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 
+
 @auth.verify_password
 def verify_password(token, password):
     account = CompanyModel.verify_auth_token(token)
     if account:
         g.user = account
         return account
+
 
 @auth.get_user_roles
 def get_user_roles(user):

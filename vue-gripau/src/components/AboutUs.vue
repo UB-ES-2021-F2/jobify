@@ -59,16 +59,18 @@ export default {
       })
     },
     onUserProfile () {
-      this.$router.replace({ path: '/user',
-        query: {
-          username: this.username,
-          logged: this.logged,
-          is_company: this.is_company,
-          is_jobseeker: this.is_jobseeker,
-          is_admin: this.is_admin,
-          token: this.token
-        }
-      })
+      if (this.is_jobseeker & this.logged) {
+        this.$router.replace({ path: '/job_seeker/' + this.username,
+          query: {
+            username: this.username,
+            logged: this.logged,
+            is_company: this.is_company,
+            is_jobseeker: this.is_jobseeker,
+            is_admin: this.is_admin,
+            token: this.token
+          }
+        })
+      }
     },
     onLogIn () {
       this.$router.replace({ path: '/login' })

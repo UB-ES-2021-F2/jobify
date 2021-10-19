@@ -18,6 +18,8 @@ class JobSeekers(Resource):
     def post(self):
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('surname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('bio', type=str, required=False)

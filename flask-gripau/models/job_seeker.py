@@ -12,22 +12,26 @@ class JobSeekersModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
+    name = db.Column(db.String(30), nullable=False)
+    surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
-    bio = db.Column(db.String(256), unique=False, nullable=True)
+    bio = db.Column(db.String(1024), unique=False, nullable=True)
     password = db.Column(db.String(128), nullable=False)
     # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False, default=False)
     educations = db.relationship('EducationsModel', backref='educations', lazy=True)
     work_experiences = db.relationship('WorkExperiencesModel', backref='work_experiences', lazy=True)
 
-    def __init__(self, username, email, bio, is_admin=0):
+    def __init__(self, username, name, surname, email, bio, is_admin=0):
         self.username = username
+        self.name = name
+        self.surname = surname
         self.email = email
         self.is_admin = is_admin
         self.bio = bio
 
     def json(self):
-        return {'id': self.id, 'username': self.username, 'email': self.email, 'is_admin': self.is_admin,
+        return {'id': self.id, 'username': self.username,'name': self.name, 'surname': self.surname, 'email': self.email, 'is_admin': self.is_admin,
                 'bio': self.bio}
 
     def save_to_db(self, database=None):
@@ -92,12 +96,14 @@ class JobSeekersModel(db.Model):
     def show_accounts(cls):
         return [user.json() for user in cls.query.all()]
 
+
 @auth.verify_password
 def verify_password(token, password):
     account = JobSeekersModel.verify_auth_token(token)
     if account:
         g.user = account
         return account
+
 
 @auth.get_user_roles
 def get_user_roles(user):

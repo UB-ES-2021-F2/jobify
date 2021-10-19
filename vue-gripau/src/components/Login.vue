@@ -92,7 +92,7 @@
         </b-tab>
         <!--/Job Seeker form -->
         <!--Company form -->
-        <b-tab title="Company">
+        <b-tab disabled title="Company (coming soon)">
           <b-form style="font-family:'Work Sans'" @submit.prevent="onSubmit" >
             <label style="color: #5a6268">All fields are needed.</label>
 
@@ -133,6 +133,7 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 
 export default {
   data () {
@@ -172,7 +173,7 @@ export default {
         password: this.loginForm.password
       }
       console.log('checkLogin')
-      const path = 'https://ub-jobify.herokuapp.com/api/login'
+      const path = Vue.prototype.$API_BASE_URL + 'login'
       axios.post(path, parameters)
         .then((res) => {
           this.logged = true
@@ -198,13 +199,12 @@ export default {
     },
     getAccount (type = 'jobseeker') {
       if (type === 'jobseeker') {
-        const pathJobseeker = `https://ub-jobify.herokuapp.com/api/jobseeker/${this.loginForm.username}` // to change check endpoints backend
+        const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.loginForm.username // to change check endpoints backend
         axios.get(pathJobseeker)
           .then((res) => {
             console.log(res)
             this.is_jobseeker = true
             this.is_admin = res.data.account.is_admin !== 0
-            alert('Sign in done. Welcome ' + this.loginForm.username + '!')
             this.$router.replace({
               path: '/',
               query: {
@@ -224,13 +224,12 @@ export default {
             // to change: now check for companies
           })
       } else {
-        const pathCompany = `https://ub-jobify.herokuapp.com/api/company/${this.loginForm.username}` // to change check endpoints backend
+        const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.loginForm.username // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
             this.is_jobseeker = false
             this.is_company = true
             this.is_admin = res.data.account.is_admin !== 0
-            alert('Sign in done. Welcome ' + this.loginForm.username + '!')
             this.$router.replace({path: '/',
               query: {
                 username: this.loginForm.username,
@@ -250,8 +249,8 @@ export default {
       }
     },
     onSubmit () {
-      const pathS = 'https://ub-jobify.herokuapp.com/api/jobseeker'
-      const pathC = 'https://ub-jobify.herokuapp.com/api/company'
+      const pathS = Vue.prototype.$API_BASE_URL + 'jobseeker'
+      const pathC = Vue.prototype.$API_BASE_URL + 'company'
       if (this.tabIndex === 0) {
         const values = {
           username: this.registerS.username,
@@ -260,7 +259,7 @@ export default {
         }
         axios.post(pathS, values)
           .then((res) => {
-            alert('Form submitted! ' + this.registerS.username)
+            alert('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
             console.error(error)
@@ -274,7 +273,7 @@ export default {
         }
         axios.post(pathC, values)
           .then((res) => {
-            alert('Form submitted! ' + this.registerC.company)
+            alert('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
             console.error(error)

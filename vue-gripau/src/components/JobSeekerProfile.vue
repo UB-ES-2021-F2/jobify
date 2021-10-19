@@ -19,7 +19,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item active >{{ this.username }}</b-nav-item>
+          <b-nav-item active @click="onUserProfile()">{{ this.username }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -28,7 +28,7 @@
 
     <b-container>
 
-      <h2 style="font-family: 'Vollkorn', serif"> {{ username }} </h2>
+      <h2 style="font-family: 'Vollkorn', serif"> {{ username_profile }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
         <div class="bio-text">
@@ -37,11 +37,11 @@
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Work experience </p>
-          <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div class="card mb-lg-1"  v-for="work in work_experience" :key="work.id">
             <div class="card-header d-flex align-items-center">
               <span class="card-title-work">{{work.job_name}}</span>
-              <button class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
+              <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
             </div>
             <div class="card-body">
               <p class="card-subtitle">{{work.company}}</p>
@@ -54,12 +54,12 @@
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Education </p>
-          <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div class="card mb-lg-1" v-for="ed in education" :key="ed.id">
             <div class="card-body">
               <div class="d-flex align-items-center">
                 <span class="card-title-ed">{{ed.title}}</span>
-                <button class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
+                <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
               </div>
               <p class="card-subtitle">{{ed.institution}}</p>
               <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
@@ -70,7 +70,7 @@
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Skills </p>
-          <button class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div>
             <span class="badge badge-pill badge-warning" style="font-size: 15px">Python</span>
             <span class="badge badge-pill badge-warning" style="font-size: 15px">Java</span>
@@ -150,6 +150,7 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 
 export default {
   data () {
@@ -161,6 +162,8 @@ export default {
       is_admin: false,
       token: '',
       username: '',
+      username_profile: '',
+      edit_mode: false,
       work_experience: [],
       education: [],
       skills: ['Python', 'Java', 'SQL'],
@@ -212,6 +215,20 @@ export default {
         }
       })
     },
+    onUserProfile () {
+      if (this.is_jobseeker & this.logged) {
+        this.$router.replace({ path: '/job_seeker/' + this.username,
+          query: {
+            username: this.username,
+            logged: this.logged,
+            is_company: this.is_company,
+            is_jobseeker: this.is_jobseeker,
+            is_admin: this.is_admin,
+            token: this.token
+          }
+        })
+      }
+    },
     onJobPostings () {
       this.$router.replace({ path: '/job_postings',
         query: {
@@ -237,7 +254,7 @@ export default {
       })
     },
     getWorkExperience () {
-      const path = 'https://ub-jobify.herokuapp.com/api/work_experience/' + this.username
+      const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username_profile
       axios.get(path)
         .then((res) => {
           this.work_experience = res.data
@@ -247,7 +264,7 @@ export default {
         })
     },
     getEducation () {
-      const path = 'https://ub-jobify.herokuapp.com/api/education/' + this.username
+      const path = Vue.prototype.$API_BASE_URL + 'education/' + this.username_profile
       axios.get(path)
         .then((res) => {
           this.education = res.data
@@ -261,7 +278,7 @@ export default {
     },
     submitAddWork () {
       console.log('Submit ' + this.addWork.jobName)
-      const path = 'https://ub-jobify.herokuapp.com/api/work_experience/' + this.username
+      const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username
       const parameters = {
         job_name: this.addWork.jobName,
         company: this.addWork.company,
@@ -289,7 +306,7 @@ export default {
     },
     deleteWork (work) {
       console.log('Delete ' + work.id)
-      const path = 'https://ub-jobify.herokuapp.com/api/work_experience/' + this.username
+      const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username
       const parameters = {data: { id: work.id }}
       axios.delete(path, parameters) // TODO: add token
         .then((res) => {
@@ -304,7 +321,7 @@ export default {
       this.$refs.addEducationModal.show()
     },
     submitAddEducation () {
-      const path = 'https://ub-jobify.herokuapp.com/api/education/' + this.username
+      const path = Vue.prototype.$API_BASE_URL + 'education/' + this.username
       const parameters = {
         title: this.addEducation.title,
         institution: this.addEducation.institution,
@@ -329,7 +346,7 @@ export default {
         })
     },
     deleteEducation (ed) {
-      const path = 'https://ub-jobify.herokuapp.com/api/education/' + this.username
+      const path = Vue.prototype.$API_BASE_URL + 'education/' + this.username
       const parameters = {data: { id: ed.id }}
       axios.delete(path, parameters) // TODO: add token
         .then((res) => {
@@ -360,12 +377,14 @@ export default {
     }
   },
   created () {
+    this.username_profile = this.$route.path.split('job_seeker/')[1]
     this.logged = this.$route.query.logged === 'true'
     this.username = this.$route.query.username ? this.$route.query.username : ''
     this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
     this.is_company = this.$route.query.is_company === 'true'
     this.token = this.$route.query.token ? this.$route.query.token : ''
     this.is_admin = this.$route.query.is_admin === 'true'
+    this.edit_mode = this.username === this.username_profile
     this.getWorkExperience()
     this.getEducation()
   }

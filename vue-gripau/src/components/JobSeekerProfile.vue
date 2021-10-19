@@ -377,7 +377,7 @@ export default {
     }
   },
   created () {
-    this.username_profile = this.$route.path.split('job_seeker/')[1]
+    this.username_profile = this.$route.path.split('job_seeker/')[1].toLowerCase()
     this.logged = this.$route.query.logged === 'true'
     this.username = this.$route.query.username ? this.$route.query.username : ''
     this.is_jobseeker = this.$route.query.is_jobseeker === 'true'

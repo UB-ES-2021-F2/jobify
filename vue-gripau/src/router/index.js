@@ -1,0 +1,53 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import Home from '@/components/Home'
+import JobSeekerProfile from '@/components/JobSeekerProfile'
+import JobPostings from '@/components/JobPostings'
+import AboutUs from '@/components/AboutUs'
+import Login from '@/components/Login'
+
+Vue.use(Router)
+
+const JobSeeker = {
+  template: `
+    <div class="job-seeker">
+      <router-view></router-view>
+    </div>
+  `
+}
+
+export default new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/job_seeker/:username',
+      name: 'JobSeeker',
+      component: JobSeeker,
+      children: [
+        // JobSeekerProfile will be rendered inside JobSeeker's <router-view> when /job_seeker/:username is matched
+        { path: '', component: JobSeekerProfile }
+      ]
+    },
+    {
+      path: '/job_postings',
+      name: 'JobPostings',
+      component: JobPostings
+    },
+    {
+      path: '/about_us',
+      name: 'AboutUs',
+      component: AboutUs
+    }
+  ]
+})

@@ -21,14 +21,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Replace local URL with heroku URL
-        uses: jacobtomlinson/gha-find-replace@v2
-        with:
-          find: "http://localhost:5000"
-          replace: "https://ub-jobify.herokuapp.com"
-          regex: false
-          include: vue-gripau/
-      - run: cat vue-gripau/src/main.js
+      - name: Replace Local URL with HEROKU URL
+      - run: |
+          sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
+          cat vue-gripau/src/main.js
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:  

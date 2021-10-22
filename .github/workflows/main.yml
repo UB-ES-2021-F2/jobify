@@ -30,10 +30,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: vue-gripau/package-lock.json
       - name: Build with Node.js
-        working-directory: "vue-gripau"
+        working-directory: ./vue-gripau
         run: |
           npm ci
-          npm run build --if-present    
+          npm run build 
       
       - name: Deploy to Heroku
         # You may pin to the exact commit or the version.

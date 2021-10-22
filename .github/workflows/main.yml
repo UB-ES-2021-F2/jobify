@@ -25,8 +25,8 @@ jobs:
         run: sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
       - name: Build with Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
-        working-directory: "vue-gripau"
         with:
+          working-directory: "vue-gripau"
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: cd vue-gripau

@@ -300,6 +300,7 @@ export default {
             endDate: '',
             currently: false
           }
+          this.$bvModal.hide('addWorkModal')
         })
         .catch((error) => {
           alert(error.response.data.message)
@@ -342,6 +343,7 @@ export default {
             endDate: '',
             currently: false
           }
+          this.$bvModal.hide('addEducationModal')
         })
         .catch((error) => {
           console.error(error)

@@ -1,2 +1,2 @@
 web: gunicorn -w 1 -k gthread --threads 4 app:app
-release: chmod u+x && ./release-tasks.sh
+release: chmod u+x release-tasks.sh && ./release-tasks.sh

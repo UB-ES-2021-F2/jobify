@@ -37,7 +37,7 @@ jobs:
           # The appname to use for deploying/updating
           heroku_app_name: "ub-jobify"
           # The branch that you would like to deploy to Heroku
-          branch: "production"
+          branch: "origin/production"
           # Set this to true if you don't want to automatically create the Heroku app
           dontautocreate: true
           # Set if your app is located in a subdirectory.

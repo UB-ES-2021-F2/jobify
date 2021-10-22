@@ -33,11 +33,7 @@ jobs:
         working-directory: "vue-gripau"
         run: |
           npm ci
-          npm run build --if-present
-          npm test
-      
-        
-
+          npm run build --if-present    
       
       - name: Deploy to Heroku
         # You may pin to the exact commit or the version.

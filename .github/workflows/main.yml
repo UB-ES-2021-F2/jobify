@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Replace Local URL with HEROKU URL
-      - run: |
+        run: |
           sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
           cat vue-gripau/src/main.js
       - name: Setup Node.js ${{ matrix.node-version }}

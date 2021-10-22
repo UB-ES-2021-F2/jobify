@@ -23,17 +23,17 @@ jobs:
       - uses: actions/checkout@v2
       - name: Replace local URL with heroku URL
         run: sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
-      - name: Build with Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node-version }}
+        working-directory: "vue-gripau"
         uses: actions/setup-node@v2
-        with:
-          working-directory: "vue-gripau"
+        with:  
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: cd vue-gripau
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-      - run: cd ..
+      - name: Build with Node.js
+        working-directory: "vue-gripau"
+        run: npm ci
+        run: npm run build --if-present
+        run: npm test
       
         
 

@@ -7,14 +7,13 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ production ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build-deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -24,12 +23,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Replace local URL with heroku URL
         run: sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
-      - run: cd vue-gripau
       - name: Build with Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
+        working-directory: "vue-gripau"
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - run: cd vue-gripau
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test

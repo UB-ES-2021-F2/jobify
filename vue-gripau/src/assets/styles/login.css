@@ -14,6 +14,7 @@ html, body{
 .row{
   height: 100%;
 }
+/****** LOGIN ******/
 
 /* Center Vertically */
 .content-table{
@@ -107,4 +108,8 @@ html, body{
       background-color: #ffcd01;
     }
 
+/****** ABOUT US ******/
 
+.aboutus-title{
+  font-family: 'Vollkorn';
+}

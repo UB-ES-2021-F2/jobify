@@ -25,8 +25,47 @@
       </b-collapse>
     </b-navbar>
     <!--/.Navbar -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
+          <div class="row">
+            <!-- Our Project -->
+            <div class="col-12">
+              <div class="aboutus-title">Our Project</div>
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6"></div>
+              </div>
+            </div>
+            <!-- Our Values -->
+            <div class="col-12">
+              <div class="aboutus-title">Our Values</div>
+              <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4"></div>
+                <div class="col-4"></div>
+              </div>
+            </div>
+            <!-- Who we are?-->
+            <div class="col-12">
+              <div class="aboutus-title">Who we are?</div>
+              <div class="row">
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+              </div>
+            </div>
+            <!-- -->
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
   </div>
 </template>
 

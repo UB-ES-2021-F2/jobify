@@ -3,7 +3,7 @@
 ## Workflow Guide
 ### How to start working on a task
 1. **Pick one of your assigned tasks** in the current sprint
-2. Create a **new issue** In the Github repository.
+2. Create a **new issue** in the Github repository.
 3. The **title** of the issue has to start with *US#X* where *X* is the user story the task belongs to.
     - Example Title *"US#E.1 Add register validations in backend"*.
 4. **Assign yourself** to the issue.
@@ -19,12 +19,14 @@
 11. **Create a new branch from the branch "dev"** and name it "issue#N" where N is the number of the issue you just created.
 12. **Checkout the new branch** in your local repository and start working in your task.
 ### What to do once you are done with your task
-1. **Create a new Pull Request** from your branch *issue#X* to *dev*.
-2. **Add at least 1 reviewer** to the pull request (it is recomended that you add a team member that has the same role as you).
-3. **Link the pull request to the issue** you created at the begining.
-4. **Update the issue's description** with the final amount of time it took to complete it.
-5. (OPTIONAL) Assign yourself to the pull request.
-6. (OPTIONAL) Label the pull request.
+
+1. **Pull changes from the branch *dev*** to your issue branch (*issue#X*) and make sure that the implemented functionality still works
+2. **Create a new Pull Request** from your branch *issue#X* to *dev*.
+3. **Add at least 1 reviewer** to the pull request (it is recomended that you add a team member that has the same role as you).
+4. **Link the pull request to the issue** you created at the begining.
+5. **Update the issue's description** with the final amount of time it took to complete it.
+6. (OPTIONAL) Assign yourself to the pull request.
+7. (OPTIONAL) Label the pull request.
    
 **DO NOT ADD THE PULL REQUEST TO THE PROJECT "TASKS" (KANBAN) OR THE SPRINT MILESTONE.**
 

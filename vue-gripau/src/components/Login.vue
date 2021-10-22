@@ -23,9 +23,9 @@
           <div class  = 'content-table-cell'>
             <div class = 'col-9 col-md-5 login-container'>
 
-             <div class = 'logo-container'>
-               <img style="max-width: 150px" :src="require('../assets/logo.svg')">
-             </div>
+              <div class = 'logo-container'>
+                <img style="max-width: 150px" :src="require('../assets/logo.svg')">
+              </div>
 
               <b-form ref="form" @submit.prevent="checkLogin">
                 <b-form-group label-for="username-input">
@@ -55,82 +55,134 @@
              id="register-modal"
              title="Become a member"
              hide-footer
+             hide-backdrop
     >
       <b-tabs v-model="tabIndex" content-class="mt-3" fill>
         <!--Job Seeker form -->
         <b-tab title="Job Seeker" active>
-          <b-form style="font-family:'Work Sans'" @submit.prevent="onSubmit">
-            <label style="color: #5a6268">All fields are needed.</label>
+          <validation-observer ref="observer" v-slot="{ handleSubmit }">
+            <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)">
 
-            <b-form-group id="input-group-0" label="First Name:" label-for="input-1">
-              <b-form-input v-model="registerS.fName" placeholder="" type="text" required></b-form-input>
-            </b-form-group>
+              <validation-provider name="FirstName"  :rules="{ alpha_spaces, required: true}" v-slot="validationContext">
+                <b-form-group id="input-group-1" label="First Name" label-for="input-1">
+                  <b-form-input v-model="registerS.fName" placeholder="" type="text" :state="getValidationState(validationContext)"
+                                aria-describedby="input-1-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-group id="input-group-0" label="Last Name:" label-for="input-4">
-              <b-form-input v-model="registerS.lName" placeholder="" type="text" required></b-form-input>
-            </b-form-group>
+              <validation-provider name="LastName"  :rules="{ alpha_spaces, required: true}" v-slot="validationContext">
+                <b-form-group id="input-group-2" label="Last Name" label-for="input-2">
+                  <b-form-input v-model="registerS.lName" placeholder="" type="text" :state="getValidationState(validationContext)"
+                                aria-describedby="input-2-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-group id="input-group-0" label="Username:" label-for="input-0">
-              <b-form-input v-model="registerS.username" placeholder="" type="text" required></b-form-input>
-            </b-form-group>
+              <validation-provider name="Username"  :rules="{ alpha_num, required: true, min:4}" v-slot="validationContext">
+                <b-form-group id="input-group-3" label="Username" label-for="input-3">
+                  <b-form-input v-model="registerS.username" placeholder="" type="text" :state="getValidationState(validationContext)"
+                                aria-describedby="input-3-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-group id="input-group-2" label="Email:" label-for="input-2">
-              <b-form-input v-model="registerS.email" placeholder="" type="email" required></b-form-input>
-            </b-form-group>
+              <validation-provider name="Email"  :rules="{ email, required: true}" v-slot="validationContext">
+                <b-form-group id="input-group-4" label="Email" label-for="input-4">
+                  <b-form-input v-model="registerS.email" placeholder="" type="email" :state="getValidationState(validationContext)"
+                                aria-describedby="input-4-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-4-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-              <b-form-input v-model="registerS.password" placeholder="" type="password" required></b-form-input>
-              <b-form-text id="password-help-block">
-                Your password should be 8-20 characters long.
-              </b-form-text>
-            </b-form-group>
+              <validation-provider name="password"  :rules="{required: true, regex: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/ }" v-slot="validationContext" vid="password">
+                <b-form-group id="input-group-5" label="Password" label-for="input-5">
+                  <b-form-input v-model="registerS.password" placeholder="" type="password" :state="getValidationState(validationContext)"
+                                aria-describedby="input-5-live-feedback"></b-form-input>
+                  <b-form-text id="password-help-block">
+                    Your password must be 8-20 characters long and contain numbers and both uppercase and lowercase letters
+                  </b-form-text>
+                  <b-form-invalid-feedback id="input-5-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-checkbox id="checkbox-1" :state="termsAndCStateS" v-model="registerS.rTandC" name="checkbox-1" required>
-              I have read and accept the terms and conditions and privacy policy.
-            </b-form-checkbox>
+              <validation-provider name="confirmation"  rules="required|confirmed:password" v-slot="validationContext">
+                <b-form-group id="input-group-6" label="Confirm password" label-for="input-6">
+                  <b-form-input v-model="registerS.confirmation" placeholder="" type="password" :state="getValidationState(validationContext)"
+                                aria-describedby="input-6-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-6-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-checkbox id="checkbox-2" v-model="registerS.newsletter" name="checkbox-2">
-              I do not want to receive the Jungle Newsletter and tips to optimise my job search.
-            </b-form-checkbox>
+              <!--
+              <b-form-checkbox id="checkbox-1" :state="termsAndCStateS" v-model="registerS.rTandC" name="checkbox-1">
+                I have read and accept the terms and conditions and privacy policy.
+              </b-form-checkbox>-->
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-warning justify-content-md-end">Submit</button>
-            </div>
-          </b-form>
+              <b-form-checkbox id="checkbox-2" v-model="registerS.newsletter" name="checkbox-2">
+                I do not want to receive the Jungle Newsletter and tips to optimise my job search.
+              </b-form-checkbox>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning justify-content-md-end">Join Jobify!</button>
+              </div>
+            </b-form>
+          </validation-observer>
         </b-tab>
         <!--/Job Seeker form -->
         <!--Company form -->
-        <b-tab disabled title="Company (coming soon)">
-          <b-form style="font-family:'Work Sans'" @submit.prevent="onSubmit" >
-            <label style="color: #5a6268">All fields are needed.</label>
+        <b-tab title="Company (coming soon)">
+          <validation-observer ref="observerCompany" v-slot="{ handleSubmit }">
+            <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)" >
 
-            <b-form-group id="input-group-0C" label="Company name:" label-for="input-0C">
-              <b-form-input v-model="registerC.company" placeholder="" type="text" required></b-form-input>
-            </b-form-group>
+              <validation-provider name="Company name"  :rules="{alpha_spaces, required: true}" v-slot="validationContext">
+                <b-form-group id="input-group-1C" label="Company name" label-for="input-1C">
+                  <b-form-input v-model="registerC.company" placeholder="" type="text" :state="getValidationState(validationContext)"
+                                aria-describedby="input-1c-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-1c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-group id="input-group-2C" label="Email:" label-for="input-2C">
-              <b-form-input v-model="registerC.email" placeholder="" type="email" required></b-form-input>
-            </b-form-group>
+              <validation-provider name="Company email"  :rules="{email, required: true}" v-slot="validationContext">
+                <b-form-group id="input-group-2C" label="Email" label-for="input-2C">
+                  <b-form-input v-model="registerC.email" placeholder="" type="email" :state="getValidationState(validationContext)"
+                                aria-describedby="input-2c-live-feedback">></b-form-input>
+                  <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-group id="input-group-3C" label="Password:" label-for="input-3C">
-              <b-form-input v-model="registerC.password" placeholder="" type="password" required></b-form-input>
-              <b-form-text id="password-help-blockC">
-                Your password should be 8-20 characters long.
-              </b-form-text>
-            </b-form-group>
+              <validation-provider name="Company password"  :rules="{required: true, regex: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/ }" v-slot="validationContext" vid="passwordc">
+                <b-form-group id="input-group-3C" label="Password" label-for="input-3C">
+                  <b-form-input v-model="registerC.password" placeholder="" type="password" :state="getValidationState(validationContext)"
+                                aria-describedby="input-3C-live-feedback"></b-form-input>
+                  <b-form-text id="password-help-block">
+                    Your password must be 8-20 characters long and contain numbers and both uppercase and lowercase letters
+                  </b-form-text>
+                  <b-form-invalid-feedback id="input-3C-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
 
-            <b-form-checkbox id="checkbox-1C" :state="termsAndCStateC" v-model="registerC.rTandC" name="checkbox-1C" required>
-              I have read and accept the terms and conditions and privacy policy.
-            </b-form-checkbox>
+              <validation-provider name="confirmation"  rules="required|confirmed:passwordc" v-slot="validationContext">
+                <b-form-group id="input-group-4C" label="Confirm password" label-for="input-4C">
+                  <b-form-input v-model="registerC.confirmation" placeholder="" type="password" :state="getValidationState(validationContext)"
+                                aria-describedby="input-4C-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-4C-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+              <!--
+              <b-form-checkbox id="checkbox-1C" :state="termsAndCStateC" v-model="registerC.rTandC" name="checkbox-1C" required>
+                I have read and accept the terms and conditions and privacy policy.
+              </b-form-checkbox>-->
 
-            <b-form-checkbox id="checkbox-2C" v-model="registerC.newsletter" name="checkbox-2C">
-              I do not want to receive the Jungle Newsletter and tips to optimise my company interests.
-            </b-form-checkbox>
+              <b-form-checkbox id="checkbox-2C" v-model="registerC.newsletter" name="checkbox-2C">
+                I do not want to receive the Jungle Newsletter and tips to optimise my company interests.
+              </b-form-checkbox>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-warning justify-content-md-end">Submit</button>
-            </div>
-          </b-form>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning justify-content-md-end">Join Jobify!</button>
+              </div>
+            </b-form>
+          </validation-observer>
         </b-tab>
         <!--/Company form -->
       </b-tabs>
@@ -164,6 +216,7 @@ export default {
         username: '',
         email: '',
         password: '',
+        confirmation: '',
         rTandC: false,
         newsletter: false
       },
@@ -171,6 +224,7 @@ export default {
         company: '',
         email: '',
         password: '',
+        confirmation: '',
         rTandC: false,
         newsletter: false
       }
@@ -197,6 +251,9 @@ export default {
           this.loginForm.password = ''
           alert('Username or Password incorrect')
         })
+    },
+    getValidationState ({ dirty, validated, valid = null }) {
+      return dirty || validated ? valid : null
     },
     onHome () {
       this.$router.replace({ path: '/' })
@@ -273,7 +330,7 @@ export default {
         }
         axios.post(pathS, values)
           .then((res) => {
-            alert('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
             console.error(error)
@@ -287,7 +344,7 @@ export default {
         }
         axios.post(pathC, values)
           .then((res) => {
-            alert('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
             console.error(error)
@@ -303,11 +360,13 @@ export default {
       this.registerS.fName = ''
       this.registerS.email = ''
       this.registerS.password = ''
+      this.registerS.confirmation = ''
       this.registerS.rTandC = false
       this.registerS.newsletter = false
       this.registerC.company = ''
       this.registerC.email = ''
       this.registerC.password = ''
+      this.registerC.confirmation = ''
       this.registerC.rTandC = false
       this.registerC.newsletter = false
     },

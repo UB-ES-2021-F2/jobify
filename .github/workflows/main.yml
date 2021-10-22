@@ -22,7 +22,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Replace local URL with heroku URL
-        run: sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "http://localhost:5000"
+          replace: "https://ub-jobify.herokuapp.com"
+          regex: false
+          include: vue-gripau/
+      - run: cat vue-gripau/src/
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:  
@@ -30,7 +36,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: vue-gripau/package-lock.json
       - name: Build with Node.js
-        working-directory: ./vue-gripau
+        working-directory: ./vue-gripau/src
         run: |
           npm ci
           npm run build 

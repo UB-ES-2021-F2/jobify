@@ -42,3 +42,4 @@ jobs:
           dontautocreate: true
           # Set if your app is located in a subdirectory.
           appdir: "flask-gripau"
+          buildpack: "heroku/python"

@@ -51,13 +51,174 @@
             <div class="col-12">
               <div class="aboutus-title">Who we are?</div>
               <div class="row">
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                      <div class="aboutus-porfile-picture">
+                        <img src="../assets/images/arnau.jpeg">
+                      </div>
+                    </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Arnau Quindós
+                          </div>
+                          <div class="aboutus-role">
+                            Product Owner
+                          </div>
+                          <div class="aboutus-description">
+                            Lorem ipsum dolor bla bla bla bla.
+                          </div>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="aboutus-porfile-picture">
+                          <img src="../assets/images/carles.jpeg">
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Carles Pérez Onielfa
+                          </div>
+                          <div class="aboutus-role">
+                            Devops
+                          </div>
+                          <div class="aboutus-description">
+                            Always eager to learn and able to do so swiftly.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="aboutus-porfile-picture">
+                          <img src="../assets/images/arnau.jpeg">
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Arnau Quindós
+                          </div>
+                          <div class="aboutus-role">
+                            Product Owner
+                          </div>
+                          <div class="aboutus-description">
+                            Lorem ipsum dolor bla bla bla bla.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="aboutus-porfile-picture">
+                          <img src="../assets/images/arnau.jpeg">
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Arnau Quindós
+                          </div>
+                          <div class="aboutus-role">
+                            Product Owner
+                          </div>
+                          <div class="aboutus-description">
+                            Lorem ipsum dolor bla bla bla bla.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="aboutus-porfile-picture">
+                          <img src="../assets/images/arnau.jpeg">
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Arnau Quindós
+                          </div>
+                          <div class="aboutus-role">
+                            Product Owner
+                          </div>
+                          <div class="aboutus-description">
+                            Lorem ipsum dolor bla bla bla bla.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="aboutus-porfile-picture">
+                          <img src="../assets/images/arnau.jpeg">
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Arnau Quindós
+                          </div>
+                          <div class="aboutus-role">
+                            Product Owner
+                          </div>
+                          <div class="aboutus-description">
+                            Lorem ipsum dolor bla bla bla bla.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="aboutus-weare-container">
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="aboutus-porfile-picture">
+                          <img src="../assets/images/arnau.jpeg">
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="aboutus-text-container">
+                          <div class="aboutus-name">
+                            Arnau Quindós
+                          </div>
+                          <div class="aboutus-role">
+                            Product Owner
+                          </div>
+                          <div class="aboutus-description">
+                            Lorem ipsum dolor bla bla bla bla.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- -->

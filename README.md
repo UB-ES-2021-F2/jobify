@@ -52,10 +52,14 @@
    6. `python add_data.py`
 
 
-### Deploy (comming soon)
+### Deploy
 1. Create a new PR from your changes in *dev* branch to *production* branch
-2. After the new changes are added, the new version should be deployed automatically to [ub-jobify.herokuapp.com](ub-jobify.herokuapp.com)
+2. After the new changes are added, the new version should be deployed automatically to [ub-jobify.herokuapp.com](ub-jobify.herokuapp.com) (it may take a minute), you can check the progress on the *Actions* tab of the Github repo
 
+This is what is automatically performed when a commit is submited to the *production* branch
+- Local API URL is replaced by Production API URL on `vue-gripau/src/index.js`
+- The frontend project is built using `npm run build`
+- The project is pushed to heroku
 ---
 
 ## How to test the project (comming soon)

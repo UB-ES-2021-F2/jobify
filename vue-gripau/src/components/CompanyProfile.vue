@@ -48,21 +48,28 @@
             <div class="container-md-5 p-2 align-items-center">
               <div v-if="company.description != null" class="bio-text">
                 {{company.description}}
+                <p></p>
+                <b-button v-if="edit_mode">Edit</b-button>
               </div>
               <div v-if="company.description === null" class="bio-text">
                 {{bio}}
+                <p></p>
+                <b-button v-if="edit_mode">Edit</b-button>
               </div>
               <div class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
                 <p>{{company.email}}</p>
+                <b-button v-if="edit_mode">Edit</b-button>
               </div>
               <div v-if="company.sector || edit_mode" class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
                 <p>{{company.sector}}</p>
+                <b-button v-if="edit_mode">Edit</b-button>
               </div>
               <div v-if="company.location || edit_mode" class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Location</h3>
                 <p>{{company.location}}</p>
+                <b-button v-if="edit_mode">Edit</b-button>
               </div>
 
             </div>

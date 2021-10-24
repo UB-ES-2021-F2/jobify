@@ -18,11 +18,13 @@ class JobOfferModel(db.Model):
     publication_date = db.Column(db.DateTime, unique=False, nullable=False)
     salary = db.Column(db.Float, unique=False)
     vacancy_number = db.Column(db.Integer, unique=False)
-    location = db.Column(db.String(30), unique=False)
-    #working_hours = db.Column(db.Enum(*working_hours_types, name='working_hours_types'))
-    minimum_experience = db.Column(db.Integer)
+    location = db.Column(db.String(30), unique=False, nullable=False)
+    working_hours = db.Column(db.Integer(2), unique=False)
+    minimum_experience = db.Column(db.Integer, unique=False)
+    contract_type = db.Column(db.String(30), unique=False)
 
-    def __init__(self, job_name, description, publication_date, salary, vacancy_number, location, minimum_experience):
+    def __init__(self, job_name, description, publication_date, salary, vacancy_number, location,
+                 working_hours, minimum_experience, contract_type):
         """
         Initializer of a job offer
         :param job_name: name of the job offer
@@ -40,7 +42,9 @@ class JobOfferModel(db.Model):
         self.salary = salary
         self.vacancy_number = vacancy_number
         self.location = location
+        self.working_hours = working_hours
         self.minimum_experience = minimum_experience
+        self.contract_type = contract_type
 
     def json(self):
         """
@@ -49,7 +53,7 @@ class JobOfferModel(db.Model):
         """
         return {'id': self.id, 'company': self.company, 'job_name': self.job_name, 'description': self.description, 'publication_date':
                 self.publication_date.isoformat(), 'salary': self.salary, 'location': self.location,
-                'vacancy_number': self.vacancy_number,
+                'vacancy_number': self.vacancy_number, 'working_hours': self.working_hours, 'contract_type': self.contract_type,
                 'minimum_experience': self.minimum_experience}
 
     def save_to_db(self, database=None):

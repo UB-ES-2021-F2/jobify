@@ -20,14 +20,14 @@ class JobOffers(Resource):
     def post(self, company):
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('job_name', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('description', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('description', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('publication_date', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('salary', type=float, required=False, help="This field cannot be left blank")
-        parser.add_argument('vacancy_number', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('vacancy_number', type=int, required=False, help="This field cannot be left blank")
         parser.add_argument('location', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('contract_type', type=str, required=False, help="This field cannot be left blank")
+        parser.add_argument('working_hours', type=int, required=False, help="This field cannot be left blank")
         parser.add_argument('minimum_experience', type=int, required=True, help="This field cannot be left blank")
-
-        # parser.add_argument('working_hours', type=working_hours_types, choices=list(working_hours_types))
 
         data = parser.parse_args()
 
@@ -38,7 +38,8 @@ class JobOffers(Resource):
         if not company:
             return {"message": "This company is not registered yet."}, 500
 
-        offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.salary, data.vacancy_number, data.location, data.minimum_experience)
+        offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.salary, data.vacancy_number,
+                              data.location, data.working_hours, data.minimum_experience, data.contract_type)
         company.job_offers.append(offer)
         try:
             db.session.add(company)

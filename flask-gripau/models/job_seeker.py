@@ -21,6 +21,7 @@ class JobSeekersModel(db.Model):
     is_admin = db.Column(db.Integer, nullable=False, default=False)
     educations = db.relationship('EducationsModel', backref='educations', lazy=True)
     work_experiences = db.relationship('WorkExperiencesModel', backref='work_experiences', lazy=True)
+    skills = db.relationship('SkillsModel', backref='skills', lazy=True)
 
     def __init__(self, username, name, surname, email, bio, is_admin=0):
         self.username = username
@@ -31,8 +32,11 @@ class JobSeekersModel(db.Model):
         self.bio = bio
 
     def json(self):
-        return {'id': self.id, 'username': self.username,'name': self.name, 'surname': self.surname, 'email': self.email, 'is_admin': self.is_admin,
-                'bio': self.bio}
+        return {'id': self.id, 'username': self.username, 'name': self.name, 'surname': self.surname,
+                'email': self.email, 'is_admin': self.is_admin,
+                'bio': self.bio, 'educations': [education.json() for education in self.educations],
+                'work_experiences': [we.json() for we in self.work_experiences],
+                'skills': [skill.json() for skill in self.skills]}
 
     def save_to_db(self, database=None):
         if database is None:

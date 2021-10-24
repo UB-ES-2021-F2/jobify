@@ -26,28 +26,52 @@
     </b-navbar>
     <!--/.Navbar -->
 
-    <b-container>
+    <b-container fluid>
+      <b-row align-v="stretch">
+        <!-- Local Navbar -->
+        <b-col fluid style="background-color: #00000007" cols="">
+          <b-nav sticky toggleable="lg" type="light" variant="light" vertical>
+            <b-navbar-brand>
+              <div>
+              <h2 style="font-family: 'Vollkorn', serif"> {{ company.company }} </h2>
+              <b-icon icon="building"></b-icon>
+              </div>
+            </b-navbar-brand>
+            <b-nav-item active @click="onProfileView()">Profile</b-nav-item>
+            <b-nav-item @click="onjobView()">Jobs</b-nav-item>
+          </b-nav>
+        </b-col>
+        <!--/.Local Navbar -->
+        <b-col fluid cols="10">
+          <div v-if="this.profileView && !this.jobView">
+            <h2 style="font-family: 'Vollkorn', serif"> Company Profile </h2>
+            <div class="container-md-5 p-2 align-items-center">
+              <div v-if="company.description != null" class="bio-text">
+                {{company.description}}
+              </div>
+              <div v-if="company.description === null" class="bio-text">
+                {{bio}}
+              </div>
+              <div class="text-left p-2 pb-3" style="max-width: 50rem">
+                <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
+                <p>{{company.email}}</p>
+              </div>
+              <div v-if="company.sector || edit_mode" class="text-left p-2 pb-3" style="max-width: 50rem">
+                <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
+                <p>{{company.sector}}</p>
+              </div>
+              <div v-if="company.location || edit_mode" class="text-left p-2 pb-3" style="max-width: 50rem">
+                <h3 style="font-family: 'Vollkorn', serif"> Location</h3>
+                <p>{{company.location}}</p>
+              </div>
 
-      <h2 style="font-family: 'Vollkorn', serif"> {{ company.company }} </h2>
-
-      <div class="container-md-5 p-2 align-items-center">
-        <div class="bio-text">
-          {{bio}}
-        </div>
-
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Work experience </p>
-        </div>
-
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Education </p>
-        </div>
-
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Skills </p>
-        </div>
-      </div>
-
+            </div>
+          </div>
+          <div v-show="this.profileView === false && this.jobView === true">
+            <h2 style="font-family: 'Vollkorn', serif"> Job Offers </h2>
+          </div>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -67,6 +91,8 @@ export default {
         sector: '',
         location: ''
       },
+      profileView: true,
+      jobView: false,
       logged: false,
       is_jobseeker: true,
       is_company: false,
@@ -95,6 +121,14 @@ export default {
     },
     onLogIn () {
       this.$router.replace({ path: '/login' })
+    },
+    onProfileView () {
+      this.profileView = true
+      this.jobView = false
+    },
+    onjobView () {
+      this.profileView = false
+      this.jobView = true
     },
     onLogOut () {
       this.$router.replace({path: '/',
@@ -152,6 +186,9 @@ export default {
         })
     }
   },
+  computed () {
+
+  },
   created () {
     this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()
     this.logged = this.$route.query.logged === 'true'
@@ -176,33 +213,5 @@ export default {
   padding: 20px;
   margin-bottom: 20px;
 }
-.bio-text {
-  text-align: left;
-  color: dimgray;
-  font-size: 16px;
-  padding-bottom: 20px;
-}
-.card-title-work {
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-size: 20px;
-}
-.card-title-ed {
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-size: 20px;
-  padding-bottom: 10px;
-}
-.card-subtitle {
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-size: 18px;
-  padding-bottom: 5px;
-}
-.card-text {
-  font-family: "Work Sans", sans-serif;
-  font-size: 14px;
-}
-.section-title {
-  font-family: "Vollkorn",serif;
-  font-size: 26px;
-  display:inline-block
-}
+
 </style>

@@ -112,16 +112,63 @@ html, body{
 
 .aboutus-title{
   font-family: 'Vollkorn';
+  font-size: 2rem;
+  margin-bottom: 15px;
 }
 
-  .aboutus-weare-container{
-    border: 1px solid #9e9e9d;
-    border-radius: 5px;
-    padding: 20px 0;
+
+.aboutus-subtitle{
+  font-family: 'Vollkorn';
+  font-size: 1.5rem;
+  margin: 15px 0;
+}
+.icon-container{
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.ourvalues-icon{
+  height: 100px;
+  width: 100px;
+  margin: auto;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ffcd01;
+  border-radius: 50%;
+}
+
+.ourvalues-icon:hover{
+  color: #ffcd01;
+  background-color: #fff;
+  border: 2px solid #ffcd01;
+}
+
+  .ourvalues-icon svg{
+    width: 60px;
+    height: 60px;
   }
+
+  .ourvalues-title{
+    font-weight: 900;
+    margin: 15px 0;
+  }
+
+.aboutus-weare-container{
+  border: 1px solid #9e9e9d;
+  border-radius: 5px;
+  padding: 20px 0;
+}
 
   .aboutus-weare-container .col-6{
     padding: 0px !important;
+  }
+
+  .aboutus-our-project{
+    font-weight: 500;
+  }
+
+  .image-container img{
+    width: 100%;
   }
 
   .aboutus-porfile-picture{
@@ -141,7 +188,7 @@ html, body{
     }
 
     .aboutus-role{
-      font-weight: 550;
+      font-weight: 500;
       font-style: italic;
       margin-bottom: 5px;
     }

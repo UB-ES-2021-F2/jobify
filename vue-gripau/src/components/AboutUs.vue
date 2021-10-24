@@ -28,28 +28,83 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
+          <div class="aboutus-title"> {{ message }} </div>
           <div class="row">
             <!-- Our Project -->
             <div class="col-12">
-              <div class="aboutus-title">Our Project</div>
               <div class="row">
-                <div class="col-6"></div>
-                <div class="col-6"></div>
+                <div class="col-6">
+                  <div class="content-table">
+                    <div class="content-table-cell">
+                      <div class="aboutus-subtitle">Our Project</div>
+                      <div class="aboutus-our-project">
+                        <p>Gripau is a multi-platform communication medium whose ambition is to inspire each person during the development of their professional career.</p>
+                        <p>To do this, we propose a wide variety of high-quality content (articles, videos, series, podcasts, magazines or events) with the aim of helping young professionals rethink their relationship with work.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="image-container">
+                    <img src="../assets/images/working_stock_image.png">
+                  </div>
+                </div>
               </div>
             </div>
             <!-- Our Values -->
             <div class="col-12">
-              <div class="aboutus-title">Our Values</div>
+              <div class="aboutus-subtitle">Our Values</div>
               <div class="row">
-                <div class="col-4"></div>
-                <div class="col-4"></div>
-                <div class="col-4"></div>
+                <div class="col-4">
+                  <div class="icon-container">
+                    <div class="ourvalues-icon">
+                      <div class="content-table">
+                        <div class="content-table-cell">
+                          <svg class="svg-inline--fa fa-hands-helping fa-w-20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="hands-helping" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M488 192H336v56c0 39.7-32.3 72-72 72s-72-32.3-72-72V126.4l-64.9 39C107.8 176.9 96 197.8 96 220.2v47.3l-80 46.2C.7 322.5-4.6 342.1 4.3 357.4l80 138.6c8.8 15.3 28.4 20.5 43.7 11.7L231.4 448H368c35.3 0 64-28.7 64-64h16c17.7 0 32-14.3 32-32v-64h8c13.3 0 24-10.7 24-24v-48c0-13.3-10.7-24-24-24zm147.7-37.4L555.7 16C546.9.7 527.3-4.5 512 4.3L408.6 64H306.4c-12 0-23.7 3.4-33.9 9.7L239 94.6c-9.4 5.8-15 16.1-15 27.1V248c0 22.1 17.9 40 40 40s40-17.9 40-40v-88h184c30.9 0 56 25.1 56 56v28.5l80-46.2c15.3-8.9 20.5-28.4 11.7-43.7z"></path></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ourvalues-text">
+                    <div class="ourvalues-title">Committed</div>
+                    <div class="ourvalues-description">As a company, we assure for our job seekers reliable labor conditions</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="icon-container">
+                    <div class="ourvalues-icon">
+                      <div class="content-table">
+                        <div class="content-table-cell">
+                          <svg class="svg-inline--fa fa-gem fa-w-18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="gem" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M485.5 0L576 160H474.9L405.7 0h79.8zm-128 0l69.2 160H149.3L218.5 0h139zm-267 0h79.8l-69.2 160H0L90.5 0zM0 192h100.7l123 251.7c1.5 3.1-2.7 5.9-5 3.3L0 192zm148.2 0h279.6l-137 318.2c-1 2.4-4.5 2.4-5.5 0L148.2 192zm204.1 251.7l123-251.7H576L357.3 446.9c-2.3 2.7-6.5-.1-5-3.2z"></path></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ourvalues-text">
+                    <div class="ourvalues-title">Precise</div>
+                    <div class="ourvalues-description">As a company, we assure for our job seekers reliable labor conditions</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="icon-container">
+                    <div class="ourvalues-icon">
+                      <div class="content-table">
+                        <div class="content-table-cell">
+                          <svg class="svg-inline--fa fa-brain fa-w-18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="brain" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M208 0c-29.9 0-54.7 20.5-61.8 48.2-.8 0-1.4-.2-2.2-.2-35.3 0-64 28.7-64 64 0 4.8.6 9.5 1.7 14C52.5 138 32 166.6 32 200c0 12.6 3.2 24.3 8.3 34.9C16.3 248.7 0 274.3 0 304c0 33.3 20.4 61.9 49.4 73.9-.9 4.6-1.4 9.3-1.4 14.1 0 39.8 32.2 72 72 72 4.1 0 8.1-.5 12-1.2 9.6 28.5 36.2 49.2 68 49.2 39.8 0 72-32.2 72-72V64c0-35.3-28.7-64-64-64zm368 304c0-29.7-16.3-55.3-40.3-69.1 5.2-10.6 8.3-22.3 8.3-34.9 0-33.4-20.5-62-49.7-74 1-4.5 1.7-9.2 1.7-14 0-35.3-28.7-64-64-64-.8 0-1.5.2-2.2.2C422.7 20.5 397.9 0 368 0c-35.3 0-64 28.6-64 64v376c0 39.8 32.2 72 72 72 31.8 0 58.4-20.7 68-49.2 3.9.7 7.9 1.2 12 1.2 39.8 0 72-32.2 72-72 0-4.8-.5-9.5-1.4-14.1 29-12 49.4-40.6 49.4-73.9z"></path></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ourvalues-text">
+                    <div class="ourvalues-title">Accessible</div>
+                    <div class="ourvalues-description">As a company, we assure for our job seekers reliable labor conditions</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <!-- Who we are?-->
+            <!-- Who are we -->
             <div class="col-12">
-              <div class="aboutus-title">Who we are?</div>
+              <div class="aboutus-subtitle">Who we are</div>
               <div class="row">
                 <div class="col-4">
                   <div class="aboutus-weare-container">
@@ -62,7 +117,7 @@
                       <div class="col-8">
                         <div class="aboutus-text-container">
                           <div class="aboutus-name">
-                            Arnau Quindós
+                            Arnau Quindós Sanchez
                           </div>
                           <div class="aboutus-role">
                             Product Owner
@@ -110,10 +165,10 @@
                       <div class="col-8">
                         <div class="aboutus-text-container">
                           <div class="aboutus-name">
-                            Arnau Quindós
+                            David Rial Figols
                           </div>
                           <div class="aboutus-role">
-                            Product Owner
+                            Quality Assurance
                           </div>
                           <div class="aboutus-description">
                             Lorem ipsum dolor bla bla bla bla.
@@ -134,10 +189,10 @@
                       <div class="col-8">
                         <div class="aboutus-text-container">
                           <div class="aboutus-name">
-                            Arnau Quindós
+                            Eduard Graners i Castellet
                           </div>
                           <div class="aboutus-role">
-                            Product Owner
+                            Front-End Developer
                           </div>
                           <div class="aboutus-description">
                             Lorem ipsum dolor bla bla bla bla.
@@ -158,10 +213,10 @@
                       <div class="col-8">
                         <div class="aboutus-text-container">
                           <div class="aboutus-name">
-                            Arnau Quindós
+                            Sergi Ger Roca
                           </div>
                           <div class="aboutus-role">
-                            Product Owner
+                            Front-End Developer
                           </div>
                           <div class="aboutus-description">
                             Lorem ipsum dolor bla bla bla bla.
@@ -182,10 +237,10 @@
                       <div class="col-8">
                         <div class="aboutus-text-container">
                           <div class="aboutus-name">
-                            Arnau Quindós
+                            Sergi Bech Sala
                           </div>
                           <div class="aboutus-role">
-                            Product Owner
+                            Back-End Developer
                           </div>
                           <div class="aboutus-description">
                             Lorem ipsum dolor bla bla bla bla.
@@ -206,10 +261,10 @@
                       <div class="col-8">
                         <div class="aboutus-text-container">
                           <div class="aboutus-name">
-                            Arnau Quindós
+                            Alejandro Lendínez Padilla
                           </div>
                           <div class="aboutus-role">
-                            Product Owner
+                            Back-End Developer
                           </div>
                           <div class="aboutus-description">
                             Lorem ipsum dolor bla bla bla bla.
@@ -221,7 +276,7 @@
                 </div>
               </div>
             </div>
-            <!-- -->
+            <!-- /.Who we are -->
           </div>
         </div>
       </div>

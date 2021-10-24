@@ -19,7 +19,7 @@ class JobOfferModel(db.Model):
     salary = db.Column(db.Float, unique=False)
     vacancy_number = db.Column(db.Integer, unique=False)
     location = db.Column(db.String(30), unique=False, nullable=False)
-    working_hours = db.Column(db.Integer(2), unique=False)
+    working_hours = db.Column(db.Integer, unique=False)
     minimum_experience = db.Column(db.Integer, unique=False)
     contract_type = db.Column(db.String(30), unique=False)
 

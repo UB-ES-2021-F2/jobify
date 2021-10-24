@@ -37,9 +37,9 @@ class WorkExperiences(Resource):
         if not user:
             return {'user': None}, 404
 
-        start_year, start_month = data.start_date.split('-')
-        end_year, end_month = data.end_date.split('-')
         if not data.currently:
+            start_year, start_month = data.start_date.split('-')
+            end_year, end_month = data.end_date.split('-')
             if int(start_year) > int(end_year):
                 return {"message": "Start date cannot be later than end date"}, 400
             elif int(start_year) == int(end_year):

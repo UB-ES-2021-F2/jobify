@@ -19,6 +19,8 @@ class Register(Resource):
 
         data = parser.parse_args()
 
+        #Check if username is alphanumeric
+
         # Check user doesn't exist
         if JobSeekersModel.find_by_username(data.username):
             return {'message': "User already exists"}, 400

@@ -79,10 +79,10 @@
         </div>
       </div>
 
-      <b-modal hide-footer hide-backdrop  ref="addWorkModal">
+      <b-modal hide-footer hide-backdrop ref="addWorkModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
-          <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" @reset.prevent="resetAddWork" style="font-family: 'Work Sans SemiBold'">
+          <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" style="font-family: 'Work Sans SemiBold'">
 
             <validation-provider name="jobTitle"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
               <b-form-group label="Job Title">
@@ -135,7 +135,7 @@
       <b-modal hide-footer hide-backdrop  ref="addEducationModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
-          <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddWork)" @reset.prevent="resetAddWork" style="font-family: 'Work Sans SemiBold'">
+          <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddEducation)" style="font-family: 'Work Sans SemiBold'">
 
             <validation-provider name="title"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
               <b-form-group label="Title">
@@ -166,7 +166,7 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="currentlyCheckboxEd" v-model="addEducation.currently"
                      @click="addEducation.endDate=''">
-              <label class="form-check-label" for="currentlyCheckboxEd">Currently enroled</label>
+              <label class="form-check-label" for="currentlyCheckboxEd">Currently enrolled</label>
             </div>
 
             <div class="float-right">
@@ -291,7 +291,7 @@ export default {
       return dirty || validated ? valid : null
     },
     checkDates (form) {
-      if (form ==='work') {
+      if (form === 'work') {
         if (this.addWork.endDate === '' || this.addWork.startDate === '') {
           return false
         } else {
@@ -322,7 +322,6 @@ export default {
         }
         return false
       }
-
     },
     getWorkExperience () {
       const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username_profile

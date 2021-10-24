@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -23,7 +23,7 @@ new_job_seeker.educations.append(new_education)
 db.session.add(new_job_seeker)
 
 new_company = CompanyModel('UB', 'ub@gmail.com', 'hola, som la UB')
-new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.strptime('2021-07-04', "%Y-%m-%d"), 'Barcelona')
+new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 5000, 5, 'Barcelona', 8, 1, 'Temporal')
 new_company.hash_password('password')
 new_company.job_offers.append(new_job_offer)
 db.session.add(new_company)

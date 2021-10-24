@@ -39,9 +39,12 @@ class Educations(Resource):
 
         start_year, start_month = data.start_date.split('-')
         end_year, end_month = data.end_date.split('-')
-        if not data.currently and int(start_year) >= int(end_year):
-            if int(start_month) > int(end_month):
+        if not data.currently:
+            if int(start_year) > int(end_year):
                 return {"message": "Start date cannot be later than end date"}, 400
+            elif int(start_year) == int(end_year):
+                if int(start_month) > int(end_month):
+                    return {"message": "Start date cannot be later than end date"}, 400
 
         new_education = EducationsModel(data.title, data.institution, data.start_date, data.end_date, data.currently)
         user.educations.append(new_education)

@@ -3,16 +3,16 @@
 
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#">
+      <b-navbar-brand @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item active href="#">Home</b-nav-item>
+          <b-nav-item @click="onHome()">Home</b-nav-item>
           <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item active>Companies</b-nav-item>
           <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -38,7 +38,7 @@ import {mapState} from 'vuex'
 export default {
   data () {
     return {
-      message: 'Home',
+      message: 'Companies',
       logged: false,
       username: '',
       is_admin: false,
@@ -56,8 +56,8 @@ export default {
     onLogIn () {
       this.$router.replace({path: '/login'})
     },
-    onCompanies () {
-      this.$router.replace({ path: '/companies' })
+    onHome () {
+      this.$router.replace({ path: '/' })
     },
     onLogOut () {
       this.$store.commit('logout')

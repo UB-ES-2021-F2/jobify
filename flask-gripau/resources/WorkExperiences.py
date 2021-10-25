@@ -37,11 +37,14 @@ class WorkExperiences(Resource):
         if not user:
             return {'user': None}, 404
 
-        start_year, start_month = data.start_date.split('-')
-        end_year, end_month = data.end_date.split('-')
-        if not data.currently and int(start_year) >= int(end_year):
-            if int(start_month) > int(end_month):
+        if not data.currently:
+            start_year, start_month = data.start_date.split('-')
+            end_year, end_month = data.end_date.split('-')
+            if int(start_year) > int(end_year):
                 return {"message": "Start date cannot be later than end date"}, 400
+            elif int(start_year) == int(end_year):
+                if int(start_month) > int(end_month):
+                    return {"message": "Start date cannot be later than end date"}, 400
 
         new_work_experience = WorkExperiencesModel(data.job_name, data.description, data.company, data.start_date, data.end_date, data.currently)
         user.work_experiences.append(new_work_experience)

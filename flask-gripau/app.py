@@ -14,6 +14,7 @@ from resources import WorkExperiences
 from resources import CompanyList
 from resources import JobOffers
 from resources import CompanyJobOffers
+from resources import JobOfferList
 
 # Imports de models
 from models.job_seeker import JobSeekersModel
@@ -62,6 +63,7 @@ api.add_resource(Educations, '/api/education/<string:username>')
 api.add_resource(WorkExperiences, '/api/work_experience/<string:username>')
 api.add_resource(JobOffers, '/api/job_offer/<int:id>', '/api/job_offer/<string:company>')
 api.add_resource(CompanyJobOffers, '/api/offers/<string:company>')
+api.add_resource(JobOfferList, '/api/offers')
 
 @app.route('/')
 def render_vue():

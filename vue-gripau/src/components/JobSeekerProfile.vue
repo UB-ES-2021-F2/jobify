@@ -369,7 +369,7 @@ export default {
             endDate: '',
             currently: false
           }
-          this.$bvModal.hide('addWorkModal')
+          this.$refs.addWorkModal.hide('addWorkModal')
         })
         .catch((error) => {
           alert(error.response.data.message)
@@ -412,7 +412,7 @@ export default {
             endDate: '',
             currently: false
           }
-          this.$bvModal.hide('addEducationModal')
+          this.$refs.addEducationModal.hide('addEducationModal')
         })
         .catch((error) => {
           console.error(error)

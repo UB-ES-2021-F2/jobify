@@ -4,6 +4,7 @@ import '@/../src/assets/styles/login.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 
 // Veevalidate imports
 import {
@@ -35,5 +36,6 @@ Vue.prototype.$API_BASE_URL = 'http://localhost:5000/api/'
 
 new Vue({
   router,
+  store,
   render: (h) => h(App)
 }).$mount('#app')

@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 
 export default {
   data () {
@@ -47,63 +48,39 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({path: '/',
-        query: {
-          username: this.username,
-          logged: this.logged,
-          is_company: this.is_company,
-          is_jobseeker: this.is_jobseeker,
-          is_admin: this.is_admin,
-          token: this.token
-        }
-      })
+      this.$router.replace({ path: '/' })
     },
     onUserProfile () {
       if (this.is_jobseeker & this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username,
-          query: {
-            username: this.username,
-            logged: this.logged,
-            is_company: this.is_company,
-            is_jobseeker: this.is_jobseeker,
-            is_admin: this.is_admin,
-            token: this.token
-          }
-        })
+        this.$router.replace({ path: '/job_seeker/' + this.username })
       }
     },
     onLogIn () {
       this.$router.replace({ path: '/login' })
     },
     onLogOut () {
-      this.$router.replace({ path: '/about_us' })
-      this.logged = false
-      this.username = ''
-      this.token = ''
-      this.is_jobseeker = true
-      this.is_company = false
-      this.is_admin = false
+      this.$store.commit('logout')
+      this.$router.replace({ path: '/' })
     },
     onJobPostings () {
-      this.$router.replace({path: '/job_postings',
-        query: {
-          username: this.username,
-          logged: this.logged,
-          is_company: this.is_company,
-          is_jobseeker: this.is_jobseeker,
-          is_admin: this.is_admin,
-          token: this.token
-        }
-      })
-    }
+      this.$router.replace({ path: '/job_postings' })
+    },
+    computed: mapState({
+      token: state => state.token,
+      logged: state => state.logged,
+      username: state => state.username,
+      isJobSeeker: state => state.isJobSeeker,
+      isCompany: state => state.isCompany,
+      isAdmin: state => state.isAdmin
+    })
   },
   created () {
-    this.logged = this.$route.query.logged === 'true'
-    this.username = this.$route.query.username ? this.$route.query.username : ''
-    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
-    this.is_company = this.$route.query.is_company === 'true'
-    this.token = this.$route.query.token ? this.$route.query.token : ''
-    this.is_admin = this.$route.query.is_admin === 'true'
+    this.logged = this.$store.state.logged
+    this.username = this.$store.state.username
+    this.is_jobseeker = this.$store.state.isJobSeeker
+    this.is_company = this.$store.state.isCompany
+    this.token = this.$store.state.token
+    this.is_admin = this.$store.state.isAdmin
   }
 }
 </script>

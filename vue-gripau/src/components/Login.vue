@@ -115,7 +115,7 @@
               </validation-provider>
 
               <!--
-              <b-form-checkbox id="checkbox-1" :state="termsAndCStateS" v-model="registerS.rTandC" name="checkbox-1">
+              <b-form-checkbox id="checkbox-1" :state="this.registerS.rTandC" v-model="registerS.rTandC" name="checkbox-1">
                 I have read and accept the terms and conditions and privacy policy.
               </b-form-checkbox>-->
 
@@ -170,7 +170,7 @@
                 </b-form-group>
               </validation-provider>
               <!--
-              <b-form-checkbox id="checkbox-1C" :state="termsAndCStateC" v-model="registerC.rTandC" name="checkbox-1C" required>
+              <b-form-checkbox id="checkbox-1C" :state="this.registerC.rTandC" v-model="registerC.rTandC" name="checkbox-1C" required>
                 I have read and accept the terms and conditions and privacy policy.
               </b-form-checkbox>-->
 
@@ -194,6 +194,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+import {mapState} from 'vuex'
 
 export default {
   data () {
@@ -236,7 +237,6 @@ export default {
         username: this.loginForm.username.toLowerCase(),
         password: this.loginForm.password
       }
-      console.log('checkLogin')
       const path = Vue.prototype.$API_BASE_URL + 'login'
       axios.post(path, parameters)
         .then((res) => {
@@ -269,22 +269,9 @@ export default {
         const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathJobseeker)
           .then((res) => {
-            console.log(res)
-            this.is_jobseeker = true
-            this.is_admin = res.data.account.is_admin !== 0
-            this.registerS.fName = res.data.account.name
-            this.registerS.lName = res.data.account.surname
-            this.$router.replace({
-              path: '/',
-              query: {
-                username: this.loginForm.username,
-                is_company: false,
-                is_jobseeker: true,
-                logged: this.logged,
-                is_admin: this.is_admin,
-                token: this.token
-              }
-            })
+            const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: true, isCompany: false}
+            this.$store.commit('login', storeData)
+            this.$router.replace({path: '/'})
           })
           .catch(() => {
             // eslint-disable-next-line
@@ -296,19 +283,9 @@ export default {
         const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
-            this.is_jobseeker = false
-            this.is_company = true
-            this.is_admin = res.data.account.is_admin !== 0
-            this.$router.replace({path: '/',
-              query: {
-                username: this.loginForm.username,
-                logged: this.logged,
-                is_company: true,
-                is_jobseeker: false,
-                is_admin: this.is_admin,
-                token: this.token
-              }
-            })
+            const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: false, isCompany: true}
+            this.$store.commit('login', storeData)
+            this.$router.replace({path: '/'})
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -379,14 +356,14 @@ export default {
       this.loginForm.password = ''
     }
   },
-  computed: {
-    termsAndCStateS () {
-      return this.registerS.rTandC
-    },
-    termsAndCStateC () {
-      return this.registerC.rTandC
-    }
-  }
+  computed: mapState({
+    token: state => state.token,
+    logged: state => state.logged,
+    username: state => state.username,
+    isJobSeeker: state => state.isJobSeeker,
+    isCompany: state => state.isCompany,
+    isAdmin: state => state.isAdmin
+  })
 }
 </script>
 

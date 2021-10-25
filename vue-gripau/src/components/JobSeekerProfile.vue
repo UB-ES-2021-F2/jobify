@@ -79,69 +79,102 @@
         </div>
       </div>
 
-      <b-modal hide-footer hide-backdrop  ref="addWorkModal">
+      <b-modal hide-footer hide-backdrop ref="addWorkModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
-        <b-form ref="addWorkForm" @submit.prevent="submitAddWork" @reset.prevent="resetAddWork" style="font-family: 'Work Sans SemiBold'">
-          <div class="form-group">
-            <label for="jobTitle">Job Title </label>
-            <input type="text" class="form-control" id="jobTitle" placeholder="Enter job title" v-model="addWork.jobName">
-          </div>
-          <div class="form-group">
-            <label for="companyName">Company </label>
-            <input type="text" class="form-control" id="companyName" placeholder="Enter company name" v-model="addWork.company">
-          </div>
-          <div class="form-group">
-            <label>Description </label>
-            <textarea class="form-control" id="description" rows="3" placeholder="Enter job description"
-                      v-model="addWork.description"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="startYear">Start month </label>
-            <input type="month" class="form-control" id="startYear" v-model="addWork.startDate">
-          </div>
-          <div class="form-group">
-            <label for="endYear">End month </label>
-            <input type="month" class="form-control" id="endYear" v-model="addWork.endDate">
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="currentlyCheckbox" v-model="addWork.currently">
-            <label class="form-check-label" for="currentlyCheckbox">Currently in this job</label>
-          </div>
-          <div class="float-right">
-            <b-button variant="primary" type="submit">Submit</b-button>
-            <b-button variant="secondary" type="reset">Reset</b-button>
-          </div>
-        </b-form>
+        <validation-observer ref="observer" v-slot="{ handleSubmit }">
+          <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" style="font-family: 'Work Sans SemiBold'">
+
+            <validation-provider name="jobTitle"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
+              <b-form-group label="Job Title">
+                <b-form-input v-model="addWork.jobName" type="text" id="jobTitle" placeholder="Enter job title"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
+                <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
+
+            <validation-provider name="company"  :rules="{required: true, max:64}" v-slot="validationContext">
+              <b-form-group label="Company">
+                <b-form-input v-model="addWork.company" type="text" id="company" placeholder="Enter company name"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-2"></b-form-input>
+                <b-form-invalid-feedback id="live-feedback-2">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
+
+            <validation-provider name="description"  :rules="{max:1000}" v-slot="validationContext">
+              <b-form-group label="Description">
+                <b-form-textarea v-model="addWork.description" id="description" rows="4" placeholder="Description (optional)"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-3"></b-form-textarea>
+                <b-form-invalid-feedback id="live-feedback-3">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
+
+            <b-form-group required label="Start date">
+              <input type="month" class="form-control" id="startYear" v-model="addWork.startDate">
+            </b-form-group>
+
+            <b-form-group label="End date">
+              <input type="month" class="form-control" id="endYear" v-model="addWork.endDate"
+                     :disabled="addWork.currently" :state="checkDates('work')">
+              <span style="font-size: 12px;color:#dd2222" v-if="checkDates('work')">Start date cannot be posterior to end date</span>
+            </b-form-group>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="currentlyCheckbox" v-model="addWork.currently"
+                     @click="addWork.endDate=''">
+              <label class="form-check-label" for="currentlyCheckbox">Currently in this job</label>
+            </div>
+
+            <div class="float-right">
+              <b-button variant="primary" type="submit">Submit</b-button>
+            </div>
+
+          </b-form>
+        </validation-observer>
       </b-modal>
 
       <b-modal hide-footer hide-backdrop  ref="addEducationModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
-        <b-form ref="addEducationForm" @submit.prevent="submitAddEducation" @reset.prevent="resetAddEducation" style="font-family: 'Work Sans SemiBold'">
-          <div class="form-group">
-            <label for="title">Title </label>
-            <input type="text" class="form-control" id="title" placeholder="Enter job title" v-model="addEducation.title">
-          </div>
-          <div class="form-group">
-            <label for="institution">Institution </label>
-            <input type="text" class="form-control" id="institution" placeholder="Enter institution" v-model="addEducation.institution">
-          </div>
-          <div class="form-group">
-            <label for="startYearEd">Start month </label>
-            <input type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate">
-          </div>
-          <div class="form-group">
-            <label for="endYearEd">End month </label>
-            <input type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate">
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="currentlyCheckboxEd" v-model="addEducation.currently">
-            <label class="form-check-label" for="currentlyCheckboxEd">Currently enrolled</label>
-          </div>
-          <div class="float-right">
-            <b-button variant="primary" type="submit">Submit</b-button>
-            <b-button variant="secondary" type="reset">Reset</b-button>
-          </div>
-        </b-form>
+        <validation-observer ref="observer" v-slot="{ handleSubmit }">
+          <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddEducation)" style="font-family: 'Work Sans SemiBold'">
+
+            <validation-provider name="title"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
+              <b-form-group label="Title">
+                <b-form-input v-model="addEducation.title" type="text" id="title" placeholder="Enter title"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1-ed"></b-form-input>
+                <b-form-invalid-feedback id="live-feedback-1-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
+
+            <validation-provider name="institution"  :rules="{required: true, max:64}" v-slot="validationContext">
+              <b-form-group label="Institution">
+                <b-form-input v-model="addEducation.institution" type="text" id="institution" placeholder="Enter institution"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-2-ed"></b-form-input>
+                <b-form-invalid-feedback id="live-feedback-2-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
+
+            <b-form-group required label="Start date">
+              <input type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate">
+            </b-form-group>
+
+            <b-form-group label="End date">
+              <input type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate"
+                     :disabled="addEducation.currently" :state="checkDates('ed')">
+              <span style="font-size: 12px;color:#dd2222" v-if="checkDates('ed')">Start date cannot be posterior to end date</span>
+            </b-form-group>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="currentlyCheckboxEd" v-model="addEducation.currently"
+                     @click="addEducation.endDate=''">
+              <label class="form-check-label" for="currentlyCheckboxEd">Currently enrolled</label>
+            </div>
+
+            <div class="float-right">
+              <b-button variant="primary" type="submit">Submit</b-button>
+            </div>
+
+          </b-form>
+        </validation-observer>
       </b-modal>
 
     </b-container>
@@ -254,6 +287,42 @@ export default {
         }
       })
     },
+    getValidationState ({ dirty, validated, valid = null }) {
+      return dirty || validated ? valid : null
+    },
+    checkDates (form) {
+      if (form === 'work') {
+        if (this.addWork.endDate === '' || this.addWork.startDate === '') {
+          return false
+        } else {
+          const endDate = this.addWork.endDate.split('-')
+          const startDate = this.addWork.startDate.split('-')
+          if (endDate[0] < startDate[0]) {
+            return true
+          } else if (endDate[0] === startDate[0]) {
+            if (endDate[1] < startDate[1]) {
+              return true
+            }
+          }
+        }
+        return false
+      } else {
+        if (this.addEducation.endDate === '' || this.addEducation.startDate === '') {
+          return false
+        } else {
+          const endDate = this.addEducation.endDate.split('-')
+          const startDate = this.addEducation.startDate.split('-')
+          if (endDate[0] < startDate[0]) {
+            return true
+          } else if (endDate[0] === startDate[0]) {
+            if (endDate[1] < startDate[1]) {
+              return true
+            }
+          }
+        }
+        return false
+      }
+    },
     getWorkExperience () {
       const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username_profile
       axios.get(path)
@@ -300,7 +369,7 @@ export default {
             endDate: '',
             currently: false
           }
-          this.$bvModal.hide('addWorkModal')
+          this.$refs.addWorkModal.hide('addWorkModal')
         })
         .catch((error) => {
           alert(error.response.data.message)
@@ -343,7 +412,7 @@ export default {
             endDate: '',
             currently: false
           }
-          this.$bvModal.hide('addEducationModal')
+          this.$refs.addEducationModal.hide('addEducationModal')
         })
         .catch((error) => {
           console.error(error)

@@ -11,6 +11,7 @@
         <b-navbar-nav>
           <b-nav-item @click="onHome()">Home</b-nav-item>
           <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -228,6 +229,9 @@ export default {
     },
     onLogIn () {
       this.$router.replace({ path: '/login' })
+    },
+    onCompanies () {
+      this.$router.replace({ path: '/companies' })
     },
     onLogOut () {
       this.$store.commit('logout')

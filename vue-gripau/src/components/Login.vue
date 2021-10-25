@@ -11,6 +11,7 @@
         <b-navbar-nav>
           <b-nav-item active href="#">Home</b-nav-item>
           <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -260,6 +261,9 @@ export default {
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
+    },
+    onCompanies () {
+      this.$router.replace({ path: '/companies' })
     },
     onJobPostings () {
       this.$router.replace({ path: '/job_postings' })

@@ -63,7 +63,7 @@
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)">
 
-              <validation-provider name="FirstName"  :rules="{ alpha_spaces, required: true}" v-slot="validationContext">
+              <validation-provider name="FirstName"  :rules="{ alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1" label="First Name" label-for="input-1">
                   <b-form-input v-model="registerS.fName" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1-live-feedback"></b-form-input>
@@ -71,7 +71,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="LastName"  :rules="{ alpha_spaces, required: true}" v-slot="validationContext">
+              <validation-provider name="LastName"  :rules="{ alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-2" label="Last Name" label-for="input-2">
                   <b-form-input v-model="registerS.lName" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-2-live-feedback"></b-form-input>
@@ -79,7 +79,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="Username"  :rules="{ alpha_num, required: true, min:4}" v-slot="validationContext">
+              <validation-provider name="Username"  :rules="{ alpha_num, required: true, min:4, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-3" label="Username" label-for="input-3">
                   <b-form-input v-model="registerS.username" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-3-live-feedback"></b-form-input>
@@ -87,7 +87,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="Email"  :rules="{ email, required: true}" v-slot="validationContext">
+              <validation-provider name="Email"  :rules="{ email, required: true, max: 128}" v-slot="validationContext">
                 <b-form-group id="input-group-4" label="Email" label-for="input-4">
                   <b-form-input v-model="registerS.email" placeholder="" type="email" :state="getValidationState(validationContext)"
                                 aria-describedby="input-4-live-feedback"></b-form-input>
@@ -135,7 +135,7 @@
           <validation-observer ref="observerCompany" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)" >
 
-              <validation-provider name="Company name"  :rules="{alpha_spaces, required: true}" v-slot="validationContext">
+              <validation-provider name="Company name"  :rules="{alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1C" label="Company name" label-for="input-1C">
                   <b-form-input v-model="registerC.company" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1c-live-feedback"></b-form-input>
@@ -143,7 +143,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="Company email"  :rules="{email, required: true}" v-slot="validationContext">
+              <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
                 <b-form-group id="input-group-2C" label="Email" label-for="input-2C">
                   <b-form-input v-model="registerC.email" placeholder="" type="email" :state="getValidationState(validationContext)"
                                 aria-describedby="input-2c-live-feedback">></b-form-input>
@@ -333,8 +333,7 @@ export default {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
-            console.error(error)
-            alert(' An error occurred creating the account')
+            alert(error.response.data.message)
           })
       } else {
         const values = {
@@ -347,8 +346,7 @@ export default {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
-            console.error(error)
-            alert(' An error occurred creating the account')
+            alert(error.response.data.message)
           })
       }
       this.onReset()

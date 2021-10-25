@@ -1,6 +1,6 @@
 from flask import g
 from flask_restful import Resource, Api, reqparse
-from models import CompanyModel
+from models import CompanyModel, JobSeekersModel
 from db import db
 from models.company import auth
 
@@ -35,7 +35,10 @@ class Companies(Resource):
         data = parser.parse_args()
 
         if CompanyModel.find_by_company(data.company):
-            return {'message': "User already exists"}, 400
+            return {'message': "Username already exists"}, 400
+
+        if JobSeekersModel.find_by_username(data.company):
+            return {'message': "Username already exists"}, 400
 
         account = CompanyModel(data.company, data.email, data.description)
 

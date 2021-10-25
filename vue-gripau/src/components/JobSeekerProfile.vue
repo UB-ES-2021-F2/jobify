@@ -109,12 +109,12 @@
             </validation-provider>
 
             <b-form-group required label="Start date">
-              <input type="month" class="form-control" id="startYear" v-model="addWork.startDate">
+              <input type="month" class="form-control" id="startYear" v-model="addWork.startDate" min="1900-01" max="2040-01">
             </b-form-group>
 
             <b-form-group label="End date">
               <input type="month" class="form-control" id="endYear" v-model="addWork.endDate"
-                     :disabled="addWork.currently" :state="checkDates('work')">
+                     :disabled="addWork.currently" :state="checkDates('work')" min="1900-01" max="2040-01">
               <span style="font-size: 12px;color:#dd2222" v-if="checkDates('work')">Start date cannot be posterior to end date</span>
             </b-form-group>
 
@@ -154,12 +154,12 @@
             </validation-provider>
 
             <b-form-group required label="Start date">
-              <input type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate">
+              <input type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate" min="1900-01" max="2040-01">
             </b-form-group>
 
             <b-form-group label="End date">
               <input type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate"
-                     :disabled="addEducation.currently" :state="checkDates('ed')">
+                     :disabled="addEducation.currently" :state="checkDates('ed')" min="1900-01" max="2040-01">
               <span style="font-size: 12px;color:#dd2222" v-if="checkDates('ed')">Start date cannot be posterior to end date</span>
             </b-form-group>
 

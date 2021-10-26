@@ -11,6 +11,7 @@
         <b-navbar-nav>
           <b-nav-item active href="#">Home</b-nav-item>
           <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -63,7 +64,7 @@
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)">
 
-              <validation-provider name="FirstName"  :rules="{ alpha_spaces, required: true}" v-slot="validationContext">
+              <validation-provider name="FirstName"  :rules="{ alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1" label="First Name" label-for="input-1">
                   <b-form-input v-model="registerS.fName" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1-live-feedback"></b-form-input>
@@ -71,7 +72,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="LastName"  :rules="{ alpha_spaces, required: true}" v-slot="validationContext">
+              <validation-provider name="LastName"  :rules="{ alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-2" label="Last Name" label-for="input-2">
                   <b-form-input v-model="registerS.lName" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-2-live-feedback"></b-form-input>
@@ -79,7 +80,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="Username"  :rules="{ alpha_num, required: true, min:4}" v-slot="validationContext">
+              <validation-provider name="Username"  :rules="{ alpha_num, required: true, min:4, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-3" label="Username" label-for="input-3">
                   <b-form-input v-model="registerS.username" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-3-live-feedback"></b-form-input>
@@ -87,7 +88,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="Email"  :rules="{ email, required: true}" v-slot="validationContext">
+              <validation-provider name="Email"  :rules="{ email, required: true, max: 128}" v-slot="validationContext">
                 <b-form-group id="input-group-4" label="Email" label-for="input-4">
                   <b-form-input v-model="registerS.email" placeholder="" type="email" :state="getValidationState(validationContext)"
                                 aria-describedby="input-4-live-feedback"></b-form-input>
@@ -115,7 +116,7 @@
               </validation-provider>
 
               <!--
-              <b-form-checkbox id="checkbox-1" :state="termsAndCStateS" v-model="registerS.rTandC" name="checkbox-1">
+              <b-form-checkbox id="checkbox-1" :state="this.registerS.rTandC" v-model="registerS.rTandC" name="checkbox-1">
                 I have read and accept the terms and conditions and privacy policy.
               </b-form-checkbox>-->
 
@@ -135,7 +136,7 @@
           <validation-observer ref="observerCompany" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)" >
 
-              <validation-provider name="Company name"  :rules="{alpha_spaces, required: true}" v-slot="validationContext">
+              <validation-provider name="Company name"  :rules="{alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1C" label="Company name" label-for="input-1C">
                   <b-form-input v-model="registerC.company" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1c-live-feedback"></b-form-input>
@@ -143,7 +144,7 @@
                 </b-form-group>
               </validation-provider>
 
-              <validation-provider name="Company email"  :rules="{email, required: true}" v-slot="validationContext">
+              <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
                 <b-form-group id="input-group-2C" label="Email" label-for="input-2C">
                   <b-form-input v-model="registerC.email" placeholder="" type="email" :state="getValidationState(validationContext)"
                                 aria-describedby="input-2c-live-feedback">></b-form-input>
@@ -170,7 +171,7 @@
                 </b-form-group>
               </validation-provider>
               <!--
-              <b-form-checkbox id="checkbox-1C" :state="termsAndCStateC" v-model="registerC.rTandC" name="checkbox-1C" required>
+              <b-form-checkbox id="checkbox-1C" :state="this.registerC.rTandC" v-model="registerC.rTandC" name="checkbox-1C" required>
                 I have read and accept the terms and conditions and privacy policy.
               </b-form-checkbox>-->
 
@@ -194,6 +195,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+import {mapState} from 'vuex'
 
 export default {
   data () {
@@ -236,7 +238,6 @@ export default {
         username: this.loginForm.username.toLowerCase(),
         password: this.loginForm.password
       }
-      console.log('checkLogin')
       const path = Vue.prototype.$API_BASE_URL + 'login'
       axios.post(path, parameters)
         .then((res) => {
@@ -261,6 +262,9 @@ export default {
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
     },
+    onCompanies () {
+      this.$router.replace({ path: '/companies' })
+    },
     onJobPostings () {
       this.$router.replace({ path: '/job_postings' })
     },
@@ -269,22 +273,9 @@ export default {
         const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathJobseeker)
           .then((res) => {
-            console.log(res)
-            this.is_jobseeker = true
-            this.is_admin = res.data.account.is_admin !== 0
-            this.registerS.fName = res.data.account.name
-            this.registerS.lName = res.data.account.surname
-            this.$router.replace({
-              path: '/',
-              query: {
-                username: this.loginForm.username,
-                is_company: false,
-                is_jobseeker: true,
-                logged: this.logged,
-                is_admin: this.is_admin,
-                token: this.token
-              }
-            })
+            const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: true, isCompany: false}
+            this.$store.commit('login', storeData)
+            this.$router.replace({path: '/'})
           })
           .catch(() => {
             // eslint-disable-next-line
@@ -296,19 +287,9 @@ export default {
         const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
-            this.is_jobseeker = false
-            this.is_company = true
-            this.is_admin = res.data.account.is_admin !== 0
-            this.$router.replace({path: '/',
-              query: {
-                username: this.loginForm.username,
-                logged: this.logged,
-                is_company: true,
-                is_jobseeker: false,
-                is_admin: this.is_admin,
-                token: this.token
-              }
-            })
+            const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: false, isCompany: true}
+            this.$store.commit('login', storeData)
+            this.$router.replace({path: '/'})
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -333,8 +314,7 @@ export default {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
-            console.error(error)
-            alert(' An error occurred creating the account')
+            alert(error.response.data.message)
           })
       } else {
         const values = {
@@ -347,8 +327,7 @@ export default {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
           })
           .catch((error) => {
-            console.error(error)
-            alert(' An error occurred creating the account')
+            alert(error.response.data.message)
           })
       }
       this.onReset()
@@ -379,14 +358,14 @@ export default {
       this.loginForm.password = ''
     }
   },
-  computed: {
-    termsAndCStateS () {
-      return this.registerS.rTandC
-    },
-    termsAndCStateC () {
-      return this.registerC.rTandC
-    }
-  }
+  computed: mapState({
+    token: state => state.token,
+    logged: state => state.logged,
+    username: state => state.username,
+    isJobSeeker: state => state.isJobSeeker,
+    isCompany: state => state.isCompany,
+    isAdmin: state => state.isAdmin
+  })
 }
 </script>
 

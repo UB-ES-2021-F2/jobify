@@ -1,0 +1,65 @@
+name: Deploy
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ production ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # Builds frontend and deploys project to heroku
+  build-deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Replace Local URL with HEROKU URL
+        run: |
+          sed -i 's/http:\/\/localhost:5000/https:\/\/ub-jobify.herokuapp.com/g' vue-gripau/src/main.js
+          cat vue-gripau/src/main.js
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:  
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: vue-gripau/package-lock.json
+      - name: Build with Node.js
+        working-directory: ./vue-gripau/src
+        run: |
+          npm ci
+          npm run build 
+      - name: Reset heroku database
+        uses: AkhileshNS/heroku-deploy@v3.12.12
+        with:
+          # This will be used for authentication. You can find it in your heroku homepage account settings
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          # Email that you use with heroku
+          heroku_email: "98perezcarles@gmail.com"
+          # The appname to use for deploying/updating
+          heroku_app_name: "ub-jobify"
+          justlogin: true
+      - run: heroku pg:reset DATABASE -a ub-jobify --confirm ub-jobify
+      - name: Deploy to Heroku
+        # You may pin to the exact commit or the version.
+        # uses: AkhileshNS/heroku-deploy@79ef2ae4ff9b897010907016b268fd0f88561820
+        uses: AkhileshNS/heroku-deploy@v3.12.12
+        with:
+          # This will be used for authentication. You can find it in your heroku homepage account settings
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          # Email that you use with heroku
+          heroku_email: "98perezcarles@gmail.com"
+          # The appname to use for deploying/updating
+          heroku_app_name: "ub-jobify"
+          # The branch that you would like to deploy to Heroku
+          # branch: "origin/production"
+          # Set this to true if you don't want to automatically create the Heroku app
+          dontautocreate: true
+          # Set if your app is located in a subdirectory.
+          appdir: "flask-gripau"
+          buildpack: "heroku/python"

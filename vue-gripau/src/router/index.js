@@ -6,6 +6,8 @@ import JobPostings from '@/components/JobPostings'
 import AboutUs from '@/components/AboutUs'
 import Login from '@/components/Login'
 import CompanyProfile from '@/components/CompanyProfile'
+import Companies from '@/components/Companies'
+
 
 Vue.use(Router)
 
@@ -60,6 +62,11 @@ export default new Router({
       path: '/job_postings',
       name: 'JobPostings',
       component: JobPostings
+    },
+    {
+      path: '/companies',
+      name: 'Companies',
+      component: Companies
     },
     {
       path: '/about_us',

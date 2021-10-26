@@ -247,7 +247,6 @@ export default {
         .then((res) => {
           this.getCompany()
           this.edit.description = !this.edit.description
-          // console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
         })
         .catch((error) => {
           console.error(error)
@@ -263,7 +262,6 @@ export default {
         .then((res) => {
           this.getCompany()
           this.edit.sector = !this.edit.sector
-          // console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
         })
         .catch((error) => {
           console.error(error)
@@ -279,7 +277,6 @@ export default {
         .then((res) => {
           this.getCompany()
           this.edit.location = !this.edit.location
-          // console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
         })
         .catch((error) => {
           console.error(error)

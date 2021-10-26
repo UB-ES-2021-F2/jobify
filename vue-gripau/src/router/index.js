@@ -8,7 +8,6 @@ import Login from '@/components/Login'
 import CompanyProfile from '@/components/CompanyProfile'
 import Companies from '@/components/Companies'
 
-
 Vue.use(Router)
 
 const JobSeeker = {

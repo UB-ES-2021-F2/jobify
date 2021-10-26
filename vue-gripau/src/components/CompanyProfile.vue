@@ -188,6 +188,7 @@ export default {
       this.jobView = true
       this.edit.description = false
       this.edit.sector = false
+      this.edit.location = false
     },
     onLogOut () {
       this.$router.replace({path: '/',

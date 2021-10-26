@@ -52,28 +52,10 @@ export default {
       this.$router.replace({ path: '/' })
     },
     onProfile () {
-      if (this.is_jobseeker & this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username,
-          query: {
-            username: this.username,
-            logged: this.logged,
-            is_company: this.is_company,
-            is_jobseeker: this.is_jobseeker,
-            is_admin: this.is_admin,
-            token: this.token
-          }
-        })
-      } else if (this.is_company & this.logged) {
-        this.$router.replace({ path: '/company/' + this.username,
-          query: {
-            username: this.username,
-            logged: this.logged,
-            is_company: this.is_company,
-            is_jobseeker: this.is_jobseeker,
-            is_admin: this.is_admin,
-            token: this.token
-          }
-        })
+      if (this.is_jobseeker && this.logged) {
+        this.$router.replace({ path: '/job_seeker/' + this.username })
+      } else if (this.is_company && this.logged) {
+        this.$router.replace({path: '/company/' + this.username})
       }
     },
     onLogIn () {

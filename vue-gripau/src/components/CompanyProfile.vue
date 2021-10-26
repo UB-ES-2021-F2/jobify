@@ -11,6 +11,7 @@
         <b-navbar-nav>
           <b-nav-item @click="onHome()">Home</b-nav-item>
           <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -126,6 +127,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+import {mapState} from 'vuex'
 
 export default {
   data () {
@@ -165,19 +167,13 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/',
-        query: {
-          username: this.username,
-          logged: this.logged,
-          is_company: this.is_company,
-          is_jobseeker: this.is_jobseeker,
-          is_admin: this.is_admin,
-          token: this.token
-        }
-      })
+      this.$router.replace({ path: '/' })
     },
     onLogIn () {
       this.$router.replace({ path: '/login' })
+    },
+    onCompanies () {
+      this.$router.replace({ path: '/companies' })
     },
     onProfileView () {
       this.profileView = true
@@ -191,40 +187,14 @@ export default {
       this.edit.location = false
     },
     onLogOut () {
-      this.$router.replace({path: '/',
-        query: {
-          username: '',
-          logged: false,
-          is_company: false,
-          is_jobseeker: true,
-          is_admin: false,
-          token: ''
-        }
-      })
+      this.$store.commit('logout')
+      this.$router.replace({ path: '/' })
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings',
-        query: {
-          username: this.username,
-          logged: this.logged,
-          is_company: this.is_company,
-          is_jobseeker: this.is_jobseeker,
-          is_admin: this.is_admin,
-          token: this.token
-        }
-      })
+      this.$router.replace({ path: '/job_postings' })
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us',
-        query: {
-          username: this.username,
-          logged: this.logged,
-          is_company: this.is_company,
-          is_jobseeker: this.is_jobseeker,
-          is_admin: this.is_admin,
-          token: this.token
-        }
-      })
+      this.$router.replace({ path: '/about_us' })
     },
     editDescription () {
       this.edit.description = !this.edit.description
@@ -307,17 +277,23 @@ export default {
   },
   created () {
     this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()
-    this.logged = this.$route.query.logged === 'true'
-    this.username = this.$route.query.username ? this.$route.query.username : ''
-    this.is_jobseeker = this.$route.query.is_jobseeker === 'true'
-    this.is_company = this.$route.query.is_company === 'true'
-    this.token = this.$route.query.token ? this.$route.query.token : ''
-    this.is_admin = this.$route.query.is_admin === 'true'
+    this.logged = this.$store.state.logged
+    this.username = this.$store.state.username
+    this.is_jobseeker = this.$store.state.isJobSeeker
+    this.is_company = this.$store.state.isCompany
+    this.token = this.$store.state.token
+    this.is_admin = this.$store.state.isAdmin
     this.edit_mode = this.username === this.company_name_profile
     this.getCompany()
-    // this.getWorkExperience()
-    // this.getEducation()
-  }
+  },
+  computed: mapState({
+    token: state => state.token,
+    logged: state => state.logged,
+    username: state => state.username,
+    isJobSeeker: state => state.isJobSeeker,
+    isCompany: state => state.isCompany,
+    isAdmin: state => state.isAdmin
+  })
 }
 
 </script>

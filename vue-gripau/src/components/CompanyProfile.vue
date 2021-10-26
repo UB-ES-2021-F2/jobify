@@ -29,49 +29,89 @@
     <b-container fluid>
       <b-row align-v="stretch">
         <!-- Local Navbar -->
-        <b-col fluid style="background-color: #00000007" cols="">
+        <b-col style="background-color: #00000007" cols="">
           <b-nav sticky toggleable="lg" type="light" variant="light" vertical>
-            <b-navbar-brand>
-              <div>
-              <h2 style="font-family: 'Vollkorn', serif"> {{ company.company }} </h2>
-              <b-icon icon="building"></b-icon>
+            <b-navbar-brand style="text-align: center;width: 100%;" >
+              <div >
+                <h2  style="font-family: 'Vollkorn', serif; text-align:center">{{company.company}}</h2>
+                <b-icon icon="building"></b-icon>
               </div>
             </b-navbar-brand>
-            <b-nav-item active @click="onProfileView()">Profile</b-nav-item>
-            <b-nav-item @click="onjobView()">Jobs</b-nav-item>
+            <b-nav-item style="text-align: center;width: 100%;" @click="onProfileView()">Profile</b-nav-item>
+            <b-nav-item style="text-align: center;width: 100%;" @click="onjobView()">Jobs</b-nav-item>
           </b-nav>
         </b-col>
         <!--/.Local Navbar -->
-        <b-col fluid cols="10">
+        <b-col fluid lg="10" cols="12">
           <div v-if="this.profileView && !this.jobView">
             <h2 style="font-family: 'Vollkorn', serif"> Company Profile </h2>
             <div class="container-md-5 p-2 align-items-center">
-              <div v-if="company.description != null" class="bio-text">
+              <!-- company descripcion -->
+              <div v-if="company.description != null && !edit.description " class="bio-text">
                 {{company.description}}
                 <p></p>
-                <b-button v-if="edit_mode">Edit</b-button>
               </div>
-              <div v-if="company.description === null" class="bio-text">
+              <div v-if="company.description === null && !edit.description" class="bio-text">
                 {{bio}}
                 <p></p>
-                <b-button v-if="edit_mode">Edit</b-button>
               </div>
+              <b-container v-if="edit.description" fluid>
+                <b-row align="center">
+                  <b-col sm="10">
+                    <b-form-textarea v-model="modify.description" id="textarea-auto-height" rows="3" max-rows="8"/>
+                  </b-col>
+                  <b-col align-self="center" sm="1">
+                    <b-button variant="success" @click="modifyDescription()">Save</b-button>
+                  </b-col>
+                </b-row>
+                <p></p>
+              </b-container>
+              <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+              <!-- /company descripcion -->
               <div class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
                 <p>{{company.email}}</p>
-                <b-button v-if="edit_mode">Edit</b-button>
               </div>
-              <div v-if="company.sector || edit_mode" class="text-left p-2 pb-3" style="max-width: 50rem">
+              <!-- company sector -->
+              <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
-                <p>{{company.sector}}</p>
-                <b-button v-if="edit_mode">Edit</b-button>
+                <div v-if="!edit.sector">
+                  <p>{{company.sector}}</p>
+                </div>
+                <b-container v-if="edit.sector" fluid>
+                  <b-row align="left">
+                    <b-col sm="5">
+                      <b-form-textarea v-model="modify.sector" id="textarea-auto-height" rows="1" max-rows="2"/>
+                    </b-col>
+                    <b-col align-self="center" sm="1">
+                      <b-button variant="success" @click="modifySector()">Save</b-button>
+                    </b-col>
+                  </b-row>
+                  <p></p>
+                </b-container>
+                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               </div>
-              <div v-if="company.location || edit_mode" class="text-left p-2 pb-3" style="max-width: 50rem">
+              <!-- /company sector -->
+              <!-- company location -->
+              <div v-if="(company.location !== 'Unknown' && company.location) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Location</h3>
-                <p>{{company.location}}</p>
-                <b-button v-if="edit_mode">Edit</b-button>
+                <div v-if="!edit.location">
+                  <p>{{company.location}}</p>
+                </div>
+                <b-container v-if="edit.location" fluid>
+                  <b-row align="left">
+                    <b-col sm="5">
+                      <b-form-textarea v-model="modify.location" id="textarea-auto-height" rows="1" max-rows="2"/>
+                    </b-col>
+                    <b-col align-self="center" sm="1">
+                      <b-button variant="success" @click="modifyLocation()">Save</b-button>
+                    </b-col>
+                  </b-row>
+                  <p></p>
+                </b-container>
+                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editLocation()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               </div>
-
+              <!-- /company location -->
             </div>
           </div>
           <div v-show="this.profileView === false && this.jobView === true">
@@ -90,6 +130,16 @@ import Vue from 'vue'
 export default {
   data () {
     return {
+      edit: {
+        description: false,
+        sector: false,
+        location: false
+      },
+      modify: {
+        description: '',
+        sector: '',
+        location: ''
+      },
       company: {
         company: '',
         email: '',
@@ -136,6 +186,8 @@ export default {
     onjobView () {
       this.profileView = false
       this.jobView = true
+      this.edit.description = false
+      this.edit.sector = false
     },
     onLogOut () {
       this.$router.replace({path: '/',
@@ -173,6 +225,27 @@ export default {
         }
       })
     },
+    editDescription () {
+      this.edit.description = !this.edit.description
+      this.modify.description = this.company.description
+    },
+    editSector () {
+      this.edit.sector = !this.edit.sector
+      this.modify.sector = this.company.sector
+    },
+    editLocation () {
+      this.edit.location = !this.edit.location
+      this.modify.location = this.company.location
+    },
+    modifyDescription () {
+
+    },
+    modifySector () {
+
+    },
+    modifyLocation () {
+
+    },
     getCompany () {
       const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
       axios.get(pathCompany)
@@ -183,6 +256,7 @@ export default {
           this.company.description = res.data.account.description
           this.company.job_offers = res.data.account.job_offers
           this.company.location = res.data.account.location
+          this.company.sector = res.data.account.sector
         })
         .catch(() => {
           this.company.company = 'Name'
@@ -190,11 +264,9 @@ export default {
           this.company.description = 'Description'
           this.company.job_offers = 'Job_offers'
           this.company.location = 'Location'
+          this.company.sector = 'sector'
         })
     }
-  },
-  computed () {
-
   },
   created () {
     this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()

@@ -3847,15 +3847,19 @@ tbody.collapse.show {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+
 }
 
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .nav-link:hover, .nav-link:focus {
   text-decoration: underline;
+  color: rgba(0, 0, 0, 0.7);
   text-decoration-color: #ffc107;
   text-decoration-thickness: 5px;
 }

@@ -239,13 +239,52 @@ export default {
       this.modify.location = this.company.location
     },
     modifyDescription () {
-
+      const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
+      const values = {
+        description: this.modify.description
+      }
+      axios.put(pathCompany, values)
+        .then((res) => {
+          this.getCompany()
+          this.edit.description = !this.edit.description
+          // console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(' An error occurred creating the account')
+        })
     },
     modifySector () {
-
+      const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
+      const values = {
+        sector: this.modify.sector
+      }
+      axios.put(pathCompany, values)
+        .then((res) => {
+          this.getCompany()
+          this.edit.sector = !this.edit.sector
+          // console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(' An error occurred creating the account')
+        })
     },
     modifyLocation () {
-
+      const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
+      const values = {
+        location: this.modify.location
+      }
+      axios.put(pathCompany, values)
+        .then((res) => {
+          this.getCompany()
+          this.edit.location = !this.edit.location
+          // console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(' An error occurred creating the account')
+        })
     },
     getCompany () {
       const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()

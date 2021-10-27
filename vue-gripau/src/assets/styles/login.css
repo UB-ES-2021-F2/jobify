@@ -14,6 +14,7 @@ html, body{
 .row{
   height: 100%;
 }
+/****** LOGIN ******/
 
 /* Center Vertically */
 .content-table{
@@ -107,4 +108,115 @@ html, body{
       background-color: #ffcd01;
     }
 
+/****** ABOUT US ******/
+.ourproject-container, .ourvalues-container, .weare-container{
+  margin: 5px 0;
+}
 
+.aboutus-title{
+  font-family: 'Vollkorn';
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.aboutus-subtitle{
+  font-family: 'Vollkorn';
+  font-size: 1.5rem;
+  margin: 15px 0;
+}
+.icon-container{
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.ourvalues-icon{
+  height: 100px;
+  width: 100px;
+  margin: auto;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ffcd01;
+  border-radius: 50%;
+}
+
+.ourvalues-icon:hover{
+  color: #ffcd01;
+  background-color: #fff;
+  border: 2px solid #ffcd01;
+}
+
+  .ourvalues-icon svg{
+    width: 60px;
+    height: 60px;
+  }
+
+  .ourvalues-title{
+    font-weight: 900;
+    margin: 15px 0;
+  }
+
+.aboutus-weare-container{
+  border: 1px solid #9e9e9d;
+  border-radius: 5px;
+  padding: 20px 0;
+  margin: 10px 0;
+}
+
+  .aboutus-weare-container .col-6{
+    padding: 0px !important;
+  }
+
+  .aboutus-our-project{
+    font-weight: 500;
+  }
+
+  .image-container img{
+    width: 100%;
+  }
+
+  .aboutus-porfile-picture{
+    padding-left: 15px !important;
+  }
+    .aboutus-porfile-picture img{
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+
+  .aboutus-text-container{
+    padding: 5px;
+  }
+    .aboutus-name{
+      font-weight: 900;
+    }
+
+    .aboutus-role{
+      font-weight: 500;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .aboutus-descrption{
+      text-align: left;
+    }
+
+
+
+/*** STRUCTURE ***
+
+.col-12{
+  background-color: aqua;
+}
+
+.col-6{
+  background-color: yellow;
+}
+
+.col-4{
+  background-color: red;
+}
+
+.col-3{
+  background-color: purple;
+}
+*/

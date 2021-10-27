@@ -30,12 +30,13 @@
 
     <div class="container-sm pt-5 align-items-center">
       <div class="container" style="max-width: 900px">
-        <div class="container pl-5 pr-5 p-2" style="font-size:11vmin;line-height: 80%;font-family:'Bright', serif">
-          Welcome to Jobify!
-        </div>
-        <img class="img-fluid" src="../assets/images/working_image_vector.svg">
 
-        <div class="container mt-5">
+        <div class="container pl-5 pr-5 p-2" style="font-size:11vmin;line-height: 80%;font-family:'Bright', serif">
+          <span v-if="logged&&is_jobseeker">Welcome back, {{name}}</span>
+          <span v-else>{{welcome_message}}</span>
+        </div>
+
+        <div class="container pt-2 pb-2">
             <span style="white-space: nowrap">
                 <b-button btn variant="primary" class='btn-home' @click="onJobPostings">Find the newest jobs</b-button>
             </span>
@@ -43,6 +44,9 @@
                 <b-button variant="primary" class='btn-home' @click="onCompanies">Check our companies</b-button>
             </span>
         </div>
+
+        <img class="img-fluid" src="../assets/images/working_image_vector.svg">
+
       </div>
     </div>
   </div>
@@ -50,17 +54,20 @@
 
 <script>
 import {mapState} from 'vuex'
+import Vue from 'vue'
+import axios from 'axios'
 
 export default {
   data () {
     return {
-      message: 'Home',
+      welcome_message: 'Welcome to Jobify!',
       logged: false,
       username: '',
       is_admin: false,
       is_jobseeker: null,
       is_company: false,
-      token: ''
+      token: '',
+      name: ''
     }
   },
   methods: {
@@ -92,6 +99,16 @@ export default {
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
+    },
+    getName () {
+      axios.get(Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username)
+        .then((res) => {
+          console.log(res)
+          this.name = res.data.account.name
+        })
+        .catch(() => {
+          this.name = ''
+        })
     }
   },
   created () {
@@ -101,6 +118,7 @@ export default {
     this.is_company = this.$store.state.isCompany
     this.token = this.$store.state.token
     this.is_admin = this.$store.state.isAdmin
+    this.name = this.getName()
   },
   computed: mapState({
     token: state => state.token,

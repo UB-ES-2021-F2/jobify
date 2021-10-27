@@ -20,7 +20,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onUserProfile()">{{ this.username }}</b-nav-item>
+          <b-nav-item @click="onProfile()">{{ this.username }}</b-nav-item>
           <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -51,9 +51,11 @@ export default {
     onHome () {
       this.$router.replace({ path: '/' })
     },
-    onUserProfile () {
-      if (this.is_jobseeker & this.logged) {
+    onProfile () {
+      if (this.is_jobseeker && this.logged) {
         this.$router.replace({ path: '/job_seeker/' + this.username })
+      } else if (this.is_company && this.logged) {
+        this.$router.replace({path: '/company/' + this.username})
       }
     },
     onLogIn () {

@@ -28,7 +28,13 @@
     </b-navbar>
     <!--/.Navbar -->
 
-    <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
+    <div class="container-sm pt-5">
+      <div class="container p-3" style="font-size:8vw;line-height: 80%;font-family:'Bright', serif">
+        Welcome to Jobify!
+      </div>
+      <img class="img-fluid" src="../assets/images/working_image_vector.svg">
+    </div>
+
   </div>
 </template>
 

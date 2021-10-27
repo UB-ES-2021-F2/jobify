@@ -28,13 +28,23 @@
     </b-navbar>
     <!--/.Navbar -->
 
-    <div class="container-sm pt-5">
-      <div class="container p-3" style="font-size:12vmin;line-height: 80%;font-family:'Bright', serif">
-        Welcome to Jobify!
-      </div>
-      <img class="img-fluid" style="width: 100%;max-width:1000px" src="../assets/images/working_image_vector.svg">
-    </div>
+    <div class="container-sm pt-5 align-items-center">
+      <div class="container" style="max-width: 900px">
+        <div class="container pl-5 pr-5 p-2" style="font-size:11vmin;line-height: 80%;font-family:'Bright', serif">
+          Welcome to Jobify!
+        </div>
+        <img class="img-fluid" src="../assets/images/working_image_vector.svg">
 
+        <div class="container mt-5">
+            <span style="white-space: nowrap">
+                <b-button btn variant="primary" class='btn-home' @click="onJobPostings">Find the newest jobs</b-button>
+            </span>
+          <span style="white-space: nowrap">
+                <b-button variant="primary" class='btn-home' @click="onCompanies">Check our companies</b-button>
+            </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -110,5 +120,20 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.btn-home{
+  margin: 10px;
+  font-size: 1em;
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  background-color: #ffc107;
+  color:#000000;
+  border: 0;
+  border-radius: 5px;
+}
+.btn-home:focus{
+  outline: none;
+}
+.btn-home:hover{
+  background-color: #ffc107;
 }
 </style>

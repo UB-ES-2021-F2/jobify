@@ -121,7 +121,7 @@
                       <div class="row">
                         <div class="col-4">
                         <div class="aboutus-porfile-picture">
-                          <img src="../assets/images/arnau.jpeg">
+                          <img :src="require('../assets/images/arnau.jpeg')">
                         </div>
                       </div>
                         <div class="col-8">
@@ -145,7 +145,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="aboutus-porfile-picture">
-                            <img src="../assets/images/carles.jpeg">
+                            <img :src="require('../assets/images/carles.jpeg')">
                           </div>
                         </div>
                         <div class="col-8">
@@ -169,7 +169,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="aboutus-porfile-picture">
-                            <img src="../assets/images/david.jpeg">
+                            <img :src="require('../assets/images/david.jpeg')">
                           </div>
                         </div>
                         <div class="col-8">
@@ -193,7 +193,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="aboutus-porfile-picture">
-                            <img src="../assets/images/eduard.jpeg">
+                            <img :src="require('../assets/images/eduard.jpeg')">
                           </div>
                         </div>
                         <div class="col-8">
@@ -217,7 +217,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="aboutus-porfile-picture">
-                            <img src="../assets/images/sergi_ger.jpeg">
+                            <img :src="require('../assets/images/sergi_ger.jpeg')">
                           </div>
                         </div>
                         <div class="col-8">
@@ -241,7 +241,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="aboutus-porfile-picture">
-                            <img src="../assets/images/sergi_bech.jpeg">
+                            <img :src="require('../assets/images/sergi_bech.jpeg')">
                           </div>
                         </div>
                         <div class="col-8">
@@ -265,7 +265,7 @@
                       <div class="row">
                         <div class="col-4">
                           <div class="aboutus-porfile-picture">
-                            <img src="../assets/images/alex.jpeg">
+                            <img :src="require('../assets/images/alex.jpeg')">
                           </div>
                         </div>
                         <div class="col-8">

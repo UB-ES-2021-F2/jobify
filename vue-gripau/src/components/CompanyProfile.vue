@@ -52,7 +52,7 @@
                 {{company.description}}
                 <p></p>
               </div>
-              <div v-if="company.description === null && !edit.description" class="bio-text">
+              <div v-if="company.description === null && !edit.description && edit_mode" class="bio-text">
                 {{bio}}
                 <p></p>
               </div>
@@ -160,9 +160,7 @@ export default {
       username: '',
       company_name_profile: '',
       edit_mode: false,
-      bio: 'Example bio: I’ve always been a great problem solver, an independent introvert, and a technophile obsessed with the latest devices.\n' +
-        'Today, I’m working from home as a software engineer for Google, and I get to show off all these elements of who I am.\n' +
-        ' I’m also eager to meet other software engineers in the area, so feel free to connect!'
+      bio: 'Add your bio here'
     }
   },
   methods: {

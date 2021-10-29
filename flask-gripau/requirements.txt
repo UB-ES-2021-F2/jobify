@@ -14,4 +14,5 @@ itsdangerous==1.1.0
 python-dateutil==2.8.1
 aniso8601==9.0.1
 pytest==6.2.5
+pytest-cov==3.0.0
 Flask-Testing==0.8.1

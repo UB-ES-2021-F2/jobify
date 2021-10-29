@@ -1,0 +1,88 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.7, pytest-6.2.5, py-1.10.0, pluggy-1.0.0
+rootdir: /home/carles/Documents/gripau/flask-gripau
+plugins: cov-3.0.0
+collected 11 items
+
+Testing/test_app.py .....                                                [ 45%]
+Testing/test_job_offer.py FFF                                            [ 72%]
+Testing/test_skill.py ...                                                [100%]
+
+=================================== FAILURES ===================================
+_______________________ TestJobOffer.test_add_job_offer ________________________
+
+self = <Testing.test_job_offer.TestJobOffer testMethod=test_add_job_offer>
+
+    def test_add_job_offer(self):
+>       new_job_offer = JobOfferModel('test', 'test', datetime.strptime('2021-07-04', "%Y-%m-%d"), 'test')
+E       TypeError: __init__() missing 5 required positional arguments: 'vacancy_number', 'location', 'working_hours', 'minimum_experience', and 'contract_type'
+
+Testing/test_job_offer.py:17: TypeError
+_______________________ TestJobOffer.test_delete_from_db _______________________
+
+self = <Testing.test_job_offer.TestJobOffer testMethod=test_delete_from_db>
+
+    def test_delete_from_db(self):
+>       new_job_offer = JobOfferModel('test', 'test', datetime.strptime('2021-07-04', "%Y-%m-%d"), 'test')
+E       TypeError: __init__() missing 5 required positional arguments: 'vacancy_number', 'location', 'working_hours', 'minimum_experience', and 'contract_type'
+
+Testing/test_job_offer.py:35: TypeError
+____________________________ TestJobOffer.test_json ____________________________
+
+self = <Testing.test_job_offer.TestJobOffer testMethod=test_json>
+
+    def test_json(self):
+>       new_job_offer = JobOfferModel('test', 'test', datetime.strptime('2021-07-04', "%Y-%m-%d"), 'test')
+E       TypeError: __init__() missing 5 required positional arguments: 'vacancy_number', 'location', 'working_hours', 'minimum_experience', and 'contract_type'
+
+Testing/test_job_offer.py:27: TypeError
+=============================== warnings summary ===============================
+venv/lib/python3.9/site-packages/werkzeug/local.py:216
+  /home/carles/Documents/gripau/flask-gripau/venv/lib/python3.9/site-packages/werkzeug/local.py:216: DeprecationWarning: '__ident_func__' is deprecated and will be removed in Werkzeug 2.1. It should not be used in Python 3.7+.
+    return self._local.__ident_func__
+
+Testing/test_app.py::TestJobSeeker::test_add_jobseeker
+Testing/test_app.py::TestJobSeeker::test_delete_education
+Testing/test_app.py::TestJobSeeker::test_delete_from_db
+Testing/test_app.py::TestJobSeeker::test_find_by_username
+Testing/test_app.py::TestJobSeeker::test_json
+Testing/test_skill.py::TestSkill::test_add_skill
+Testing/test_skill.py::TestSkill::test_delete_from_db
+  /home/carles/Documents/gripau/flask-gripau/models/job_seeker.py:54: DeprecationWarning: the method passlib.context.CryptContext.encrypt() is deprecated as of Passlib 1.7, and will be removed in Passlib 2.0, use CryptContext.hash() instead.
+    self.password = pwd_context.encrypt(password)
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+
+----------- coverage: platform linux, python 3.9.7-final-0 -----------
+Name                            Stmts   Miss  Cover
+---------------------------------------------------
+add_data.py                        25     25     0%
+app.py                             52      3    94%
+config.py                          18      0   100%
+db.py                               2      0   100%
+models/__init__.py                  6      0   100%
+models/company.py                  74     38    49%
+models/education.py                26      6    77%
+models/job_offer.py                42     20    52%
+models/job_seeker.py               88     32    64%
+models/skill.py                    18      1    94%
+models/work_experience.py          28     12    57%
+resources/Companies.py             65     54    17%
+resources/CompanyJobOffers.py      11      4    64%
+resources/CompanyList.py            8      4    50%
+resources/Educations.py            55     45    18%
+resources/JobOfferList.py          12      5    58%
+resources/JobOffers.py             43     33    23%
+resources/JobSeekers.py            79     67    15%
+resources/Login.py                 19     15    21%
+resources/Register.py              47     39    17%
+resources/WorkExperiences.py       56     46    18%
+resources/__init__.py              10      0   100%
+---------------------------------------------------
+TOTAL                             784    449    43%
+
+=========================== short test summary info ============================
+FAILED Testing/test_job_offer.py::TestJobOffer::test_add_job_offer - TypeErro...
+FAILED Testing/test_job_offer.py::TestJobOffer::test_delete_from_db - TypeErr...
+FAILED Testing/test_job_offer.py::TestJobOffer::test_json - TypeError: __init...
+=================== 3 failed, 8 passed, 8 warnings in 3.34s ====================

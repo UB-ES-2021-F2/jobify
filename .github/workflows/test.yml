@@ -40,6 +40,6 @@ jobs:
       - name: Report coverage
         uses: romeovs/lcov-reporter-action@v0.2.16
         with:
-          lcov-file: .${{env.working-directory}}/coverage/lcov.info
+          lcov-file: .${{env.working-directory}}/lcov.info
       
 

@@ -12,10 +12,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-    env:
-      working-directory: ./flask-gripau
-      COVERAGE_SINGLE: 60
-      COVERAGE_TOTAL: 60
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -35,12 +31,11 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         working-directory: ${{env.working-directory}} 
-      - name: pytester-cov
-        id: pytester-cov
-        uses: alexanderdamiani/pytester-cov@v1.2.0
-        with:
-          pytest-root-dir: './flask-gripau'
-          requirements-file: './flask-gripau/requirements.txt'
-          cov-omit-list: 'Testing/*'
-          cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
-          cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
+      - name 
+      - name: Test with pytest
+        run: |
+          coverage run -m pytest
+          coverage report
+        working-directory: ${{env.working-directory}}
+      
+

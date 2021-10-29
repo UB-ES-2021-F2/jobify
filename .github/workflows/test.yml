@@ -35,7 +35,7 @@ jobs:
         working-directory: ${{env.working-directory}} 
       - name: Test with pytest and check coverage
         run: |
-          pytest --cache-clear --cov=. Testing/ > pytest-coverage.txt
+          pytest --cache-clear --cov=. Testing/
         working-directory: ${{env.working-directory}}
       - name: Report coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2

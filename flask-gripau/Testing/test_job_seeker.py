@@ -1,4 +1,4 @@
-from models.job_seeker import JobSeekersModel, get_user_roles
+from models.job_seeker import JobSeekersModel, get_user_roles, verify_password
 from models.education import EducationsModel
 from models.work_experience import WorkExperiencesModel
 from Testing import BaseTestCase
@@ -13,14 +13,14 @@ class TestJobSeeker(BaseTestCase):
         self.assertTrue(data in db.session)
 
     def test_add_jobseeker(self):
-        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech','test@hotmail.com', 'hola, soc un test')
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
         new_job_seeker.hash_password('test')
         self._add_data_to_db(new_job_seeker)
         result = db.session.query(JobSeekersModel).first()
         self.assertIsNotNone(result, 'Nothing in the database')
 
     def test_find_by_username(self):
-        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech','test@hotmail.com', 'hola, soc un test')
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
         new_job_seeker.hash_password('test')
         self._add_data_to_db(new_job_seeker)
         find = JobSeekersModel.find_by_username('test')
@@ -29,7 +29,8 @@ class TestJobSeeker(BaseTestCase):
     def test_json(self):
         new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
         new_job_seeker.hash_password('test')
-        ret = {'id': None, 'username': 'test', "name": "Sergi", "surname": "Bech", 'email': 'test@hotmail.com', 'is_admin': 0,
+        ret = {'id': None, 'username': 'test', "name": "Sergi", "surname": "Bech", 'email': 'test@hotmail.com',
+               'is_admin': 0,
                'bio': 'hola, soc un test', "educations": [], "work_experiences": [], "skills": []}
         assert new_job_seeker.json() == ret
 
@@ -89,6 +90,23 @@ class TestJobSeeker(BaseTestCase):
         assert get_user_roles(new_job_seeker) == ['user']
         new_job_seeker.is_admin = 1
         assert get_user_roles(new_job_seeker) == ['admin']
+
+    def test_generate_auth_token_valid(self):
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        self._add_data_to_db(new_job_seeker)
+        token = new_job_seeker.generate_auth_token().decode('ascii')
+        self.assertTrue(JobSeekersModel.verify_auth_token(token))
+
+    def test_generate_auth_token_expired(self):
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        self._add_data_to_db(new_job_seeker)
+        token = new_job_seeker.generate_auth_token(expiration=-1).decode('ascii')
+        self.assertIsNone(JobSeekersModel.verify_auth_token(token))
+
+    def test_verify_auth_token_bad_signature(self):
+        self.assertIsNone(JobSeekersModel.verify_auth_token('illegal_token'))
 
 
 if __name__ == '__main__':

@@ -32,11 +32,11 @@
       <b-row align-h="center" v-if="is_company">
         <b-card
           tag="article"
-          class="text-center"
+          class="text-center mb-2"
           style="width: 90%; max-width: 600px"
         >
           <b-link v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
-          <p class="h1 mb-2"><b-icon icon="patch-plus"></b-icon></p>
+          <p class="h1"><b-icon icon="patch-plus"></b-icon></p>
         </b-card>
       </b-row>
       <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
@@ -47,14 +47,27 @@
           style="width: 90%; max-width: 600px"
           align="left"
         >
+          <b-button class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
           <b-card-text>
             {{ job_offer.company }}
           </b-card-text>
           <footer>
-            <b-icon icon="briefcase"></b-icon> {{ job_offer.contract_type }}
-            <b-icon icon="alarm"></b-icon> {{ job_offer.working_hours }}
-            <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-            <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+            <b-container fluid>
+              <b-row>
+                <b-col>
+                  <b-icon icon="briefcase"></b-icon> {{ job_offer.contract_type }}
+                </b-col>
+                <b-col>
+                  <b-icon icon="alarm"></b-icon> {{ job_offer.working_hours }}
+                </b-col>
+                <b-col>
+                  <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                </b-col>
+                <b-col>
+                  <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                </b-col>
+              </b-row>
+            </b-container>
           </footer>
         </b-card>
       </b-row>
@@ -195,11 +208,14 @@ export default {
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
     },
+    onJobOffer (id) {
+      console.log(id)
+    },
     getJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers'
       axios.get(path)
         .then((res) => {
-          this.job_offers = res.data
+          this.job_offers = res.data.OfferList
           console.log(this.offers)
         })
         .catch((error) => {

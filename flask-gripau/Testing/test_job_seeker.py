@@ -1,5 +1,6 @@
 from models.job_seeker import JobSeekersModel, get_user_roles
 from models.education import EducationsModel
+from models.work_experience import WorkExperiencesModel
 from Testing import BaseTestCase
 from db import db
 
@@ -47,6 +48,14 @@ class TestJobSeeker(BaseTestCase):
         new_job_seeker.educations.append(new_education)
         new_job_seeker.delete_education(None)
         assert new_job_seeker.educations == []
+
+    def test_delete_work_experience(self):
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        new_work_experience = WorkExperiencesModel('QA Tester', 'test', 'Jobify', '10-2020', '10-2021', True)
+        new_job_seeker.work_experiences.append(new_work_experience)
+        new_job_seeker.delete_work_experience(None)
+        assert new_job_seeker.work_experiences == []
 
     def test_save_to_db_and_delete_from_db(self):
         new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')

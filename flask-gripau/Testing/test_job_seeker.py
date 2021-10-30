@@ -108,6 +108,13 @@ class TestJobSeeker(BaseTestCase):
     def test_verify_auth_token_bad_signature(self):
         self.assertIsNone(JobSeekersModel.verify_auth_token('illegal_token'))
 
+    def test_auth_verify_password(self):
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        self._add_data_to_db(new_job_seeker)
+        token = new_job_seeker.generate_auth_token().decode('ascii')
+        self.assertEquals(new_job_seeker, verify_password(token, None))
+
 
 if __name__ == '__main__':
     import unittest

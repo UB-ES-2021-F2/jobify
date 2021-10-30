@@ -31,5 +31,5 @@ class EducationsModel(db.Model):
 
     @classmethod
     def show_educations(cls):
-        return {'educations': [education.json() for education in cls.query.all()]}
+        return [education.json() for education in cls.query.all()]
 

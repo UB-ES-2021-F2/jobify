@@ -1,7 +1,8 @@
 from db import db
 
-#working_hours_types = ('FULL_TIME', 'MORNING', 'AFTERNOON', 'NIGHT', 'FLEXIBLE')
-#contract_types = ('INDEFINITE', 'DETERMINED_DURATION', 'STAND_ALONE', 'PART_TIME', 'TRAINING')
+
+# working_hours_types = ('FULL_TIME', 'MORNING', 'AFTERNOON', 'NIGHT', 'FLEXIBLE')
+# contract_types = ('INDEFINITE', 'DETERMINED_DURATION', 'STAND_ALONE', 'PART_TIME', 'TRAINING')
 
 
 class JobOfferModel(db.Model):
@@ -23,8 +24,8 @@ class JobOfferModel(db.Model):
     minimum_experience = db.Column(db.Integer, unique=False)
     contract_type = db.Column(db.String(30), unique=False)
 
-    def __init__(self, job_name, description, publication_date, salary, vacancy_number, location,
-                 working_hours, minimum_experience, contract_type):
+    def __init__(self, job_name, description, publication_date, location, salary=None, vacancy_number=None,
+                 working_hours=None, minimum_experience=None, contract_type=None):
         """
         Initializer of a job offer
         :param job_name: name of the job offer
@@ -51,9 +52,11 @@ class JobOfferModel(db.Model):
         Function that returns the job offer info as json
         :return: json object with the information'
         """
-        return {'id': self.id, 'company': self.company, 'job_name': self.job_name, 'description': self.description, 'publication_date':
-                self.publication_date.isoformat(), 'salary': self.salary, 'location': self.location,
-                'vacancy_number': self.vacancy_number, 'working_hours': self.working_hours, 'contract_type': self.contract_type,
+        return {'id': self.id, 'company': self.company, 'job_name': self.job_name, 'description': self.description,
+                'publication_date':
+                    self.publication_date.strftime("%Y-%m-%d"), 'salary': self.salary, 'location': self.location,
+                'vacancy_number': self.vacancy_number, 'working_hours': self.working_hours,
+                'contract_type': self.contract_type,
                 'minimum_experience': self.minimum_experience}
 
     def save_to_db(self, database=None):
@@ -89,4 +92,4 @@ class JobOfferModel(db.Model):
         Function that returns a json with all the job offers in the database
         :return: json object with all the job offers
         """
-        return {'job_offers': [job_offer.json() for job_offer in cls.query.all()]}
+        return [job_offer.json() for job_offer in cls.query.all()]

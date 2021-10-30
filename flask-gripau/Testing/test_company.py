@@ -67,6 +67,23 @@ class TestJobSeeker(BaseTestCase):
         new_company.is_admin = 1
         assert get_user_roles(new_company) == ['admin']
 
+    def test_generate_auth_token_valid(self):
+        new_company = CompanyModel('test', 'test@test.com', 'test')
+        new_company.hash_password('test')
+        self._add_data_to_db(new_company)
+        token = new_company.generate_auth_token().decode('ascii')
+        self.assertTrue(CompanyModel.verify_auth_token(token))
+
+    def test_generate_auth_token_expired(self):
+        new_company = CompanyModel('test', 'test@test.com', 'test')
+        new_company.hash_password('test')
+        self._add_data_to_db(new_company)
+        token = new_company.generate_auth_token(expiration=-1).decode('ascii')
+        self.assertIsNone(CompanyModel.verify_auth_token(token))
+
+    def test_verify_auth_token_bad_signature(self):
+        self.assertIsNone(CompanyModel.verify_auth_token('illegal_token'))
+
 
 if __name__ == '__main__':
     import unittest

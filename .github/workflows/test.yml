@@ -38,8 +38,12 @@ jobs:
           pytest --cache-clear --cov=. Testing/ > pytest-coverage.txt
           cat pytest-coverage.txt
         working-directory: ${{env.working-directory}}
+      - name: Test with CyPress
+        run: |
+          cd ../vue-gripau
+          npm install -y
+          npm run cypress:run
       - name: Report coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
         with:
           pytest-coverage: ${{env.working-directory}}/pytest-coverage.txt
-

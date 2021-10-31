@@ -11,6 +11,7 @@ class CompanyModel(db.Model):
     __tablename__ = 'companies'
 
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True, nullable=False)
     company = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
     description = db.Column(db.String(256), unique=False, nullable=True)
@@ -21,7 +22,8 @@ class CompanyModel(db.Model):
     sector = db.Column(db.String(30))
     location = db.Column(db.String(30))
 
-    def __init__(self, company, email, description, is_admin=0, sector="Unknown", location="Unknown"):
+    def __init__(self, username, company, email, description, is_admin=0, sector="Unknown", location="Unknown"):
+        self.username = username
         self.company = company
         self.email = email
         self.is_admin = is_admin
@@ -30,7 +32,7 @@ class CompanyModel(db.Model):
         self.location = location
 
     def json(self):
-        return {'id': self.id, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
+        return {'id': self.id, 'username': self.username, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
                 'description': self.description, 'sector': self.sector, 'location': self.location}
 
     def save_to_db(self, database=None):

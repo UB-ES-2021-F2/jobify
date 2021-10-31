@@ -206,12 +206,14 @@ export default {
       this.edit.location = !this.edit.location
       this.modify.location = this.company.location
     },
+
     modifyDescription () {
       const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
       const values = {
         description: this.modify.description
       }
-      axios.put(pathCompany, values)
+      axios.put(pathCompany, values, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getCompany()
           this.edit.description = !this.edit.description

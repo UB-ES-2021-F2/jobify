@@ -56,7 +56,7 @@ class JobSeekersModel(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password)
 
-    def generate_auth_token(self, expiration=600):
+    def generate_auth_token(self, expiration=4000):
         s = Serializer(current_app.secret_key, expires_in=expiration)
         return s.dumps({'username': self.username})
 

@@ -51,14 +51,14 @@ class Companies(Resource):
 
         return account.json(), 201
 
-    @auth.login_required(role='admin')
+    @auth.login_required(role='user')
     def delete(self, company):
         """
         HTTP DELETE method to delete a specific company
         :param company: name of the company to delete
         :return: status message
         """
-        if g.user.is_admin == 0:
+        if company != g.user.company:
             return {'message': 'Access denied'}, 400
 
         account = CompanyModel.find_by_company(company)
@@ -68,12 +68,17 @@ class Companies(Resource):
 
         return {'message': "Account doesn't exist"}, 400
 
+    @auth.login_required(role='user')
     def put(self, company):
         """
         HTTP PUT method to update a specific company
         :param company: name of the company to update
         :return: json object with the updated company information
         """
+
+        if company != g.user.company:
+            return {'message': 'Access denied'}, 400
+
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('password', type=str)
         parser.add_argument('email', type=str)

@@ -58,11 +58,11 @@ class Educations(Resource):
             db.session.rollback()
             return {"message": "An error occurred inserting the order."}, 500
 
-    #@auth.login_required(role='user')
+    @auth.login_required(role='user')
     def delete(self, username):
 
-        #if username != g.user.username:
-            #return {'message': 'Access denied'}, 400
+        if username != g.user.username:
+            return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()
 

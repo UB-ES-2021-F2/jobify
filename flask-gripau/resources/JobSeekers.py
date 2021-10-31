@@ -54,14 +54,14 @@ class JobSeekers(Resource):
 
         return account.json(), 201
 
-    @auth.login_required(role='admin')
+    @auth.login_required(role='user')
     def delete(self, username):
         """
         HTTP DELETE method to delete a specific job seeker
         :param username: username of the job seeker to delete
         :return: status message
         """
-        if g.user.is_admin == 0:
+        if username != g.user.username:
             return {'message': 'Access denied'}, 400
 
         account = JobSeekersModel.find_by_username(username)
@@ -71,12 +71,17 @@ class JobSeekers(Resource):
 
         return {'message': "Account doesn't exist"}, 400
 
+    @auth.login_required(role='user')
     def put(self, username):
         """
         HTTP PUT method to update a specific job seeker
         :param username: name of the job seeker to update
         :return: json object with the updated job seeker information
         """
+
+        if username != g.user.username:
+            return {'message': 'Access denied'}, 400
+
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('password', type=str)
         parser.add_argument('email', type=str)

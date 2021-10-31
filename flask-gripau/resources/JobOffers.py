@@ -4,6 +4,7 @@ from models import JobOfferModel
 from db import db
 from models.company import CompanyModel
 from datetime import datetime
+from models.company import auth
 
 
 class JobOffers(Resource):
@@ -17,7 +18,11 @@ class JobOffers(Resource):
         else:
             return {'offer': None}, 404
 
+    @auth.login_required(role='user')
     def post(self, company):
+        if company != g.user.company:
+            return {'message': 'Access denied'}, 400
+
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('job_name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('description', type=str, required=False, help="This field cannot be left blank")

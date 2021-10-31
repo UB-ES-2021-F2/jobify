@@ -85,8 +85,8 @@ class TestJobSeeker(BaseTestCase):
         self.assertIsNone(CompanyModel.verify_auth_token('illegal_token'))
 
     def test_auth_verify_password(self):
-        new_company = CompanyModel('test', 'test@test.com', 'test')
-        new_company.hash_password('test')
+        new_company = CompanyModel('username', 'test', 'test@test.com', 'test')
+        new_company.hash_password('Test123')
         self._add_data_to_db(new_company)
         token = new_company.generate_auth_token().decode('ascii')
         self.assertEquals(new_company, verify_password(token, None))

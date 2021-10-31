@@ -43,7 +43,7 @@ class WorkExperiences(Resource):
         parser.add_argument('description', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('company', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('start_date', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('end_date', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('end_date', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('currently', type=bool, required=True, help="This field cannot be left blank")
 
         data = parser.parse_args()
@@ -77,7 +77,7 @@ class WorkExperiences(Resource):
             db.session.rollback()
             return {"message": "An error occurred inserting the order."}, 500
 
-    #@auth.login_required(role='user')
+    @auth.login_required(role='user')
     def delete(self, username):
         """
         HTTP DELETE method to delete a specific work experience
@@ -87,8 +87,8 @@ class WorkExperiences(Resource):
         :return: status message
         """
 
-        #if username != g.user.username:
-            #return {'message': 'Access denied'}, 400
+        if username != g.user.username:
+            return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()
 
@@ -102,7 +102,7 @@ class WorkExperiences(Resource):
 
         if education:
             education.delete_from_db(db)
-            return {'message': "Education with id [{}] deleted".format(id)}, 200
+            return {'message': "Education with id [{}] deleted".format(data.id)}, 200
 
-        return {'message': "Education with id [{}] don't exists".format(id)}, 400
+        return {'message': "Education with id [{}] don't exists".format(data.id)}, 400
 

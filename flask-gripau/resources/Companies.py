@@ -20,50 +20,15 @@ class Companies(Resource):
             return {'account': account.json()}, 200
         else:
             return {'account': None}, 404
-
-    def post(self):
-        """
-        HTTP POST method to create a company
-        Request fields:
-        - company: company name (Required)
-        - password: password of the account (Required)
-        - email: email of the company (Required)
-        - description: description of the company (Optional)
-        :return: json object with the created company information
-        """
-        parser = reqparse.RequestParser()  # create parameters parser from request
-        parser.add_argument('company', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('password', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('description', type=str, required=False)
-
-        data = parser.parse_args()
-
-        if CompanyModel.find_by_company(data.company):
-            return {'message': "Username already exists"}, 400
-
-        if JobSeekersModel.find_by_username(data.company):
-            return {'message': "Username already exists"}, 400
-
-        account = CompanyModel(data.company, data.email, data.description)
-
-        account.hash_password(data.password)
-
-        try:
-            account.save_to_db(db)
-        except:
-            return {"message": "An error occurred inserting the account."}, 500
-
-        return account.json(), 201
-
-    @auth.login_required(role='admin')
+          
+    @auth.login_required(role='user')
     def delete(self, company):
         """
         HTTP DELETE method to delete a specific company
         :param company: name of the company to delete
         :return: status message
         """
-        if g.user.is_admin == 0:
+        if company != g.user.company:
             return {'message': 'Access denied'}, 400
 
         account = CompanyModel.find_by_company(company)
@@ -73,6 +38,7 @@ class Companies(Resource):
 
         return {'message': "Account doesn't exist"}, 400
 
+    @auth.login_required(role='user')
     def put(self, company):
         """
         HTTP PUT method to update a specific company
@@ -85,6 +51,10 @@ class Companies(Resource):
         - location: location of the company (Optional)
         :return: json object with the updated company information
         """
+
+        if company != g.user.company:
+            return {'message': 'Access denied'}, 400
+
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('password', type=str)
         parser.add_argument('email', type=str)

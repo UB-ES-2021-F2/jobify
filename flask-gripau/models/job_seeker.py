@@ -89,7 +89,7 @@ class JobSeekersModel(db.Model):
         """
         return pwd_context.verify(password, self.password)
 
-    def generate_auth_token(self, expiration=600):
+    def generate_auth_token(self, expiration=4000):
         """
         Function that generates an authentication token for the user
         :param expiration: expiration time of the token

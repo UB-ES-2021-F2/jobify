@@ -8,3 +8,5 @@ from resources.CompanyList import CompanyList
 from resources.JobOffers import JobOffers
 from resources.CompanyJobOffers import CompanyJobOffers
 from resources.JobOfferList import JobOfferList
+from resources.DeleteEducation import DeleteEducation
+from resources.DeleteWorkExperience import DeleteWorkExperience

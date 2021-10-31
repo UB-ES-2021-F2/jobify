@@ -14,6 +14,7 @@ class CompanyModel(db.Model):
     __tablename__ = 'companies'
 
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True, nullable=False)
     company = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
     description = db.Column(db.String(256), unique=False, nullable=True)
@@ -24,7 +25,7 @@ class CompanyModel(db.Model):
     sector = db.Column(db.String(30))
     location = db.Column(db.String(30))
 
-    def __init__(self, company, email, description, is_admin=0, sector="Unknown", location="Unknown"):
+    def __init__(self, username, company, email, description, is_admin=0, sector="Unknown", location="Unknown"):    
         """
         Initializer of a company
         :param company: company name
@@ -34,6 +35,7 @@ class CompanyModel(db.Model):
         :param sector: sector of the company
         :param location: location of the company
         """
+        self.username = username
         self.company = company
         self.email = email
         self.is_admin = is_admin
@@ -46,7 +48,7 @@ class CompanyModel(db.Model):
         Function that returns the company info as json
         :return: json object with the information'
         """
-        return {'id': self.id, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
+        return {'id': self.id, 'username': self.username, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
                 'description': self.description, 'sector': self.sector, 'location': self.location}
 
     def save_to_db(self, database=None):
@@ -84,7 +86,7 @@ class CompanyModel(db.Model):
         """
         return pwd_context.verify(password, self.password)
 
-    def generate_auth_token(self, expiration=600):
+    def generate_auth_token(self, expiration=4000):
         """
         Function that generates an authentication token for the company
         :param expiration: expiration time of the token

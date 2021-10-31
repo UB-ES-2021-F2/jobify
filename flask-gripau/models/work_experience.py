@@ -13,7 +13,7 @@ class WorkExperiencesModel(db.Model):
     end_date = db.Column(db.String(7), unique=False, nullable=False)
     currently = db.Column(db.Boolean, unique=False, nullable=False)
 
-    def __init__(self, job_name, description, company, start_date,end_date, currently):
+    def __init__(self, job_name, description, company, start_date, end_date, currently):
         self.job_name = job_name
         self.description = description
         self.company = company
@@ -24,7 +24,7 @@ class WorkExperiencesModel(db.Model):
     def json(self):
         return {'id': self.id, 'username': self.username, 'job_name': self.job_name, 'description': self.description,
                 'company': self.company,
-                'start_date': self.start_date, 'end_date': self.end_date,'currently': self.currently}
+                'start_date': self.start_date, 'end_date': self.end_date, 'currently': self.currently}
 
     def delete_from_db(self, database=None):
         if database is None:
@@ -34,4 +34,4 @@ class WorkExperiencesModel(db.Model):
 
     @classmethod
     def show_work_experiences(cls):
-        return {'work_experiences': [work_experience.json() for work_experience in cls.query.all()]}
+        return [work_experience.json() for work_experience in cls.query.all()]

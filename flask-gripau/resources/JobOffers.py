@@ -21,17 +21,16 @@ class JobOffers(Resource):
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('job_name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('description', type=str, required=False, help="This field cannot be left blank")
-        parser.add_argument('publication_date', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('salary', type=float, required=False, help="This field cannot be left blank")
         parser.add_argument('vacancy_number', type=int, required=False, help="This field cannot be left blank")
         parser.add_argument('location', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('contract_type', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('working_hours', type=int, required=False, help="This field cannot be left blank")
-        parser.add_argument('minimum_experience', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('minimum_experience', type=int, required=False, help="This field cannot be left blank")
 
         data = parser.parse_args()
 
-        date_time_obj = datetime.strptime(data.publication_date, '%d-%m-%Y')
+        date_time_obj = datetime.today()
 
         company = CompanyModel.find_by_company(company)
 

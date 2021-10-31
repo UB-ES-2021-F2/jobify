@@ -39,6 +39,15 @@ class TestSkill(BaseTestCase):
         result = db.session.query(SkillsModel).first()
         self.assertIsNone(result, 'Nothing in the database')
 
+    def test_find_by_username_and_name(self):
+        new_skill = SkillsModel('test')
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'sergi@gmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        new_job_seeker.skills.append(new_skill)
+        self._add_data_to_db(new_job_seeker)
+        find = SkillsModel.find_by_username_and_name('test','test')
+        assert find == new_skill
+
 
 if __name__ == '__main__':
     import unittest

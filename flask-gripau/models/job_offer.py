@@ -31,11 +31,12 @@ class JobOfferModel(db.Model):
         :param job_name: name of the job offer
         :param description: description of the job offer
         :param publication_date: date when the job offer was published
+        :param location: job location
         :param salary: salary of the worker
         :param vacancy_number: number of vacancies that are available
-        :param location: job location
         :param working_hours: working hours
         :param minimum_experience: minimum experience required
+        :param contract_type: contract type
         """
         self.job_name = job_name
         self.description = description
@@ -62,6 +63,7 @@ class JobOfferModel(db.Model):
     def save_to_db(self, database=None):
         """
         Function that saves to the database the job offer
+        :param database: database instance
         """
         if database is None:
             database = db
@@ -71,6 +73,7 @@ class JobOfferModel(db.Model):
     def delete_from_db(self, database=None):
         """
         Function that the deletes from the database the job offer
+        :param database: database instance
         """
         if database is None:
             database = db

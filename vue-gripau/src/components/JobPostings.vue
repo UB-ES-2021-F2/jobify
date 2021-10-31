@@ -36,7 +36,7 @@
           style="width: 90%; max-width: 600px"
         >
           <b-link v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
-          <p class="h1"><b-icon icon="patch-plus"></b-icon></p>
+          <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
         </b-card>
       </b-row>
       <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
@@ -54,16 +54,16 @@
           <footer>
             <b-container fluid>
               <b-row>
-                <b-col>
-                  <b-icon icon="briefcase"></b-icon> {{ job_offer.contract_type }}
+                <b-col cols="4">
+                  <b-icon icon="briefcase"></b-icon> {{job_offer.contract_type}}
                 </b-col>
-                <b-col>
-                  <b-icon icon="alarm"></b-icon> {{ job_offer.working_hours }}
+                <b-col cols="2">
+                  <b-icon icon="alarm"></b-icon> {{job_offer.working_hours}} h
                 </b-col>
-                <b-col>
+                <b-col cols="3">
                   <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
                 </b-col>
-                <b-col>
+                <b-col cols="3">
                   <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
                 </b-col>
               </b-row>
@@ -122,8 +122,8 @@
 
           <validation-provider name="ContractType"  :rules="{ max: 500}" v-slot="validationContext">
             <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
-              <b-form-input v-model="jobOfferForm.contractType" placeholder="" type="text" :state="getValidationState(validationContext)"
-                            aria-describedby="input-2-live-feedback"></b-form-input>
+              <b-form-select v-model="jobOfferForm.contractType" :options="optionsContractType" placeholder="" type="text" :state="getValidationState(validationContext)"
+                            aria-describedby="input-2-live-feedback"></b-form-select>
               <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
             </b-form-group>
           </validation-provider>
@@ -178,7 +178,8 @@ export default {
         contractType: '',
         workingHours: '',
         minimumExperience: ''
-      }
+      },
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
     }
   },
   methods: {
@@ -215,8 +216,13 @@ export default {
       const path = Vue.prototype.$API_BASE_URL + 'offers'
       axios.get(path)
         .then((res) => {
-          this.job_offers = res.data.OfferList
-          console.log(this.offers)
+          console.log(res.data.OfferList)
+          this.job_offers = []
+          for (var jobOffer in res.data.OfferList) {
+            jobOffer = res.data.OfferList[jobOffer]
+            jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
+            this.job_offers.push(jobOffer)
+          }
         })
         .catch((error) => {
           console.error(error)
@@ -251,8 +257,9 @@ export default {
         .catch((error) => {
           alert(error.response.data.message)
         })
-      this.onReset()
+      this.getJobOffers()
       this.$bvModal.hide('job-offer-modal')
+      this.onReset()
     },
     onReset () {
       this.initJobOfferForm()

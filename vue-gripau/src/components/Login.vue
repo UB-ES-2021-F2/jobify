@@ -320,6 +320,8 @@ export default {
         axios.post(path, values)
           .then((res) => {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            this.onReset()
+            this.$bvModal.hide('register-modal')
           })
           .catch((error) => {
             alert(error.response.data.message)
@@ -327,7 +329,7 @@ export default {
       } else {
         const values = {
           username: this.registerC.username,
-          company: this.registerC.company,
+          name: this.registerC.company,
           password: this.registerC.password,
           email: this.registerC.email,
           is_job_seeker: 0

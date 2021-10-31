@@ -330,8 +330,8 @@ export default {
             alert(error.response.data.message)
           })
       }
-      this.onReset()
       this.$bvModal.hide('register-modal')
+      this.onReset()
     },
     initRegisterForm () {
       this.registerS.username = ''

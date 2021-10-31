@@ -5,7 +5,7 @@ from models.company import CompanyModel
 
 class CompanyList(Resource):
     """
-        Resource that lists all the companies in the database
+    Resource that lists all the companies in the database
     """
     def get(self):
         """

@@ -20,7 +20,7 @@ class Companies(Resource):
             return {'account': account.json()}, 200
         else:
             return {'account': None}, 404
-
+          
     @auth.login_required(role='user')
     def delete(self, company):
         """
@@ -43,6 +43,12 @@ class Companies(Resource):
         """
         HTTP PUT method to update a specific company
         :param company: name of the company to update
+        Request fields:
+        - password: password of the account (Required)
+        - email: email of the company (Required)
+        - description: description of the company (Optional)
+        - sector: sector of the company (Optional)
+        - location: location of the company (Optional)
         :return: json object with the updated company information
         """
 

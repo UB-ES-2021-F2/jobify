@@ -22,7 +22,6 @@ class JobSeekers(Resource):
         else:
             return {'account': None}, 404
 
-    @auth.login_required(role='user')
     def delete(self, username):
         """
         HTTP DELETE method to delete a specific job seeker
@@ -44,6 +43,14 @@ class JobSeekers(Resource):
         """
         HTTP PUT method to update a specific job seeker
         :param username: name of the job seeker to update
+        Request fields:
+        - name: real name of the job seeker (Optional)
+        - surname: real surname of the job seeker (Optional)
+        - password: password of the account (Optional)
+        - email: email of the job seeker (Optional)
+        - bio: biography/information that the job seeker would want to share (Optional)
+        - skills: list of skills to add to the skills list of the job seeker (Optional)
+        - remove_skills: list of skills to remove from the skills list of the job seeker (Optional)
         :return: json object with the updated job seeker information
         """
 

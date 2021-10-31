@@ -7,13 +7,13 @@ from models.company import CompanyModel
 
 class CompanyJobOffers(Resource):
     """
-        Resource that lists all the job offers from one specific company in the database
+    Resource related to the relation between the tables Company and JobOffer
     """
-
     def get(self, company):
         """
-            HTTP method of the resource CompanyJobOffers
-            :return: list of all the job offers from one the company
+        HTTP GET method that gets the list of job offers of a specific company
+        :param company: name of the company
+        :return: list of json objects with the company's job offers information
         """
         company = CompanyModel.find_by_company(company)
         if company:

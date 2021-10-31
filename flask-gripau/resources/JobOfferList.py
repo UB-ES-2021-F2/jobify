@@ -12,6 +12,7 @@ class JobOfferList(Resource):
         """
         HTTP method of the resource JobOfferList
         :return: list of all the job offers in the database
+        """
         offers = []
         for company in CompanyModel.query.all():
             for offer in company.job_offers:

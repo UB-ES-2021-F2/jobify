@@ -474,7 +474,7 @@ export default {
     },
     onJobOffer (id) {
       console.log(id)
-    },
+    }
   },
   created () {
     this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()

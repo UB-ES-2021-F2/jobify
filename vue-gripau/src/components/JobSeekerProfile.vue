@@ -321,6 +321,7 @@ export default {
         auth: {username: this.token}})
         .then((res) => {
           this.getWorkExperience()
+          this.$refs.addWorkModal.hide('addWorkModal')
           this.addWork = {
             jobName: '',
             company: '',
@@ -329,7 +330,6 @@ export default {
             endDate: '',
             currently: false
           }
-          this.$refs.addWorkModal.hide('addWorkModal')
         })
         .catch((error) => {
           alert(error.response.data.message)
@@ -364,6 +364,7 @@ export default {
         auth: {username: this.token}})
         .then((res) => {
           this.getEducation()
+          this.$refs.addEducationModal.hide('addEducationModal')
           this.addEducation = {
             title: '',
             institution: '',
@@ -371,7 +372,6 @@ export default {
             endDate: '',
             currently: false
           }
-          this.$refs.addEducationModal.hide('addEducationModal')
         })
         .catch((error) => {
           console.error(error)

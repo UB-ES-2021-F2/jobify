@@ -18,11 +18,13 @@ db.init_app(app)
 
 new_job_seeker = JobSeekersModel('lordsergi', 'Sergi', 'Bech', 'sergi@gmail.com', 'hola, soc estudiant')
 new_job_seeker.hash_password('Password12')
+
 new_education = EducationsModel('Maths phd', 'UB', '09-2021', '10-2022', True)
 new_job_seeker.educations.append(new_education)
 db.session.add(new_job_seeker)
 
 new_company = CompanyModel('universitat123', 'ub', 'ub@gmail.com', 'hola, som la UB')
+new_company = CompanyModel('ub', 'ub@gmail.com', 'hola, som la UB')
 new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 5000, 5, 'Barcelona', 8, 1, 'Temporal')
 new_company.hash_password('Password12')
 new_company.job_offers.append(new_job_offer)

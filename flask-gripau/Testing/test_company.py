@@ -1,4 +1,4 @@
-from models.company import CompanyModel, get_user_roles
+from models.company import CompanyModel, get_user_roles, verify_password
 from models.job_seeker import JobSeekersModel
 from models.education import EducationsModel
 from models.work_experience import WorkExperiencesModel
@@ -83,6 +83,13 @@ class TestJobSeeker(BaseTestCase):
 
     def test_verify_auth_token_bad_signature(self):
         self.assertIsNone(CompanyModel.verify_auth_token('illegal_token'))
+
+    def test_auth_verify_password(self):
+        new_company = CompanyModel('test', 'test@test.com', 'test')
+        new_company.hash_password('test')
+        self._add_data_to_db(new_company)
+        token = new_company.generate_auth_token().decode('ascii')
+        self.assertEquals(new_company, verify_password(token, None))
 
 
 if __name__ == '__main__':

@@ -36,4 +36,9 @@ export default {
   src: local("Vollkorn"),
   url(./fonts/Vollkorn/Vollkorn-ExtraBold.ttf) format("truetype");
 }
+@font-face {
+  font-family: "Bright";
+  src: local("Bright"),
+  url(./fonts/Bright/Bright.otf) format("truetype");
+}
 </style>

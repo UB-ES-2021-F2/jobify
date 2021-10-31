@@ -73,9 +73,7 @@
           <p class="section-title"> Skills </p>
           <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">Python</span>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">Java</span>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">SQL</span>
+            <span class="badge badge-pill badge-warning"  v-for="skill in skills" :key="skill">{{ skill }}</span>
           </div>
         </div>
       </div>

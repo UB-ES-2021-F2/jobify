@@ -54,10 +54,10 @@
           <footer>
             <b-container fluid>
               <b-row>
-                <b-col cols="4">
+                <b-col cols="4" v-if="job_offer.contract_type.length > 0">
                   <b-icon icon="briefcase"></b-icon> {{job_offer.contract_type}}
                 </b-col>
-                <b-col cols="2">
+                <b-col cols="2" v-if="job_offer.workingHours > 0">
                   <b-icon icon="alarm"></b-icon> {{job_offer.working_hours}} h
                 </b-col>
                 <b-col cols="3">
@@ -240,24 +240,33 @@ export default {
     },
     onSubmit () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
-      const values = {
+      var values = {
         job_name: this.jobOfferForm.jobName,
         description: this.jobOfferForm.description,
-        salary: this.jobOfferForm.salary,
-        vacancy_number: this.jobOfferForm.vacancyNumber,
         location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType,
-        working_hours: this.jobOfferForm.workingHours,
-        minimum_experience: this.jobOfferForm.minimumExperience
+        contract_type: this.jobOfferForm.contractType
       }
+      if (!isNaN(this.jobOfferForm.salary)) {
+        values.salary = this.jobOfferForm.salary
+      }
+      if (!isNaN(this.jobOfferForm.vacancyNumber)) {
+        values.salary = this.jobOfferForm.vacancyNumber
+      }
+      if (!isNaN(this.jobOfferForm.workingHours)) {
+        values.salary = this.jobOfferForm.workingHours
+      }
+      if (!isNaN(this.jobOfferForm.minimumExperience)) {
+        values.salary = this.jobOfferForm.minimumExperience
+      }
+      console.log(values)
       axios.post(path, values)
         .then((res) => {
           console.log('Job Offer correctly posted')
+          this.getJobOffers()
         })
         .catch((error) => {
           alert(error.response.data.message)
         })
-      this.getJobOffers()
       this.$bvModal.hide('job-offer-modal')
       this.onReset()
     },

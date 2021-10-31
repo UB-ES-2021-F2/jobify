@@ -6,8 +6,15 @@ from models.company import CompanyModel
 
 
 class CompanyJobOffers(Resource):
-
+    """
+    Resource related to the relation between the tables Company and JobOffer
+    """
     def get(self, company):
+        """
+        HTTP GET method that gets the list of job offers of a specific company
+        :param company: name of the company
+        :return: list of json objects with the company's job offers information
+        """
         company = CompanyModel.find_by_company(company)
         if company:
             return [offer.json() for offer in company.job_offers], 200

@@ -8,8 +8,22 @@ reg = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$"
 
 
 class Register(Resource):
-
+    """
+    Resource that manages the registration to the app
+    """
     def post(self):
+        """
+        HTTP POST method to register in the application
+        Request fields:
+        - username: username of the job seeker  or company (Required)
+        - name: name of the job seeker (Optional)
+        - surname: surname of the job seeker (Optional)
+        - password: password of the user (Required)
+        - is_job_seeker: if the user is a job seeker, 1 (yes) / 0 (no, is a company) (Required)
+        - email: email of the user (Required)
+        - description: bio/description of the user (Optional)
+        :return: json object with the information of the registered user
+        """
         parser = reqparse.RequestParser()
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('name', type=str, required=False, help="This field cannot be left blank")
@@ -66,6 +80,11 @@ class Register(Resource):
 
 
 def validate_password(password):
+    """
+    Function that validates that the password matches the requirements
+    :param password: password to check
+    :return: boolean, indicating the validation result
+    """
     # compiling regex
     pat = re.compile(reg)
     # searching regex

@@ -24,6 +24,11 @@ class Companies(Resource):
     def post(self):
         """
         HTTP POST method to create a company
+        Request fields:
+        - company: company name (Required)
+        - password: password of the account (Required)
+        - email: email of the company (Required)
+        - description: description of the company (Optional)
         :return: json object with the created company information
         """
         parser = reqparse.RequestParser()  # create parameters parser from request
@@ -72,6 +77,12 @@ class Companies(Resource):
         """
         HTTP PUT method to update a specific company
         :param company: name of the company to update
+        Request fields:
+        - password: password of the account (Required)
+        - email: email of the company (Required)
+        - description: description of the company (Optional)
+        - sector: sector of the company (Optional)
+        - location: location of the company (Optional)
         :return: json object with the updated company information
         """
         parser = reqparse.RequestParser()  # create parameters parser from request

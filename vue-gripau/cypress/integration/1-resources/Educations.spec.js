@@ -6,8 +6,12 @@
 // https://on.cypress.io/writing-first-test
 
 describe('Companies resource', () => {
-  beforeEach(() => {
+  before(() => {
     cy.login_jobseeker()
+    cy.saveLocalStorage()
+  })
+  beforeEach(() => {
+    cy.restoreLocalStorage()
   })
   context('GET education/username', () => {
     it('should return the education of the user lordsergi', () => {
@@ -34,17 +38,144 @@ describe('Companies resource', () => {
     })
   })
   context('POST education/username', () => {
-    it('should print token', () => {
-      cy.log(this.token)
-    })
     it('should return the education added to the user lordsergi', () => {
       cy.request({
         method: 'POST',
         url: 'education/lordsergi',
-        auth: {username: '@token'}
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'education test cypress',
+          institution: 'universitat de barcelona',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        }
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.education.username).to.eq('lordsergi')
+          expect(response.body.education.title).to.eq('education test cypress')
+        })
+    })
+    it('should return error 400 because we are trying to add a education to another user', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/cytest',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'education test cypress',
+          institution: 'universitat de barcelona',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Access denied')
+        })
+    })
+    it('should return error 400 because we are trying to add a education with blank title', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: ' ',
+          institution: 'universitat de barcelona',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Title cannot be blank')
+        })
+    })
+    it('should return error 400 because we are trying to add a education with start year bigger than end year', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'education test cypress',
+          institution: 'universitat de barcelona',
+          start_date: '2021-04',
+          end_date: '2020-05',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Start date cannot be posterior than end date')
+        })
+    })
+    it('should return error 400 because we are trying to add a education with start month bigger than end month and same year', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'education test cypress',
+          institution: 'universitat de barcelona',
+          start_date: '2021-05',
+          end_date: '2021-04',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Start date cannot be posterior than end date')
+        })
+    })
+    it('should return error 400 because we are trying to add a education with a month bigger than 12', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'education test cypress',
+          institution: 'universitat de barcelona',
+          start_date: '2021-13',
+          end_date: '2021-23',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Month fields must be integers between 1 and 12')
+        })
+    })
+    it('should return error 400 because we are trying to add a education with a start year less than 1900 and a end year bigger than 2100', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'education test cypress',
+          institution: 'universitat de barcelona',
+          start_date: '1750-04',
+          end_date: '2100-12',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Year fields must be integers bigger than 1900 and lower than 2100')
         })
     })
   })

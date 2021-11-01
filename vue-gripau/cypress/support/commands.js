@@ -23,17 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import 'cypress-localstorage-commands'
+
 Cypress.Commands.add('login_jobseeker', () => {
   cy.request({
     method: 'POST',
     url: 'login',
     body: {
       username: 'lordsergi',
-      password: 'password'
+      password: 'Password12'
     }
   })
     .its('body')
     .then(body => {
-      window.localStorage.setItem('token', body.token)
+      cy.setLocalStorage('token', body.token)
     })
 })

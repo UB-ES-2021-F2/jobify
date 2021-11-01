@@ -233,36 +233,36 @@
             <div v-if="this.jobOfferView">
               <h2 style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
               <b-container align="left">
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
                   <p>{{jobOfferCurrentView.description}}</p>
                 </div>
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
                   <p>{{jobOfferCurrentView.companyName}}</p>
                 </div>
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
                   <p>{{jobOfferCurrentView.location}}</p>
                 </div>
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Contract Type</h4>
                   <p>{{jobOfferCurrentView.contractType}}</p>
                 </div>
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Working hours</h4>
                   <p>{{jobOfferCurrentView.workingHours}}</p>
                 </div>
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
                   <p>{{jobOfferCurrentView.salary}}</p>
                 </div>
-                <div class="p-2 pb-3" style="max-width: 50rem">
+                <div v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Publication Date</h4>
                   <p>{{jobOfferCurrentView.publicationDate}}</p>
                 </div>
               </b-container>
-              <b-button variant="success" @click="onJoOfferView()">Ok</b-button>
+              <b-button btn variant="primary" class='btn-home' @click="onJoOfferView">Seen</b-button>
             </div>
             <!-- /Job offer view -->
           </div>

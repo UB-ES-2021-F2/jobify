@@ -25,9 +25,9 @@ class DeleteEducation(Resource):
 
         if education:
             education.delete_from_db(db)
-            return {'message': "Education with id [{}] deleted".format(id)}, 200
+            return {'message': "Education with id [{}] deleted".format(data.id)}, 200
 
-        return {'message': "Education with id [{}] don't exists".format(id)}, 400
+        return {'message': "Education with id [{}] don't exists".format(data.id)}, 400
 
 
 

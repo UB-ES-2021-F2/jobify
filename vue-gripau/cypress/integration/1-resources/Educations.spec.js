@@ -1,11 +1,11 @@
-// Companies.spec.js created with Cypress
+// Educations.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,
 // check out the link below and learn how to write your first test:
 // https://on.cypress.io/writing-first-test
 
-describe('Companies resource', () => {
+describe('Educations resource', () => {
   before(() => {
     cy.login_jobseeker()
     cy.saveLocalStorage()

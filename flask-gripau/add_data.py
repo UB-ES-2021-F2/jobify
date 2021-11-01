@@ -4,7 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 # import models here
-from models import EducationsModel, WorkExperiencesModel, JobOfferModel
+from models import EducationsModel, WorkExperiencesModel, JobOfferModel, SkillsModel
 from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
 from models.education import EducationsModel
@@ -21,8 +21,10 @@ new_job_seeker.hash_password('Password12')
 
 new_education = EducationsModel('Maths phd', 'UB', '2021-09', '2022-10', True)
 new_workexperience = WorkExperiencesModel('professor', 'professor de EDS', 'ub', '03-2020', '06-2020', False)
+new_skill = SkillsModel('python')
 new_job_seeker.work_experiences.append(new_workexperience)
 new_job_seeker.educations.append(new_education)
+new_job_seeker.skills.append(new_skill)
 db.session.add(new_job_seeker)
 
 new_company = CompanyModel('universitat123', 'ub', 'ub@gmail.com', 'hola, som la UB')

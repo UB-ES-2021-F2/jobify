@@ -1,4 +1,4 @@
-// Companies.spec.js created with Cypress
+// JobOffers.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,
@@ -6,6 +6,13 @@
 // https://on.cypress.io/writing-first-test
 
 describe('JobOffers resource', () => {
+  before(() => {
+    cy.login_company()
+    cy.saveLocalStorage()
+  })
+  beforeEach(() => {
+    cy.restoreLocalStorage()
+  })
   context('GET job_offer/id', () => {
     it('should return the information of the job offer with id 1', () => {
       cy.request({
@@ -49,6 +56,50 @@ describe('JobOffers resource', () => {
       })
         .should((response) => {
           expect(response.status).to.eq(400)
+        })
+    })
+  })
+  context('POST job_offer/company', () => {
+    it('should return the job offer which added universitat123', () => {
+      cy.request({
+        method: 'POST',
+        url: 'job_offer/universitat123',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'job offer cypress test',
+          description: 'the title is enough',
+          salary: '1000',
+          location: 'cypress',
+          contract_type: 'Temporal',
+          working_hours: 4
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(201)
+          expect(response.body.company).to.eq('universitat123')
+          expect(response.body.job_name).to.eq('job offer cypress test')
+        })
+    })
+    it('should return error 400 because we are trying to add a job offer with another company', () => {
+      cy.request({
+        method: 'POST',
+        url: 'job_offer/cypressuniversity',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'job offer cypress test',
+          description: 'the title is enough',
+          salary: '1000',
+          location: 'cypress',
+          contract_type: 'Temporal',
+          working_hours: 4
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Access denied')
         })
     })
   })

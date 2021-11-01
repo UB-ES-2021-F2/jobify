@@ -72,7 +72,7 @@ class WorkExperiences(Resource):
             db.session.add(user)
             db.session.add(new_work_experience)
             db.session.commit()
-            return {'education': new_work_experience.json()}, 200
+            return {'work_experience': new_work_experience.json()}, 200
         except:
             db.session.rollback()
             return {"message": "An error occurred inserting the order."}, 500

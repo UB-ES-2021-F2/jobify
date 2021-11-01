@@ -36,7 +36,7 @@ class JobSeekersModel(db.Model):
                 'email': self.email, 'is_admin': self.is_admin,
                 'bio': self.bio, 'educations': [education.json() for education in self.educations],
                 'work_experiences': [we.json() for we in self.work_experiences],
-                'skills': [skill.json() for skill in self.skills]}
+                'skills': [skill.skill_name() for skill in self.skills]}
 
     def save_to_db(self, database=None):
         if database is None:

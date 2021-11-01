@@ -400,7 +400,7 @@ export default {
     },
     submitAddSkill () {
       const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
-      const parameters = {data: { skills: [this.addSkill.skill] }, headers: {token: this.token}}
+      const parameters = { skills: [this.addSkill.skill] }
       axios.put(path, parameters)
         .then((res) => {
           this.getSkills()

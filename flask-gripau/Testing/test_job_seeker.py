@@ -49,6 +49,7 @@ class TestJobSeeker(BaseTestCase):
         new_job_seeker.educations.append(new_education)
         new_job_seeker.delete_education(None)
         assert new_job_seeker.educations == []
+        self.assertIsNone(new_job_seeker.delete_education(1233))
 
     def test_delete_work_experience(self):
         new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
@@ -57,6 +58,7 @@ class TestJobSeeker(BaseTestCase):
         new_job_seeker.work_experiences.append(new_work_experience)
         new_job_seeker.delete_work_experience(None)
         assert new_job_seeker.work_experiences == []
+        self.assertIsNone(new_job_seeker.delete_work_experience(1233))
 
     def test_save_to_db_and_delete_from_db(self):
         new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
@@ -107,6 +109,13 @@ class TestJobSeeker(BaseTestCase):
 
     def test_verify_auth_token_bad_signature(self):
         self.assertIsNone(JobSeekersModel.verify_auth_token('illegal_token'))
+
+    def test_auth_verify_password(self):
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        self._add_data_to_db(new_job_seeker)
+        token = new_job_seeker.generate_auth_token().decode('ascii')
+        self.assertEquals(new_job_seeker, verify_password(token, None))
 
 
 if __name__ == '__main__':

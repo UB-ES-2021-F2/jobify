@@ -121,6 +121,8 @@ class CompanyModel(db.Model):
         :param username: username of the company
         :return: company
         """
+        if not username:
+            return None
         return cls.query.filter_by(username=username.lower()).first()
 
     @classmethod

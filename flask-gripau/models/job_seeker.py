@@ -148,6 +148,8 @@ class JobSeekersModel(db.Model):
         :param username: username of the job seeker
         :return: job seeker
         """
+        if not username:
+            return None
         return cls.query.filter_by(username=username.lower()).first()
 
     @classmethod

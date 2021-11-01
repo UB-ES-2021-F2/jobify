@@ -7,10 +7,10 @@
 
 describe('Companies resource', () => {
   context('GET company/username', () => {
-    it('should return the information of the company UB', () => {
+    it('should return the information of the company universitat123', () => {
       cy.request({
         method: 'GET',
-        url: 'company/ub'
+        url: 'company/universitat123'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
@@ -18,10 +18,10 @@ describe('Companies resource', () => {
           expect(response.body.account.company).to.eq('ub')
         })
     })
-    it('should return error because the company "ub2" can not exist', () => {
+    it('should return error because the company "universitat333" does not exist', () => {
       cy.request({
         method: 'GET',
-        url: 'company/ub2',
+        url: 'company/universitat333',
         failOnStatusCode: false
       })
         .should((response) => {

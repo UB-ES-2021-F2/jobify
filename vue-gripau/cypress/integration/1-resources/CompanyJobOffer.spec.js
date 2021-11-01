@@ -7,23 +7,23 @@
 
 describe('CompanyJobOffer resource', () => {
   context('GET offers/companyname', () => {
-    it('should return the information of all job offers posted by company UB (now only one job offer)', () => {
+    it('should return the information of all job offers posted by company universitat123 (now only one job offer)', () => {
       cy.request({
         method: 'GET',
-        url: 'offers/ub'
+        url: 'offers/universitat123'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(200)
-          expect(response.body[0].company).to.eq('ub')
+          expect(response.body[0].company).to.eq('universitat123')
           expect(response.body[0].job_name).to.eq('professor')
           expect(response.body.length).to.eq(1)
         })
     })
-    it('should return error because the company "ub2" can not exist', () => {
+    it('should return error because the company "universitat333" can not exist', () => {
       cy.request({
         method: 'GET',
-        url: 'offers/ub2',
+        url: 'offers/universitat333',
         failOnStatusCode: false
       })
         .should((response) => {

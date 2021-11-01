@@ -13,7 +13,7 @@ describe('Login resource', () => {
         url: 'login',
         body: {
           username: 'lordsergi',
-          password: 'password'
+          password: 'Password12'
         }
       })
         .should((response) => {
@@ -22,13 +22,13 @@ describe('Login resource', () => {
           expect(response.body.token.length).to.gt(100)
         })
     })
-    it('should return the token of the company ub', () => {
+    it('should return the token of the company universitat123', () => {
       cy.request({
         method: 'POST',
         url: 'login',
         body: {
-          username: 'ub',
-          password: 'password'
+          username: 'universitat123',
+          password: 'Password12'
         }
       })
         .should((response) => {
@@ -37,7 +37,7 @@ describe('Login resource', () => {
           expect(response.body.token.length).to.gt(100)
         })
     })
-    it('should return error 404 because user lordsergi2 can not exist', () => {
+    it('should return error 404 because user lordsergi2 does not exist', () => {
       cy.request({
         method: 'POST',
         url: 'login',
@@ -67,13 +67,13 @@ describe('Login resource', () => {
           expect(response.status).to.eq(400)
         })
     })
-    it('should return error 400 because company ub does not have password "provacypress', () => {
+    it('should return error 400 because company universitat123 does not have password "provacypress', () => {
       cy.request({
         method: 'POST',
         url: 'login',
         failOnStatusCode: false,
         body: {
-          username: 'ub',
+          username: 'universitat123',
           password: 'provacypress'
         }
       })

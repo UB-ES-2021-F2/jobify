@@ -101,7 +101,13 @@ export default {
       this.$router.replace({ path: '/about_us' })
     },
     getName () {
-      axios.get(Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username)
+      let path = ''
+      if (this.is_jobseeker && this.logged) {
+        path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      } else {
+        path = Vue.prototype.$API_BASE_URL + 'company/' + this.username
+      }
+      axios.get(path)
         .then((res) => {
           console.log(res)
           this.name = res.data.account.name

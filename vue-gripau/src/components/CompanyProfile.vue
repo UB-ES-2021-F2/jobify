@@ -250,7 +250,7 @@
                   <p>{{jobOfferCurrentView.contractType}}</p>
                 </div>
                 <div v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Working hours</h4>
+                  <h4 style="font-family: 'Vollkorn', serif"> Working Hours</h4>
                   <p>{{jobOfferCurrentView.workingHours}}</p>
                 </div>
                 <div v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">

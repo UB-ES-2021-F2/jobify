@@ -12,10 +12,10 @@ class CompanyJobOffers(Resource):
     def get(self, company):
         """
         HTTP GET method that gets the list of job offers of a specific company
-        :param company: name of the company
+        :param company: username of the company
         :return: list of json objects with the company's job offers information
         """
-        company = CompanyModel.find_by_company(company)
+        company = CompanyModel.find_by_username(company)
         if company:
             return [offer.json() for offer in company.job_offers], 200
         else:

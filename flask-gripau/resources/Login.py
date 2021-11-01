@@ -28,7 +28,7 @@ class Login(Resource):
             else:
                 return {"message": "Invalid password"}, 400
 
-        company = CompanyModel.find_by_company(data.username)
+        company = CompanyModel.find_by_username(data.username)
         if company:
             if company.verify_password(data['password']):
                 return {'token': company.generate_auth_token().decode('ascii')}, 200

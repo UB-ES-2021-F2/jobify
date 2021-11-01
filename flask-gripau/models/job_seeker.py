@@ -148,7 +148,7 @@ class JobSeekersModel(db.Model):
         :param username: username of the job seeker
         :return: job seeker
         """
-        return cls.query.filter_by(username=username).first()
+        return cls.query.filter_by(username=username.lower()).first()
 
     @classmethod
     def find_by_email(cls, email):

@@ -115,6 +115,17 @@ class CompanyModel(db.Model):
         return user
 
     @classmethod
+    def find_by_username(cls, username):
+        """
+        Function that returns a company given the name
+        :param username: username of the company
+        :return: company
+        """
+        if not username:
+            return None
+        return cls.query.filter_by(username=username.lower()).first()
+
+    @classmethod
     def find_by_company(cls, company):
         """
         Function that returns a company given the name

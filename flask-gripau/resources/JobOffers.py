@@ -28,42 +28,39 @@ class JobOffers(Resource):
     def post(self, company):
         """
         HTTP POST method to create a job offer
-        :param company: company that posts the job offer
+        :param company: username of the company that posts the job offer
         Request fields:
         - job_name: name of the job offer (Required)
-        - description: description of the job offer (Optional)
-        - salary: salary of the worker (Optional)
-        - vacancy_number: number of vacancies that are available (Optional)
-        - location: job location (Required)
         - contract_type: contract type (Optional)
-        - working_hours: working hours (Optional)
-        - minimum_experience: minimum experience required (Optional)
+        - salary: salary of the worker (Optional)
+        - location: job location (Required)
+        - working_hours: weekly working hours (Optional)
+        - description: description of the job offer (Optional)
         :return: json object with the created job offer information
         """
-        if company != g.user.company:
+        if company != g.user.username:
+            print(g.user.username)
             return {'message': 'Access denied'}, 400
-          
+
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('job_name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('description', type=str, required=False, help="This field cannot be left blank")
-        parser.add_argument('salary', type=float, required=False, help="This field cannot be left blank")
-        parser.add_argument('vacancy_number', type=int, required=False, help="This field cannot be left blank")
+        parser.add_argument('salary', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('location', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('contract_type', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('working_hours', type=int, required=False, help="This field cannot be left blank")
-        parser.add_argument('minimum_experience', type=int, required=False, help="This field cannot be left blank")
 
         data = parser.parse_args()
 
         date_time_obj = datetime.today()
 
-        company = CompanyModel.find_by_company(company)
+        company = CompanyModel.find_by_username(company)
 
         if not company:
             return {"message": "This company is not registered yet."}, 500
 
-        offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.salary, data.vacancy_number,
-                              data.location, data.working_hours, data.minimum_experience, data.contract_type)
+        offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.location, data.salary, data.working_hours, data.contract_type)
+
         company.job_offers.append(offer)
         try:
             db.session.add(company)

@@ -12,10 +12,10 @@ class Companies(Resource):
     def get(self, company):
         """
         HTTP GET method that gets a specific company
-        :param company: name of the company to return
+        :param username: username of the company to return
         :return: json object with the company information
         """
-        account = CompanyModel.find_by_company(company)
+        account = CompanyModel.find_by_username(company)
         if account:
             return {'account': account.json()}, 200
         else:
@@ -25,13 +25,13 @@ class Companies(Resource):
     def delete(self, company):
         """
         HTTP DELETE method to delete a specific company
-        :param company: name of the company to delete
+        :param username: username of the company to delete
         :return: status message
         """
-        if company != g.user.company:
+        if company != g.user.username:
             return {'message': 'Access denied'}, 400
 
-        account = CompanyModel.find_by_company(company)
+        account = CompanyModel.find_by_username(company)
         if account:
             account.delete_from_db(db)
             return {'message': "Account deleted"}, 200
@@ -42,7 +42,7 @@ class Companies(Resource):
     def put(self, company):
         """
         HTTP PUT method to update a specific company
-        :param company: name of the company to update
+        :param company: username of the company to update
         Request fields:
         - password: password of the account (Required)
         - email: email of the company (Required)
@@ -52,7 +52,9 @@ class Companies(Resource):
         :return: json object with the updated company information
         """
 
-        if company != g.user.company:
+        if company != g.user.username:
+            print(g.user.username)
+            print(company)
             return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()  # create parameters parser from request
@@ -62,7 +64,7 @@ class Companies(Resource):
         parser.add_argument('sector', type=str)
         parser.add_argument('location', type=str)
 
-        account = CompanyModel.find_by_company(company)
+        account = CompanyModel.find_by_username(company)
         if account:
             data = parser.parse_args()
             if data.password:

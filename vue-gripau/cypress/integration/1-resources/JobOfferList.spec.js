@@ -6,11 +6,11 @@
 // https://on.cypress.io/writing-first-test
 
 describe('JobOfferList resource', () => {
-  context('GET /api/offers', () => {
-    it('should return the information of all job offers posted by all companies (now only one job offer by UB)', () => {
+  context('GET offers', () => {
+    it('should return the information of all job offers posted by all companies (now only one job offer by ub)', () => {
       cy.request({
         method: 'GET',
-        url: 'http://localhost:5000/api/offers'
+        url: 'offers'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))

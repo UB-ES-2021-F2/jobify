@@ -6,11 +6,11 @@
 // https://on.cypress.io/writing-first-test
 
 describe('CompanyJobOffer resource', () => {
-  context('GET /api/offers/companyname', () => {
+  context('GET offers/companyname', () => {
     it('should return the information of all job offers posted by company UB (now only one job offer)', () => {
       cy.request({
         method: 'GET',
-        url: 'http://localhost:5000/api/offers/ub'
+        url: 'offers/ub'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
@@ -23,7 +23,7 @@ describe('CompanyJobOffer resource', () => {
     it('should return error because the company "ub2" can not exist', () => {
       cy.request({
         method: 'GET',
-        url: 'http://localhost:5000/api/offers/ub2',
+        url: 'offers/ub2',
         failOnStatusCode: false
       })
         .should((response) => {

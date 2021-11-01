@@ -6,11 +6,11 @@
 // https://on.cypress.io/writing-first-test
 
 describe('CompanyList resource', () => {
-  context('GET /api/companies', () => {
+  context('GET companies', () => {
     it('should return the information of the registered companies (now only one company)', () => {
       cy.request({
         method: 'GET',
-        url: 'http://localhost:5000/api/companies'
+        url: 'companies'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))

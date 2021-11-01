@@ -6,11 +6,11 @@
 // https://on.cypress.io/writing-first-test
 
 describe('JobSeekers resource', () => {
-  context('GET /api/jobseeker/username', () => {
+  context('GET jobseeker/username', () => {
     it('should return the information of the jobseeker lordsergi', () => {
       cy.request({
         method: 'GET',
-        url: 'http://localhost:5000/api/jobseeker/lordsergi'
+        url: 'jobseeker/lordsergi'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
@@ -21,7 +21,7 @@ describe('JobSeekers resource', () => {
     it('should return error because the jobseeker "lord2" can not exist', () => {
       cy.request({
         method: 'GET',
-        url: 'http://localhost:5000/api/jobseeker/lord2',
+        url: 'jobseeker/lord2',
         failOnStatusCode: false
       })
         .should((response) => {

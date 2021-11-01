@@ -231,6 +231,37 @@
             <!-- /Job offers company view -->
             <!-- Job offer view -->
             <div v-if="this.jobOfferView">
+              <h2 style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
+              <b-container align="left">
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
+                  <p>{{jobOfferCurrentView.description}}</p>
+                </div>
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
+                  <p>{{jobOfferCurrentView.companyName}}</p>
+                </div>
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
+                  <p>{{jobOfferCurrentView.location}}</p>
+                </div>
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Contract Type</h4>
+                  <p>{{jobOfferCurrentView.contractType}}</p>
+                </div>
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Working hours</h4>
+                  <p>{{jobOfferCurrentView.workingHours}}</p>
+                </div>
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
+                  <p>{{jobOfferCurrentView.salary}}</p>
+                </div>
+                <div class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Publication Date</h4>
+                  <p>{{jobOfferCurrentView.publicationDate}}</p>
+                </div>
+              </b-container>
               <b-button variant="success" @click="onJoOfferView()">Ok</b-button>
             </div>
             <!-- /Job offer view -->
@@ -290,6 +321,8 @@ export default {
         workingHours: ''
       },
       jobOfferCurrentView: {
+        id: '',
+        company: '',
         publicationDate: '',
         companyName: '',
         jobName: '',
@@ -446,11 +479,11 @@ export default {
         location: this.jobOfferForm.location,
         contract_type: this.jobOfferForm.contractType
       }
-      if (!isNaN(this.jobOfferForm.salary)) {
+      if (this.jobOfferForm.salary !== '') {
         values.salary = this.jobOfferForm.salary
       }
-      if (!isNaN(this.jobOfferForm.workingHours)) {
-        values.salary = this.jobOfferForm.workingHours
+      if (this.jobOfferForm.workingHours !== '') {
+        values.working_hours = this.jobOfferForm.workingHours
       }
       console.log(values)
       axios.post(path, values, {
@@ -490,6 +523,8 @@ export default {
           this.jobOfferCurrentView.location = res.data.offer.location
           this.jobOfferCurrentView.workingHours = res.data.offer.working_hours
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
+          this.jobOfferCurrentView.id = res.data.offer.id
+          this.jobOfferCurrentView.company = res.data.offer.company
           this.onJoOfferView()
         })
         .catch((error) => {

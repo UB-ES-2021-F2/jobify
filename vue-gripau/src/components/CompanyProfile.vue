@@ -246,11 +246,11 @@
                   <p>{{jobOfferCurrentView.location}}</p>
                 </div>
                 <div v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Contract Type</h4>
+                  <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
                   <p>{{jobOfferCurrentView.contractType}}</p>
                 </div>
                 <div v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Working Hours</h4>
+                  <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
                   <p>{{jobOfferCurrentView.workingHours}}</p>
                 </div>
                 <div v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
@@ -258,7 +258,7 @@
                   <p>{{jobOfferCurrentView.salary}}</p>
                 </div>
                 <div v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Publication Date</h4>
+                  <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
                   <p>{{jobOfferCurrentView.publicationDate}}</p>
                 </div>
               </b-container>

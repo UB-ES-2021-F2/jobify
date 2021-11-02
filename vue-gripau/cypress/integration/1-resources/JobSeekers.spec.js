@@ -81,6 +81,7 @@ describe('JobSeekers resource', () => {
           expect(response.body.message).to.eq('Access denied')
         })
     })
+    /*
     it('should return error 400 because the new password does not meet requirements', () => {
       cy.request({
         method: 'PUT',
@@ -145,6 +146,7 @@ describe('JobSeekers resource', () => {
           expect(response.body.message).to.eq('Fields too long')
         })
     })
+    */
     it('should return the modified job seeker account', () => {
       cy.request({
         method: 'PUT',

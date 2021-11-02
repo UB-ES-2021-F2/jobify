@@ -55,7 +55,7 @@ class Register(Resource):
         # Check user doesn't exist
         if JobSeekersModel.find_by_username(data.username):
             return {'message': "User already exists"}, 406
-        if CompanyModel.find_by_company(data.username):
+        if CompanyModel.find_by_username(data.username):
             return {'message': "User already exists"}, 407
 
         # Check email doesn't exist

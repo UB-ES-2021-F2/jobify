@@ -84,7 +84,7 @@ describe('Educations resource', () => {
         url: 'education/lordsergi',
         auth: {username: localStorage.getItem('token')},
         body: {
-          title: ' ',
+          title: 'prova cytest',
           institution: 'universitat de barcelona',
           start_date: '04-2021',
           end_date: '2021-test',

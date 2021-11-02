@@ -62,7 +62,7 @@ jobs:
           pip install flake8
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         working-directory: ${{env.flask-directory}}
-      - name: run app
+      - name: Start backend server
         run: |
           flask db init
           flask db migrate
@@ -70,7 +70,7 @@ jobs:
           python add_data.py
           python app.py &
         working-directory: ${{ env.flask-directory }}
-      - name: Cypress run
+      - name: Run Cypress testing
         uses: cypress-io/github-action@v2
         with:
-          project: ${{ env.flask-directory }}
+          working-directory: ${{ env.vue-directory }}

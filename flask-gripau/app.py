@@ -15,6 +15,8 @@ from resources import CompanyList
 from resources import JobOffers
 from resources import CompanyJobOffers
 from resources import JobOfferList
+from resources import DeleteEducation
+from resources import DeleteWorkExperience
 
 # Imports de models
 from models.job_seeker import JobSeekersModel
@@ -64,6 +66,9 @@ api.add_resource(WorkExperiences, '/api/work_experience/<string:username>')
 api.add_resource(JobOffers, '/api/job_offer/<int:id>', '/api/job_offer/<string:company>')
 api.add_resource(CompanyJobOffers, '/api/offers/<string:company>')
 api.add_resource(JobOfferList, '/api/offers')
+api.add_resource(DeleteEducation, '/api/delete_education/<string:username>')
+api.add_resource(DeleteWorkExperience, '/api/delete_work_experience/<string:username>')
+
 
 @app.route('/')
 def render_vue():

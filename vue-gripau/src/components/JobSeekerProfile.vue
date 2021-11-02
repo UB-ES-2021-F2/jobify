@@ -32,9 +32,26 @@
       <h2 style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
-        <div class="bio-text">
+        <div v-if="bio != null && !edit_bio " class="bio-text">
           {{bio}}
+          <p></p>
         </div>
+        <div v-if="bio === null && !edit_bio && edit_mode" class="bio-text">
+          {{bio}}
+          <p></p>
+        </div>
+        <b-container v-if="edit_bio" fluid>
+          <b-row align="center">
+            <b-col sm="10">
+              <b-form-textarea v-model="modify_bio" id="textarea-auto-height" rows="3" max-rows="8"/>
+            </b-col>
+            <b-col align-self="center" sm="1">
+              <b-button variant="success" @click="modifyBio()">Save</b-button>
+            </b-col>
+          </b-row>
+          <p></p>
+        </b-container>
+        <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Work experience </p>
@@ -71,11 +88,9 @@
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Skills </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">Python</span>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">Java</span>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">SQL</span>
+            <span class="badge badge-pill badge-warning p-2 m-1"  v-for="skill in skills" :key="skill">{{ skill }}</span>
           </div>
         </div>
       </div>
@@ -110,11 +125,11 @@
             </validation-provider>
 
             <b-form-group required label="Start date">
-              <input type="month" class="form-control" id="startYear" v-model="addWork.startDate" min="1900-01" max="2040-01">
+              <input placeholder="yyyy-mm" type="month" class="form-control" id="startYear" v-model="addWork.startDate" min="1900-01" max="2040-01">
             </b-form-group>
 
             <b-form-group label="End date">
-              <input type="month" class="form-control" id="endYear" v-model="addWork.endDate"
+              <input placeholder="yyyy-mm" type="month" class="form-control" id="endYear" v-model="addWork.endDate"
                      :disabled="addWork.currently" :state="checkDates('work')" min="1900-01" max="2040-01">
               <span style="font-size: 12px;color:#dd2222" v-if="checkDates('work')">Start date cannot be posterior to end date</span>
             </b-form-group>
@@ -124,6 +139,27 @@
                      @click="addWork.endDate=''">
               <label class="form-check-label" for="currentlyCheckbox">Currently in this job</label>
             </div>
+
+            <div class="float-right">
+              <b-button variant="primary" type="submit">Submit</b-button>
+            </div>
+
+          </b-form>
+        </validation-observer>
+      </b-modal>
+
+      <b-modal hide-footer hide-backdrop ref="addSkillModal">
+        <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add Skill</h5></template>
+        <validation-observer ref="observer" v-slot="{ handleSubmit }">
+          <b-form ref="addSkillForm" @submit.prevent="handleSubmit(submitAddSkill)" style="font-family: 'Work Sans SemiBold'">
+
+            <validation-provider name="skill"  :rules="{alpha_spaces, required: true, max:15}" v-slot="validationContext">
+              <b-form-group label="Skill">
+                <b-form-input v-model="addSkill.skill" type="text" id="skill" placeholder="Enter skill"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
+                <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
             <div class="float-right">
               <b-button variant="primary" type="submit">Submit</b-button>
@@ -155,11 +191,11 @@
             </validation-provider>
 
             <b-form-group required label="Start date">
-              <input type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate" min="1900-01" max="2040-01">
+              <input placeholder="yyyy-mm" type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate" min="1900-01" max="2040-01">
             </b-form-group>
 
             <b-form-group label="End date">
-              <input type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate"
+              <input placeholder="yyyy-mm" type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate"
                      :disabled="addEducation.currently" :state="checkDates('ed')" min="1900-01" max="2040-01">
               <span style="font-size: 12px;color:#dd2222" v-if="checkDates('ed')">Start date cannot be posterior to end date</span>
             </b-form-group>
@@ -202,10 +238,11 @@ export default {
       edit_mode: false,
       work_experience: [],
       education: [],
-      skills: ['Python', 'Java', 'SQL'],
-      bio: 'Example bio: I’ve always been a great problem solver, an independent introvert, and a technophile obsessed with the latest devices.\n' +
-        'Today, I’m working from home as a software engineer for Google, and I get to show off all these elements of who I am.\n' +
-        ' I’m also eager to meet other software engineers in the area, so feel free to connect!',
+      skills: [],
+      addSkill: {skill: ''},
+      bio: '',
+      edit_bio: false,
+      modify_bio: '',
       addWork: {
         jobName: '',
         company: '',
@@ -247,6 +284,26 @@ export default {
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
+    },
+    editBio () {
+      this.edit_bio = !this.edit_bio
+      this.modify_bio = this.bio
+    },
+    modifyBio () {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile.toLowerCase()
+      const values = {
+        bio: this.modify_bio
+      }
+      axios.put(path, values, {
+        auth: {username: this.token}})
+        .then((res) => {
+          this.getBio()
+          this.edit_bio = !this.edit_bio
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(' An error occurred modifying bio')
+        })
     },
     getValidationState ({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null
@@ -336,9 +393,9 @@ export default {
         })
     },
     deleteWork (work) {
-      const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username
-      const parameters = {data: { id: work.id }}
-      axios.delete(path, parameters, {
+      const path = Vue.prototype.$API_BASE_URL + 'delete_work_experience/' + this.username
+      const parameters = {id: work.id}
+      axios.post(path, parameters, {
         auth: {username: this.token}})
         .then((res) => {
           this.getWorkExperience()
@@ -378,10 +435,40 @@ export default {
           alert('Error adding education')
         })
     },
+    submitAddSkill () {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = { skills: [this.addSkill.skill] }
+      axios.put(path, parameters, {auth: {username: this.token}})
+        .then((res) => {
+          this.getSkills()
+          this.$refs.addSkillModal.hide()
+        })
+        .catch((error) => {
+          console.error(error)
+          console.log(this.addSkill.skill)
+          alert('Error Adding Skills')
+        })
+    },
+    onAddSkill () {
+      this.$refs.addSkillModal.show()
+    },
+    getSkills () {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = {headers: {token: this.token}}
+      axios.get(path, parameters)
+        .then((res) => {
+          this.skills = res.data.account.skills
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error Getting Skills')
+        })
+    },
     deleteEducation (ed) {
-      const path = Vue.prototype.$API_BASE_URL + 'education/' + this.username
-      const parameters = {data: { id: ed.id }, headers: {token: this.token}}
-      axios.delete(path, parameters)
+      const path = Vue.prototype.$API_BASE_URL + 'delete_education/' + this.username
+      const parameters = {id: ed.id}
+      axios.post(path, parameters, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getEducation()
         })
@@ -420,6 +507,17 @@ export default {
           this.name = 'Name'
           this.surname = 'Surname'
         })
+    },
+    getBio () {
+      const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile.toLowerCase()
+      axios.get(pathJobseeker)
+        .then((res) => {
+          console.log(res)
+          this.bio = res.data.account.bio
+        })
+        .catch(() => {
+          this.bio = ''
+        })
     }
   },
   created () {
@@ -434,6 +532,8 @@ export default {
     this.getName()
     this.getWorkExperience()
     this.getEducation()
+    this.getSkills()
+    this.getBio()
   },
   computed: mapState({
     token: state => state.token,

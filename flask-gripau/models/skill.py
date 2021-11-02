@@ -19,6 +19,9 @@ class SkillsModel(db.Model):
         """
         self.name = name
 
+    def skill_name(self):
+        return self.name
+
     def json(self):
         """
         Function that returns the skill info as json
@@ -29,6 +32,7 @@ class SkillsModel(db.Model):
     def delete_from_db(self, database=None):
         """
         Function that the deletes from the database the skill
+        :param database: database instance
         """
         if database is None:
             database = db

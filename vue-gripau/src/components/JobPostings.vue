@@ -26,130 +26,154 @@
       </b-collapse>
     </b-navbar>
     <!--/.Navbar -->
+    <!-- Job offers company view -->
+    <div v-show="!this.jobOfferView">
+      <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
+      <b-container fluid>
+        <b-row align-h="center" v-if="is_company">
+          <b-card
+            tag="article"
+            class="text-center mb-2"
+            style="width: 90%; max-width: 600px"
+          >
+            <b-link v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
+            <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
+          </b-card>
+        </b-row>
+        <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
+          <b-card
+            :title="job_offer.job_name"
+            tag="article"
+            class="mb-2"
+            style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
+            align="left"
+          >
+            <b-button class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+            <b-card-text>
+              <p>{{ job_offer.company_name }}</p>
+            </b-card-text>
+            <footer>
+              <b-container fluid style="font-family: 'Work Sans'">
+                <b-row>
+                  <b-col cols="4" v-if="job_offer.contract_type.length > 0">
+                    <b-icon icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                  </b-col>
+                  <b-col cols="2" v-if="job_offer.workingHours > 0">
+                    <b-icon icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                  </b-col>
+                  <b-col cols="3">
+                    <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                  </b-col>
+                  <b-col cols="3">
+                    <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                  </b-col>
+                </b-row>
+              </b-container>
+            </footer>
+          </b-card>
+        </b-row>
+      </b-container>
+      <b-modal ref="jobOfferModal"
+               id="job-offer-modal"
+               title="Post a job offer"
+               hide-footer
+               hide-backdrop
+      >
+        <validation-observer ref="observer" v-slot="{ handleSubmit }">
+          <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
+            <ValidationProvider name="JobName"  rules="alpha_spaces|required:true|max: 50" v-slot="validationContext">
+              <b-form-group id="input-group-1" label="Job name" label-for="input-1">
+                <b-form-input v-model="jobOfferForm.jobName" placeholder="" type="text" :state="getValidationState(validationContext)"
+                              aria-describedby="input-1-live-feedback"></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </ValidationProvider>
 
-    <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
-    <b-container fluid>
-      <b-row align-h="center" v-if="is_company">
-        <b-card
-          tag="article"
-          class="text-center mb-2"
-          style="width: 90%; max-width: 600px"
-        >
-          <b-link v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
-          <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
-        </b-card>
-      </b-row>
-      <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
-        <b-card
-          :title="job_offer.job_name"
-          tag="article"
-          class="mb-2"
-          style="width: 90%; max-width: 600px"
-          align="left"
-        >
-          <b-button class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-          <b-card-text>
-            {{ job_offer.company }}
-          </b-card-text>
-          <footer>
-            <b-container fluid>
-              <b-row>
-                <b-col cols="4" v-if="job_offer.contract_type.length > 0">
-                  <b-icon icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                </b-col>
-                <b-col cols="2" v-if="job_offer.workingHours > 0">
-                  <b-icon icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                </b-col>
-                <b-col cols="3">
-                  <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                </b-col>
-                <b-col cols="3">
-                  <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                </b-col>
-              </b-row>
-            </b-container>
-          </footer>
-        </b-card>
-      </b-row>
-    </b-container>
-    <b-modal ref="jobOfferModal"
-             id="job-offer-modal"
-             title="Post a job offer"
-             hide-footer
-             hide-backdrop
-    >
-      <validation-observer ref="observer" v-slot="{ handleSubmit }">
-        <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)">
-          <validation-provider name="JobName"  :rules="{alpha_spaces, required: true, max: 40}" v-slot="validationContext">
-            <b-form-group id="input-group-1" label="Job name" label-for="input-1">
-              <b-form-input v-model="jobOfferForm.jobName" placeholder="" type="text" :state="getValidationState(validationContext)"
-                            aria-describedby="input-1-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+            <validation-provider name="Salary"  rules="max:30" v-slot="validationContext">
+              <b-form-group id="input-group-3" label="Salary" label-for="input-3">
+                <b-form-input v-model="jobOfferForm.salary" type="text" :state="getValidationState(validationContext)"
+                              aria-describedby="input-3-live-feedback" placeholder="e.g. '15€/hour'"></b-form-input>
+                <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <validation-provider name="Description"  :rules="{ max: 500}" v-slot="validationContext">
-            <b-form-group id="input-group-2" label="Description" label-for="input-2">
-              <b-form-input v-model="jobOfferForm.description" placeholder="" type="text" :state="getValidationState(validationContext)"
-                            aria-describedby="input-2-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+            <validation-provider name="Location"  rules="required:true|max: 40" v-slot="validationContext">
+              <b-form-group id="input-group-1" label="Location" label-for="input-1">
+                <b-form-input v-model="jobOfferForm.location" placeholder="e.g. 'Barcelona', 'Remote'" type="text" :state="getValidationState(validationContext)"
+                              aria-describedby="input-1-live-feedback"></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <validation-provider name="Salary"  :rules="{numeric, max: 10}" v-slot="validationContext">
-            <b-form-group id="input-group-3" label="Salary" label-for="input-3">
-              <b-form-input v-model="jobOfferForm.salary" placeholder="" type="number" :state="getValidationState(validationContext)"
-                            aria-describedby="input-3-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+            <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
+              <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
+                <b-form-select v-model="jobOfferForm.contractType" :options="optionsContractType" placeholder="" type="text" :state="getValidationState(validationContext)"
+                               aria-describedby="input-2-live-feedback"></b-form-select>
+                <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <validation-provider name="VacancyNumber"  :rules="{numeric, max: 3}" v-slot="validationContext">
-            <b-form-group id="input-group-4" label="Vacancy number" label-for="input-4">
-              <b-form-input v-model="jobOfferForm.vacancyNumber" placeholder="" type="number" :state="getValidationState(validationContext)"
-                            aria-describedby="input-4-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-4-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+            <validation-provider name="WorkingHours"  rules="numeric|max:60" v-slot="validationContext">
+              <b-form-group id="input-group-3" label="Weekly working hours" label-for="input-3">
+                <b-form-input v-model="jobOfferForm.workingHours" placeholder="" type="number" :state="getValidationState(validationContext)"
+                              aria-describedby="input-3-live-feedback"></b-form-input>
+                <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <validation-provider name="Location"  :rules="{alpha_spaces, required: true, max: 40}" v-slot="validationContext">
-            <b-form-group id="input-group-1" label="Location" label-for="input-1">
-              <b-form-input v-model="jobOfferForm.location" placeholder="" type="text" :state="getValidationState(validationContext)"
-                            aria-describedby="input-1-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+            <validation-provider name="Description"  :rules="{ max: 2000}" v-slot="validationContext">
+              <b-form-group id="input-group-2" label="Description" label-for="input-2">
+                <b-form-textarea v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
+                                 aria-describedby="input-2-live-feedback"  rows="5"
+                                 placeholder="(Optional) Description of the job, requirements, job benefits, etc."></b-form-textarea>
+                <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <validation-provider name="ContractType"  :rules="{ max: 500}" v-slot="validationContext">
-            <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
-              <b-form-select v-model="jobOfferForm.contractType" :options="optionsContractType" placeholder="" type="text" :state="getValidationState(validationContext)"
-                            aria-describedby="input-2-live-feedback"></b-form-select>
-              <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <validation-provider name="WorkingHours"  :rules="{numeric, max: 10}" v-slot="validationContext">
-            <b-form-group id="input-group-3" label="Working hours" label-for="input-3">
-              <b-form-input v-model="jobOfferForm.workingHours" placeholder="" type="number" :state="getValidationState(validationContext)"
-                            aria-describedby="input-3-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <validation-provider name="MinimumExperience"  :rules="{numeric, required: true, max: 300}" v-slot="validationContext">
-            <b-form-group id="input-group-4" label="Minimum experience" label-for="input-4">
-              <b-form-input v-model="jobOfferForm.minimumExperience" placeholder="" type="number" :state="getValidationState(validationContext)"
-                            aria-describedby="input-4-live-feedback"></b-form-input>
-              <b-form-invalid-feedback id="input-4-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-warning justify-content-md-end">Post Job Offer!</button>
-          </div>
-        </b-form>
-      </validation-observer>
-    </b-modal>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-warning justify-content-md-end">Post Job Offer!</button>
+            </div>
+          </b-form>
+        </validation-observer>
+      </b-modal>
+    </div>
+    <!-- /Job offers company view -->
+    <!-- Job offer view -->
+    <div v-if="this.jobOfferView">
+      <h2 style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
+      <b-container align="left">
+        <div v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
+          <p>{{jobOfferCurrentView.description}}</p>
+        </div>
+        <div v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
+          <p>{{jobOfferCurrentView.companyName}}</p>
+        </div>
+        <div v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
+          <p>{{jobOfferCurrentView.location}}</p>
+        </div>
+        <div v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
+          <p>{{jobOfferCurrentView.contractType}}</p>
+        </div>
+        <div v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
+          <p>{{jobOfferCurrentView.workingHours}}</p>
+        </div>
+        <div v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
+          <p>{{jobOfferCurrentView.salary}}</p>
+        </div>
+        <div v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
+          <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
+          <p>{{jobOfferCurrentView.publicationDate}}</p>
+        </div>
+      </b-container>
+      <b-button btn variant="primary" class='btn-home' @click="onJoOfferView">Seen</b-button>
+    </div>
+    <!-- /Job offer view -->
   </div>
 </template>
 
@@ -169,15 +193,26 @@ export default {
       is_jobseeker: true,
       is_company: false,
       is_admin: false,
+      jobOfferView: false,
       jobOfferForm: {
         jobName: '',
         description: '',
         salary: '',
-        vacancyNumber: '',
         location: '',
         contractType: '',
-        workingHours: '',
-        minimumExperience: ''
+        workingHours: ''
+      },
+      jobOfferCurrentView: {
+        id: '',
+        company: '',
+        publicationDate: '',
+        companyName: '',
+        jobName: '',
+        description: '',
+        salary: '',
+        location: '',
+        contractType: '',
+        workingHours: ''
       },
       optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
     }
@@ -206,20 +241,40 @@ export default {
       this.$store.commit('logout')
       this.$router.replace({ path: '/' })
     },
+    onJoOfferView () {
+      this.jobOfferView = !this.jobOfferView
+    },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
     },
     onJobOffer (id) {
-      console.log(id)
+      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + id
+      axios.get(path)
+        .then((res) => {
+          this.jobOfferCurrentView.companyName = res.data.offer.company_name
+          this.jobOfferCurrentView.jobName = res.data.offer.job_name
+          this.jobOfferCurrentView.description = res.data.offer.description
+          this.jobOfferCurrentView.publicationDate = res.data.offer.publication_date
+          this.jobOfferCurrentView.salary = res.data.offer.salary
+          this.jobOfferCurrentView.location = res.data.offer.location
+          this.jobOfferCurrentView.workingHours = res.data.offer.working_hours
+          this.jobOfferCurrentView.contractType = res.data.offer.contract_type
+          this.jobOfferCurrentView.id = res.data.offer.id
+          this.jobOfferCurrentView.company = res.data.offer.company
+          this.onJoOfferView()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     },
     getJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers'
       axios.get(path)
         .then((res) => {
-          console.log(res.data.OfferList)
           this.job_offers = []
           for (var jobOffer in res.data.OfferList) {
             jobOffer = res.data.OfferList[jobOffer]
+            console.log(jobOffer)
             jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
             this.job_offers.push(jobOffer)
           }
@@ -227,6 +282,33 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    onSubmitNewOffer () {
+      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
+      var values = {
+        job_name: this.jobOfferForm.jobName,
+        description: this.jobOfferForm.description,
+        location: this.jobOfferForm.location,
+        contract_type: this.jobOfferForm.contractType
+      }
+      if (!isNaN(this.jobOfferForm.salary)) {
+        values.salary = this.jobOfferForm.salary
+      }
+      if (!isNaN(this.jobOfferForm.workingHours)) {
+        values.salary = this.jobOfferForm.workingHours
+      }
+      console.log(values)
+      axios.post(path, values, {
+        auth: {username: this.token}})
+        .then((res) => {
+          console.log('Job Offer correctly posted')
+          this.getJobOffers()
+        })
+        .catch((error) => {
+          alert(error.response.data.message)
+        })
+      this.$bvModal.hide('job-offer-modal')
+      this.onReset()
     },
     initJobOfferForm () {
       this.jobOfferForm.jobName = ''
@@ -246,17 +328,11 @@ export default {
         location: this.jobOfferForm.location,
         contract_type: this.jobOfferForm.contractType
       }
-      if (!isNaN(this.jobOfferForm.salary)) {
+      if (this.jobOfferForm.salary !== '') {
         values.salary = this.jobOfferForm.salary
       }
-      if (!isNaN(this.jobOfferForm.vacancyNumber)) {
-        values.salary = this.jobOfferForm.vacancyNumber
-      }
-      if (!isNaN(this.jobOfferForm.workingHours)) {
+      if (this.jobOfferForm.workingHours !== '') {
         values.salary = this.jobOfferForm.workingHours
-      }
-      if (!isNaN(this.jobOfferForm.minimumExperience)) {
-        values.salary = this.jobOfferForm.minimumExperience
       }
       console.log(values)
       axios.post(path, values)

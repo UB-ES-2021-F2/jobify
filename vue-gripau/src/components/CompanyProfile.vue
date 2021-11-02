@@ -115,9 +115,158 @@
               <!-- /company location -->
             </div>
           </div>
+          <!-- Job Offers page -->
           <div v-show="this.profileView === false && this.jobView === true">
-            <h2 style="font-family: 'Vollkorn', serif"> Job Offers </h2>
+            <!-- Job offers company view -->
+            <div v-show="!this.jobOfferView">
+              <h2 style="font-family: 'Vollkorn', serif"> Job Offers </h2>
+              <b-container fluid>
+                <b-row align-h="center" v-if="edit_mode">
+                  <b-card
+                    tag="article"
+                    class="text-center mb-2"
+                    style="width: 90%; max-width: 600px"
+                  >
+                    <b-link v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
+                    <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
+                  </b-card>
+                </b-row>
+                <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
+                  <b-card
+                    :title="job_offer.job_name"
+                    tag="article"
+                    class="mb-2"
+                    style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
+                    align="left"
+                  >
+                    <b-button class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+                    <b-card-text>
+                      {{ job_offer.company }}
+                    </b-card-text>
+                    <footer>
+                      <b-container fluid style="font-family: 'Work Sans'">
+                        <b-row>
+                          <b-col cols="4" v-if="job_offer.contract_type.length > 0">
+                            <b-icon icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                          </b-col>
+                          <b-col cols="2" v-if="job_offer.workingHours > 0">
+                            <b-icon icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                          </b-col>
+                          <b-col cols="3">
+                            <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                          </b-col>
+                          <b-col cols="3">
+                            <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                          </b-col>
+                        </b-row>
+                      </b-container>
+                    </footer>
+                  </b-card>
+                </b-row>
+              </b-container>
+              <b-modal ref="jobOfferModal"
+                       id="job-offer-modal"
+                       title="Post a job offer"
+                       hide-footer
+                       hide-backdrop
+              >
+                <validation-observer ref="observer" v-slot="{ handleSubmit }">
+                  <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
+                    <ValidationProvider name="JobName"  rules="alpha_spaces|required:true|max: 50" v-slot="validationContext">
+                      <b-form-group id="input-group-1" label="Job name" label-for="input-1">
+                        <b-form-input v-model="jobOfferForm.jobName" placeholder="e.g. Product Owner" type="text" :state="getValidationState(validationContext)"
+                                      aria-describedby="input-1-live-feedback"></b-form-input>
+                        <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-form-group>
+                    </ValidationProvider>
+
+                    <validation-provider name="Salary"  rules="max:30" v-slot="validationContext">
+                      <b-form-group id="input-group-3" label="Salary" label-for="input-3">
+                        <b-form-input v-model="jobOfferForm.salary" type="text" :state="getValidationState(validationContext)"
+                                      aria-describedby="input-3-live-feedback" placeholder="e.g. '15€/hour'"></b-form-input>
+                        <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-form-group>
+                    </validation-provider>
+
+                    <validation-provider name="Location"  rules="required:true|max: 40" v-slot="validationContext">
+                      <b-form-group id="input-group-1" label="Location" label-for="input-1">
+                        <b-form-input v-model="jobOfferForm.location" placeholder="e.g. 'Barcelona', 'Remote'" type="text" :state="getValidationState(validationContext)"
+                                      aria-describedby="input-1-live-feedback"></b-form-input>
+                        <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-form-group>
+                    </validation-provider>
+
+                    <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
+                      <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
+                        <b-form-select v-model="jobOfferForm.contractType" :options="optionsContractType"  type="text" :state="getValidationState(validationContext)"
+                                       aria-describedby="input-2-live-feedback"></b-form-select>
+                        <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-form-group>
+                    </validation-provider>
+
+                    <validation-provider name="WorkingHours"  rules="numeric|max:60" v-slot="validationContext">
+                      <b-form-group id="input-group-3" label="Weekly working hours" label-for="input-3">
+                        <b-form-input v-model="jobOfferForm.workingHours" placeholder="" type="number" :state="getValidationState(validationContext)"
+                                      aria-describedby="input-3-live-feedback"></b-form-input>
+                        <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-form-group>
+                    </validation-provider>
+
+                    <validation-provider name="Description"  :rules="{ max: 2000}" v-slot="validationContext">
+                      <b-form-group id="input-group-2" label="Description" label-for="input-2">
+                        <b-form-textarea v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
+                                         aria-describedby="input-2-live-feedback"  rows="5"
+                                         placeholder="(Optional) Description of the job, requirements, job benefits, etc."></b-form-textarea>
+                        <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-form-group>
+                    </validation-provider>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <button class="btn btn-warning justify-content-md-end">Post Job Offer!</button>
+                    </div>
+                  </b-form>
+                </validation-observer>
+              </b-modal>
+            </div>
+            <!-- /Job offers company view -->
+            <!-- Job offer view -->
+            <div v-if="this.jobOfferView">
+              <h2 style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
+              <b-container align="left">
+                <div v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
+                  <p>{{jobOfferCurrentView.description}}</p>
+                </div>
+                <div v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
+                  <p>{{jobOfferCurrentView.companyName}}</p>
+                </div>
+                <div v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
+                  <p>{{jobOfferCurrentView.location}}</p>
+                </div>
+                <div v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
+                  <p>{{jobOfferCurrentView.contractType}}</p>
+                </div>
+                <div v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
+                  <p>{{jobOfferCurrentView.workingHours}}</p>
+                </div>
+                <div v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
+                  <p>{{jobOfferCurrentView.salary}}</p>
+                </div>
+                <div v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
+                  <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
+                  <p>{{jobOfferCurrentView.publicationDate}}</p>
+                </div>
+              </b-container>
+              <b-button btn variant="primary" class='btn-home' @click="onJoOfferView">Seen</b-button>
+            </div>
+            <!-- /Job offer view -->
           </div>
+          <!-- /Job Offers page -->
         </b-col>
       </b-row>
     </b-container>
@@ -152,6 +301,7 @@ export default {
       },
       profileView: true,
       jobView: false,
+      jobOfferView: false,
       logged: false,
       is_jobseeker: true,
       is_company: false,
@@ -160,7 +310,29 @@ export default {
       username: '',
       company_name_profile: '',
       edit_mode: false,
-      bio: 'Add your bio here'
+      bio: 'Add your bio here',
+      job_offers: [],
+      jobOfferForm: {
+        jobName: '',
+        description: '',
+        salary: '',
+        location: '',
+        contractType: '',
+        workingHours: ''
+      },
+      jobOfferCurrentView: {
+        id: '',
+        company: '',
+        publicationDate: '',
+        companyName: '',
+        jobName: '',
+        description: '',
+        salary: '',
+        location: '',
+        contractType: '',
+        workingHours: ''
+      },
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
     }
   },
   methods: {
@@ -183,6 +355,10 @@ export default {
       this.edit.description = false
       this.edit.sector = false
       this.edit.location = false
+      this.jobOfferView = false
+    },
+    onJoOfferView () {
+      this.jobOfferView = !this.jobOfferView
     },
     onLogOut () {
       this.$store.commit('logout')
@@ -206,19 +382,21 @@ export default {
       this.edit.location = !this.edit.location
       this.modify.location = this.company.location
     },
+
     modifyDescription () {
       const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
       const values = {
         description: this.modify.description
       }
-      axios.put(pathCompany, values)
+      axios.put(pathCompany, values, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getCompany()
           this.edit.description = !this.edit.description
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred creating the account')
+          alert(' An error occurred modifying description')
         })
     },
     modifySector () {
@@ -226,7 +404,8 @@ export default {
       const values = {
         sector: this.modify.sector
       }
-      axios.put(pathCompany, values)
+      axios.put(pathCompany, values, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getCompany()
           this.edit.sector = !this.edit.sector
@@ -241,7 +420,8 @@ export default {
       const values = {
         location: this.modify.location
       }
-      axios.put(pathCompany, values)
+      axios.put(pathCompany, values, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getCompany()
           this.edit.location = !this.edit.location
@@ -271,6 +451,85 @@ export default {
           this.company.location = 'Location'
           this.company.sector = 'sector'
         })
+    },
+    getCompanyJobOffers () {
+      const path = Vue.prototype.$API_BASE_URL + 'offers/' + this.company_name_profile.toLowerCase()
+      axios.get(path)
+        .then((res) => {
+          console.log(res.data)
+          this.job_offers = []
+          for (var jobOffer in res.data) {
+            jobOffer = res.data[jobOffer]
+            jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
+            this.job_offers.push(jobOffer)
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    getValidationState ({ dirty, validated, valid = null }) {
+      return dirty || validated ? valid : null
+    },
+    onSubmitNewOffer () {
+      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
+      var values = {
+        job_name: this.jobOfferForm.jobName,
+        description: this.jobOfferForm.description,
+        location: this.jobOfferForm.location,
+        contract_type: this.jobOfferForm.contractType
+      }
+      if (this.jobOfferForm.salary !== '') {
+        values.salary = this.jobOfferForm.salary
+      }
+      if (this.jobOfferForm.workingHours !== '') {
+        values.working_hours = this.jobOfferForm.workingHours
+      }
+      console.log(values)
+      axios.post(path, values, {
+        auth: {username: this.token}})
+        .then((res) => {
+          console.log('Job Offer correctly posted')
+          this.getCompanyJobOffers()
+        })
+        .catch((error) => {
+          alert(error.response.data.message)
+        })
+      this.$bvModal.hide('job-offer-modal')
+      this.onReset()
+    },
+    onReset () {
+      this.initJobOfferForm()
+    },
+    initJobOfferForm () {
+      this.jobOfferForm.jobName = ''
+      this.jobOfferForm.description = ''
+      this.jobOfferForm.salary = ''
+      this.jobOfferForm.vacancyNumber = ''
+      this.jobOfferForm.location = ''
+      this.jobOfferForm.contractType = ''
+      this.jobOfferForm.workingHours = ''
+      this.jobOfferForm.minimumExperience = ''
+    },
+    onJobOffer (id) {
+      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + id
+      axios.get(path)
+        .then((res) => {
+          this.jobOfferCurrentView.companyName = res.data.offer.company_name
+          this.jobOfferCurrentView.jobName = res.data.offer.job_name
+          this.jobOfferCurrentView.description = res.data.offer.description
+          this.jobOfferCurrentView.publicationDate = res.data.offer.publication_date
+          this.jobOfferCurrentView.salary = res.data.offer.salary
+          this.jobOfferCurrentView.location = res.data.offer.location
+          this.jobOfferCurrentView.workingHours = res.data.offer.working_hours
+          this.jobOfferCurrentView.contractType = res.data.offer.contract_type
+          this.jobOfferCurrentView.id = res.data.offer.id
+          this.jobOfferCurrentView.company = res.data.offer.company
+          this.onJoOfferView()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   },
   created () {
@@ -283,6 +542,7 @@ export default {
     this.is_admin = this.$store.state.isAdmin
     this.edit_mode = this.username === this.company_name_profile
     this.getCompany()
+    this.getCompanyJobOffers()
   },
   computed: mapState({
     token: state => state.token,

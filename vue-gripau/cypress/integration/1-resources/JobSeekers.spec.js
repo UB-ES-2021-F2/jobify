@@ -146,4 +146,51 @@ describe('JobSeekers resource', () => {
         })
     })
   })
+  context('DELETE jobseeker/username', () => {
+    it('should return error 400 because we are trying to delete another jobseeker', () => {
+      cy.request({
+        method: 'DELETE',
+        url: 'jobseeker/cypressjobseeker',
+        auth: {username: localStorage.getItem('token')},
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Access denied')
+        })
+    })
+    it('should return a message confirming account deleted', () => {
+      cy.request({
+        method: 'DELETE',
+        url: 'company/lordsergi',
+        auth: {username: localStorage.getItem('token')}
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.message).to.eq('Account deleted')
+        })
+    })
+    it('should return the new jobseeker account created', () => {
+      cy.request({
+        method: 'POST',
+        url: 'register',
+        body: {
+          username: 'lordsergi',
+          name: 'cypress',
+          surname: 'test',
+          password: 'Password12',
+          is_job_seeker: 1,
+          email: 'cypressjobseeker@cypress.com',
+          description: 'prova description'
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(201)
+          expect(response.body.username).to.eq('cypresstestjobseeker')
+        })
+    })
+  })
 })

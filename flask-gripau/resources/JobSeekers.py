@@ -22,6 +22,7 @@ class JobSeekers(Resource):
         else:
             return {'account': None}, 404
 
+    @auth.login_required(role='user')
     def delete(self, username):
         """
         HTTP DELETE method to delete a specific job seeker

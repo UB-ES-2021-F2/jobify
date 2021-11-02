@@ -147,5 +147,25 @@ describe('Companies resource', () => {
           expect(response.body.message).to.eq('Account deleted')
         })
     })
+    it('should return the new company account created', () => {
+      cy.request({
+        method: 'POST',
+        url: 'register',
+        body: {
+          username: 'universitat123',
+          name: 'cypress',
+          surname: 'test',
+          password: 'Password12',
+          is_job_seeker: 0,
+          email: 'cypresscompany@cypress.com',
+          description: 'prova description'
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(201)
+          expect(response.body.username).to.eq('universitat123')
+        })
+    })
   })
 })

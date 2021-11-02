@@ -29,7 +29,28 @@ describe('DeleteWorkExperience resource', () => {
           expect(response.body.message).to.eq('Work experience with id [1] deleted')
         })
     })
-    it('should return error because the user lordsergi2 can not exist', () => {
+    it('should return the work experience added to the user lordsergi', () => {
+      cy.request({
+        method: 'POST',
+        url: 'work_experience/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'professor',
+          description: 'professor de EDS',
+          company: 'cypress',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.work_experience.username).to.eq('lordsergi')
+          expect(response.body.work_experience.job_name).to.eq('professor')
+        })
+    })
+    it('should return error because we are trying to delete a work experience of another user', () => {
       cy.request({
         method: 'POST',
         url: 'delete_work_experience/cypress',

@@ -78,6 +78,26 @@ describe('Educations resource', () => {
           expect(response.body.message).to.eq('Access denied')
         })
     })
+    it('should return error 400 because we are trying to add dates in a wrong format', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'prova cytest',
+          institution: 'universitat de barcelona',
+          start_date: '04-2021',
+          end_date: '2021-test',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Date format is wrong, try (yyyy-mm)')
+        })
+    })
     it('should return error 400 because we are trying to add a education with blank title', () => {
       cy.request({
         method: 'POST',
@@ -155,7 +175,7 @@ describe('Educations resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Month fields must be integers between 1 and 12')
+          expect(response.body.message).to.eq('Dates need to be between months 1 and 12')
         })
     })
     it('should return error 400 because we are trying to add a education with a start year less than 1900 and a end year bigger than 2100', () => {
@@ -175,7 +195,7 @@ describe('Educations resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Year fields must be integers bigger than 1900 and lower than 2100')
+          expect(response.body.message).to.eq('Dates need to be between years 1900 and 2100')
         })
     })
   })

@@ -47,9 +47,6 @@ jobs:
     strategy:
       matrix:
         python-version: [ 3.8 ]
-    env:
-      flask-directory: ./flask-gripau
-      vue-directory: ./vue-gripau
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -61,7 +58,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        working-directory: ${{ env.flask-directory }}
+        working-directory: ./flask-gripau
      - name: Setup Node.js ${{ matrix.node-version }}
        uses: actions/setup-node@v2
        with:
@@ -75,8 +72,8 @@ jobs:
           flask db upgrade
           python add_data.py
           python app.py &
-        working-directory: ${{ env.flask-directory }}
+        working-directory: ./flask-gripau
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          project: ${{ env.vue-directory }}
+          project: ./vue-gripau

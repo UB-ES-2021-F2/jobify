@@ -9,7 +9,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item active href="#">Home</b-nav-item>
+          <b-nav-item @click="onHome()">Home</b-nav-item>
           <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
           <b-nav-item @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
@@ -132,13 +132,21 @@
         </b-tab>
         <!--/Job Seeker form -->
         <!--Company form -->
-        <b-tab title="Company (coming soon)">
+        <b-tab title="Company">
           <validation-observer ref="observerCompany" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)" >
 
+              <validation-provider name="Username"  :rules="{alpha_num, required: true, max: 30}" v-slot="validationContext">
+                <b-form-group id="input-group-0C" label="Company username" label-for="input-0C">
+                  <b-form-input v-model="registerC.username" placeholder="e.g. jobify123" type="text" :state="getValidationState(validationContext)"
+                                aria-describedby="input-0c-live-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-0c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
               <validation-provider name="Company name"  :rules="{alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1C" label="Company name" label-for="input-1C">
-                  <b-form-input v-model="registerC.company" placeholder="" type="text" :state="getValidationState(validationContext)"
+                  <b-form-input v-model="registerC.company" placeholder="e.g. Jobify" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1c-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-1c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -299,39 +307,45 @@ export default {
       }
     },
     onSubmit () {
-      const pathS = Vue.prototype.$API_BASE_URL + 'jobseeker'
-      const pathC = Vue.prototype.$API_BASE_URL + 'company'
+      const path = Vue.prototype.$API_BASE_URL + 'register'
       if (this.tabIndex === 0) {
         const values = {
-          username: this.registerS.username.toLowerCase(),
+          username: this.registerS.username,
           password: this.registerS.password,
           name: this.registerS.fName,
           surname: this.registerS.lName,
-          email: this.registerS.email
+          email: this.registerS.email,
+          is_job_seeker: 1
         }
-        axios.post(pathS, values)
+        axios.post(path, values)
           .then((res) => {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            this.onReset()
+            this.$bvModal.hide('register-modal')
           })
           .catch((error) => {
             alert(error.response.data.message)
           })
       } else {
         const values = {
-          company: this.registerC.company,
+          username: this.registerC.username,
+          name: this.registerC.company,
           password: this.registerC.password,
-          email: this.registerC.email
+          email: this.registerC.email,
+          is_job_seeker: 0
         }
-        axios.post(pathC, values)
+        axios.post(path, values)
           .then((res) => {
             console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            this.onReset()
+            this.$bvModal.hide('register-modal')
           })
           .catch((error) => {
             alert(error.response.data.message)
           })
       }
-      this.onReset()
       this.$bvModal.hide('register-modal')
+      this.onReset()
     },
     initRegisterForm () {
       this.registerS.username = ''
@@ -343,6 +357,7 @@ export default {
       this.registerS.rTandC = false
       this.registerS.newsletter = false
       this.registerC.company = ''
+      this.registerC.username = ''
       this.registerC.email = ''
       this.registerC.password = ''
       this.registerC.confirmation = ''

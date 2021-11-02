@@ -6,8 +6,15 @@ from db import db
 
 
 class WorkExperiences(Resource):
-
+    """
+    Resource related to the WorkExperiences endpoint
+    """
     def get(self, username):
+        """
+        HTTP GET method that gets the list of work experiences of a specific job seeker
+        :param username: name of the job seeker
+        :return: list of json objects with the job seeker's work experiences information
+        """
         account = JobSeekersModel.find_by_username(username)
         if not account:
             return {'account': None}, 404
@@ -15,6 +22,18 @@ class WorkExperiences(Resource):
 
     @auth.login_required(role='user')
     def post(self, username):
+        """
+        HTTP POST method to create a work experience
+        :param username: username of the job seeker that posts the work experience
+        Request fields:
+        - job_name: name of the job (Required)
+        - description: description of the job (Required)
+        - company: company where the job was done (Required)
+        - start_date: start date of the work experience (Required)
+        - end_date: end date of the work experience (Required)
+        - currently: if the job seeker is currently working on this job (Required)
+        :return: json object with the created work experience information
+        """
         if username != g.user.username:
             return {'message': 'Access denied'}, 400
 
@@ -24,7 +43,7 @@ class WorkExperiences(Resource):
         parser.add_argument('description', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('company', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('start_date', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('end_date', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('end_date', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('currently', type=bool, required=True, help="This field cannot be left blank")
 
         data = parser.parse_args()
@@ -58,11 +77,18 @@ class WorkExperiences(Resource):
             db.session.rollback()
             return {"message": "An error occurred inserting the order."}, 500
 
-    #@auth.login_required(role='user')
+    @auth.login_required(role='user')
     def delete(self, username):
+        """
+        HTTP DELETE method to delete a specific work experience
+        :param username: username of the job seeker that deletes the work experience
+        Request fields:
+        - id: id of the work experience (Required)
+        :return: status message
+        """
 
-        #if username != g.user.username:
-            #return {'message': 'Access denied'}, 400
+        if username != g.user.username:
+            return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()
 
@@ -76,7 +102,7 @@ class WorkExperiences(Resource):
 
         if education:
             education.delete_from_db(db)
-            return {'message': "Education with id [{}] deleted".format(id)}, 200
+            return {'message': "Education with id [{}] deleted".format(data.id)}, 200
 
-        return {'message': "Education with id [{}] don't exists".format(id)}, 400
+        return {'message': "Education with id [{}] don't exists".format(data.id)}, 400
 

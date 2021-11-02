@@ -290,7 +290,7 @@ export default {
       this.modify_bio = this.bio
     },
     modifyBio () {
-      const path = Vue.prototype.$API_BASE_URL + 'job_seeker/' + this.username_profile.toLowerCase()
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile.toLowerCase()
       const values = {
         bio: this.modify_bio
       }
@@ -438,13 +438,14 @@ export default {
     submitAddSkill () {
       const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
       const parameters = { skills: [this.addSkill.skill] }
-      axios.put(path, parameters)
+      axios.put(path, parameters, {auth: {username: this.token}})
         .then((res) => {
           this.getSkills()
           this.$refs.addSkillModal.hide()
         })
         .catch((error) => {
           console.error(error)
+          console.log(this.addSkill.skill)
           alert('Error Adding Skills')
         })
     },

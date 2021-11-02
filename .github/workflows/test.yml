@@ -61,7 +61,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        working-directory: ${{env.working-directory}}
+        working-directory: ${{env.flask-directory}}
       - name: run app
         run: |
           flask db init

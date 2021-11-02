@@ -71,11 +71,9 @@
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Skills </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">Python</span>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">Java</span>
-            <span class="badge badge-pill badge-warning" style="font-size: 15px">SQL</span>
+            <span class="badge badge-pill badge-warning p-2 m-1"  v-for="skill in skills" :key="skill">{{ skill }}</span>
           </div>
         </div>
       </div>
@@ -124,6 +122,27 @@
                      @click="addWork.endDate=''">
               <label class="form-check-label" for="currentlyCheckbox">Currently in this job</label>
             </div>
+
+            <div class="float-right">
+              <b-button variant="primary" type="submit">Submit</b-button>
+            </div>
+
+          </b-form>
+        </validation-observer>
+      </b-modal>
+
+      <b-modal hide-footer hide-backdrop ref="addSkillModal">
+        <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add Skill</h5></template>
+        <validation-observer ref="observer" v-slot="{ handleSubmit }">
+          <b-form ref="addSkillForm" @submit.prevent="handleSubmit(submitAddSkill)" style="font-family: 'Work Sans SemiBold'">
+
+            <validation-provider name="skill"  :rules="{alpha_spaces, required: true, max:15}" v-slot="validationContext">
+              <b-form-group label="Skill">
+                <b-form-input v-model="addSkill.skill" type="text" id="skill" placeholder="Enter skill"
+                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
+                <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
             <div class="float-right">
               <b-button variant="primary" type="submit">Submit</b-button>
@@ -202,7 +221,8 @@ export default {
       edit_mode: false,
       work_experience: [],
       education: [],
-      skills: ['Python', 'Java', 'SQL'],
+      skills: [],
+      addSkill: {skill: ''},
       bio: 'Example bio: I’ve always been a great problem solver, an independent introvert, and a technophile obsessed with the latest devices.\n' +
         'Today, I’m working from home as a software engineer for Google, and I get to show off all these elements of who I am.\n' +
         ' I’m also eager to meet other software engineers in the area, so feel free to connect!',
@@ -378,6 +398,34 @@ export default {
           alert('Error adding education')
         })
     },
+    submitAddSkill () {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = { skills: [this.addSkill.skill] }
+      axios.put(path, parameters)
+        .then((res) => {
+          this.getSkills()
+          this.$refs.addSkillModal.hide()
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error Adding Skills')
+        })
+    },
+    onAddSkill () {
+      this.$refs.addSkillModal.show()
+    },
+    getSkills () {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = {headers: {token: this.token}}
+      axios.get(path, parameters)
+        .then((res) => {
+          this.skills = res.data.account.skills
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error Getting Skills')
+        })
+    },
     deleteEducation (ed) {
       const path = Vue.prototype.$API_BASE_URL + 'delete_education/' + this.username
       const parameters = {id: ed.id}
@@ -435,6 +483,7 @@ export default {
     this.getName()
     this.getWorkExperience()
     this.getEducation()
+    this.getSkills()
   },
   computed: mapState({
     token: state => state.token,

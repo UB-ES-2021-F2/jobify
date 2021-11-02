@@ -83,7 +83,7 @@ describe('WorkExperience resource', () => {
     it('should return error 400 because we are trying to add dates in a wrong format', () => {
       cy.request({
         method: 'POST',
-        url: 'work_experience/cytest',
+        url: 'work_experience/lordsergi',
         auth: {username: localStorage.getItem('token')},
         body: {
           job_name: 'work experience test cypress',
@@ -140,7 +140,7 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Start date cannot be later than end date')
+          expect(response.body.message).to.eq('Start date cannot be posterior than end date')
         })
     })
     it('should return error 400 because we are trying to add a work experience with start month bigger than end month and same year', () => {
@@ -161,7 +161,7 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Start date cannot be later than end date')
+          expect(response.body.message).to.eq('Start date cannot be posterior than end date')
         })
     })
     it('should return error 400 because we are trying to add a work_experience with a month bigger than 12', () => {

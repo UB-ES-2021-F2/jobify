@@ -175,7 +175,7 @@ describe('Educations resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Dates nned to be between months 1 and 12')
+          expect(response.body.message).to.eq('Dates need to be between months 1 and 12')
         })
     })
     it('should return error 400 because we are trying to add a education with a start year less than 1900 and a end year bigger than 2100', () => {

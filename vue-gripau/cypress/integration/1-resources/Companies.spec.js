@@ -120,7 +120,23 @@ describe('Companies resource', () => {
           expect(response.body.message).to.eq('Too large fields')
         })
     })
+    it('should return the modified company account', () => {
+      cy.request({
+        method: 'PUT',
+        url: 'company/universitat123',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          password: 'Password12'
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(202)
+          expect(response.body.username).to.eq('universitat123')
+        })
+    })
   })
+  /*
   context('DELETE company/company_name', () => {
     it('should return error 400 because we are trying to delete another company', () => {
       cy.request({
@@ -167,5 +183,5 @@ describe('Companies resource', () => {
           expect(response.body.username).to.eq('universitat123')
         })
     })
-  })
+  }) */
 })

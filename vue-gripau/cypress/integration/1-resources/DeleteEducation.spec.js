@@ -56,5 +56,25 @@ describe('DeleteEducation resource', () => {
           expect(response.body.message).to.eq('Education with id [0] don\'t exists')
         })
     })
+    it('should return the education added to the user lordsergi', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'professor',
+          institution: 'universitat de barcelona',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.education.username).to.eq('lordsergi')
+          expect(response.body.education.title).to.eq('professor')
+        })
+    })
   })
 })

@@ -145,7 +145,23 @@ describe('JobSeekers resource', () => {
           expect(response.body.message).to.eq('Fields too long')
         })
     })
+    it('should return the modified job seeker account', () => {
+      cy.request({
+        method: 'PUT',
+        url: 'jobseeker/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          password: 'Password12'
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(202)
+          expect(response.body.username).to.eq('lordsergi')
+        })
+    })
   })
+  /*
   context('DELETE jobseeker/username', () => {
     it('should return error 400 because we are trying to delete another jobseeker', () => {
       cy.request({
@@ -192,5 +208,5 @@ describe('JobSeekers resource', () => {
           expect(response.body.username).to.eq('cypresstestjobseeker')
         })
     })
-  })
+  }) */
 })

@@ -32,9 +32,26 @@
       <h2 style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
-        <div class="bio-text">
+        <div v-if="bio != null && !edit_bio " class="bio-text">
           {{bio}}
+          <p></p>
         </div>
+        <div v-if="bio === null && !edit_bio && edit_mode" class="bio-text">
+          {{bio}}
+          <p></p>
+        </div>
+        <b-container v-if="edit_bio" fluid>
+          <b-row align="center">
+            <b-col sm="10">
+              <b-form-textarea v-model="modify_bio" id="textarea-auto-height" rows="3" max-rows="8"/>
+            </b-col>
+            <b-col align-self="center" sm="1">
+              <b-button variant="success" @click="modifyBio()">Save</b-button>
+            </b-col>
+          </b-row>
+          <p></p>
+        </b-container>
+        <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
 
         <div class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Work experience </p>
@@ -223,9 +240,9 @@ export default {
       education: [],
       skills: [],
       addSkill: {skill: ''},
-      bio: 'Example bio: I’ve always been a great problem solver, an independent introvert, and a technophile obsessed with the latest devices.\n' +
-        'Today, I’m working from home as a software engineer for Google, and I get to show off all these elements of who I am.\n' +
-        ' I’m also eager to meet other software engineers in the area, so feel free to connect!',
+      bio: '',
+      edit_bio: false,
+      modify_bio: '',
       addWork: {
         jobName: '',
         company: '',
@@ -267,6 +284,26 @@ export default {
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
+    },
+    editBio () {
+      this.edit_bio = !this.edit_bio
+      this.modify_bio = this.bio
+    },
+    modifyBio () {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile.toLowerCase()
+      const values = {
+        bio: this.modify_bio
+      }
+      axios.put(path, values, {
+        auth: {username: this.token}})
+        .then((res) => {
+          this.getBio()
+          this.edit_bio = !this.edit_bio
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(' An error occurred modifying bio')
+        })
     },
     getValidationState ({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null
@@ -401,13 +438,14 @@ export default {
     submitAddSkill () {
       const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
       const parameters = { skills: [this.addSkill.skill] }
-      axios.put(path, parameters)
+      axios.put(path, parameters, {auth: {username: this.token}})
         .then((res) => {
           this.getSkills()
           this.$refs.addSkillModal.hide()
         })
         .catch((error) => {
           console.error(error)
+          console.log(this.addSkill.skill)
           alert('Error Adding Skills')
         })
     },
@@ -469,6 +507,17 @@ export default {
           this.name = 'Name'
           this.surname = 'Surname'
         })
+    },
+    getBio () {
+      const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile.toLowerCase()
+      axios.get(pathJobseeker)
+        .then((res) => {
+          console.log(res)
+          this.bio = res.data.account.bio
+        })
+        .catch(() => {
+          this.bio = ''
+        })
     }
   },
   created () {
@@ -484,6 +533,7 @@ export default {
     this.getWorkExperience()
     this.getEducation()
     this.getSkills()
+    this.getBio()
   },
   computed: mapState({
     token: state => state.token,

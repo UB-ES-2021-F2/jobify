@@ -12,12 +12,18 @@ from resources import Register
 from resources import Educations
 from resources import WorkExperiences
 from resources import CompanyList
+from resources import JobOffers
+from resources import CompanyJobOffers
+from resources import JobOfferList
+from resources import DeleteEducation
+from resources import DeleteWorkExperience
 
 # Imports de models
 from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
 from models.education import EducationsModel
 from models.work_experience import WorkExperiencesModel
+from models.job_offer import JobOfferModel
 
 from flask import g, current_app
 from decouple import config as config_decouple
@@ -57,7 +63,11 @@ api.add_resource(Login, '/api/login')
 api.add_resource(Register, '/api/register')
 api.add_resource(Educations, '/api/education/<string:username>')
 api.add_resource(WorkExperiences, '/api/work_experience/<string:username>')
-
+api.add_resource(JobOffers, '/api/job_offer/<int:id>', '/api/job_offer/<string:company>')
+api.add_resource(CompanyJobOffers, '/api/offers/<string:company>')
+api.add_resource(JobOfferList, '/api/offers')
+api.add_resource(DeleteEducation, '/api/delete_education/<string:username>')
+api.add_resource(DeleteWorkExperience, '/api/delete_work_experience/<string:username>')
 
 
 @app.route('/')

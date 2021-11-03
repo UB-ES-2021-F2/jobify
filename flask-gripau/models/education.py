@@ -2,6 +2,10 @@ from db import db
 
 
 class EducationsModel(db.Model):
+    """
+    Model of a education.
+    Job Seeker 1 ---> * Educations
+    """
     __tablename__ = 'educations'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -13,6 +17,14 @@ class EducationsModel(db.Model):
     currently = db.Column(db.Boolean, unique=False, nullable=False)
 
     def __init__(self, title, institution, start_date, end_date, currently):
+        """
+        Initializer of a education
+        :param title: title of the education
+        :param institution: institution where the education was studied
+        :param start_date: start date of the education
+        :param end_date: end date of the education
+        :param currently: if the job seeker is currently studying the education, 1 (yes) / 0 (no)
+        """
         self.title = title
         self.institution = institution
         self.start_date = start_date
@@ -20,10 +32,18 @@ class EducationsModel(db.Model):
         self.currently = currently
 
     def json(self):
+        """
+        Function that returns the education info as json
+        :return: json object with the information
+        """
         return {'id': self.id, 'username': self.username, 'title': self.title, 'institution': self.institution,
                 'start_date': self.start_date, 'end_date': self.end_date,'currently': self.currently}
 
     def delete_from_db(self, database=None):
+        """
+        Function that the deletes from the database the education
+        :param database: database instance
+        """
         if database is None:
             database = db
         database.session.delete(self)
@@ -31,5 +51,9 @@ class EducationsModel(db.Model):
 
     @classmethod
     def show_educations(cls):
-        return {'educations': [education.json() for education in cls.query.all()]}
+        """
+        Function that shows all the educations in the database
+        :return: list of the educations
+        """
+        return [education.json() for education in cls.query.all()]
 

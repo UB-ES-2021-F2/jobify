@@ -2,6 +2,10 @@ from db import db
 
 
 class WorkExperiencesModel(db.Model):
+    """
+    Model of a work experience.
+    Job Seeker 1 ---> * Work experiences
+    """
     __tablename__ = 'work_experiences'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -13,7 +17,16 @@ class WorkExperiencesModel(db.Model):
     end_date = db.Column(db.String(7), unique=False, nullable=False)
     currently = db.Column(db.Boolean, unique=False, nullable=False)
 
-    def __init__(self, job_name, description, company, start_date,end_date, currently):
+    def __init__(self, job_name, description, company, start_date, end_date, currently):
+        """
+        Initializer of a work experience
+        :param job_name: name of the job
+        :param description: description of the job
+        :param company: company where the job was done
+        :param start_date: start date of the work experience
+        :param end_date: end date of the work experience
+        :param currently: if the job seeker is currently working on this job
+        """
         self.job_name = job_name
         self.description = description
         self.company = company
@@ -22,11 +35,19 @@ class WorkExperiencesModel(db.Model):
         self.currently = currently
 
     def json(self):
+        """
+        Function that returns the work experience info as json
+        :return: json object with the information
+        """
         return {'id': self.id, 'username': self.username, 'job_name': self.job_name, 'description': self.description,
                 'company': self.company,
-                'start_date': self.start_date, 'end_date': self.end_date,'currently': self.currently}
+                'start_date': self.start_date, 'end_date': self.end_date, 'currently': self.currently}
 
     def delete_from_db(self, database=None):
+        """
+        Function that the deletes from the database the work experience
+        :param database: database instance
+        """
         if database is None:
             database = db
         database.session.delete(self)
@@ -34,4 +55,8 @@ class WorkExperiencesModel(db.Model):
 
     @classmethod
     def show_work_experiences(cls):
-        return {'work_experiences': [work_experience.json() for work_experience in cls.query.all()]}
+        """
+        Function that shows all the work experiences in the database
+        :return: list of the work experiences
+        """
+        return [work_experience.json() for work_experience in cls.query.all()]

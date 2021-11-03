@@ -9,13 +9,19 @@
     "start": "npm run dev",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --spec \"**/*.spec.js\""
   },
   "dependencies": {
     "axios": "^0.23.0",
     "bootstrap-vue": "^2.21.2",
+    "my-dependency": "^1.0.1",
+    "vee-validate": "^3.4.13",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -31,10 +37,13 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "cypress": "^8.7.0",
+    "cypress-localstorage-commands": "^1.6.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.4.0",
@@ -72,5 +81,11 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": ".eslintrc.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "license": "ISC"
 }

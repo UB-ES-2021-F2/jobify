@@ -10,19 +10,19 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item active href="#">Home</b-nav-item>
-          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
-          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item id="aboutUsButton" active href="#">Home</b-nav-item>
+          <b-nav-item id="aboutUsButton" @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item id="aboutUsButton" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="aboutUsButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item id="logInButton" @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onProfile()">{{ this.username }}</b-nav-item>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
+          <b-nav-item id="profileButton" @click="onProfile()">{{ this.username }}</b-nav-item>
+          <button id="logOutButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

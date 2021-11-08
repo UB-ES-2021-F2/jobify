@@ -44,13 +44,13 @@
             <b-container fluid style="font-family: 'Work Sans'">
               <b-row no-gutters>
                 <b-col lg>
-                  <b-icon icon="envelope"></b-icon> {{company.email}}
+                  <b-icon id="emailIcon" icon="envelope"></b-icon> {{company.email}}
                 </b-col>
                 <b-col lg v-if="company.sector !== 'Unknown'">
-                  <b-icon icon="building"></b-icon> {{ company.sector }}
+                  <b-icon id="sectorIcon" icon="building"></b-icon> {{ company.sector }}
                 </b-col>
                 <b-col lg v-if="company.location !== 'Unknown'">
-                  <b-icon icon="geo-alt-fill"></b-icon> {{ company.location }}
+                  <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
                 </b-col>
               </b-row>
             </b-container>

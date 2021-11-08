@@ -86,7 +86,6 @@ export default {
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
       this.logged = false
       this.username = null
       this.token = null

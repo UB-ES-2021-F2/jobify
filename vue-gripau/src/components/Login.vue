@@ -60,7 +60,7 @@
     >
       <b-tabs v-model="tabIndex" content-class="mt-3" fill>
         <!--Job Seeker form -->
-        <b-tab title="Job Seeker" active>
+        <b-tab id="jobSeekerTab" title="Job Seeker" active>
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)">
 
@@ -132,7 +132,7 @@
         </b-tab>
         <!--/Job Seeker form -->
         <!--Company form -->
-        <b-tab title="Company">
+        <b-tab id="companyTab" title="Company">
           <validation-observer ref="observerCompany" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)" >
 

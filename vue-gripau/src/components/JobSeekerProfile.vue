@@ -38,7 +38,7 @@
           <p></p>
         </div>
         <div id="bioField2" v-if="bio === null && !edit_bio && edit_mode" class="bio-text">
-          {{bio}}
+          Write about yourself!
           <p></p>
         </div>
         <b-container id="editBioField" v-if="edit_bio" fluid>
@@ -142,7 +142,7 @@
             </div>
 
             <div class="float-right">
-              <b-button id="submitWorkExperienceButton" variant="primary" type="submit">Submit</b-button>
+              <b-button id="submitWorkExperienceButton" variant="warning" type="submit">Submit</b-button>
             </div>
 
           </b-form>
@@ -163,7 +163,7 @@
             </validation-provider>
 
             <div class="float-right">
-              <b-button id="submitSkillButton" variant="primary" type="submit">Submit</b-button>
+              <b-button id="submitSkillButton" variant="warning" type="submit">Submit</b-button>
             </div>
 
           </b-form>
@@ -208,7 +208,7 @@
             </div>
 
             <div class="float-right">
-              <b-button id="submitEducationButton" variant="primary" type="submit">Submit</b-button>
+              <b-button id="submitEducationButton" variant="warning" type="submit">Submit</b-button>
             </div>
 
           </b-form>

@@ -2,7 +2,7 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#" @click="onHome()">
+      <b-navbar-brand id="logoNavbar" href="#" @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -48,7 +48,7 @@
         <!--/.Local Navbar -->
         <b-col fluid lg="10" cols="12">
           <div id="profileView" v-if="this.profileView && !this.jobView">
-            <h2 style="font-family: 'Vollkorn', serif"> Company Profile </h2>
+            <h2 id="nameCompany" style="font-family: 'Vollkorn', serif">{{company.company}} profile </h2>
             <div class="container-md-5 p-2 align-items-center">
               <!-- company descripcion -->
               <div id="descriptionCompany" v-if="company.description != null && !edit.description " class="bio-text">
@@ -236,7 +236,7 @@
             <!-- /Job offers company view -->
             <!-- Job offer view -->
             <div id="jobOfferCompanyView" v-if="this.jobOfferView">
-              <h2 style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
+              <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
               <b-container align="left">
                 <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
                   <h4 style="font-family: 'Vollkorn', serif"> Description</h4>

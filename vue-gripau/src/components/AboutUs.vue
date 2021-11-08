@@ -29,7 +29,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div class="aboutus-title"> {{ message }} </div>
+          <div id="aboutUsTitle" class="aboutus-title"> {{ message }} </div>
           <div class="row">
             <!-- Our Project -->
             <div class="ourproject-container">

@@ -39,7 +39,7 @@
                   </b-form-input>
                 </b-form-group>
                 <div>
-                  <b-button id="loginButton" type="submit" variant="primary" class='btn-login' >Login</b-button>
+                  <b-button id="logInButton" type="submit" variant="primary" class='btn-login' >Login</b-button>
                 </div>
                 <div class="signup-container">
                   You don't have an account?<b-button id="signUpButton" v-b-modal.register-modal variant="secondary" class='btn-signup'>Sign Up</b-button>

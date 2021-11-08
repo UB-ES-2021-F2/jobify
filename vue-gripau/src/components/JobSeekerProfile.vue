@@ -3,7 +3,7 @@
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
       <b-navbar-brand id="homeNavbar" href="#" @click="onHome()">
-        <img style="max-width: 150px" :src="require('../assets/logo.svg')">
+        <img id="logoNavbar" style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

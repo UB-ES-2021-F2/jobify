@@ -26,7 +26,7 @@
       </b-collapse>
     </b-navbar>
     <!--/.Navbar -->
-    <!-- Job offers company view -->
+    <!-- Job offers view -->
     <div id="jobPostingsView" v-show="!this.jobOfferView">
       <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
       <b-container fluid>
@@ -51,7 +51,7 @@
             id="jobOfferCard"
           >
             <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            <b-card-text>
+            <b-card-text id="companyName">
               <p>{{ job_offer.company_name }}</p>
             </b-card-text>
             <footer>
@@ -144,31 +144,31 @@
     <div id="jobOfferView" v-if="this.jobOfferView">
       <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
       <b-container align="left">
-        <div id="jobOfferDescription" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
           <p>{{jobOfferCurrentView.description}}</p>
         </div>
-        <div id="jobOfferCompanyName" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
           <p>{{jobOfferCurrentView.companyName}}</p>
         </div>
-        <div id="jobOfferLocation" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
           <p>{{jobOfferCurrentView.location}}</p>
         </div>
-        <div id="jobOfferContractType" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
           <p>{{jobOfferCurrentView.contractType}}</p>
         </div>
-        <div id="jobOfferWorkingHours" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
           <p>{{jobOfferCurrentView.workingHours}}</p>
         </div>
-        <div id="jobOfferSalary" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
           <p>{{jobOfferCurrentView.salary}}</p>
         </div>
-        <div id="jobOfferPublicationDate" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
           <p>{{jobOfferCurrentView.publicationDate}}</p>
         </div>

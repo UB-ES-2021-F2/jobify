@@ -20,7 +20,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item active id="profileNavbarButton" @click="onUserProfile()" v-if="this.username===this.username_profile">{{ this.username }}</b-nav-item>
+          <b-nav-item active id="activeProfileNavbarButton" @click="onUserProfile()" v-if="this.username===this.username_profile">{{ this.username }}</b-nav-item>
           <b-nav-item id="profileNavbarButton" @click="onUserProfile()" v-else>{{ this.username }}</b-nav-item>
           <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>

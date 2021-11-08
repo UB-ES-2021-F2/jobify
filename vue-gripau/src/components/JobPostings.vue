@@ -2,32 +2,32 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#" @click="onHome()">
+      <b-navbar-brand id="logoNavbar" href="#" @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="onHome()">Home</b-nav-item>
-          <b-nav-item active>Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
-          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
+          <b-nav-item id="jobPostingsNavbarButton" active>Job postings</b-nav-item>
+          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item id="logInNavbarButton" @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onProfile()">{{ this.username }}</b-nav-item>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()">{{ this.username }}</b-nav-item>
+          <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
     <!--/.Navbar -->
     <!-- Job offers company view -->
-    <div v-show="!this.jobOfferView">
+    <div id="jobPostingsView" v-show="!this.jobOfferView">
       <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
       <b-container fluid>
         <b-row align-h="center" v-if="is_company">
@@ -35,8 +35,9 @@
             tag="article"
             class="text-center mb-2"
             style="width: 90%; max-width: 600px"
+            id="addJobOfferCard"
           >
-            <b-link v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
+            <b-link id="showJobOfferModal" v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
             <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
           </b-card>
         </b-row>
@@ -47,25 +48,26 @@
             class="mb-2"
             style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
             align="left"
+            id="jobOfferCard"
           >
-            <b-button class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+            <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
             <b-card-text>
               <p>{{ job_offer.company_name }}</p>
             </b-card-text>
             <footer>
               <b-container fluid style="font-family: 'Work Sans'">
-                <b-row>
-                  <b-col cols="4" v-if="job_offer.contract_type.length > 0">
-                    <b-icon icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                <b-row no-gutters>
+                  <b-col lg v-if="job_offer.contract_type.length > 0">
+                    <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
                   </b-col>
-                  <b-col cols="2" v-if="job_offer.workingHours > 0">
-                    <b-icon icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                  <b-col lg v-if="job_offer.working_hours > 0">
+                    <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
                   </b-col>
-                  <b-col cols="3">
-                    <b-icon icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                  <b-col lg>
+                    <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
                   </b-col>
-                  <b-col cols="3">
-                    <b-icon icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                  <b-col lg>
+                    <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
                   </b-col>
                 </b-row>
               </b-container>
@@ -83,7 +85,7 @@
           <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
             <ValidationProvider name="JobName"  rules="alpha_spaces|required:true|max: 50" v-slot="validationContext">
               <b-form-group id="input-group-1" label="Job name" label-for="input-1">
-                <b-form-input v-model="jobOfferForm.jobName" placeholder="" type="text" :state="getValidationState(validationContext)"
+                <b-form-input id="jobNameInput" v-model="jobOfferForm.jobName" placeholder="" type="text" :state="getValidationState(validationContext)"
                               aria-describedby="input-1-live-feedback"></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -91,7 +93,7 @@
 
             <validation-provider name="Salary"  rules="max:30" v-slot="validationContext">
               <b-form-group id="input-group-3" label="Salary" label-for="input-3">
-                <b-form-input v-model="jobOfferForm.salary" type="text" :state="getValidationState(validationContext)"
+                <b-form-input id="salaryInput" v-model="jobOfferForm.salary" type="text" :state="getValidationState(validationContext)"
                               aria-describedby="input-3-live-feedback" placeholder="e.g. '15€/hour'"></b-form-input>
                 <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -99,7 +101,7 @@
 
             <validation-provider name="Location"  rules="required:true|max: 40" v-slot="validationContext">
               <b-form-group id="input-group-1" label="Location" label-for="input-1">
-                <b-form-input v-model="jobOfferForm.location" placeholder="e.g. 'Barcelona', 'Remote'" type="text" :state="getValidationState(validationContext)"
+                <b-form-input id="locationInput" v-model="jobOfferForm.location" placeholder="e.g. 'Barcelona', 'Remote'" type="text" :state="getValidationState(validationContext)"
                               aria-describedby="input-1-live-feedback"></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -107,7 +109,7 @@
 
             <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
               <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
-                <b-form-select v-model="jobOfferForm.contractType" :options="optionsContractType" placeholder="" type="text" :state="getValidationState(validationContext)"
+                <b-form-select id="contractTypeInput" v-model="jobOfferForm.contractType" :options="optionsContractType" placeholder="" type="text" :state="getValidationState(validationContext)"
                                aria-describedby="input-2-live-feedback"></b-form-select>
                 <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -115,7 +117,7 @@
 
             <validation-provider name="WorkingHours"  rules="numeric|max:60" v-slot="validationContext">
               <b-form-group id="input-group-3" label="Weekly working hours" label-for="input-3">
-                <b-form-input v-model="jobOfferForm.workingHours" placeholder="" type="number" :state="getValidationState(validationContext)"
+                <b-form-input id="workingHoursInput" v-model="jobOfferForm.workingHours" placeholder="" type="number" :state="getValidationState(validationContext)"
                               aria-describedby="input-3-live-feedback"></b-form-input>
                 <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -123,7 +125,7 @@
 
             <validation-provider name="Description"  :rules="{ max: 2000}" v-slot="validationContext">
               <b-form-group id="input-group-2" label="Description" label-for="input-2">
-                <b-form-textarea v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
+                <b-form-textarea id="descriptionInput" v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
                                  aria-describedby="input-2-live-feedback"  rows="5"
                                  placeholder="(Optional) Description of the job, requirements, job benefits, etc."></b-form-textarea>
                 <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -131,7 +133,7 @@
             </validation-provider>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-warning justify-content-md-end">Post Job Offer!</button>
+              <button id="postJobOfferButton" class="btn btn-warning justify-content-md-end">Post Job Offer!</button>
             </div>
           </b-form>
         </validation-observer>
@@ -139,39 +141,39 @@
     </div>
     <!-- /Job offers company view -->
     <!-- Job offer view -->
-    <div v-if="this.jobOfferView">
-      <h2 style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
+    <div id="jobOfferView" v-if="this.jobOfferView">
+      <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
       <b-container align="left">
-        <div v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferDescription" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
           <p>{{jobOfferCurrentView.description}}</p>
         </div>
-        <div v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferCompanyName" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
           <p>{{jobOfferCurrentView.companyName}}</p>
         </div>
-        <div v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferLocation" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
           <p>{{jobOfferCurrentView.location}}</p>
         </div>
-        <div v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferContractType" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
           <p>{{jobOfferCurrentView.contractType}}</p>
         </div>
-        <div v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferWorkingHours" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
           <p>{{jobOfferCurrentView.workingHours}}</p>
         </div>
-        <div v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferSalary" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
           <p>{{jobOfferCurrentView.salary}}</p>
         </div>
-        <div v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
+        <div id="jobOfferPublicationDate" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
           <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
           <p>{{jobOfferCurrentView.publicationDate}}</p>
         </div>
       </b-container>
-      <b-button btn variant="primary" class='btn-home' @click="onJoOfferView">Seen</b-button>
+      <b-button id="seenButton" btn variant="primary" class='btn-home' @click="onJobOfferView">Seen</b-button>
     </div>
     <!-- /Job offer view -->
   </div>
@@ -241,7 +243,7 @@ export default {
       this.$store.commit('logout')
       this.$router.replace({ path: '/' })
     },
-    onJoOfferView () {
+    onJobOfferView () {
       this.jobOfferView = !this.jobOfferView
     },
     onAboutUs () {
@@ -261,7 +263,7 @@ export default {
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
-          this.onJoOfferView()
+          this.onJobOfferView()
         })
         .catch((error) => {
           console.error(error)

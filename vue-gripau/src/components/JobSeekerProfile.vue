@@ -2,26 +2,27 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#" @click="onHome()">
+      <b-navbar-brand id="homeNavbar" href="#" @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="onHome()">Home</b-nav-item>
-          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
-          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
+          <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item id="logInNavbarButton" @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item active @click="onUserProfile()">{{ this.username }}</b-nav-item>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
+          <b-nav-item active id="profileNavbarButton" @click="onUserProfile()" v-if="this.username===this.username_profile">{{ this.username }}</b-nav-item>
+          <b-nav-item id="profileNavbarButton" @click="onUserProfile()" v-else>{{ this.username }}</b-nav-item>
+          <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -29,80 +30,80 @@
 
     <b-container>
 
-      <h2 style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
+      <h2 id="nameSurnameFields" style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
-        <div v-if="bio != null && !edit_bio " class="bio-text">
+        <div id="bioField1" v-if="bio != null && !edit_bio " class="bio-text">
           {{bio}}
           <p></p>
         </div>
-        <div v-if="bio === null && !edit_bio && edit_mode" class="bio-text">
+        <div id="bioField2" v-if="bio === null && !edit_bio && edit_mode" class="bio-text">
           {{bio}}
           <p></p>
         </div>
-        <b-container v-if="edit_bio" fluid>
+        <b-container id="editBioField" v-if="edit_bio" fluid>
           <b-row align="center">
             <b-col sm="10">
-              <b-form-textarea v-model="modify_bio" id="textarea-auto-height" rows="3" max-rows="8"/>
+              <b-form-textarea id="bioInput" v-model="modify_bio" rows="3" max-rows="8"/>
             </b-col>
             <b-col align-self="center" sm="1">
-              <b-button variant="success" @click="modifyBio()">Save</b-button>
+              <b-button id="submitEditBioButton" variant="success" @click="modifyBio()">Save</b-button>
             </b-col>
           </b-row>
           <p></p>
         </b-container>
-        <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+        <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
 
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
+        <div id="divWorkExperience" class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Work experience </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button id="addWorkButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div class="card mb-lg-1"  v-for="work in work_experience" :key="work.id">
             <div class="card-header d-flex align-items-center">
-              <span class="card-title-work">{{work.job_name}}</span>
-              <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
+              <span id="jobNameWorkExperience" class="card-title-work">{{work.job_name}}</span>
+              <button id="deleteWorkButton" v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
             </div>
             <div class="card-body">
-              <p class="card-subtitle">{{work.company}}</p>
-              <p class="card-text">{{work.description}}</p>
-              <p class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
-              <p class="card-text" v-if="work.currently"><small class="text-muted">{{work.start_date}} - now</small></p>
+              <p id="companyWorkExperience" class="card-subtitle">{{work.company}}</p>
+              <p id="descriptionWorkExperience" class="card-text">{{work.description}}</p>
+              <p id="datesWorkExperience" class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
+              <p id="datesCurrentlyWorkExperience" class="card-text" v-else><small class="text-muted">{{work.start_date}} - now</small></p>
             </div>
           </div>
         </div>
 
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
+        <div id="divEducation" class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Education </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button id="addEducationButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div class="card mb-lg-1" v-for="ed in education" :key="ed.id">
             <div class="card-body">
               <div class="d-flex align-items-center">
-                <span class="card-title-ed">{{ed.title}}</span>
-                <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
+                <span id="titleEducation" class="card-title-ed">{{ed.title}}</span>
+                <button id="deleteEducationButton" v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
               </div>
-              <p class="card-subtitle">{{ed.institution}}</p>
-              <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
-              <p class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
+              <p id="institutionEducation" class="card-subtitle">{{ed.institution}}</p>
+              <p id="datesEducation" class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
+              <p id="datesCurrentlyEducation" class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
             </div>
           </div>
         </div>
 
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
+        <div id="divSkills" class="text-left p-2 pb-3" style="max-width: 50rem">
           <p class="section-title"> Skills </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+          <button id="addSkillButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
           <div>
-            <span class="badge badge-pill badge-warning p-2 m-1"  v-for="skill in skills" :key="skill">{{ skill }}</span>
+            <span id="nameSkill" class="badge badge-pill badge-warning p-2 m-1"  v-for="skill in skills" :key="skill">{{ skill }}</span>
           </div>
         </div>
       </div>
 
-      <b-modal hide-footer hide-backdrop ref="addWorkModal">
+      <b-modal id="addWorkModal" hide-footer hide-backdrop ref="addWorkModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
           <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" style="font-family: 'Work Sans SemiBold'">
 
             <validation-provider name="jobTitle"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
               <b-form-group label="Job Title">
-                <b-form-input v-model="addWork.jobName" type="text" id="jobTitle" placeholder="Enter job title"
+                <b-form-input id="jobNameInput" v-model="addWork.jobName" type="text" placeholder="Enter job title"
                               :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
                 <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -110,7 +111,7 @@
 
             <validation-provider name="company"  :rules="{required: true, max:64}" v-slot="validationContext">
               <b-form-group label="Company">
-                <b-form-input v-model="addWork.company" type="text" id="company" placeholder="Enter company name"
+                <b-form-input id="companyInput" v-model="addWork.company" type="text" placeholder="Enter company name"
                               :state="getValidationState(validationContext)" aria-describedby="live-feedback-2"></b-form-input>
                 <b-form-invalid-feedback id="live-feedback-2">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -118,65 +119,65 @@
 
             <validation-provider name="description"  :rules="{max:1000}" v-slot="validationContext">
               <b-form-group label="Description">
-                <b-form-textarea v-model="addWork.description" id="description" rows="4" placeholder="Description (optional)"
+                <b-form-textarea id="descriptionInput" v-model="addWork.description" rows="4" placeholder="Description (optional)"
                               :state="getValidationState(validationContext)" aria-describedby="live-feedback-3"></b-form-textarea>
                 <b-form-invalid-feedback id="live-feedback-3">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
 
             <b-form-group required label="Start date">
-              <input placeholder="yyyy-mm" type="month" class="form-control" id="startYear" v-model="addWork.startDate" min="1900-01" max="2040-01">
+              <input id="startDateWorkExperienceInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addWork.startDate" min="1900-01" max="2040-01">
             </b-form-group>
 
             <b-form-group label="End date">
-              <input placeholder="yyyy-mm" type="month" class="form-control" id="endYear" v-model="addWork.endDate"
+              <input id="endDateWorkExperienceInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addWork.endDate"
                      :disabled="addWork.currently" :state="checkDates('work')" min="1900-01" max="2040-01">
               <span style="font-size: 12px;color:#dd2222" v-if="checkDates('work')">Start date cannot be posterior to end date</span>
             </b-form-group>
 
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="currentlyCheckbox" v-model="addWork.currently"
+              <input id="currentlyWorkExperienceInput" class="form-check-input" type="checkbox" value="" v-model="addWork.currently"
                      @click="addWork.endDate=''">
-              <label class="form-check-label" for="currentlyCheckbox">Currently in this job</label>
+              <label class="form-check-label" for="currentlyWorkExperienceInput">Currently in this job</label>
             </div>
 
             <div class="float-right">
-              <b-button variant="primary" type="submit">Submit</b-button>
+              <b-button id="submitWorkExperienceButton" variant="primary" type="submit">Submit</b-button>
             </div>
 
           </b-form>
         </validation-observer>
       </b-modal>
 
-      <b-modal hide-footer hide-backdrop ref="addSkillModal">
+      <b-modal id="addSkillModal" hide-footer hide-backdrop ref="addSkillModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add Skill</h5></template>
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
           <b-form ref="addSkillForm" @submit.prevent="handleSubmit(submitAddSkill)" style="font-family: 'Work Sans SemiBold'">
 
             <validation-provider name="skill"  :rules="{alpha_spaces, required: true, max:15}" v-slot="validationContext">
               <b-form-group label="Skill">
-                <b-form-input v-model="addSkill.skill" type="text" id="skill" placeholder="Enter skill"
+                <b-form-input id="nameSkillInput" v-model="addSkill.skill" type="text" placeholder="Enter skill"
                               :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
                 <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
 
             <div class="float-right">
-              <b-button variant="primary" type="submit">Submit</b-button>
+              <b-button id="submitSkillButton" variant="primary" type="submit">Submit</b-button>
             </div>
 
           </b-form>
         </validation-observer>
       </b-modal>
 
-      <b-modal hide-footer hide-backdrop  ref="addEducationModal">
+      <b-modal id="addEducationModal" hide-footer hide-backdrop  ref="addEducationModal">
         <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
           <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddEducation)" style="font-family: 'Work Sans SemiBold'">
 
             <validation-provider name="title"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
               <b-form-group label="Title">
-                <b-form-input v-model="addEducation.title" type="text" id="title" placeholder="Enter title"
+                <b-form-input id="titleInput" v-model="addEducation.title" type="text" placeholder="Enter title"
                               :state="getValidationState(validationContext)" aria-describedby="live-feedback-1-ed"></b-form-input>
                 <b-form-invalid-feedback id="live-feedback-1-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
@@ -184,30 +185,30 @@
 
             <validation-provider name="institution"  :rules="{required: true, max:64}" v-slot="validationContext">
               <b-form-group label="Institution">
-                <b-form-input v-model="addEducation.institution" type="text" id="institution" placeholder="Enter institution"
+                <b-form-input id="institutionInput" v-model="addEducation.institution" type="text" placeholder="Enter institution"
                               :state="getValidationState(validationContext)" aria-describedby="live-feedback-2-ed"></b-form-input>
                 <b-form-invalid-feedback id="live-feedback-2-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
 
             <b-form-group required label="Start date">
-              <input placeholder="yyyy-mm" type="month" class="form-control" id="startYearEd" v-model="addEducation.startDate" min="1900-01" max="2040-01">
+              <input id="startDateEducationInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addEducation.startDate" min="1900-01" max="2040-01">
             </b-form-group>
 
             <b-form-group label="End date">
-              <input placeholder="yyyy-mm" type="month" class="form-control" id="endYearEd" v-model="addEducation.endDate"
+              <input id="endDateEducationInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addEducation.endDate"
                      :disabled="addEducation.currently" :state="checkDates('ed')" min="1900-01" max="2040-01">
               <span style="font-size: 12px;color:#dd2222" v-if="checkDates('ed')">Start date cannot be posterior to end date</span>
             </b-form-group>
 
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="currentlyCheckboxEd" v-model="addEducation.currently"
+              <input id="currentlyEducationInput" class="form-check-input" type="checkbox" value="" v-model="addEducation.currently"
                      @click="addEducation.endDate=''">
-              <label class="form-check-label" for="currentlyCheckboxEd">Currently enrolled</label>
+              <label class="form-check-label" for="currentlyEducationInput">Currently enrolled</label>
             </div>
 
             <div class="float-right">
-              <b-button variant="primary" type="submit">Submit</b-button>
+              <b-button id="submitEducationButton" variant="primary" type="submit">Submit</b-button>
             </div>
 
           </b-form>

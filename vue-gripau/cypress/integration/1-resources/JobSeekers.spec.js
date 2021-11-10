@@ -153,7 +153,13 @@ describe('JobSeekers resource', () => {
         url: 'jobseeker/lordsergi',
         auth: {username: localStorage.getItem('token')},
         body: {
-          password: 'Password12'
+          password: 'Password12',
+          email: 'sergi@gmail.com',
+          bio: 'hola, soc estudiant',
+          name: 'Sergi',
+          surname: 'Bech',
+          skills: ['python'],
+          remove_skills: ['cypress', 'testing']
         }
       })
         .should((response) => {

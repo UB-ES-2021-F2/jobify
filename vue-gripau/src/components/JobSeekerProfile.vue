@@ -33,11 +33,11 @@
       <h2 id="nameSurnameFields" style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
 
       <div class="container-md-5 p-2 align-items-center">
-        <div id="bioField1" v-if="bio != null && !edit_bio " class="bio-text">
+        <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
           {{bio}}
           <p></p>
         </div>
-        <div id="bioField2" v-if="bio === null && !edit_bio && edit_mode" class="bio-text">
+        <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text">
           Write about yourself!
           <p></p>
         </div>
@@ -515,6 +515,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.bio = res.data.account.bio
+          console.log(this.bio)
         })
         .catch(() => {
           this.bio = ''

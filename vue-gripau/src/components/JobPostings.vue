@@ -297,7 +297,7 @@ export default {
         values.salary = this.jobOfferForm.salary
       }
       if (!isNaN(this.jobOfferForm.workingHours)) {
-        values.salary = this.jobOfferForm.workingHours
+        values.working_hours = this.jobOfferForm.workingHours
       }
       console.log(values)
       axios.post(path, values, {
@@ -321,32 +321,6 @@ export default {
       this.jobOfferForm.contractType = ''
       this.jobOfferForm.workingHours = ''
       this.jobOfferForm.minimumExperience = ''
-    },
-    onSubmit () {
-      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
-      var values = {
-        job_name: this.jobOfferForm.jobName,
-        description: this.jobOfferForm.description,
-        location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType
-      }
-      if (this.jobOfferForm.salary !== '') {
-        values.salary = this.jobOfferForm.salary
-      }
-      if (this.jobOfferForm.workingHours !== '') {
-        values.salary = this.jobOfferForm.workingHours
-      }
-      console.log(values)
-      axios.post(path, values)
-        .then((res) => {
-          console.log('Job Offer correctly posted')
-          this.getJobOffers()
-        })
-        .catch((error) => {
-          alert(error.response.data.message)
-        })
-      this.$bvModal.hide('job-offer-modal')
-      this.onReset()
     },
     onReset () {
       this.initJobOfferForm()

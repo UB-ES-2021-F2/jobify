@@ -51,69 +51,68 @@
             <h2 id="nameCompany" style="font-family: 'Vollkorn', serif">{{company.company}} profile </h2>
             <div class="container-md-5 p-2 align-items-center">
               <!-- company descripcion -->
-              <div id="descriptionCompany" v-if="company.description != null && !edit.description " class="bio-text">
+              <div id="descriptionCompany1" v-if="company.description != null && company.description !== '' && !edit.description " class="bio-text">
                 {{company.description}}
                 <p></p>
               </div>
-              <div id="bioCompany" v-if="company.description === null && !edit.description && edit_mode" class="bio-text">
-                {{bio}}
-                <p></p>
+              <div id="descriptionCompany2" v-if="(company.description === null || company.description === '') && !edit.description && edit_mode" class="bio-text">
+                <p>Write about your company!</p>
               </div>
-              <b-container v-if="edit.description" fluid>
+              <b-container id="editDescriptionField" v-if="edit.description" fluid>
                 <b-row align="center">
                   <b-col sm="10">
-                    <b-form-textarea v-model="modify.description" id="textarea-auto-height" rows="3" max-rows="8"/>
+                    <b-form-textarea id="descriptionInput" v-model="modify.description" rows="3" max-rows="8"/>
                   </b-col>
                   <b-col align-self="center" sm="1">
-                    <b-button variant="success" @click="modifyDescription()">Save</b-button>
+                    <b-button id="submitEditDescriptionButton" variant="success" @click="modifyDescription()">Save</b-button>
                   </b-col>
                 </b-row>
                 <p></p>
               </b-container>
-              <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+              <button id="enableEditDescriptionButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               <!-- /company descripcion -->
-              <div class="text-left p-2 pb-3" style="max-width: 50rem">
+              <div id="emailCompany" class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
                 <p>{{company.email}}</p>
               </div>
               <!-- company sector -->
               <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
-                <div v-if="!edit.sector">
+                <div id="sectorCompany" v-if="!edit.sector">
                   <p>{{company.sector}}</p>
                 </div>
-                <b-container v-if="edit.sector" fluid>
+                <b-container id="editSectorField" v-if="edit.sector" fluid>
                   <b-row align="left">
                     <b-col sm="5">
-                      <b-form-textarea v-model="modify.sector" id="textarea-auto-height" rows="1" max-rows="2"/>
+                      <b-form-textarea id="sectorInput" v-model="modify.sector" rows="1" max-rows="2"/>
                     </b-col>
                     <b-col align-self="center" sm="1">
-                      <b-button variant="success" @click="modifySector()">Save</b-button>
+                      <b-button id="submitEditSectorButton" variant="success" @click="modifySector()">Save</b-button>
                     </b-col>
                   </b-row>
                   <p></p>
                 </b-container>
-                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               </div>
               <!-- /company sector -->
               <!-- company location -->
               <div v-if="(company.location !== 'Unknown' && company.location) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Location</h3>
-                <div v-if="!edit.location">
+                <div id="locationCompany" v-if="!edit.location">
                   <p>{{company.location}}</p>
                 </div>
-                <b-container v-if="edit.location" fluid>
+                <b-container id="editLocationField" v-if="edit.location" fluid>
                   <b-row align="left">
                     <b-col sm="5">
-                      <b-form-textarea v-model="modify.location" id="textarea-auto-height" rows="1" max-rows="2"/>
+                      <b-form-textarea id="locationInput" v-model="modify.location" rows="1" max-rows="2"/>
                     </b-col>
                     <b-col align-self="center" sm="1">
-                      <b-button variant="success" @click="modifyLocation()">Save</b-button>
+                      <b-button id="submitEditLocationButton" variant="success" @click="modifyLocation()">Save</b-button>
                     </b-col>
                   </b-row>
                   <p></p>
                 </b-container>
-                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editLocation()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                <button id="enableEditLocationButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editLocation()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               </div>
               <!-- /company location -->
             </div>
@@ -396,6 +395,7 @@ export default {
       axios.put(pathCompany, values, {
         auth: {username: this.token}})
         .then((res) => {
+          console.log(this.modify.description)
           this.getCompany()
           this.edit.description = !this.edit.description
         })

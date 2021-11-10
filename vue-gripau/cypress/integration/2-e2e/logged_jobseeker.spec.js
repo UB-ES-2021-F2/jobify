@@ -28,7 +28,7 @@ describe('Logged jobseeker', () => {
       cy.get('[id=jobOfferCard]').should('exist')
     })
     it('should go to the job offer professor ub description page', () => {
-      cy.get('[id=jobOfferCard]').click()
+      cy.get('[id=jobOfferCard]').first().click()
       cy.url().should('eq', 'http://localhost:8080/#/job_postings')
       cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
@@ -57,7 +57,7 @@ describe('Logged jobseeker', () => {
       cy.get('[id=companyCard]').should('exist')
     })
     it('should go to the company ub profile page', () => {
-      cy.get('[id=companyCard]').click()
+      cy.get('[id=companyCard]').first().click()
       cy.url().should('eq', 'http://localhost:8080/#/company/universitat123')
       cy.get('[id=profileView]').should('exist')
       cy.get('[id=jobView]').should('not.exist')
@@ -78,7 +78,7 @@ describe('Logged jobseeker', () => {
       cy.get('[id=jobViewButton]').should('not.exist')
     })
     it('should go to the job offer professor ub description page inside ub profile', () => {
-      cy.get('[id=jobOfferCard]').click()
+      cy.get('[id=jobOfferCard]').first().click()
       cy.url().should('eq', 'http://localhost:8080/#/company/universitat123')
       cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
@@ -98,7 +98,7 @@ describe('Logged jobseeker', () => {
       cy.get('[id=logoNavbar]').click()
       cy.url().should('eq', 'http://localhost:8080/#/')
     })
-    it('should go to job postings page through "Check our companies" button', () => {
+    it('should go to companies page through "Check our companies" button', () => {
       cy.get('[id=companiesButton]').click()
       cy.url().should('eq', 'http://localhost:8080/#/companies')
       cy.get('[id=profileNavbarButton]').should('exist')
@@ -134,13 +134,13 @@ describe('Logged jobseeker', () => {
       cy.get('[id=bioField2]').should('not.exist')
       cy.get('[id=enableEditBioButton]').click()
       cy.get('[id=editBioField]').should('exist')
-      cy.get('[id=bioInput]').type(' de la universitat de barcelona')
+      cy.get('[id=bioInput]').clear()
       cy.get('[id=submitEditBioButton]').click()
-      cy.get('[id=bioField1]').should('contain', 'hola, soc estudiant de la universitat de barcelona')
+      cy.get('[id=bioField2]').should('contain', 'Write about yourself!')
       cy.get('[id=enableEditBioButton]').click()
-      cy.get('[id=editBioField]').should('exist')
-      cy.get('[id=bioInput]').clear().type('hola, soc estudiant')
+      cy.get('[id=bioInput]').type('hola, soc estudiant')
       cy.get('[id=submitEditBioButton]').click()
+      cy.get('[id=bioField1]').should('contain', 'hola, soc estudiant')
     })
     it('should delete a work experience', () => {
       cy.get('[id=jobNameWorkExperience]').should('exist')

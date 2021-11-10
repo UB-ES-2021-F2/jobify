@@ -488,20 +488,16 @@ export default {
         })
     },
     deleteSkill (skill) {
-      console.log('deleted skill')
-      /*
-      const path = Vue.prototype.$API_BASE_URL + 'delete_skill/' + this.username
-      const parameters = {id: skill.id}
-      axios.post(path, parameters, {
-        auth: {username: this.token}})
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = { remove_skills: [skill] }
+      axios.put(path, parameters, {auth: {username: this.token}})
         .then((res) => {
           this.getSkills()
         })
         .catch((error) => {
           console.error(error)
-          alert('Error deleting skill')
+          alert('Error Adding Skills')
         })
-     */
     },
     resetAddWork () {
       this.addWork = {

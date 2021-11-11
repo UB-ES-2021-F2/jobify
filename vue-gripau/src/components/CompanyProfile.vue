@@ -75,17 +75,21 @@
                   <p>{{company.email}}</p>
                 </div>
                 <b-container v-if="edit.email" fluid>
-                  <b-row align="left">
-                    <b-col sm="5">
-                      <b-form-textarea v-model="modify.email" id="textarea-auto-height" rows="1" max-rows="2"/>
-                    </b-col>
-                    <b-col align-self="center" sm="1">
-                      <b-button variant="success" @click="modifyEmail()">Save</b-button>
-                    </b-col>
-                  </b-row>
-                  <p></p>
+                  <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
+                    <b-row align="left">
+                      <b-col sm="5">
+                          <b-form-input v-model="modify.email" id="textarea-auto-height" rows="1" max-rows="2" type="email" :state="getValidationState(validationContext)"
+                                        aria-describedby="input-2c-live-feedback"/>
+                          <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                      </b-col>
+                      <b-col align-self="center" sm="1">
+                        <b-button :disabled="!validationContext.valid" variant="success" @click="modifyEmail()">Save</b-button>
+                      </b-col>
+                    </b-row>
+                    <p></p>
+                  </validation-provider>
                 </b-container>
-                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-1"></b-icon-pencil-fill></button>
               </div>
               <!-- /company email -->
 
@@ -404,6 +408,9 @@ export default {
       this.edit.email = !this.edit.email
       this.modify.email = this.company.email
     },
+    getValidationStateEmail ({ dirty, validated, valid = null }) {
+      return dirty || validated ? valid : null
+    },
 
     modifyDescription () {
       const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
@@ -490,6 +497,9 @@ export default {
           this.company.sector = 'sector'
         })
     },
+    getValidationState ({ dirty, validated, valid = null }) {
+      return dirty || validated ? valid : null
+    },
     getCompanyJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers/' + this.company_name_profile.toLowerCase()
       axios.get(path)
@@ -505,9 +515,6 @@ export default {
         .catch((error) => {
           console.error(error)
         })
-    },
-    getValidationState ({ dirty, validated, valid = null }) {
-      return dirty || validated ? valid : null
     },
     onSubmitNewOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username

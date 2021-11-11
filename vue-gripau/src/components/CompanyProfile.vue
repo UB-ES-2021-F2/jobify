@@ -47,7 +47,7 @@
           <div v-if="this.profileView && !this.jobView">
             <h2 style="font-family: 'Vollkorn', serif"> Company Profile </h2>
             <div class="container-md-5 p-2 align-items-center">
-              <!-- company descripcion -->
+              <!-- company description -->
               <div v-if="company.description != null && !edit.description " class="bio-text">
                 {{company.description}}
                 <p></p>
@@ -68,11 +68,27 @@
                 <p></p>
               </b-container>
               <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-              <!-- /company descripcion -->
-              <div class="text-left p-2 pb-3" style="max-width: 50rem">
+              <!-- /company email -->
+              <div v-if="(company.email !== 'Unknown' && company.email) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
-                <p>{{company.email}}</p>
+                <div v-if="!edit.email">
+                  <p>{{company.email}}</p>
+                </div>
+                <b-container v-if="edit.email" fluid>
+                  <b-row align="left">
+                    <b-col sm="5">
+                      <b-form-textarea v-model="modify.email" id="textarea-auto-height" rows="1" max-rows="2"/>
+                    </b-col>
+                    <b-col align-self="center" sm="1">
+                      <b-button variant="success" @click="modifyEmail()">Save</b-button>
+                    </b-col>
+                  </b-row>
+                  <p></p>
+                </b-container>
+                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               </div>
+              <!-- /company email -->
+
               <!-- company sector -->
               <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
@@ -284,11 +300,13 @@ export default {
       edit: {
         description: false,
         sector: false,
+        email: false,
         location: false
       },
       modify: {
         description: '',
         sector: '',
+        email: '',
         location: ''
       },
       company: {
@@ -382,6 +400,10 @@ export default {
       this.edit.location = !this.edit.location
       this.modify.location = this.company.location
     },
+    editEmail () {
+      this.edit.email = !this.edit.email
+      this.modify.email = this.company.email
+    },
 
     modifyDescription () {
       const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
@@ -429,6 +451,22 @@ export default {
         .catch((error) => {
           console.error(error)
           alert(' An error occurred creating the account')
+        })
+    },
+    modifyEmail () {
+      const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.company_name_profile.toLowerCase()
+      const values = {
+        email: this.modify.email
+      }
+      axios.put(pathCompany, values, {
+        auth: {username: this.token}})
+        .then((res) => {
+          this.getCompany()
+          this.edit.email = !this.edit.email
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(' An error occurred editing the email')
         })
     },
     getCompany () {

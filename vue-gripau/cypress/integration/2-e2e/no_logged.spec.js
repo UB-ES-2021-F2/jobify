@@ -8,7 +8,7 @@
 describe('No logged', () => {
   context('Navigate to job offer description page through job postings component, post an offer and return to home page', () => {
     it('should go to job postings page through navbar', () => {
-      cy.get('[id=jobPostingsNavbarButton]').click()
+      cy.visit('http://localhost:5000').get('[id=jobPostingsNavbarButton]').click()
       cy.url().should('eq', 'http://localhost:5000/#/job_postings')
       cy.get('[id=profileNavbarButton]').should('not.exist')
       cy.get('[id=logInNavbarButton]').should('exist')

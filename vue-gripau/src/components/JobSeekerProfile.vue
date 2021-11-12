@@ -52,48 +52,58 @@
           </b-row>
           <p></p>
         </b-container>
-        <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-
-        <div id="divWorkExperience" class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Work experience </p>
-          <button id="addWorkButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
-          <div class="card mb-lg-1"  v-for="work in work_experience" :key="work.id">
-            <div class="card-header d-flex align-items-center">
-              <span id="jobNameWorkExperience" class="card-title-work">{{work.job_name}}</span>
-              <button id="deleteWorkButton" v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
+        <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+        <b-container fluid="lg">
+          <b-row no-gutters>
+            <div id="divSkills" class="text-left p-2 pb-3" style="max-width: 50rem">
+              <p class="section-title"> Skills </p>
+              <button id="addSkillButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+              <b-container>
+                <div class="badge badge-pill badge-warning p-2 m-1" v-for="skill in skills" :key="skill">
+                  <span id="nameSkill" style="display: inline-block">{{ skill }}</span>
+                  <b-button id="deleteSkillButton" pill size="sm" class="badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
+                </div>
+              </b-container>
             </div>
-            <div class="card-body">
-              <p id="companyWorkExperience" class="card-subtitle">{{work.company}}</p>
-              <p id="descriptionWorkExperience" class="card-text">{{work.description}}</p>
-              <p id="datesWorkExperience" class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
-              <p id="datesCurrentlyWorkExperience" class="card-text" v-else><small class="text-muted">{{work.start_date}} - now</small></p>
-            </div>
-          </div>
-        </div>
-
-        <div id="divEducation" class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Education </p>
-          <button id="addEducationButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
-          <div class="card mb-lg-1" v-for="ed in education" :key="ed.id">
-            <div class="card-body">
-              <div class="d-flex align-items-center">
-                <span id="titleEducation" class="card-title-ed">{{ed.title}}</span>
-                <button id="deleteEducationButton" v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
+          </b-row>
+          <b-row no-gutters>
+            <b-col lg>
+              <div id="divWorkExperience" class="text-left p-2 pb-3" style="max-width: 50rem">
+                <p class="section-title"> Work experience </p>
+                <button id="addWorkButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+                <div class="card mb-lg-1"  v-for="work in work_experience" :key="work.id">
+                  <div class="card-header d-flex align-items-center">
+                    <span id="jobNameWorkExperience" class="card-title-work">{{work.job_name}}</span>
+                    <button id="deleteWorkButton" v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
+                  </div>
+                  <div class="card-body">
+                    <p id="companyWorkExperience" class="card-subtitle">{{work.company}}</p>
+                    <p id="descriptionWorkExperience" class="card-text">{{work.description}}</p>
+                    <p id="datesWorkExperience" class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
+                    <p id="datesCurrentlyWorkExperience" class="card-text" v-if="work.currently"><small class="text-muted">{{work.start_date}} - now</small></p>
+                  </div>
+                </div>
               </div>
-              <p id="institutionEducation" class="card-subtitle">{{ed.institution}}</p>
-              <p id="datesEducation" class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
-              <p id="datesCurrentlyEducation" class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
-            </div>
-          </div>
-        </div>
-
-        <div id="divSkills" class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Skills </p>
-          <button id="addSkillButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
-          <div>
-            <span id="nameSkill" class="badge badge-pill badge-warning p-2 m-1"  v-for="skill in skills" :key="skill">{{ skill }}</span>
-          </div>
-        </div>
+            </b-col>
+            <b-col lg>
+              <div id="divEducation" class="text-left p-2 pb-3" style="max-width: 50rem">
+                <p class="section-title"> Education </p>
+                <button id="addEducationButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+                <div class="card mb-lg-1" v-for="ed in education" :key="ed.id">
+                  <div class="card-header d-flex align-items-center">
+                    <span id="titleEducation" class="card-title-ed">{{ed.title}}</span>
+                    <button id="deleteEducationButton" v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
+                  </div>
+                  <div class="card-body">
+                    <p id="institutionEducation" class="card-subtitle">{{ed.institution}}</p>
+                    <p id="datesEducation" class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
+                    <p id="datesCurrentlyEducation" class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
+                  </div>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
 
       <b-modal id="addWorkModal" hide-footer hide-backdrop ref="addWorkModal">
@@ -478,6 +488,18 @@ export default {
           alert('Error deleting education')
         })
     },
+    deleteSkill (skill) {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = { remove_skills: [skill] }
+      axios.put(path, parameters, {auth: {username: this.token}})
+        .then((res) => {
+          this.getSkills()
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error Adding Skills')
+        })
+    },
     resetAddWork () {
       this.addWork = {
         jobName: '',
@@ -515,7 +537,6 @@ export default {
         .then((res) => {
           console.log(res)
           this.bio = res.data.account.bio
-          console.log(this.bio)
         })
         .catch(() => {
           this.bio = ''

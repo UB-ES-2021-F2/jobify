@@ -52,47 +52,57 @@
           <p></p>
         </b-container>
         <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Work experience </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
-          <div class="card mb-lg-1"  v-for="work in work_experience" :key="work.id">
-            <div class="card-header d-flex align-items-center">
-              <span class="card-title-work">{{work.job_name}}</span>
-              <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
+        <b-container fluid="lg">
+          <b-row no-gutters>
+            <div class="text-left p-2 pb-3" style="max-width: 50rem">
+              <p class="section-title"> Skills </p>
+              <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+              <b-container>
+                <div class="badge badge-pill badge-warning p-2 m-1" v-for="skill in skills" :key="skill">
+                  <span style="display: inline-block">{{ skill }}</span>
+                  <b-button pill size="sm" class="badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
+                </div>
+              </b-container>
             </div>
-            <div class="card-body">
-              <p class="card-subtitle">{{work.company}}</p>
-              <p class="card-text">{{work.description}}</p>
-              <p class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
-              <p class="card-text" v-if="work.currently"><small class="text-muted">{{work.start_date}} - now</small></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Education </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
-          <div class="card mb-lg-1" v-for="ed in education" :key="ed.id">
-            <div class="card-body">
-              <div class="d-flex align-items-center">
-                <span class="card-title-ed">{{ed.title}}</span>
-                <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
+          </b-row>
+          <b-row no-gutters>
+            <b-col lg>
+              <div class="text-left p-2 pb-3" style="max-width: 50rem">
+                <p class="section-title"> Work experience </p>
+                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddWork()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+                <div class="card mb-lg-1"  v-for="work in work_experience" :key="work.id">
+                  <div class="card-header d-flex align-items-center">
+                    <span class="card-title-work">{{work.job_name}}</span>
+                    <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteWork(work)">Delete</button>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-subtitle">{{work.company}}</p>
+                    <p class="card-text">{{work.description}}</p>
+                    <p class="card-text" v-if="!work.currently"><small class="text-muted">{{work.start_date}} - {{work.end_date}}</small></p>
+                    <p class="card-text" v-if="work.currently"><small class="text-muted">{{work.start_date}} - now</small></p>
+                  </div>
+                </div>
               </div>
-              <p class="card-subtitle">{{ed.institution}}</p>
-              <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
-              <p class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
-            </div>
-          </div>
-        </div>
-
-        <div class="text-left p-2 pb-3" style="max-width: 50rem">
-          <p class="section-title"> Skills </p>
-          <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
-          <div>
-            <span class="badge badge-pill badge-warning p-2 m-1"  v-for="skill in skills" :key="skill">{{ skill }}</span>
-          </div>
-        </div>
+            </b-col>
+            <b-col lg>
+              <div class="text-left p-2 pb-3" style="max-width: 50rem">
+                <p class="section-title"> Education </p>
+                <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddEducation()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
+                <div class="card mb-lg-1" v-for="ed in education" :key="ed.id">
+                  <div class="card-header d-flex align-items-center">
+                    <span class="card-title-ed">{{ed.title}}</span>
+                    <button v-if="edit_mode" class="ml-auto btn btn-sm btn-danger" @click="deleteEducation(ed)">Delete</button>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-subtitle">{{ed.institution}}</p>
+                    <p class="card-text" v-if="!ed.currently"><small class="text-muted">{{ed.start_date}} - {{ed.end_date}}</small></p>
+                    <p class="card-text" v-if="ed.currently"><small class="text-muted">{{ed.start_date}} - now</small></p>
+                  </div>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
       </div>
 
       <b-modal hide-footer hide-backdrop ref="addWorkModal">
@@ -475,6 +485,18 @@ export default {
         .catch((error) => {
           console.error(error)
           alert('Error deleting education')
+        })
+    },
+    deleteSkill (skill) {
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
+      const parameters = { remove_skills: [skill] }
+      axios.put(path, parameters, {auth: {username: this.token}})
+        .then((res) => {
+          this.getSkills()
+        })
+        .catch((error) => {
+          console.error(error)
+          alert('Error Adding Skills')
         })
     },
     resetAddWork () {

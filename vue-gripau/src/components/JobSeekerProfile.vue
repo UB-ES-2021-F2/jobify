@@ -52,7 +52,7 @@
           </b-row>
           <p></p>
         </b-container>
-        <button v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+        <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
         <b-container fluid="lg">
           <b-row no-gutters>
             <div id="divSkills" class="text-left p-2 pb-3" style="max-width: 50rem">

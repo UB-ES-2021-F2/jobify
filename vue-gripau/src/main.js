@@ -33,8 +33,8 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.config.productionTip = false
 
-// Vue.prototype.$API_BASE_URL = 'http://localhost:5000/api/'
-Vue.prototype.$API_BASE_URL = 'https://ub-jobify.herokuapp.com/api/'
+Vue.prototype.$API_BASE_URL = 'http://localhost:5000/api/'
+// Vue.prototype.$API_BASE_URL = 'https://ub-jobify.herokuapp.com/api/'
 
 new Vue({
   router,

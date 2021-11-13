@@ -34,7 +34,7 @@
       <!--Placeholder image submit-->
       <div class="text-left p-2 pb-3" style="max-width: 50rem">
         <p class="section-title"> Avatar </p>
-        <div>
+        <div v-if="edit_mode">
           <b-form-group id="fileInput">
             <b-form-file
               v-model="file"
@@ -54,6 +54,7 @@
           <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
         </div>
       </div>
+
       <div class="container-md-5 p-2 align-items-center">
         <div v-if="bio != null && !edit_bio " class="bio-text">
           {{bio}}

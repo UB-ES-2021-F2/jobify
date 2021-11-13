@@ -5,7 +5,7 @@ from db import db
 from flask_cors import CORS
 
 # Imports de resources
-from resources import JobSeekers
+from resources import JobSeekers, Applications
 from resources import Companies
 from resources import Login
 from resources import Register
@@ -68,7 +68,7 @@ api.add_resource(CompanyJobOffers, '/api/offers/<string:company>')
 api.add_resource(JobOfferList, '/api/offers')
 api.add_resource(DeleteEducation, '/api/delete_education/<string:username>')
 api.add_resource(DeleteWorkExperience, '/api/delete_work_experience/<string:username>')
-
+api.add_resource(Applications, '/api/application/<string:job_seeker_username>', '/api/application')
 
 @app.route('/')
 def render_vue():

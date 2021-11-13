@@ -9,7 +9,11 @@ __pycache__/
 *.so
 
 # Cypress
-cypress
+cypress/downloads/
+cypress/fixtures/
+cypress/screenshots/
+cypress/support/
+cypress/videos/
 # Distribution / packaging
 .Python
 env/

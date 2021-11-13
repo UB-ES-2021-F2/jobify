@@ -103,4 +103,38 @@ describe('JobOffers resource', () => {
         })
     })
   })
+  context('should delete the new job offer and restore the previous one', () => {
+    it('should return a message that the job offer with id 1 has been deleted', () => {
+      cy.request({
+        method: 'DELETE',
+        url: 'job_offer/1'
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.message).to.eq('Offer with id [1] deleted')
+        })
+    })
+    it('should restore the original job offer', () => {
+      cy.request({
+        method: 'POST',
+        url: 'job_offer/universitat123',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'professor',
+          description: 'professor de EDS',
+          salary: '5000',
+          location: 'Barcelona',
+          contract_type: 'Indefinite',
+          working_hours: 8
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(201)
+          expect(response.body.company).to.eq('universitat123')
+          expect(response.body.job_name).to.eq('professor')
+        })
+    })
+  })
 })

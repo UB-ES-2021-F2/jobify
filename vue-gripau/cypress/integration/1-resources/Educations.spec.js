@@ -198,5 +198,20 @@ describe('Educations resource', () => {
           expect(response.body.message).to.eq('Dates need to be between years 1900 and 2100')
         })
     })
+    it('should return a message confirming that the education with id 2 of the user lordsergi has been deleted', () => {
+      cy.request({
+        method: 'POST',
+        url: 'delete_education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          id: 2
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.message).to.eq('Education with id [2] deleted')
+        })
+    })
   })
 })

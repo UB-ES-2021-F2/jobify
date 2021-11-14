@@ -70,11 +70,11 @@
               <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" >
                 <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
               </button>
-              <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
+              <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text pt-3">
                 {{bio}}
                 <p></p>
               </div>
-              <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text">
+              <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text pt-3">
                 Write about yourself!
               </div>
               <b-container id="editBioField" v-if="edit_bio" fluid>
@@ -509,9 +509,8 @@ export default {
       this.$refs.addSkillModal.show()
     },
     getSkills () {
-      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username
-      const parameters = {headers: {token: this.token}}
-      axios.get(path, parameters)
+      const path = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.username_profile
+      axios.get(path)
         .then((res) => {
           this.skills = res.data.account.skills
         })

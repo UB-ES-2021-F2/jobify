@@ -32,6 +32,30 @@
 
       <h2 id="nameSurnameFields" style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
 
+      <!--Placeholder image submit-->
+      <div class="text-left p-2 pb-3" style="max-width: 50rem">
+        <p class="section-title"> Avatar </p>
+        <div v-if="edit_mode">
+          <b-form-group id="fileInput">
+            <b-form-file
+              v-model="file"
+              :state="Boolean(file)"
+              placeholder="Choose a file or drop it here..."
+              drop-placeholder="Drop file here..."
+              accept="image/jpeg, image/png, image/gif"
+            ></b-form-file>
+          </b-form-group>
+          <div class="container-md-5 p-2 align-items-center" v-if="file">
+            <img :src="previewSrc" height='128'>
+            <br>
+            <br>
+            <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
+            <br>
+          </div>
+          <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
+        </div>
+      </div>
+
       <div class="container-md-5 p-2 align-items-center">
         <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
           {{bio}}
@@ -233,6 +257,8 @@
 import axios from 'axios'
 import Vue from 'vue'
 import {mapState} from 'vuex'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/storage'
 
 export default {
   data () {
@@ -268,7 +294,10 @@ export default {
         startDate: '',
         endDate: '',
         currently: false
-      }
+      },
+      file: null,
+      uploadValue: 0,
+      previewSrc: null
     }
   },
   methods: {
@@ -541,6 +570,26 @@ export default {
         .catch(() => {
           this.bio = ''
         })
+    },
+    onUpload () {
+      const storageRef = firebase.storage().ref(`images/${this.username}/avatar`).put(this.file)
+      storageRef.on(`state_changed`, snapshot => {
+        this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      }, error => { console.log(error.message) }, () => {
+        this.uploadValue = 100
+        this.file = null
+        storageRef.snapshot.ref.getDownloadURL().then((url) => {
+          console.log('File uploaded to ' + url)
+        })
+      })
+    }
+  },
+  watch: {
+    file (val) {
+      if (!val) return
+      const fileReader = new FileReader()
+      fileReader.onload = (e) => { this.previewSrc = e.target.result }
+      fileReader.readAsDataURL(this.file)
     }
   },
   created () {

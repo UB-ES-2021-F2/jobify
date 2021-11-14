@@ -10,7 +10,7 @@ class DeleteApplication(Resource):
     Resource related to the deletion of an Application
     """
 
-    #@auth.login_required(role='user')
+    @auth.login_required(role='user')
     def post(self, job_seeker_username):
         """
         HTTP POST method to delete an application
@@ -19,8 +19,8 @@ class DeleteApplication(Resource):
         - id: id of the application (Required)
         :return: status message
         """
-        #if job_seeker_username != g.user.username:
-        #    return {'message': 'Access denied'}, 400
+        if job_seeker_username != g.user.username:
+            return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()
 

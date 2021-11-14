@@ -30,61 +30,75 @@
 
     <b-container>
 
-      <h2 id="nameSurnameFields" style="font-family: 'Vollkorn', serif"> {{ name }} {{ surname }} </h2>
+      <div class="col">
 
-      <!--Placeholder image submit-->
-      <div class="text-left p-2 pb-3" style="max-width: 50rem">
-        <p class="section-title"> Avatar </p>
-        <div v-if="edit_mode">
-          <b-form-group id="fileInput">
-            <b-form-file
-              v-model="file"
-              :state="Boolean(file)"
-              placeholder="Choose a file or drop it here..."
-              drop-placeholder="Drop file here..."
-              accept="image/jpeg, image/png, image/gif"
-            ></b-form-file>
-          </b-form-group>
-          <div class="container-md-5 p-2 align-items-center" v-if="file">
-            <img :src="previewSrc" height='128'>
-            <br>
-            <br>
-            <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
-            <br>
+        <div class="row">
+          <div class="row d-flex d-lg-block">
+            <div id="avatar" class="col-lg-4 order-1 float-left align-items-center">
+              <div v-if="downloadImage != null" id="firebase-avatar">
+                <img class="rounded" style="width:200px;height:200px" :src="downloadImage" alt="">
+              </div>
+              <div v-else id="default-avatar">
+                <img class="rounded" style="width:200px;height:200px" :src="require('../assets/images/avatar.png')" alt="">
+              </div>
+              <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 align-items-center">
+                <b-form-group id="fileInput">
+                  <b-form-file center
+                    v-model="file"
+                    :state="Boolean(file)"
+                    placeholder="Choose or drop a file"
+                    drop-placeholder="Drop file here..."
+                    accept="image/jpeg, image/png, image/gif"
+                  ></b-form-file>
+                </b-form-group>
+                <div class="container-md-5 p-2 align-items-center" v-if="file">
+                  <img :src="previewSrc" height='128'>
+                  <br>
+                  <br>
+                  <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
+                  <br>
+                </div>
+                <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
+              </div>
+            </div>
+            <div class="col-lg-8 text-left order-0 float-left">
+              <p class="page-title">
+                {{ name }} {{ surname }}
+              </p>
+            </div>
+            <div class="col-lg-8 text-left order-1 float-left">
+              <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" >
+                <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+              </button>
+              <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
+                {{bio}}
+                <p></p>
+              </div>
+              <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text">
+                Write about yourself!
+              </div>
+              <b-container id="editBioField" v-if="edit_bio" fluid>
+                <b-row align="center">
+                  <b-col sm="10">
+                    <b-form-textarea id="bioInput" v-model="modify_bio" rows="3" max-rows="8"/>
+                  </b-col>
+                  <b-col align-self="center" sm="1">
+                    <b-button id="submitEditBioButton" variant="success" @click="modifyBio()">Save</b-button>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </div>
           </div>
-          <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
         </div>
-      </div>
 
-      <div class="container-md-5 p-2 align-items-center">
-        <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
-          {{bio}}
-          <p></p>
-        </div>
-        <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text">
-          Write about yourself!
-          <p></p>
-        </div>
-        <b-container id="editBioField" v-if="edit_bio" fluid>
-          <b-row align="center">
-            <b-col sm="10">
-              <b-form-textarea id="bioInput" v-model="modify_bio" rows="3" max-rows="8"/>
-            </b-col>
-            <b-col align-self="center" sm="1">
-              <b-button id="submitEditBioButton" variant="success" @click="modifyBio()">Save</b-button>
-            </b-col>
-          </b-row>
-          <p></p>
-        </b-container>
-        <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-        <b-container fluid="lg">
+        <div class="row d-flex d-lg-block p-2 align-items-center">
           <b-row no-gutters>
             <div id="divSkills" class="text-left p-2 pb-3" style="max-width: 50rem">
               <p class="section-title"> Skills </p>
               <button id="addSkillButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="onAddSkill()"><b-icon-plus font-scale="1.5" shift-v="-2"></b-icon-plus></button>
               <b-container>
                 <div class="badge badge-pill badge-warning p-2 m-1" v-for="skill in skills" :key="skill">
-                  <span id="nameSkill" style="display: inline-block">{{ skill }}</span>
+                  <span id="nameSkill" style="display: inline-block; font-size: 14px; font-family: 'Work Sans SemiBold'">{{ skill }}</span>
                   <b-button id="deleteSkillButton" pill size="sm" class="badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
                 </div>
               </b-container>
@@ -127,127 +141,128 @@
               </div>
             </b-col>
           </b-row>
-        </b-container>
+        </div>
+
       </div>
 
-      <b-modal id="addWorkModal" hide-footer hide-backdrop ref="addWorkModal">
-        <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
-        <validation-observer ref="observer" v-slot="{ handleSubmit }">
-          <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" style="font-family: 'Work Sans SemiBold'">
+        <b-modal id="addWorkModal" hide-footer hide-backdrop ref="addWorkModal">
+          <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
+          <validation-observer ref="observer" v-slot="{ handleSubmit }">
+            <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" style="font-family: 'Work Sans SemiBold'">
 
-            <validation-provider name="jobTitle"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
-              <b-form-group label="Job Title">
-                <b-form-input id="jobNameInput" v-model="addWork.jobName" type="text" placeholder="Enter job title"
-                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
-                <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              <validation-provider name="jobTitle"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
+                <b-form-group label="Job Title">
+                  <b-form-input id="jobNameInput" v-model="addWork.jobName" type="text" placeholder="Enter job title"
+                                :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
+                  <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
+              <validation-provider name="company"  :rules="{required: true, max:64}" v-slot="validationContext">
+                <b-form-group label="Company">
+                  <b-form-input id="companyInput" v-model="addWork.company" type="text" placeholder="Enter company name"
+                                :state="getValidationState(validationContext)" aria-describedby="live-feedback-2"></b-form-input>
+                  <b-form-invalid-feedback id="live-feedback-2">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
+              <validation-provider name="description"  :rules="{max:1000}" v-slot="validationContext">
+                <b-form-group label="Description">
+                  <b-form-textarea id="descriptionInput" v-model="addWork.description" rows="4" placeholder="Description (optional)"
+                                   :state="getValidationState(validationContext)" aria-describedby="live-feedback-3"></b-form-textarea>
+                  <b-form-invalid-feedback id="live-feedback-3">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
+              <b-form-group required label="Start date">
+                <input id="startDateWorkExperienceInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addWork.startDate" min="1900-01" max="2040-01">
               </b-form-group>
-            </validation-provider>
 
-            <validation-provider name="company"  :rules="{required: true, max:64}" v-slot="validationContext">
-              <b-form-group label="Company">
-                <b-form-input id="companyInput" v-model="addWork.company" type="text" placeholder="Enter company name"
-                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-2"></b-form-input>
-                <b-form-invalid-feedback id="live-feedback-2">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              <b-form-group label="End date">
+                <input id="endDateWorkExperienceInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addWork.endDate"
+                       :disabled="addWork.currently" :state="checkDates('work')" min="1900-01" max="2040-01">
+                <span style="font-size: 12px;color:#dd2222" v-if="checkDates('work')">Start date cannot be posterior to end date</span>
               </b-form-group>
-            </validation-provider>
 
-            <validation-provider name="description"  :rules="{max:1000}" v-slot="validationContext">
-              <b-form-group label="Description">
-                <b-form-textarea id="descriptionInput" v-model="addWork.description" rows="4" placeholder="Description (optional)"
-                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-3"></b-form-textarea>
-                <b-form-invalid-feedback id="live-feedback-3">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              <div class="form-check">
+                <input id="currentlyWorkExperienceInput" class="form-check-input" type="checkbox" value="" v-model="addWork.currently"
+                       @click="addWork.endDate=''">
+                <label class="form-check-label" for="currentlyWorkExperienceInput">Currently in this job</label>
+              </div>
+
+              <div class="float-right">
+                <b-button id="submitWorkExperienceButton" variant="warning" type="submit">Submit</b-button>
+              </div>
+
+            </b-form>
+          </validation-observer>
+        </b-modal>
+
+        <b-modal id="addSkillModal" hide-footer hide-backdrop ref="addSkillModal">
+          <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add Skill</h5></template>
+          <validation-observer ref="observer" v-slot="{ handleSubmit }">
+            <b-form ref="addSkillForm" @submit.prevent="handleSubmit(submitAddSkill)" style="font-family: 'Work Sans SemiBold'">
+
+              <validation-provider name="skill"  :rules="{alpha_spaces, required: true, max:15}" v-slot="validationContext">
+                <b-form-group label="Skill">
+                  <b-form-input id="nameSkillInput" v-model="addSkill.skill" type="text" placeholder="Enter skill"
+                                :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
+                  <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
+              <div class="float-right">
+                <b-button id="submitSkillButton" variant="warning" type="submit">Submit</b-button>
+              </div>
+
+            </b-form>
+          </validation-observer>
+        </b-modal>
+
+        <b-modal id="addEducationModal" hide-footer hide-backdrop  ref="addEducationModal">
+          <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
+          <validation-observer ref="observer" v-slot="{ handleSubmit }">
+            <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddEducation)" style="font-family: 'Work Sans SemiBold'">
+
+              <validation-provider name="title"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
+                <b-form-group label="Title">
+                  <b-form-input id="titleInput" v-model="addEducation.title" type="text" placeholder="Enter title"
+                                :state="getValidationState(validationContext)" aria-describedby="live-feedback-1-ed"></b-form-input>
+                  <b-form-invalid-feedback id="live-feedback-1-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
+              <validation-provider name="institution"  :rules="{required: true, max:64}" v-slot="validationContext">
+                <b-form-group label="Institution">
+                  <b-form-input id="institutionInput" v-model="addEducation.institution" type="text" placeholder="Enter institution"
+                                :state="getValidationState(validationContext)" aria-describedby="live-feedback-2-ed"></b-form-input>
+                  <b-form-invalid-feedback id="live-feedback-2-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                </b-form-group>
+              </validation-provider>
+
+              <b-form-group required label="Start date">
+                <input id="startDateEducationInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addEducation.startDate" min="1900-01" max="2040-01">
               </b-form-group>
-            </validation-provider>
 
-            <b-form-group required label="Start date">
-              <input id="startDateWorkExperienceInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addWork.startDate" min="1900-01" max="2040-01">
-            </b-form-group>
-
-            <b-form-group label="End date">
-              <input id="endDateWorkExperienceInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addWork.endDate"
-                     :disabled="addWork.currently" :state="checkDates('work')" min="1900-01" max="2040-01">
-              <span style="font-size: 12px;color:#dd2222" v-if="checkDates('work')">Start date cannot be posterior to end date</span>
-            </b-form-group>
-
-            <div class="form-check">
-              <input id="currentlyWorkExperienceInput" class="form-check-input" type="checkbox" value="" v-model="addWork.currently"
-                     @click="addWork.endDate=''">
-              <label class="form-check-label" for="currentlyWorkExperienceInput">Currently in this job</label>
-            </div>
-
-            <div class="float-right">
-              <b-button id="submitWorkExperienceButton" variant="warning" type="submit">Submit</b-button>
-            </div>
-
-          </b-form>
-        </validation-observer>
-      </b-modal>
-
-      <b-modal id="addSkillModal" hide-footer hide-backdrop ref="addSkillModal">
-        <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add Skill</h5></template>
-        <validation-observer ref="observer" v-slot="{ handleSubmit }">
-          <b-form ref="addSkillForm" @submit.prevent="handleSubmit(submitAddSkill)" style="font-family: 'Work Sans SemiBold'">
-
-            <validation-provider name="skill"  :rules="{alpha_spaces, required: true, max:15}" v-slot="validationContext">
-              <b-form-group label="Skill">
-                <b-form-input id="nameSkillInput" v-model="addSkill.skill" type="text" placeholder="Enter skill"
-                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1"></b-form-input>
-                <b-form-invalid-feedback id="live-feedback-1">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              <b-form-group label="End date">
+                <input id="endDateEducationInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addEducation.endDate"
+                       :disabled="addEducation.currently" :state="checkDates('ed')" min="1900-01" max="2040-01">
+                <span style="font-size: 12px;color:#dd2222" v-if="checkDates('ed')">Start date cannot be posterior to end date</span>
               </b-form-group>
-            </validation-provider>
 
-            <div class="float-right">
-              <b-button id="submitSkillButton" variant="warning" type="submit">Submit</b-button>
-            </div>
+              <div class="form-check">
+                <input id="currentlyEducationInput" class="form-check-input" type="checkbox" value="" v-model="addEducation.currently"
+                       @click="addEducation.endDate=''">
+                <label class="form-check-label" for="currentlyEducationInput">Currently enrolled</label>
+              </div>
 
-          </b-form>
-        </validation-observer>
-      </b-modal>
+              <div class="float-right">
+                <b-button id="submitEducationButton" variant="warning" type="submit">Submit</b-button>
+              </div>
 
-      <b-modal id="addEducationModal" hide-footer hide-backdrop  ref="addEducationModal">
-        <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
-        <validation-observer ref="observer" v-slot="{ handleSubmit }">
-          <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddEducation)" style="font-family: 'Work Sans SemiBold'">
-
-            <validation-provider name="title"  :rules="{alpha_spaces, required: true, max:64}" v-slot="validationContext">
-              <b-form-group label="Title">
-                <b-form-input id="titleInput" v-model="addEducation.title" type="text" placeholder="Enter title"
-                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-1-ed"></b-form-input>
-                <b-form-invalid-feedback id="live-feedback-1-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-              </b-form-group>
-            </validation-provider>
-
-            <validation-provider name="institution"  :rules="{required: true, max:64}" v-slot="validationContext">
-              <b-form-group label="Institution">
-                <b-form-input id="institutionInput" v-model="addEducation.institution" type="text" placeholder="Enter institution"
-                              :state="getValidationState(validationContext)" aria-describedby="live-feedback-2-ed"></b-form-input>
-                <b-form-invalid-feedback id="live-feedback-2-ed">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-              </b-form-group>
-            </validation-provider>
-
-            <b-form-group required label="Start date">
-              <input id="startDateEducationInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addEducation.startDate" min="1900-01" max="2040-01">
-            </b-form-group>
-
-            <b-form-group label="End date">
-              <input id="endDateEducationInput" placeholder="yyyy-mm" type="month" class="form-control" v-model="addEducation.endDate"
-                     :disabled="addEducation.currently" :state="checkDates('ed')" min="1900-01" max="2040-01">
-              <span style="font-size: 12px;color:#dd2222" v-if="checkDates('ed')">Start date cannot be posterior to end date</span>
-            </b-form-group>
-
-            <div class="form-check">
-              <input id="currentlyEducationInput" class="form-check-input" type="checkbox" value="" v-model="addEducation.currently"
-                     @click="addEducation.endDate=''">
-              <label class="form-check-label" for="currentlyEducationInput">Currently enrolled</label>
-            </div>
-
-            <div class="float-right">
-              <b-button id="submitEducationButton" variant="warning" type="submit">Submit</b-button>
-            </div>
-
-          </b-form>
-        </validation-observer>
-      </b-modal>
+            </b-form>
+          </validation-observer>
+        </b-modal>
 
     </b-container>
   </div>
@@ -297,7 +312,8 @@ export default {
       },
       file: null,
       uploadValue: 0,
-      previewSrc: null
+      previewSrc: null,
+      downloadImage: null
     }
   },
   methods: {
@@ -501,7 +517,6 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error Getting Skills')
         })
     },
     deleteEducation (ed) {
@@ -571,6 +586,13 @@ export default {
           this.bio = ''
         })
     },
+    downloadAvatar () {
+      firebase.storage().ref(`images/${this.username_profile}/avatar`).getDownloadURL()
+        .then((url) => {
+          this.downloadImage = url
+          console.log(url)
+        })
+    },
     onUpload () {
       const storageRef = firebase.storage().ref(`images/${this.username}/avatar`).put(this.file)
       storageRef.on(`state_changed`, snapshot => {
@@ -580,6 +602,7 @@ export default {
         this.file = null
         storageRef.snapshot.ref.getDownloadURL().then((url) => {
           console.log('File uploaded to ' + url)
+          this.downloadAvatar()
         })
       })
     }
@@ -606,6 +629,7 @@ export default {
     this.getEducation()
     this.getSkills()
     this.getBio()
+    this.downloadAvatar()
   },
   computed: mapState({
     token: state => state.token,
@@ -653,6 +677,11 @@ export default {
 .section-title {
   font-family: "Vollkorn",serif;
   font-size: 26px;
+  display:inline-block
+}
+.page-title {
+  font-family: "Vollkorn",serif;
+  font-size: 30px;
   display:inline-block
 }
 </style>

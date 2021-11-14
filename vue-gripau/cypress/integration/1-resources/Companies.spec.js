@@ -128,7 +128,11 @@ describe('Companies resource', () => {
         url: 'company/universitat123',
         auth: {username: localStorage.getItem('token')},
         body: {
-          password: 'Password12'
+          password: 'Password12',
+          email: 'ub@gmail.com',
+          description: 'hola, som la UB',
+          sector: '',
+          location: ''
         }
       })
         .should((response) => {

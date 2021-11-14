@@ -3,26 +3,26 @@
 
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#">
+      <b-navbar-brand id="logoNavbar" href="#">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item active href="#">Home</b-nav-item>
-          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
-          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item id="homeNavbarButton" active href="#">Home</b-nav-item>
+          <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item id="logInNavbarButton" @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onProfile()">{{ this.username }}</b-nav-item>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()">{{ this.username }}</b-nav-item>
+          <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -32,16 +32,16 @@
       <div class="container" style="max-width: 900px">
 
         <div class="container pl-5 pr-5 p-2" style="font-size:11vmin;line-height: 80%;font-family:'Bright', serif">
-          <span v-if="logged&&is_jobseeker">Welcome back, {{name}}</span>
-          <span v-else>{{welcome_message}}</span>
+          <span id="loggedMessage" v-if="logged&&is_jobseeker">Welcome back, {{name}}</span>
+          <span id="noLoggedMessage" v-else>{{welcome_message}}</span>
         </div>
 
         <div class="container pt-2 pb-2">
             <span style="white-space: nowrap">
-                <b-button btn variant="primary" class='btn-home' @click="onJobPostings">Find the newest jobs</b-button>
+                <b-button id="jobPostingsButton" btn variant="primary" class='btn-home' @click="onJobPostings">Find the newest jobs</b-button>
             </span>
           <span style="white-space: nowrap">
-                <b-button variant="primary" class='btn-home' @click="onCompanies">Check our companies</b-button>
+                <b-button id="companiesButton" variant="primary" class='btn-home' @click="onCompanies">Check our companies</b-button>
             </span>
         </div>
 
@@ -86,7 +86,6 @@ export default {
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
       this.logged = false
       this.username = null
       this.token = null

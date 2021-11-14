@@ -171,7 +171,7 @@
           <p>{{jobOfferCurrentView.publicationDate}}</p>
         </div>
       </b-container>
-      <b-button btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
+      <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
       <b-button v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
     </div>
     <!-- /Job offer view -->
@@ -330,32 +330,6 @@ export default {
         .catch((error) => {
           console.error(error)
         })
-    },
-    onSubmit () {
-      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
-      var values = {
-        job_name: this.jobOfferForm.jobName,
-        description: this.jobOfferForm.description,
-        location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType
-      }
-      if (this.jobOfferForm.salary !== '') {
-        values.salary = this.jobOfferForm.salary
-      }
-      if (this.jobOfferForm.workingHours !== '') {
-        values.salary = this.jobOfferForm.workingHours
-      }
-      console.log(values)
-      axios.post(path, values)
-        .then((res) => {
-          console.log('Job Offer correctly posted')
-          this.getJobOffers()
-        })
-        .catch((error) => {
-          alert(error.response.data.message)
-        })
-      this.$bvModal.hide('job-offer-modal')
-      this.onReset()
     },
     onReset () {
       this.initJobOfferForm()

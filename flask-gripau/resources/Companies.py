@@ -71,12 +71,16 @@ class Companies(Resource):
                 account.hash_password(data.password)
             if data.email:
                 account.email = data.email
-            if data.description:
+            if data.description or data.description == '':
                 account.description = data.description
             if data.sector:
                 account.sector = data.sector
+            if data.sector == '':
+                account.sector = 'Unknown'
             if data.location:
                 account.location = data.location
+            if data.location == '':
+                account.location = 'Unknown'
 
             account.save_to_db()
             try:

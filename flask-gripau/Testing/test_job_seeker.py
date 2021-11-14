@@ -1,3 +1,4 @@
+from models import ApplicationModel
 from models.job_seeker import JobSeekersModel, get_user_roles, verify_password
 from models.education import EducationsModel
 from models.work_experience import WorkExperiencesModel
@@ -31,7 +32,8 @@ class TestJobSeeker(BaseTestCase):
         new_job_seeker.hash_password('test')
         ret = {'id': None, 'username': 'test', "name": "Sergi", "surname": "Bech", 'email': 'test@hotmail.com',
                'is_admin': 0,
-               'bio': 'hola, soc un test', "educations": [], "work_experiences": [], "skills": []}
+               'bio': 'hola, soc un test', "educations": [], "work_experiences": [], "skills": [],
+               'applications': []}
         assert new_job_seeker.json() == ret
 
     def test_delete_from_db(self):
@@ -59,6 +61,16 @@ class TestJobSeeker(BaseTestCase):
         new_job_seeker.delete_work_experience(None)
         assert new_job_seeker.work_experiences == []
         self.assertIsNone(new_job_seeker.delete_work_experience(1233))
+
+    def test_delete_application(self):
+        new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')
+        new_job_seeker.hash_password('test')
+        new_application = ApplicationModel()
+        new_job_seeker.applications.append(new_application)
+        assert len(new_job_seeker.applications) == 1
+        new_job_seeker.delete_application(None)
+        assert new_job_seeker.applications == []
+        self.assertIsNone(new_job_seeker.delete_application(1233))
 
     def test_save_to_db_and_delete_from_db(self):
         new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')

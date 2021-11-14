@@ -76,7 +76,7 @@ class JobSeekers(Resource):
                 account.hash_password(data.password)
             if data.email:
                 account.email = data.email
-            if data.bio:
+            if data.bio or data.bio == '':
                 account.bio = data.bio
             if data.name:
                 account.name = data.name

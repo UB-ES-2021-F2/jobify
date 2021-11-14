@@ -282,7 +282,8 @@
                   <p>{{jobOfferCurrentView.publicationDate}}</p>
                 </div>
               </b-container>
-              <b-button btn variant="primary" class='btn-home' @click="onJoOfferView">Seen</b-button>
+              <b-button btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
+              <b-button v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
             </div>
             <!-- /Job offer view -->
           </div>
@@ -542,6 +543,16 @@ export default {
         })
       this.$bvModal.hide('job-offer-modal')
       this.onReset()
+    },
+    deleteJobOffer () {
+      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
+      axios.delete(path)
+        .then((res) => {
+          window.location.reload()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     },
     onReset () {
       this.initJobOfferForm()

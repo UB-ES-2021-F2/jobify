@@ -52,7 +52,7 @@
           >
             <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
             <b-card-text id="companyName">
-              <p>{{ job_offer.company_name }}</p>
+              <p>{{ job_offer.company }}</p>
             </b-card-text>
             <footer>
               <b-container fluid style="font-family: 'Work Sans'">
@@ -184,6 +184,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import {mapState} from 'vuex'
+// import firebase from 'firebase/compat'
 
 export default {
   data () {

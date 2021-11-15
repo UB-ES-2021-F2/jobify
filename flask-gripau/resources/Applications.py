@@ -19,7 +19,7 @@ class Applications(Resource):
         return [application.json() for application in
                 ApplicationModel.find_by_job_seeker_username(job_seeker_username)], 200
 
-    # @auth.login_required(role='user')
+    @auth.login_required(role='user')
     def post(self, job_seeker_username):
         """
         HTTP POST method to create an application
@@ -29,8 +29,8 @@ class Applications(Resource):
         - info: additional information the job seeker wants to give (Optional)
         :return:  json object with the created application information
         """
-        # if job_seeker_username != g.user.username:
-        #    return {'message': 'Access denied'}, 400
+        if job_seeker_username != g.user.username:
+            return {'message': 'Access denied'}, 400
 
         parser = reqparse.RequestParser()
 

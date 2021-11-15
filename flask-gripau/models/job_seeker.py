@@ -25,6 +25,7 @@ class JobSeekersModel(db.Model):
     educations = db.relationship('EducationsModel', backref='educations', lazy=True)
     work_experiences = db.relationship('WorkExperiencesModel', backref='work_experiences', lazy=True)
     skills = db.relationship('SkillsModel', backref='skills', lazy=True)
+    applications = db.relationship('ApplicationModel', backref='job_seeker_applications', lazy=True)
 
     def __init__(self, username, name, surname, email, bio, is_admin=0):
         """
@@ -52,7 +53,8 @@ class JobSeekersModel(db.Model):
                 'email': self.email, 'is_admin': self.is_admin,
                 'bio': self.bio, 'educations': [education.json() for education in self.educations],
                 'work_experiences': [we.json() for we in self.work_experiences],
-                'skills': [skill.skill_name() for skill in self.skills]}
+                'skills': [skill.skill_name() for skill in self.skills],
+                'applications': [application.json() for application in self.applications]}
 
     def save_to_db(self, database=None):
         """
@@ -120,6 +122,18 @@ class JobSeekersModel(db.Model):
             if w.id == id:
                 self.work_experiences.remove(w)
                 return w
+        return None
+
+    def delete_application(self, id):
+        """
+        Function that deletes an application from the applications list of the job seeker
+        :param id: id of the application
+        :return: the application removed, None if the application does not exist
+        """
+        for a in self.applications:
+            if a.id == id:
+                self.applications.remove(a)
+                return a
         return None
 
     @classmethod

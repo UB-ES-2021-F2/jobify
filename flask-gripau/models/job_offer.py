@@ -21,6 +21,7 @@ class JobOfferModel(db.Model):
     location = db.Column(db.String(30), unique=False, nullable=False)
     working_hours = db.Column(db.Integer, unique=False)
     contract_type = db.Column(db.String(30), unique=False)
+    applications = db.relationship('ApplicationModel', backref='job_offer_applications', lazy=True)
 
     def __init__(self, job_name, description, publication_date, location, salary=None,
                  working_hours=None, contract_type=None):
@@ -52,9 +53,10 @@ class JobOfferModel(db.Model):
             company_name = CompanyModel.find_by_username(self.company).company
 
         return {'id': self.id, 'company': self.company, 'company_name': company_name,
-        'job_name': self.job_name, 'description': self.description, 'publication_date':
+                'job_name': self.job_name, 'description': self.description, 'publication_date':
                     self.publication_date.strftime("%Y-%m-%d"), 'salary': self.salary, 'location': self.location,
-                'working_hours': self.working_hours, 'contract_type': self.contract_type}
+                'working_hours': self.working_hours, 'contract_type': self.contract_type,
+                'applications': [application.json() for application in self.applications]}
 
     def save_to_db(self, database=None):
         """
@@ -75,6 +77,18 @@ class JobOfferModel(db.Model):
             database = db
         database.session.delete(self)
         database.session.commit()
+
+    def delete_application(self, id):
+        """
+        Function that deletes an application from the applications list of the job offer
+        :param id: id of the application
+        :return: the application removed, None if the application does not exist
+        """
+        for a in self.applications:
+            if a.id == id:
+                self.applications.remove(a)
+                return a
+        return None
 
     @classmethod
     def find_by_id(cls, _id):

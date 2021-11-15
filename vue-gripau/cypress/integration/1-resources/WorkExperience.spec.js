@@ -80,6 +80,27 @@ describe('WorkExperience resource', () => {
           expect(response.body.message).to.eq('Access denied')
         })
     })
+    it('should return error 400 because we are trying to add dates in a wrong format', () => {
+      cy.request({
+        method: 'POST',
+        url: 'work_experience/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'work experience test cypress',
+          description: 'nothing more to say here',
+          company: 'cypress',
+          start_date: '04-2020',
+          end_date: '2021-test',
+          currently: false
+        },
+        failOnStatusCode: false
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Date format is wrong, try (yyyy-mm)')
+        })
+    })
     it('should return error 400 because we are trying to add a work experience with blank job name', () => {
       cy.request({
         method: 'POST',
@@ -119,7 +140,7 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Start date cannot be later than end date')
+          expect(response.body.message).to.eq('Start date cannot be posterior than end date')
         })
     })
     it('should return error 400 because we are trying to add a work experience with start month bigger than end month and same year', () => {
@@ -140,7 +161,7 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Start date cannot be later than end date')
+          expect(response.body.message).to.eq('Start date cannot be posterior than end date')
         })
     })
     it('should return error 400 because we are trying to add a work_experience with a month bigger than 12', () => {
@@ -161,7 +182,7 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Month fields must be integers between 1 and 12')
+          expect(response.body.message).to.eq('Dates need to be between months 1 and 12')
         })
     })
     it('should return error 400 because we are trying to add a work experience with a start year less than 1900 and a end year bigger than 2100', () => {
@@ -182,7 +203,22 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Year fields must be integers bigger than 1900 and lower than 2100')
+          expect(response.body.message).to.eq('Dates need to be between years 1900 and 2100')
+        })
+    })
+    it('should return a message confirming that the work experience with id 2 of the user lordsergi has been deleted', () => {
+      cy.request({
+        method: 'POST',
+        url: 'delete_work_experience/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          id: 2
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.message).to.eq('Work experience with id [2] deleted')
         })
     })
   })

@@ -60,6 +60,7 @@ describe('Companies resource', () => {
           expect(response.body.location).to.eq('cypress')
         })
     })
+    /*
     it('should return error 400 because we are trying to add a password which does not meet requirements', () => {
       cy.request({
         method: 'PUT',
@@ -120,13 +121,18 @@ describe('Companies resource', () => {
           expect(response.body.message).to.eq('Too large fields')
         })
     })
+    */
     it('should return the modified company account', () => {
       cy.request({
         method: 'PUT',
         url: 'company/universitat123',
         auth: {username: localStorage.getItem('token')},
         body: {
-          password: 'Password12'
+          password: 'Password12',
+          email: 'ub@gmail.com',
+          description: 'hola, som la UB',
+          sector: '',
+          location: ''
         }
       })
         .should((response) => {

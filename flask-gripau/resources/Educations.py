@@ -54,9 +54,21 @@ class Educations(Resource):
         if not user:
             return {'user': None}, 404
 
-        if not data.currently:
+        # Date validations
+        try:
             start_year, start_month = data.start_date.split('-')
             end_year, end_month = data.end_date.split('-')
+        except ValueError:
+            return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
+        if not start_year.isnumeric() or not start_month.isnumeric() or \
+                not end_year.isnumeric() or not end_month.isnumeric():
+            return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
+        elif int(start_year) < 1900 or int(end_year) < 1900 or int(start_year) > 2100 or int(end_year) > 2100:
+            return {"message": "Dates need to be between years 1900 and 2100"}, 400
+        elif int(start_month) < 1 or int(end_month) < 1 or int(start_month) > 12 or int(end_month) > 12:
+            return {"message": "Dates need to be between months 1 and 12"}, 400
+
+        if not data.currently:
             if int(start_year) > int(end_year):
                 return {"message": "Start date cannot be posterior than end date"}, 400
             elif int(start_year) == int(end_year):

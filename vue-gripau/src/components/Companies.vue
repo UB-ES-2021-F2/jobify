@@ -3,26 +3,26 @@
 
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand @click="onHome()">
+      <b-navbar-brand id="logoNavbar" href="#" @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="onHome()">Home</b-nav-item>
-          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item active>Companies</b-nav-item>
-          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
+          <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item id="companiesNavbarButton" active>Companies</b-nav-item>
+          <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item id="logInNavbarButton" @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onProfile()">{{ this.username }}</b-nav-item>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()">{{ this.username }}</b-nav-item>
+          <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -37,23 +37,37 @@
           class="mb-2"
           style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
           align="left"
+          id="companyCard"
         >
-          <b-button class="btn btn-outline-light active" @click="onCompany(company.username)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-          <footer>
-            <b-container fluid style="font-family: 'Work Sans'">
-              <b-row>
-                <b-col cols="4">
-                  <b-icon icon="envelope"></b-icon> {{company.email}}
-                </b-col>
-                <b-col cols="4" v-if="company.sector !== 'Unknown'">
-                  <b-icon icon="building"></b-icon> {{ company.sector }}
-                </b-col>
-                <b-col cols="4" v-if="company.location !== 'Unknown'">
-                  <b-icon icon="geo-alt-fill"></b-icon> {{ company.location }}
-                </b-col>
-              </b-row>
-            </b-container>
-          </footer>
+          <div class="row no-gutters">
+              <b-container fluid style="font-family: 'Work Sans'">
+                <b-row no gutters>
+                  <b-col cols="8">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item border-0">
+                        <b-icon id="emailIcon" icon="envelope"></b-icon> {{company.email}}
+                      </li>
+                      <li class="list-group-item border-0" v-if="company.sector !== 'Unknown'">
+                        <b-icon id="sectorIcon" icon="building"></b-icon> {{ company.sector }}
+                      </li>
+                      <li class="list-group-item border-0" v-if="company.location !== 'Unknown'">
+                        <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
+                      </li>
+                    </ul>
+                  </b-col>
+                  <b-col v-if="companies_logos[company.username]!=null" cols="4">
+                    <img v-if="loadedLogos" class="card-img" :src="companies_logos[company.username]" alt=""
+                         style="width:128px;height:128px">
+                  </b-col>
+                  <b-col v-if="companies_logos[company.username]==null" cols="4">
+                    <img class="card-img" src="../assets/images/company_avatar.png" alt=""
+                         style="width:128px;height:128px">
+                  </b-col>
+                </b-row>
+              </b-container>
+            <b-button id="companyButton" class="btn btn-outline-light active" @click="onCompany(company.username)"
+                      style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+          </div>
         </b-card>
       </b-row>
     </b-container>
@@ -64,6 +78,7 @@
 import {mapState} from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
+import firebase from 'firebase/compat'
 
 export default {
   data () {
@@ -75,7 +90,10 @@ export default {
       is_jobseeker: null,
       is_company: false,
       token: '',
-      companies: []
+      companies: [],
+      companies_logos: {},
+      loadedLogos: false,
+      renderKey: 0
     }
   },
   methods: {
@@ -116,11 +134,28 @@ export default {
       axios.get(path)
         .then((res) => {
           this.companies = res.data
-          console.log(res.data)
+          for (let c in this.companies) {
+            let comp = this.companies[c]
+            this.companies_logos[comp.username] = null
+          }
+          this.getCompaniesLogos()
         })
         .catch((error) => {
           console.error(error)
         })
+    },
+    getCompaniesLogos () {
+      for (let c in this.companies) {
+        let comp = this.companies[c]
+        this.companies_logos[comp.username] = null
+        firebase.storage().ref(`images/${comp.username}/avatar`).getDownloadURL()
+          .then((url) => {
+            this.companies_logos[comp.username] = url
+            this.$forceUpdate()
+          })
+      }
+      this.loadedLogos = true
+      this.$forceUpdate()
     }
   },
   created () {

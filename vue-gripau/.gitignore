@@ -8,6 +8,12 @@ __pycache__/
 # C extensions
 *.so
 
+# Cypress
+cypress/downloads/
+cypress/fixtures/
+cypress/screenshots/
+cypress/support/
+cypress/videos/
 # Distribution / packaging
 .Python
 env/

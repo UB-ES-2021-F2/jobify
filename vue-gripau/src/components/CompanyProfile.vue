@@ -48,75 +48,117 @@
         <!--/.Local Navbar -->
         <b-col fluid lg="10" cols="12">
           <div id="profileView" v-if="this.profileView && !this.jobView">
-            <h2 id="nameCompany" style="font-family: 'Vollkorn', serif">{{company.company}} profile </h2>
-            <div class="container-md-5 p-2 align-items-center">
-              <!-- company description -->
-              <div id="descriptionCompany1" v-if="company.description != null && company.description !== '' && !edit.description " class="bio-text">
-                {{company.description}}
-                <p></p>
-              </div>
-              <div id="descriptionCompany2" v-if="(company.description === null || company.description === '') && !edit.description && edit_mode" class="bio-text">
-                <p>Write about your company!</p>
-              </div>
-              <b-container id="editDescriptionField" v-if="edit.description" fluid>
-                <b-row align="center">
-                  <b-col sm="10">
-                    <b-form-textarea id="descriptionInput" v-model="modify.description" rows="3" max-rows="8"/>
-                  </b-col>
-                  <b-col align-self="center" sm="1">
-                    <b-button id="submitEditDescriptionButton" variant="success" @click="modifyDescription()">Save</b-button>
-                  </b-col>
-                </b-row>
-                <p></p>
-              </b-container>
-              <button id="enableEditDescriptionButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-              <!-- /company description -->
-              <!-- company email -->
-              <div v-if="(company.email !== 'Unknown' && company.email) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
-                <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
-                <div id="emailCompany" v-if="!edit.email">
-                  <p>{{company.email}}</p>
+            <div class="row">
+              <div class="row d-flex d-lg-block">
+                <div id="divAvatar" class="col-lg-4 order-1 float-left align-items-center">
+                  <div v-if="downloadImage != null" id="firebase-avatar">
+                    <img class="rounded" style="width:200px;height:200px" :src="downloadImage" alt="">
+                  </div>
+                  <div v-else id="default-avatar">
+                    <img class="rounded" style="width:200px;height:200px" :src="require('../assets/images/company_avatar.png')" alt="">
+                  </div>
+                  <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 align-items-center">
+                    <b-form-group id="fileInput">
+                      <b-form-file center
+                                   v-model="file"
+                                   :state="Boolean(file)"
+                                   placeholder="Choose or drop a file"
+                                   drop-placeholder="Drop file here..."
+                                   accept="image/jpeg, image/png, image/gif"
+                      ></b-form-file>
+                    </b-form-group>
+                    <div class="container-md-5 p-2 align-items-center" v-if="file">
+                      <img :src="previewSrc" height='128'>
+                      <br>
+                      <br>
+                      <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
+                      <br>
+                    </div>
+                    <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
+                  </div>
                 </div>
-                <b-container v-if="edit.email" fluid>
-                  <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
-                    <b-row align="left">
-                      <b-col sm="5">
-                          <b-form-input id="emailInput" v-model="modify.email" rows="1" max-rows="2" type="email" :state="getValidationState(validationContext)"
-                                        aria-describedby="input-2c-live-feedback"/>
-                          <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                <div id="divName" class="col-lg-8 text-left order-0 float-left">
+                  <p class="page-title">
+                    {{company.company}} profile
+                  </p>
+                </div>
+                <div id="divBio" class="col-lg-8 text-left order-1 float-left">
+                  <!-- company description -->
+                  <div id="descriptionCompany1" v-if="company.description != null && company.description !== '' && !edit.description " class="bio-text">
+                    {{company.description}}
+                    <p></p>
+                  </div>
+                  <div id="descriptionCompany2" v-if="(company.description === null || company.description === '') && !edit.description && edit_mode" class="bio-text">
+                    <p>Write about your company!</p>
+                  </div>
+                  <b-container id="editDescriptionField" v-if="edit.description" fluid>
+                    <b-row align="center">
+                      <b-col sm="10">
+                        <b-form-textarea id="descriptionInput" v-model="modify.description" rows="3" max-rows="8"/>
                       </b-col>
                       <b-col align-self="center" sm="1">
-                        <b-button id="submitEditEmailButton" :disabled="!validationContext.valid" variant="success" @click="modifyEmail()">Save</b-button>
+                        <b-button id="submitEditDescriptionButton" variant="success" @click="modifyDescription()">Save</b-button>
                       </b-col>
                     </b-row>
                     <p></p>
-                  </validation-provider>
-                </b-container>
-                <button id="enableEditEmailButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-1"></b-icon-pencil-fill></button>
+                  </b-container>
+                  <button id="enableEditDescriptionButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                  <!-- /company description -->
+                </div>
               </div>
+            </div>
+            <div class="row d-flex d-lg-block p-2 align-items-center">
+              <!-- company email -->
+              <b-row no-gutters>
+                <div v-if="(company.email !== 'Unknown' && company.email) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
+                  <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
+                  <div id="emailCompany" v-if="!edit.email">
+                    <p>{{company.email}}</p>
+                  </div>
+                  <b-container v-if="edit.email" fluid>
+                    <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
+                      <b-row align="left">
+                        <b-col sm="5">
+                          <b-form-input id="emailInput" v-model="modify.email" rows="1" max-rows="2" type="email" :state="getValidationState(validationContext)"
+                                        aria-describedby="input-2c-live-feedback"/>
+                          <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                        </b-col>
+                        <b-col align-self="center" sm="1">
+                          <b-button id="submitEditEmailButton" :disabled="!validationContext.valid" variant="success" @click="modifyEmail()">Save</b-button>
+                        </b-col>
+                      </b-row>
+                      <p></p>
+                    </validation-provider>
+                  </b-container>
+                  <button id="enableEditEmailButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-1"></b-icon-pencil-fill></button>
+                </div>
+              </b-row>
               <!-- /company email -->
               <!-- company sector -->
-              <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
-                <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
-                <div id="sectorCompany" v-if="!edit.sector">
-                  <p>{{company.sector}}</p>
+              <b-row no-gutters>
+                <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
+                  <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
+                  <div id="sectorCompany" v-if="!edit.sector">
+                    <p>{{company.sector}}</p>
+                  </div>
+                  <b-container id="editSectorField" v-if="edit.sector" fluid>
+                    <b-row align="left">
+                      <b-col sm="5">
+                        <b-form-textarea id="sectorInput" v-model="modify.sector" rows="1" max-rows="2"/>
+                      </b-col>
+                      <b-col align-self="center" sm="1">
+                        <b-button id="submitEditSectorButton" variant="success" @click="modifySector()">Save</b-button>
+                      </b-col>
+                    </b-row>
+                    <p></p>
+                  </b-container>
+                  <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
                 </div>
-                <b-container id="editSectorField" v-if="edit.sector" fluid>
-                  <b-row align="left">
-                    <b-col sm="5">
-                      <b-form-textarea id="sectorInput" v-model="modify.sector" rows="1" max-rows="2"/>
-                    </b-col>
-                    <b-col align-self="center" sm="1">
-                      <b-button id="submitEditSectorButton" variant="success" @click="modifySector()">Save</b-button>
-                    </b-col>
-                  </b-row>
-                  <p></p>
-                </b-container>
-                <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-              </div>
+              </b-row>
               <!-- /company sector -->
               <!-- company location -->
-              <div v-if="(company.location !== 'Unknown' && company.location) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
+              <b-row no-gutters>
+                <div v-if="(company.location !== 'Unknown' && company.location) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
                 <h3 style="font-family: 'Vollkorn', serif"> Location</h3>
                 <div id="locationCompany" v-if="!edit.location">
                   <p>{{company.location}}</p>
@@ -134,8 +176,10 @@
                 </b-container>
                 <button id="enableEditLocationButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editLocation()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
               </div>
+              </b-row>
               <!-- /company location -->
             </div>
+
           </div>
           <!-- Job Offers page -->
           <div id="jobView" v-if="this.profileView === false && this.jobView === true">
@@ -302,6 +346,8 @@
 import axios from 'axios'
 import Vue from 'vue'
 import {mapState} from 'vuex'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/storage'
 
 export default {
   data () {
@@ -359,7 +405,11 @@ export default {
         contractType: '',
         workingHours: ''
       },
-      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
+      file: null,
+      uploadValue: 0,
+      previewSrc: null,
+      downloadImage: null
     }
   },
   methods: {
@@ -559,6 +609,26 @@ export default {
           console.error(error)
         })
     },
+    downloadAvatar () {
+      firebase.storage().ref(`images/${this.company_name_profile}/avatar`).getDownloadURL()
+        .then((url) => {
+          this.downloadImage = url
+          console.log(url)
+        })
+    },
+    onUpload () {
+      const storageRef = firebase.storage().ref(`images/${this.username}/avatar`).put(this.file)
+      storageRef.on(`state_changed`, snapshot => {
+        this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      }, error => { console.log(error.message) }, () => {
+        this.uploadValue = 100
+        this.file = null
+        storageRef.snapshot.ref.getDownloadURL().then((url) => {
+          console.log('File uploaded to ' + url)
+          this.downloadAvatar()
+        })
+      })
+    },
     onReset () {
       this.initJobOfferForm()
     },
@@ -606,6 +676,7 @@ export default {
     this.profileView = true
     this.getCompany()
     this.getCompanyJobOffers()
+    this.downloadAvatar()
   },
   computed: mapState({
     token: state => state.token,
@@ -626,5 +697,9 @@ export default {
   padding: 20px;
   margin-bottom: 20px;
 }
-
+.page-title {
+  font-family: "Vollkorn",serif;
+  font-size: 30px;
+  display:inline-block
+}
 </style>

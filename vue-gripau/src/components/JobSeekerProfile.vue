@@ -34,7 +34,7 @@
 
         <div class="row">
           <div class="row d-flex d-lg-block">
-            <div id="avatar" class="col-lg-4 order-1 float-left align-items-center">
+            <div id="divAvatar" class="col-lg-4 order-1 float-left align-items-center">
               <div v-if="downloadImage != null" id="firebase-avatar">
                 <img class="rounded" style="width:200px;height:200px" :src="downloadImage" alt="">
               </div>
@@ -61,12 +61,12 @@
                 <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
               </div>
             </div>
-            <div class="col-lg-8 text-left order-0 float-left">
+            <div id="divName" class="col-lg-8 text-left order-0 float-left">
               <p class="page-title">
                 {{ name }} {{ surname }}
               </p>
             </div>
-            <div class="col-lg-8 text-left order-1 float-left">
+            <div id="divBio" class="col-lg-8 text-left order-1 float-left">
               <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" >
                 <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
               </button>

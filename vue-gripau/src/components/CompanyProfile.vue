@@ -617,7 +617,7 @@ export default {
         })
     },
     onUpload () {
-      const storageRef = firebase.storage().ref(`images/${this.username}/avatar`).put(this.file)
+      const storageRef = firebase.storage().ref(`images/${this.company_name_profile}/avatar`).put(this.file)
       storageRef.on(`state_changed`, snapshot => {
         this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       }, error => { console.log(error.message) }, () => {
@@ -663,6 +663,14 @@ export default {
         })
     }
   },
+  watch: {
+    file (val) {
+      if (!val) return
+      const fileReader = new FileReader()
+      fileReader.onload = (e) => { this.previewSrc = e.target.result }
+      fileReader.readAsDataURL(this.file)
+    }
+  },
   created () {
     this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()
     this.logged = this.$store.state.logged
@@ -675,8 +683,8 @@ export default {
     this.jobView = false
     this.profileView = true
     this.getCompany()
-    this.getCompanyJobOffers()
     this.downloadAvatar()
+    this.getCompanyJobOffers()
   },
   computed: mapState({
     token: state => state.token,

@@ -2,6 +2,7 @@
 ![logo](vue-gripau/src/assets/logo.svg)
 ## API documentation
 The documentation is built on every push to dev
+
 Link to the documentation: [https://ub-es-2021-f2.github.io/gripau/resources/index.html](https://ub-es-2021-f2.github.io/gripau/resources/index.html) 
 ## Workflow Guide
 ### How to start working on a task

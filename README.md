@@ -1,5 +1,8 @@
 # Grup F2 de ES 2021 - JOBIFY (codename Gripau)
 ![logo](vue-gripau/src/assets/logo.svg)
+## API documentation
+The documentation is built on every push to dev
+Link to the documentation: [https://ub-es-2021-f2.github.io/gripau/resources/index.html](https://ub-es-2021-f2.github.io/gripau/resources/index.html) 
 ## Workflow Guide
 ### How to start working on a task
 1. **Pick one of your assigned tasks** in the current sprint
@@ -63,4 +66,5 @@ This is what is automatically performed when a commit is submited to the *produc
 - The project is pushed to heroku.
 ---
 
-## How to test the project (comming soon)
+## How to test the project
+Tests on the project are run on every PR to dev. You can run this tests manually in Actions > Docs > Manual Dispatch

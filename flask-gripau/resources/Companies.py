@@ -6,14 +6,17 @@ from models.company import auth
 
 
 class Companies(Resource):
-    """
-    Resource related to the table Company
-    """
+    """Resource related to the table Company"""
     def get(self, company):
-        """
-        HTTP GET method that gets a specific company
-        :param username: username of the company to return
-        :return: json object with the company information
+        """HTTP GET method that gets a specific company
+
+        Args:
+          username: username of the company to return
+          company: 
+
+        Returns:
+          json object with the company information
+
         """
         account = CompanyModel.find_by_username(company)
         if account:
@@ -23,10 +26,15 @@ class Companies(Resource):
           
     @auth.login_required(role='user')
     def delete(self, company):
-        """
-        HTTP DELETE method to delete a specific company
-        :param username: username of the company to delete
-        :return: status message
+        """HTTP DELETE method to delete a specific company
+
+        Args:
+          username: username of the company to delete
+          company: 
+
+        Returns:
+          status message
+
         """
         if company != g.user.username:
             return {'message': 'Access denied'}, 400
@@ -40,16 +48,20 @@ class Companies(Resource):
 
     @auth.login_required(role='user')
     def put(self, company):
-        """
-        HTTP PUT method to update a specific company
-        :param company: username of the company to update
+        """HTTP PUT method to update a specific company
+
+        Args:
+          company: username of the company to update
         Request fields:
         - password: password of the account (Required)
         - email: email of the company (Required)
         - description: description of the company (Optional)
         - sector: sector of the company (Optional)
         - location: location of the company (Optional)
-        :return: json object with the updated company information
+
+        Returns:
+          json object with the updated company information
+
         """
 
         if company != g.user.username:

@@ -3,10 +3,14 @@ from models import JobOfferModel
 
 
 class ApplicationModel(db.Model):
-    """
-    Model of an application
+    """Model of an application
     Job Offer 1 ---> * Applications
     Job Seeker 1 ---> * Applications
+
+    Args:
+
+    Returns:
+
     """
     __tablename__ = 'applications'
     __table_args__ = (db.UniqueConstraint('job_seeker_username', 'job_offer_id'),)
@@ -24,9 +28,13 @@ class ApplicationModel(db.Model):
         self.info = info
 
     def json(self):
-        """
-        Function that returns the application info as json
+        """Function that returns the application info as json
         :return: json object with the information
+
+        Args:
+
+        Returns:
+
         """
 
         job_offer_name = None
@@ -37,9 +45,13 @@ class ApplicationModel(db.Model):
                 'job_offer_name': job_offer_name, 'info': self.info}
 
     def delete_from_db(self, database=None):
-        """
-        Function that the deletes from the database the application
-        :param database: database instance
+        """Function that the deletes from the database the application
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -48,26 +60,38 @@ class ApplicationModel(db.Model):
 
     @classmethod
     def find_by_job_seeker_username(cls, job_seeker_username):
-        """
-        Function that returns a list of applications given the job seeker username
-        :param job_seeker_username: username of the job seeker
-        :return: list of applications
+        """Function that returns a list of applications given the job seeker username
+
+        Args:
+          job_seeker_username: username of the job seeker
+
+        Returns:
+          : list of applications
+
         """
         return cls.query.filter_by(job_seeker_username=job_seeker_username).all()
 
     @classmethod
     def find_by_job_offer_id(cls, job_offer_id):
-        """
-        Function that returns a list of applications given the job offer id
-        :param job_offer_id: id of the job offer
-        :return: list of applications
+        """Function that returns a list of applications given the job offer id
+
+        Args:
+          job_offer_id: id of the job offer
+
+        Returns:
+          : list of applications
+
         """
         return cls.query.filter_by(job_offer_id=job_offer_id).all()
 
     @classmethod
     def show_applications(cls):
-        """
-        Function that shows all the applications in the database
+        """Function that shows all the applications in the database
         :return: list of the applications
+
+        Args:
+
+        Returns:
+
         """
         return [application.json() for application in cls.query.all()]

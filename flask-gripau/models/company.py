@@ -8,9 +8,7 @@ auth = HTTPBasicAuth()
 
 
 class CompanyModel(db.Model):
-    """
-    Model of a company
-    """
+    """Model of a company"""
     __tablename__ = 'companies'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,12 +26,14 @@ class CompanyModel(db.Model):
     def __init__(self, username, company, email, description, is_admin=0, sector="Unknown", location="Unknown"):    
         """
         Initializer of a company
+
         :param company: company name
         :param email: email of the company
         :param description: description of the company
         :param is_admin: if the user is admin of the website, 1 (yes) / 0 (no)
         :param sector: sector of the company
         :param location: location of the company
+        
         """
         self.username = username
         self.company = company
@@ -44,17 +44,25 @@ class CompanyModel(db.Model):
         self.location = location
 
     def json(self):
-        """
-        Function that returns the company info as json
+        """Function that returns the company info as json
         :return: json object with the information'
+
+        Args:
+
+        Returns:
+
         """
         return {'id': self.id, 'username': self.username, 'company': self.company, 'email': self.email, 'is_admin': self.is_admin,
                 'description': self.description, 'sector': self.sector, 'location': self.location}
 
     def save_to_db(self, database=None):
-        """
-        Function that saves to the database the company
-        :param database: database instance
+        """Function that saves to the database the company
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -62,9 +70,13 @@ class CompanyModel(db.Model):
         database.session.commit()
 
     def delete_from_db(self, database=None):
-        """
-        Function that the deletes from the database the company
-        :param database: database instance
+        """Function that the deletes from the database the company
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -72,35 +84,51 @@ class CompanyModel(db.Model):
         database.session.commit()
 
     def hash_password(self, password):
-        """
-        Function that encrypts and sets the password of the company
-        :param password: password of the company
+        """Function that encrypts and sets the password of the company
+
+        Args:
+          password: password of the company
+
+        Returns:
+
         """
         self.password = pwd_context.encrypt(password)
 
     def verify_password(self, password):
-        """
-        Function that verifies if the password is the company's one
-        :param password: password to verify
-        :return: boolean, True (correct password) / False (incorrect password)
+        """Function that verifies if the password is the company's one
+
+        Args:
+          password: password to verify
+
+        Returns:
+          boolean, True (correct password) / False (incorrect password)
+
         """
         return pwd_context.verify(password, self.password)
 
     def generate_auth_token(self, expiration=4000):
-        """
-        Function that generates an authentication token for the company
-        :param expiration: expiration time of the token
-        :return: token
+        """Function that generates an authentication token for the company
+
+        Args:
+          expiration: expiration time of the token (Default value = 4000)
+
+        Returns:
+          token
+
         """
         s = Serializer(current_app.secret_key, expires_in=expiration)
         return s.dumps({'company': self.company})
 
     @classmethod
     def verify_auth_token(cls, token):
-        """
-        Function that returns the company related to the token
-        :param token: token of the company
-        :return: company, None if the token is expired or invalid
+        """Function that returns the company related to the token
+
+        Args:
+          token: token of the company
+
+        Returns:
+          company, None if the token is expired or invalid
+
         """
         s = Serializer(current_app.secret_key)
         try:
@@ -116,10 +144,14 @@ class CompanyModel(db.Model):
 
     @classmethod
     def find_by_username(cls, username):
-        """
-        Function that returns a company given the name
-        :param username: username of the company
-        :return: company
+        """Function that returns a company given the name
+
+        Args:
+          username: username of the company
+
+        Returns:
+          company
+
         """
         if not username:
             return None
@@ -127,37 +159,54 @@ class CompanyModel(db.Model):
 
     @classmethod
     def find_by_company(cls, company):
-        """
-        Function that returns a company given the name
-        :param company: name of the company
-        :return: company
+        """Function that returns a company given the name
+
+        Args:
+          company: name of the company
+
+        Returns:
+          company
+
         """
         return cls.query.filter_by(company=company).first()
 
     @classmethod
     def find_by_email(cls, email):
-        """
-        Function that returns a company given the email
-        :param email: email of the company
-        :return: company
+        """Function that returns a company given the email
+
+        Args:
+          email: email of the company
+
+        Returns:
+          company
+
         """
         return cls.query.filter_by(email=email).first()
 
     @classmethod
     def show_accounts(cls):
-        """
-        Function that shows all the companies in the database
+        """Function that shows all the companies in the database
         :return: list of the companies
+
+        Args:
+
+        Returns:
+
         """
         return [user.json() for user in cls.query.all()]
 
 
 @auth.verify_password
 def verify_password(token, password):
-    """
-    Function that sets the actual user as the company related to the token
-    :param token: token of the company
-    :return: company
+    """Function that sets the actual user as the company related to the token
+
+    Args:
+      token: token of the company
+      password: 
+
+    Returns:
+      company
+
     """
     account = CompanyModel.verify_auth_token(token)
     if account:
@@ -167,10 +216,14 @@ def verify_password(token, password):
 
 @auth.get_user_roles
 def get_user_roles(user):
-    """
-    Function that returns the roles of a company
-    :param user: company
-    :return: roles
+    """Function that returns the roles of a company
+
+    Args:
+      user: company
+
+    Returns:
+      roles
+
     """
     if user.is_admin == 1:
         return ['admin']

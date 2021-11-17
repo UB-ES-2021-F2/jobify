@@ -175,6 +175,9 @@
       </b-container>
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobOfferView">Seen</b-button>
       <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+      <b-button v-if="!applied && is_jobseeker && logged" @click="applyAction" variant="success">Apply</b-button>
+      <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
+      <p>Pressed State: <strong>{{ applied }}</strong></p>
     </div>
     <!-- /Job offer view -->
   </div>
@@ -218,10 +221,42 @@ export default {
         contractType: '',
         workingHours: ''
       },
-      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
+      applied: false
     }
   },
   methods: {
+    applyAction () {
+      if (!this.applied) {
+        const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
+        const values = {
+          job_offer_id: this.jobOfferCurrentView.id,
+          info: null
+        }
+        axios.post(path, values, {
+          auth: {username: this.token}})
+          .then((res) => {
+            console.log('Job Offer correctly applied')
+          })
+          .catch((error) => {
+            alert(error.response.data.message)
+          })
+      } else {
+        const path = Vue.prototype.$API_BASE_URL + 'delete_application/' + this.username
+        const values = {
+          id: this.jobOfferCurrentView.id
+        }
+        axios.post(path, values, {
+          auth: {username: this.token}})
+          .then((res) => {
+            console.log('Apply job offer correct deleted')
+          })
+          .catch((error) => {
+            alert(error.response.data.message)
+          })
+      }
+      this.applied = !this.applied
+    },
     onHome () {
       this.$router.replace({ path: '/' })
     },

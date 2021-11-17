@@ -175,9 +175,32 @@
       </b-container>
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobOfferView">Seen</b-button>
       <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-      <b-button v-if="!applied && is_jobseeker && logged" @click="applyAction" variant="success">Apply</b-button>
+      <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
       <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
-      <p>Pressed State: <strong>{{ applied }}</strong></p>
+      <b-modal
+        hide-backdrop
+        id="modal-apply"
+        ref="modal"
+        title="Do you want to add some additional information?"
+        @ok="applyAction"
+        @show="resetApplyModal"
+        @hidden="resetApplyModal"
+      >
+        <form ref="form">
+          <b-form-group
+            label-for="name-input"
+          >
+            <b-form-textarea
+              v-model="applyMessage"
+              placeholder="Write here (optional)"
+              rows="3"
+              max-rows="6"
+            >
+
+              </b-form-textarea>
+          </b-form-group>
+        </form>
+      </b-modal>
     </div>
     <!-- /Job offer view -->
   </div>
@@ -222,7 +245,8 @@ export default {
         workingHours: ''
       },
       optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
-      applied: false
+      applied: false,
+      applyMessage: null
     }
   },
   methods: {
@@ -230,13 +254,16 @@ export default {
       if (!this.applied) {
         const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
         const values = {
-          job_offer_id: this.jobOfferCurrentView.id,
-          info: null
+          job_offer_id: this.jobOfferCurrentView.id
+        }
+        if (this.applyMessage !== null) {
+          values.info = this.applyMessage
         }
         axios.post(path, values, {
           auth: {username: this.token}})
           .then((res) => {
             console.log('Job Offer correctly applied')
+            this.applied = !this.applied
           })
           .catch((error) => {
             alert(error.response.data.message)
@@ -250,12 +277,15 @@ export default {
           auth: {username: this.token}})
           .then((res) => {
             console.log('Apply job offer correct deleted')
+            this.applied = !this.applied
           })
           .catch((error) => {
             alert(error.response.data.message)
           })
       }
-      this.applied = !this.applied
+    },
+    resetApplyModal () {
+      this.applyMessage = null
     },
     onHome () {
       this.$router.replace({ path: '/' })

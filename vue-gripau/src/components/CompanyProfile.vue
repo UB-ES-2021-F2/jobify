@@ -11,7 +11,9 @@
         <b-navbar-nav>
           <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
           <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+
+          <b-nav-item id="companiesNavbarButton" v-if="this.username===this.company_name_profile" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="companiesNavbarButtonIfWatchingCompany" v-else active @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -21,7 +23,7 @@
 
         <b-navbar-nav v-if="logged" class="ml-auto">
           <b-nav-item id="activeProfileNavbarButton" active v-if="this.username===this.company_name_profile">{{ this.username }}</b-nav-item>
-          <b-nav-item id="profileNavbarButton" v-else>{{ this.username }}</b-nav-item>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()" v-else>{{ this.username }}</b-nav-item>
           <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -480,6 +482,13 @@ export default {
     },
     onJoOfferView () {
       this.jobOfferView = !this.jobOfferView
+    },
+    onProfile () {
+      if (this.is_jobseeker && this.logged) {
+        this.$router.replace({ path: '/job_seeker/' + this.username })
+      } else if (this.is_company && this.logged) {
+        this.$router.replace({path: '/company/' + this.username})
+      }
     },
     onHome () {
       this.$router.replace({ path: '/' })

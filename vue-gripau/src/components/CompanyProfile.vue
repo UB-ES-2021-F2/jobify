@@ -443,6 +443,21 @@ export default {
     }
   },
   methods: {
+    getApplied () {
+      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
+      axios.get(path)
+        .then((res) => {
+          var application = res.data.application
+          console.log(application)
+          this.applied = true
+        })
+        // eslint-disable-next-line
+        .catch((error) => {
+          // eslint-disable-next-line
+          // console.error(error)
+          this.applied = false
+        })
+    },
     applyAction () {
       if (!this.applied) {
         const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
@@ -733,6 +748,7 @@ export default {
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
+          this.getApplied()
           this.onJobOfferView()
         })
         .catch((error) => {

@@ -175,32 +175,6 @@
       </b-container>
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobOfferView">Seen</b-button>
       <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-      <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
-      <b-modal
-        hide-backdrop
-        id="modal-apply"
-        ref="modal"
-        title="Do you want to add some additional information?"
-        @ok="applyAction"
-        @show="resetApplyModal"
-        @hidden="resetApplyModal"
-      >
-        <form ref="form">
-          <b-form-group
-            label-for="name-input"
-          >
-            <b-form-textarea
-              v-model="applyMessage"
-              placeholder="Write here (optional)"
-              rows="3"
-              max-rows="6"
-            >
-
-              </b-form-textarea>
-          </b-form-group>
-        </form>
-      </b-modal>
     </div>
     <!-- /Job offer view -->
   </div>
@@ -211,7 +185,6 @@ import Vue from 'vue'
 import axios from 'axios'
 import {mapState} from 'vuex'
 // import firebase from 'firebase/compat'
-
 export default {
   data () {
     return {
@@ -223,7 +196,6 @@ export default {
       is_jobseeker: true,
       is_company: false,
       is_admin: false,
-      jobOfferView: false,
       jobOfferForm: {
         jobName: '',
         description: '',
@@ -232,61 +204,10 @@ export default {
         contractType: '',
         workingHours: ''
       },
-      jobOfferCurrentView: {
-        id: '',
-        company: '',
-        publicationDate: '',
-        companyName: '',
-        jobName: '',
-        description: '',
-        salary: '',
-        location: '',
-        contractType: '',
-        workingHours: ''
-      },
-      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
-      applied: false,
-      applyMessage: null
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
     }
   },
   methods: {
-    applyAction () {
-      if (!this.applied) {
-        const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
-        const values = {
-          job_offer_id: this.jobOfferCurrentView.id
-        }
-        if (this.applyMessage !== null) {
-          values.info = this.applyMessage
-        }
-        axios.post(path, values, {
-          auth: {username: this.token}})
-          .then((res) => {
-            console.log('Job Offer correctly applied')
-            this.applied = !this.applied
-          })
-          .catch((error) => {
-            alert(error.response.data.message)
-          })
-      } else {
-        const path = Vue.prototype.$API_BASE_URL + 'delete_application/' + this.username
-        const values = {
-          id: this.jobOfferCurrentView.id
-        }
-        axios.post(path, values, {
-          auth: {username: this.token}})
-          .then((res) => {
-            console.log('Apply job offer correct deleted')
-            this.applied = !this.applied
-          })
-          .catch((error) => {
-            alert(error.response.data.message)
-          })
-      }
-    },
-    resetApplyModal () {
-      this.applyMessage = null
-    },
     onHome () {
       this.$router.replace({ path: '/' })
     },
@@ -309,9 +230,6 @@ export default {
     onLogOut () {
       this.$store.commit('logout')
       this.$router.replace({ path: '/' })
-    },
-    onJobOfferView () {
-      this.jobOfferView = !this.jobOfferView
     },
     onAboutUs () {
       this.$router.replace({ path: '/about_us' })
@@ -371,16 +289,6 @@ export default {
       this.jobOfferForm.contractType = ''
       this.jobOfferForm.workingHours = ''
       this.jobOfferForm.minimumExperience = ''
-    },
-    deleteJobOffer () {
-      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
-      axios.delete(path)
-        .then((res) => {
-          window.location.reload()
-        })
-        .catch((error) => {
-          console.error(error)
-        })
     },
     onReset () {
       this.initJobOfferForm()

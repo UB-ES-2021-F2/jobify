@@ -317,24 +317,7 @@ export default {
       this.$router.replace({ path: '/about_us' })
     },
     onJobOffer (id) {
-      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + id
-      axios.get(path)
-        .then((res) => {
-          this.jobOfferCurrentView.companyName = res.data.offer.company_name
-          this.jobOfferCurrentView.jobName = res.data.offer.job_name
-          this.jobOfferCurrentView.description = res.data.offer.description
-          this.jobOfferCurrentView.publicationDate = res.data.offer.publication_date
-          this.jobOfferCurrentView.salary = res.data.offer.salary
-          this.jobOfferCurrentView.location = res.data.offer.location
-          this.jobOfferCurrentView.workingHours = res.data.offer.working_hours
-          this.jobOfferCurrentView.contractType = res.data.offer.contract_type
-          this.jobOfferCurrentView.id = res.data.offer.id
-          this.jobOfferCurrentView.company = res.data.offer.company
-          this.onJobOfferView()
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+      this.$router.replace({ path: '/job_posting/' + id })
     },
     getJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers'

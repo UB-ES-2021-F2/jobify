@@ -10,14 +10,17 @@ class Applications(Resource):
     Resource related to the Applications endpoint
     """
 
-    def get(self, job_seeker_username):
+    def get(self, job_seeker_username, job_offer_id):
         """
         HTTP GET method that gets the list of applications of a specific job seeker
         :param job_seeker_username: name of the job seeker
-        :return: list of json objects with the job seeker's applications information
+        :param job_offer_id: id of the job offer
+        :return: application for the given offer and the given job seeker
         """
-        return [application.json() for application in
-                ApplicationModel.find_by_job_seeker_username(job_seeker_username)], 200
+        for application in ApplicationModel.find_by_job_seeker_username(job_seeker_username):
+            if application.job_offer_id == job_offer_id:
+                return {"application": application.json()}, 200
+        return {"application": None}, 404
 
     @auth.login_required(role='user')
     def post(self, job_seeker_username):

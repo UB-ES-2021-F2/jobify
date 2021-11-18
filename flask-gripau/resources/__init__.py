@@ -12,3 +12,4 @@ from resources.DeleteEducation import DeleteEducation
 from resources.DeleteWorkExperience import DeleteWorkExperience
 from resources.Applications import Applications
 from resources.DeleteApplication import DeleteApplication
+from resources.JobOfferApplicants import JobOfferApplicants

@@ -56,7 +56,6 @@
              id="register-modal"
              title="Become a member"
              hide-footer
-             hide-backdrop
     >
       <b-tabs v-model="tabIndex" content-class="mt-3" fill>
         <!--Job Seeker form -->

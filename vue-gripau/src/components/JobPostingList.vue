@@ -79,7 +79,6 @@
                id="job-offer-modal"
                title="Post a job offer"
                hide-footer
-               hide-backdrop
       >
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
           <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">

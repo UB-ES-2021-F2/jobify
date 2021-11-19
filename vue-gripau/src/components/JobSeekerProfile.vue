@@ -318,28 +318,28 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onUserProfile () {
       if (this.is_jobseeker & this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       }
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     editBio () {
       this.edit_bio = !this.edit_bio

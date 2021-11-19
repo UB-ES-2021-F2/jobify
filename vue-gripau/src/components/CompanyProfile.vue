@@ -414,13 +414,13 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onProfileView () {
       this.profileView = true
@@ -439,13 +439,13 @@ export default {
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     editDescription () {
       this.edit.description = !this.edit.description

@@ -265,16 +265,16 @@ export default {
       return dirty || validated ? valid : null
     },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     getAccount (type = 'jobseeker') {
       if (type === 'jobseeker') {
@@ -283,7 +283,7 @@ export default {
           .then((res) => {
             const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: true, isCompany: false}
             this.$store.commit('login', storeData)
-            this.$router.replace({path: '/'})
+            this.$router.push('/')
           })
           .catch(() => {
             // eslint-disable-next-line
@@ -297,7 +297,7 @@ export default {
           .then((res) => {
             const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: false, isCompany: true}
             this.$store.commit('login', storeData)
-            this.$router.replace({path: '/'})
+            this.$router.push('/')
           })
           .catch((error) => {
             // eslint-disable-next-line

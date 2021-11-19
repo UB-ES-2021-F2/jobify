@@ -18,8 +18,10 @@ class Applications(Resource):
           list of json objects with the job seeker's applications information
 
         """
-        return [application.json() for application in
-                ApplicationModel.find_by_job_seeker_username(job_seeker_username)], 200
+        for application in ApplicationModel.find_by_job_seeker_username(job_seeker_username):
+            if application.job_offer_id == job_offer_id:
+                return {"application": application.json()}, 200
+        return {"application": None}, 404
 
     @auth.login_required(role='user')
     def post(self, job_seeker_username):

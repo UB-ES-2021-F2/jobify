@@ -148,7 +148,7 @@ export default {
           auth: {username: this.token}})
           .then((res) => {
             console.log('Job Offer correctly applied')
-            this.applied = !this.applied
+            this.applied = true
           })
           .catch((error) => {
             alert(error.response.data.message)
@@ -162,7 +162,7 @@ export default {
           auth: {username: this.token}})
           .then((res) => {
             console.log('Apply job offer correct deleted')
-            this.applied = !this.applied
+            this.applied = false
           })
           .catch((error) => {
             alert(error.response.data.message)

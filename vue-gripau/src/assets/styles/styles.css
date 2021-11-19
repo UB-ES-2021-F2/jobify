@@ -202,21 +202,27 @@ html, body{
 
 
 
-/*** STRUCTURE ***
+/****** COMPANY PROFILE ******/
 
-.col-12{
-  background-color: aqua;
+#profileView {
+  margin: 30px 0;
 }
 
-.col-6{
-  background-color: yellow;
+#divAvatar img {
+  width:200px;
+  height:200px;
+  border-radius: 50%;
 }
 
-.col-4{
-  background-color: red;
+
+.name-profile {
+  text-align: left;
+  font-weight: 900;
+  margin-left: 10px;
 }
 
-.col-3{
-  background-color: purple;
+#divName svg {
+  width: 15px;
+  height: auto;
+  color: gray;
 }
-*/

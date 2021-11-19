@@ -1,6 +1,6 @@
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 import '@/../bootstrap/css/bootstrap.css'
-import '@/../src/assets/styles/login.css'
+import '@/../src/assets/styles/styles.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -52,7 +52,7 @@ new Vue({
     }
 
     // Initialize Firebase
-    /* eslint-disable */ 
+    /* eslint-disable */
     const app = firebase.initializeApp(firebaseConfig)
   }
 }).$mount('#app')

@@ -331,8 +331,8 @@
                   <p>{{jobOfferCurrentView.publicationDate}}</p>
                 </div>
               </b-container>
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
-              <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobView">Seen</b-button>
+              <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
               <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
               <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
               <b-modal
@@ -493,10 +493,7 @@ export default {
     },
     resetApplyModal () {
       this.applyMessage = null
-    },
-    onJoOfferView () {
-      this.jobOfferView = !this.jobOfferView
-    },
+    },    
     onProfile () {
       if (this.is_jobseeker && this.logged) {
         this.$router.replace({ path: '/job_seeker/' + this.username })
@@ -516,6 +513,7 @@ export default {
     onProfileView () {
       this.profileView = true
       this.jobView = false
+      this.jobOfferView = false
     },
     onJobView () {
       this.profileView = false
@@ -526,7 +524,9 @@ export default {
       this.jobOfferView = false
     },
     onJobOfferView () {
-      this.jobOfferView = !this.jobOfferView
+      this.jobOfferView = true
+      this.jobView = true
+      this.profileView = false
     },
     onLogOut () {
       this.$store.commit('logout')
@@ -694,7 +694,8 @@ export default {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
       axios.delete(path)
         .then((res) => {
-          window.location.reload()
+          this.getCompanyJobOffers()
+          this.onJobView()
         })
         .catch((error) => {
           console.error(error)
@@ -747,6 +748,7 @@ export default {
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
+          console.log(this.jobOfferCurrentView)
           this.getApplied()
           this.onJobOfferView()
         })

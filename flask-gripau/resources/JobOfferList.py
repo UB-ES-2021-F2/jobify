@@ -5,13 +5,15 @@ from db import db
 from models.company import CompanyModel
 
 class JobOfferList(Resource):
-    """
-        Resource that lists all the job offers in the database
-    """
+    """Resource that lists all the job offers in the database"""
     def get(self):
-        """
-        HTTP method of the resource JobOfferList
+        """HTTP method of the resource JobOfferList
         :return: list of all the job offers in the database
+
+        Args:
+
+        Returns:
+
         """
         offers = []
         for company in CompanyModel.query.all():

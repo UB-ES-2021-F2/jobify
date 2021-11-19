@@ -94,36 +94,36 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
     },
     getValidationState ({dirty, validated, valid = null}) {
       return dirty || validated ? valid : null
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({path: '/job_seeker/' + this.username})
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({path: '/login'})
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({path: '/companies'})
+      this.$router.push('/companies')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
     },
     onJobOfferView () {
       this.jobOfferView = !this.jobOfferView
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({path: '/about_us'})
+      this.$router.push('/about_us')
     },
     getJobOffer (id) {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + id

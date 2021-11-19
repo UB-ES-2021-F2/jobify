@@ -210,33 +210,33 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     getValidationState ({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push({ path: '/companies' })
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     onJobOffer (id) {
-      this.$router.replace({ path: '/job_posting/' + id })
+      this.$router.push('/job_posting/' + id)
     },
     getJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers'

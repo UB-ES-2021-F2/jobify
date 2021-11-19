@@ -140,43 +140,6 @@
       </b-modal>
     </div>
     <!-- /Job offers company view -->
-    <!-- Job offer view -->
-    <div id="jobOfferView" v-if="this.jobOfferView">
-      <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
-      <b-container align="left">
-        <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
-          <p>{{jobOfferCurrentView.description}}</p>
-        </div>
-        <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
-          <p>{{jobOfferCurrentView.companyName}}</p>
-        </div>
-        <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
-          <p>{{jobOfferCurrentView.location}}</p>
-        </div>
-        <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
-          <p>{{jobOfferCurrentView.contractType}}</p>
-        </div>
-        <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
-          <p>{{jobOfferCurrentView.workingHours}}</p>
-        </div>
-        <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
-          <p>{{jobOfferCurrentView.salary}}</p>
-        </div>
-        <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
-          <p>{{jobOfferCurrentView.publicationDate}}</p>
-        </div>
-      </b-container>
-      <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobOfferView">Seen</b-button>
-      <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-    </div>
-    <!-- /Job offer view -->
   </div>
 </template>
 
@@ -185,7 +148,6 @@ import Vue from 'vue'
 import axios from 'axios'
 import {mapState} from 'vuex'
 // import firebase from 'firebase/compat'
-
 export default {
   data () {
     return {

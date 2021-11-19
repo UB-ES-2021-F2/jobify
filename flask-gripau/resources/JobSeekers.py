@@ -7,14 +7,16 @@ from models.skill import SkillsModel
 
 
 class JobSeekers(Resource):
-    """
-    Resource related to the table Jobseeker
-    """
+    """Resource related to the table Jobseeker"""
     def get(self, username):
-        """
-        HTTP GET method that gets a specific job seeker
-        :param username: username of the job seeker to return
-        :return: json object with the job seeker information
+        """HTTP GET method that gets a specific job seeker
+
+        Args:
+          username: username of the job seeker to return
+
+        Returns:
+          json object with the job seeker information
+
         """
         account = JobSeekersModel.find_by_username(username)
         if account:
@@ -24,10 +26,14 @@ class JobSeekers(Resource):
 
     @auth.login_required(role='user')
     def delete(self, username):
-        """
-        HTTP DELETE method to delete a specific job seeker
-        :param username: username of the job seeker to delete
-        :return: status message
+        """HTTP DELETE method to delete a specific job seeker
+
+        Args:
+          username: username of the job seeker to delete
+
+        Returns:
+          status message
+
         """
         if username != g.user.username:
             return {'message': 'Access denied'}, 400
@@ -41,9 +47,10 @@ class JobSeekers(Resource):
 
     @auth.login_required(role='user')
     def put(self, username):
-        """
-        HTTP PUT method to update a specific job seeker
-        :param username: name of the job seeker to update
+        """HTTP PUT method to update a specific job seeker
+
+        Args:
+          username: name of the job seeker to update
         Request fields:
         - name: real name of the job seeker (Optional)
         - surname: real surname of the job seeker (Optional)
@@ -52,7 +59,10 @@ class JobSeekers(Resource):
         - bio: biography/information that the job seeker would want to share (Optional)
         - skills: list of skills to add to the skills list of the job seeker (Optional)
         - remove_skills: list of skills to remove from the skills list of the job seeker (Optional)
-        :return: json object with the updated job seeker information
+
+        Returns:
+          json object with the updated job seeker information
+
         """
 
         if username != g.user.username:

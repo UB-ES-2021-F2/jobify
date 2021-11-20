@@ -8,11 +8,12 @@ from db import db
 class Applications(Resource):
     """Resource related to the Applications endpoint"""
 
-    def get(self, job_seeker_username):
+    def get(self, job_seeker_username, job_offer_id):
         """HTTP GET method that gets the list of applications of a specific job seeker
 
         Args:
           job_seeker_username: name of the job seeker
+          job_offer_id: id of the job offer
 
         Returns:
           list of json objects with the job seeker's applications information

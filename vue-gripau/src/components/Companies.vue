@@ -99,20 +99,20 @@ export default {
   methods: {
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({path: '/login'})
+      this.$router.push('/login')
     },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
       this.logged = false
       this.username = null
       this.token = null
@@ -121,13 +121,13 @@ export default {
       this.is_admin = null
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     onCompany (username) {
-      this.$router.replace({ path: '/company/' + username })
+      this.$router.push('/company/' + username)
     },
     getCompanies () {
       const path = Vue.prototype.$API_BASE_URL + 'companies'

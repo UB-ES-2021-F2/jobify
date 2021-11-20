@@ -586,11 +586,14 @@ export default {
         })
     },
     downloadAvatar () {
-      // firebase.storage().ref(`images/${this.username_profile}/avatar`).getDownloadURL()
-      //   .then((url) => {
-      //     this.downloadImage = url
-      //     console.log(url)
-      //   })
+      firebase.storage().ref(`images/${this.username_profile}/avatar`).getDownloadURL()
+        .then((url) => {
+          this.downloadImage = url
+          console.log(url)
+        })
+        .catch(() => {
+          console.log('This avatar does not exist yet')
+        })
     },
     onUpload () {
       const storageRef = firebase.storage().ref(`images/${this.username}/avatar`).put(this.file)

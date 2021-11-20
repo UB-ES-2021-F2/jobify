@@ -18,7 +18,7 @@ describe('No logged', () => {
     it('should go to the job offer professor ub description page', () => {
       cy.get('[id=jobOfferCard]').first().click()
       cy.url().should('eq', 'http://localhost:5000/job_posting/1')
-      cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
+      cy.get('[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
     })
     it('should return to home page through logo in navbar', () => {
@@ -50,7 +50,7 @@ describe('No logged', () => {
       cy.url().should('eq', 'http://localhost:5000/company/universitat123')
       cy.get('[id=profileView]').should('exist')
       cy.get('[id=jobView]').should('not.exist')
-      cy.get('h2[id=nameCompany]').should('contain', 'ub profile')
+      cy.get('[id=nameCompany]').should('contain', 'ub profile')
       cy.get('[id=activeProfileViewButton]').should('exist')
       cy.get('[id=profileViewButton]').should('not.exist')
       cy.get('[id=activeJobViewButton]').should('not.exist')
@@ -69,7 +69,7 @@ describe('No logged', () => {
     it('should go to the job offer professor ub description page inside ub profile', () => {
       cy.get('[id=jobOfferCard]').first().click()
       cy.url().should('eq', 'http://localhost:5000/company/universitat123')
-      cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
+      cy.get('[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
     })
     it('should return to ub company profile', () => {
@@ -77,7 +77,7 @@ describe('No logged', () => {
       cy.get('[id=profileView]').should('exist')
       cy.get('[id=jobView]').should('not.exist')
       cy.get('[id=jobOfferCard]').should('not.exist')
-      cy.get('h2[id=nameCompany]').should('contain', 'ub profile')
+      cy.get('[id=nameCompany]').should('contain', 'ub profile')
       cy.get('[id=activeProfileViewButton]').should('exist')
       cy.get('[id=profileViewButton]').should('not.exist')
       cy.get('[id=activeJobViewButton]').should('not.exist')

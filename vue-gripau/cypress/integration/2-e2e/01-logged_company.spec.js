@@ -29,7 +29,7 @@ describe('Logged company', () => {
     })
     it('should go to the job offer professor ub description page', () => {
       cy.get('[id=jobOfferCard]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/job_postings')
+      cy.url().should('eq', 'http://localhost:5000/#/job_posting/')
       cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
     })
@@ -46,12 +46,13 @@ describe('Logged company', () => {
       cy.get('[id=addJobOfferCard]').should('exist')
     })
     it('should delete a job offer', () => {
-      cy.get('id=jobOfferCard').should('exist')
+      cy.get('[id=jobOfferCard]').should('exist')
+      cy.get('[id=jobOfferCard]').click()
       cy.get('[id=deleteJobOfferButton]').click()
-      cy.get('id=jobOfferCard').should('not.exist')
+      cy.get('[id=jobOfferCard]').should('not.exist')
     })
     it('should post a new job offer from job postings page', () => {
-      cy.get('id=jobOfferCard').should('not.exist')
+      cy.get('[id=jobOfferCard]').should('not.exist')
       cy.get('[id=addJobOfferCard]').click()
       cy.get('[id=job-offer-modal]').should('exist')
       cy.get('[id=jobNameInput]').type('professor')
@@ -139,6 +140,7 @@ describe('Logged company', () => {
       cy.get('[id=descriptionCompany1]').should('contain', 'hola, som la UB')
       cy.get('[id=descriptionCompany2]').should('not.exist')
       cy.get('[id=enableEditDescriptionButton]').click()
+      cy.get('[id=editDescriptionField]').should('exist')
       cy.get('[id=editDescriptionField]').should('exist')
       cy.get('[id=descriptionInput]').clear()
       cy.get('[id=submitEditDescriptionButton]').click()

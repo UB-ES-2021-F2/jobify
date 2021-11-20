@@ -62,7 +62,7 @@
               </div>
             </div>
             <div id="divName" class="col-lg-8 text-left order-0 float-left">
-              <p class="page-title">
+              <p id="nameSurnameFields" class="page-title">
                 {{ name }} {{ surname }}
               </p>
             </div>
@@ -586,11 +586,11 @@ export default {
         })
     },
     downloadAvatar () {
-      firebase.storage().ref(`images/${this.username_profile}/avatar`).getDownloadURL()
-        .then((url) => {
-          this.downloadImage = url
-          console.log(url)
-        })
+      // firebase.storage().ref(`images/${this.username_profile}/avatar`).getDownloadURL()
+      //   .then((url) => {
+      //     this.downloadImage = url
+      //     console.log(url)
+      //   })
     },
     onUpload () {
       const storageRef = firebase.storage().ref(`images/${this.username}/avatar`).put(this.file)

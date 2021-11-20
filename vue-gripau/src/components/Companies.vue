@@ -78,7 +78,7 @@
 import {mapState} from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
-import firebase from 'firebase/compat'
+// import firebase from 'firebase/compat'
 
 export default {
   data () {
@@ -145,17 +145,17 @@ export default {
         })
     },
     getCompaniesLogos () {
-      for (let c in this.companies) {
-        let comp = this.companies[c]
-        this.companies_logos[comp.username] = null
-        firebase.storage().ref(`images/${comp.username}/avatar`).getDownloadURL()
-          .then((url) => {
-            this.companies_logos[comp.username] = url
-            this.$forceUpdate()
-          })
-      }
-      this.loadedLogos = true
-      this.$forceUpdate()
+      // for (let c in this.companies) {
+      //   let comp = this.companies[c]
+      //   this.companies_logos[comp.username] = null
+      //   firebase.storage().ref(`images/${comp.username}/avatar`).getDownloadURL()
+      //     .then((url) => {
+      //       this.companies_logos[comp.username] = url
+      //       this.$forceUpdate()
+      //     })
+      // }
+      // this.loadedLogos = true
+      // this.$forceUpdate()
     }
   },
   created () {

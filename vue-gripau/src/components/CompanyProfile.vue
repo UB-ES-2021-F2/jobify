@@ -691,11 +691,11 @@ export default {
         })
     },
     downloadAvatar () {
-      firebase.storage().ref(`images/${this.company_name_profile}/avatar`).getDownloadURL()
-        .then((url) => {
-          this.downloadImage = url
-          console.log(url)
-        })
+      // firebase.storage().ref(`images/${this.company_name_profile}/avatar`).getDownloadURL()
+      //   .then((url) => {
+      //     this.downloadImage = url
+      //     console.log(url)
+      //   })
     },
     onUpload () {
       const storageRef = firebase.storage().ref(`images/${this.company_name_profile}/avatar`).put(this.file)

@@ -70,6 +70,11 @@ jobs:
           python add_data.py
           python app.py &
         working-directory: ${{ env.flask-directory }}
+      - name: Build frontend
+        run: |
+          npm install
+          npm run build
+        working-directory: ${{ env.vue-directory }}
       - name: Run Cypress testing
         uses: cypress-io/github-action@v2
         with:

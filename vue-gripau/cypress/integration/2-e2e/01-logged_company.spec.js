@@ -9,46 +9,46 @@ describe('Logged company', () => {
   context('Login as a company', () => {
     it('Should go to login page of jobify', () => {
       cy.visit('http://localhost:5000').get('li[id=logInNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/login')
+      cy.url().should('eq', 'http://localhost:5000/login')
       cy.get('[id=username-input]').should('exist')
     })
     it('should login as a company (universitat12) and go to home page', () => {
       cy.get('[id=username-input]').type('universitat123')
       cy.get('[id=password-input').type('Password12')
       cy.get('[id=logInButton').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
     })
   })
   context('Navigate to job offer description page through job postings component, post an offer and return to home page', () => {
     it('should go to job postings page through navbar', () => {
       cy.get('[id=jobPostingsNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/job_postings')
+      cy.url().should('eq', 'http://localhost:5000/job_postings')
       cy.get('[id=profileNavbarButton]').should('exist')
       cy.get('[id=addJobOfferCard]').should('exist')
       cy.get('[id=jobOfferCard]').should('exist')
     })
     it('should go to the job offer professor ub description page', () => {
       cy.get('[id=jobOfferCard]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/job_posting/')
+      cy.url().should('eq', 'http://localhost:5000/job_posting/1')
       cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
     })
     it('should return to home page through logo in navbar', () => {
       cy.get('[id=seenButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/job_postings')
+      cy.url().should('eq', 'http://localhost:5000/job_postings')
       cy.get('[id=logoNavbar]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
     })
     it('should go to job postings page through "Find the newest jobs" button', () => {
       cy.get('[id=jobPostingsButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/job_postings')
+      cy.url().should('eq', 'http://localhost:5000/job_postings')
       cy.get('[id=profileNavbarButton]').should('exist')
       cy.get('[id=addJobOfferCard]').should('exist')
     })
     it('should delete a job offer', () => {
       cy.get('[id=jobOfferCard]').should('exist')
       cy.get('[id=jobOfferCard]').click()
-      cy.get('[id=deleteJobOfferButton]').click()
+      cy.get('[id=deleteButton]').click()
       cy.get('[id=jobOfferCard]').should('not.exist')
     })
     it('should post a new job offer from job postings page', () => {
@@ -66,18 +66,18 @@ describe('Logged company', () => {
     })
     it('should return to home page through "Home" in navbar', () => {
       cy.get('[id=homeNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
     })
   })
   context('Navigate to job offer description page inside our company profile and return to home page', () => {
     it('should go to companies page through navbar', () => {
       cy.get('[id=companiesNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/companies')
+      cy.url().should('eq', 'http://localhost:5000/companies')
       cy.get('[id=companyCard]').should('exist')
     })
     it('should go to the company ub profile page', () => {
       cy.get('[id=companyCard]').first().click()
-      cy.url().should('eq', 'http://localhost:5000/#/company/universitat123')
+      cy.url().should('eq', 'http://localhost:5000/company/universitat123')
       cy.get('[id=profileView]').should('exist')
       cy.get('[id=jobView]').should('not.exist')
       cy.get('h2[id=nameCompany]').should('contain', 'ub profile')
@@ -98,7 +98,7 @@ describe('Logged company', () => {
     })
     it('should go to the job offer professor ub description page inside our profile', () => {
       cy.get('[id=jobOfferCard]').first().click()
-      cy.url().should('eq', 'http://localhost:5000/#/company/universitat123')
+      cy.url().should('eq', 'http://localhost:5000/company/universitat123')
       cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
     })
@@ -115,23 +115,23 @@ describe('Logged company', () => {
     })
     it('should return to home page through logo in navbar', () => {
       cy.get('[id=logoNavbar]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
     })
     it('should go to companies page through "Check our companies" button', () => {
       cy.get('[id=companiesButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/companies')
+      cy.url().should('eq', 'http://localhost:5000/companies')
       cy.get('[id=profileNavbarButton]').should('exist')
       cy.get('[id=companyCard]').should('exist')
     })
     it('should return to home page through "Home" in navbar', () => {
       cy.get('[id=homeNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
     })
   })
   context('Navigate to our company profile page through profile button', () => {
     it('should go to our company (ub) profile page through navbar profile button', () => {
       cy.get('[id=profileNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/company/universitat123')
+      cy.url().should('eq', 'http://localhost:5000/company/universitat123')
       cy.get('[id=activeProfileNavbarButton]').should('exist')
       cy.get('[id=profileNavbarButton]').should('not.exist')
       cy.get('[id=companyNameNavbar').should('contain', 'ub')
@@ -188,7 +188,7 @@ describe('Logged company', () => {
     })
     it('should return to home page through logo in navbar', () => {
       cy.get('[id=logoNavbar]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
     })
   })
   context('LogOut as company and register a new company', () => {
@@ -198,7 +198,7 @@ describe('Logged company', () => {
     })
     it('should go to logIn page and show signUp Form with Company Tab', () => {
       cy.get('[id=logInNavbarButton]').click()
-      cy.url().should('eq', 'http://localhost:5000/#/login')
+      cy.url().should('eq', 'http://localhost:5000/login')
       cy.get('[id=signUpButton]').click()
       cy.get('[id=register-modal]').should('exist')
       cy.get('[id=jobSeekerTab___BV_tab_button__]').should('have.class', 'nav-link active')
@@ -219,7 +219,7 @@ describe('Logged company', () => {
       cy.get('[id=username-input]').type('cycompany')
       cy.get('[id=password-input').type('Cypress123')
       cy.get('[id=logInButton').click()
-      cy.url().should('eq', 'http://localhost:5000/#/')
+      cy.url().should('eq', 'http://localhost:5000/')
       cy.get('[id=profileNavbarButton]').should('contain', 'cycompany')
     })
   })

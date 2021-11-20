@@ -4,6 +4,7 @@ from models import JobSeekersModel, CompanyModel
 from db import db
 from models.job_seeker import auth
 from models.skill import SkillsModel
+from resources.Register import validate_password
 
 
 class JobSeekers(Resource):
@@ -83,8 +84,16 @@ class JobSeekers(Resource):
         if account:
             data = parser.parse_args()
             if data.password:
+                # Validate password
+                if not validate_password(data.password):
+                    return {'message': "Password invalid! Does not meet requirements"}, 405
                 account.hash_password(data.password)
             if data.email:
+                # Check email doesn't exist
+                if JobSeekersModel.find_by_email(data.email):
+                    return {'message': "Email already exists"}, 408
+                if CompanyModel.find_by_email(data.email):
+                    return {'message': "Email already exists"}, 409
                 account.email = data.email
             if data.bio or data.bio == '':
                 account.bio = data.bio

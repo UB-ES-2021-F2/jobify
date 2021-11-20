@@ -8,14 +8,16 @@ from models.company import auth
 
 
 class JobOffers(Resource):
-    """
-    Resource related to the table JobOffer
-    """
+    """Resource related to the table JobOffer"""
     def get(self, id):
-        """
-        HTTP GET method that gets a specific job offer
-        :param id: id of the job offer to return
-        :return: json object with the job offer information
+        """HTTP GET method that gets a specific job offer
+
+        Args:
+          id: id of the job offer to return
+
+        Returns:
+          json object with the job offer information
+
         """
         offer = JobOfferModel.find_by_id(id)
 
@@ -26,9 +28,10 @@ class JobOffers(Resource):
 
     @auth.login_required(role='user')
     def post(self, company):
-        """
-        HTTP POST method to create a job offer
-        :param company: username of the company that posts the job offer
+        """HTTP POST method to create a job offer
+
+        Args:
+          company: username of the company that posts the job offer
         Request fields:
         - job_name: name of the job offer (Required)
         - contract_type: contract type (Optional)
@@ -36,7 +39,10 @@ class JobOffers(Resource):
         - location: job location (Required)
         - working_hours: weekly working hours (Optional)
         - description: description of the job offer (Optional)
-        :return: json object with the created job offer information
+
+        Returns:
+          json object with the created job offer information
+
         """
         if company != g.user.username:
             print(g.user.username)
@@ -72,10 +78,14 @@ class JobOffers(Resource):
         return offer.json(), 201
 
     def delete(self, id):
-        """
-        HTTP DELETE method to delete a specific job offer
-        :param id: id of the job offer to delete
-        :return: status message
+        """HTTP DELETE method to delete a specific job offer
+
+        Args:
+          id: id of the job offer to delete
+
+        Returns:
+          status message
+
         """
         offer = JobOfferModel.find_by_id(id)
         if offer:

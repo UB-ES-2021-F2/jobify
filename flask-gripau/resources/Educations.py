@@ -6,14 +6,16 @@ from db import db
 
 
 class Educations(Resource):
-    """
-    Resource related to the Educations table
-    """
+    """Resource related to the Educations table"""
     def get(self, username):
-        """
-        HTTP GET method that gets the list of educations of a specific job seeker
-        :param username: name of the job seeker
-        :return: list of json objects with the job seeker's educations information
+        """HTTP GET method that gets the list of educations of a specific job seeker
+
+        Args:
+          username: name of the job seeker
+
+        Returns:
+          list of json objects with the job seeker's educations information
+
         """
         account = JobSeekersModel.find_by_username(username)
         if not account:
@@ -22,16 +24,20 @@ class Educations(Resource):
 
     @auth.login_required(role='user')
     def post(self, username):
-        """
-        HTTP POST method to create a education
-        :param username: username of the job seeker that posts the education
+        """HTTP POST method to create a education
+
+        Args:
+          username: username of the job seeker that posts the education
         Request fields:
         - title: title of the education (Required)
         - institution: institution where the education was studied (Required)
         - start_date: start date of the education (Required)
         - end_date: end date of the education (Required)
         - currently: if the job seeker is currently studying the education, 1 (yes) / 0 (no) (Required)
-        :return: json object with the created company information
+
+        Returns:
+          json object with the created company information
+
         """
         if username != g.user.username:
             return {'message': 'Access denied'}, 400

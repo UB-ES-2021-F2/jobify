@@ -6,14 +6,16 @@ from db import db
 
 
 class WorkExperiences(Resource):
-    """
-    Resource related to the WorkExperiences endpoint
-    """
+    """Resource related to the WorkExperiences endpoint"""
     def get(self, username):
-        """
-        HTTP GET method that gets the list of work experiences of a specific job seeker
-        :param username: name of the job seeker
-        :return: list of json objects with the job seeker's work experiences information
+        """HTTP GET method that gets the list of work experiences of a specific job seeker
+
+        Args:
+          username: name of the job seeker
+
+        Returns:
+          list of json objects with the job seeker's work experiences information
+
         """
         account = JobSeekersModel.find_by_username(username)
         if not account:
@@ -22,9 +24,10 @@ class WorkExperiences(Resource):
 
     @auth.login_required(role='user')
     def post(self, username):
-        """
-        HTTP POST method to create a work experience
-        :param username: username of the job seeker that posts the work experience
+        """HTTP POST method to create a work experience
+
+        Args:
+          username: username of the job seeker that posts the work experience
         Request fields:
         - job_name: name of the job (Required)
         - description: description of the job (Required)
@@ -32,7 +35,10 @@ class WorkExperiences(Resource):
         - start_date: start date of the work experience (Required)
         - end_date: end date of the work experience (Required)
         - currently: if the job seeker is currently working on this job (Required)
-        :return: json object with the created work experience information
+
+        Returns:
+          json object with the created work experience information
+
         """
         if username != g.user.username:
             return {'message': 'Access denied'}, 400

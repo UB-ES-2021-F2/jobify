@@ -216,7 +216,7 @@
                     <footer>
                       <b-container fluid style="font-family: 'Work Sans'">
                         <b-row no-gutters>
-                          <b-col lg v-if="job_offer.contract_type.length > 0">
+                          <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
                             <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
                           </b-col>
                           <b-col lg v-if="job_offer.workingHours > 0">
@@ -265,7 +265,7 @@
                       </b-form-group>
                     </validation-provider>
 
-                    <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
+                    <validation-provider name="ContractType"  :rules="{ max: 500}" v-slot="validationContext">
                       <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
                         <b-form-select id="contractTypeInput" v-model="jobOfferForm.contractType" :options="optionsContractType"  type="text" :state="getValidationState(validationContext)"
                                        aria-describedby="input-2-live-feedback"></b-form-select>
@@ -655,13 +655,15 @@ export default {
       var values = {
         job_name: this.jobOfferForm.jobName,
         description: this.jobOfferForm.description,
-        location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType
+        location: this.jobOfferForm.location
       }
-      if (this.jobOfferForm.salary !== '') {
+      if (this.jobOfferForm.contractType !== '' && this.jobOfferForm.contractType !== null) {
+        values.contract_type = this.jobOfferForm.contractType
+      }
+      if (this.jobOfferForm.salary !== '' && this.jobOfferForm.salary !== null) {
         values.salary = this.jobOfferForm.salary
       }
-      if (this.jobOfferForm.workingHours !== '') {
+      if (!isNaN(this.jobOfferForm.workingHours) && this.jobOfferForm.workingHours !== '') {
         values.working_hours = this.jobOfferForm.workingHours
       }
       console.log(values)

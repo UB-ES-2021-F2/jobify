@@ -2,9 +2,13 @@ from db import db
 
 
 class WorkExperiencesModel(db.Model):
-    """
-    Model of a work experience.
+    """Model of a work experience.
     Job Seeker 1 ---> * Work experiences
+
+    Args:
+
+    Returns:
+
     """
     __tablename__ = 'work_experiences'
 
@@ -35,18 +39,26 @@ class WorkExperiencesModel(db.Model):
         self.currently = currently
 
     def json(self):
-        """
-        Function that returns the work experience info as json
+        """Function that returns the work experience info as json
         :return: json object with the information
+
+        Args:
+
+        Returns:
+
         """
         return {'id': self.id, 'username': self.username, 'job_name': self.job_name, 'description': self.description,
                 'company': self.company,
                 'start_date': self.start_date, 'end_date': self.end_date, 'currently': self.currently}
 
     def delete_from_db(self, database=None):
-        """
-        Function that the deletes from the database the work experience
-        :param database: database instance
+        """Function that the deletes from the database the work experience
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -55,8 +67,12 @@ class WorkExperiencesModel(db.Model):
 
     @classmethod
     def show_work_experiences(cls):
-        """
-        Function that shows all the work experiences in the database
+        """Function that shows all the work experiences in the database
         :return: list of the work experiences
+
+        Args:
+
+        Returns:
+
         """
         return [work_experience.json() for work_experience in cls.query.all()]

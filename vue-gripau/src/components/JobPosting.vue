@@ -59,8 +59,34 @@
           <p>{{publication_date}}</p>
         </div>
       </b-container>
-      <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobOfferView">Seen</b-button>
-      <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+      <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
+      <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+      <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+      <b-button v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
+      <b-modal
+        hide-backdrop
+        id="modal-apply"
+        ref="modal"
+        title="Do you want to add some additional information?"
+        @ok="applyAction"
+        @show="resetApplyModal"
+        @hidden="resetApplyModal"
+      >
+        <form ref="form">
+          <b-form-group
+            label-for="name-input"
+          >
+            <b-form-textarea
+              v-model="applyMessage"
+              placeholder="Write here (optional)"
+              rows="3"
+              max-rows="6"
+            >
+
+            </b-form-textarea>
+          </b-form-group>
+        </form>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -69,7 +95,6 @@
 import {mapState} from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
-
 export default {
   data () {
     return {
@@ -89,41 +114,78 @@ export default {
       salary: '',
       location: '',
       contract_type: '',
-      working_hours: ''
+      working_hours: '',
+      applied: false,
+      applyMessage: null
     }
   },
   methods: {
+    getApplied () {
+      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.id
+      axios.get(path)
+        .then((res) => {
+          var application = res.data.application
+          console.log(application)
+          this.applied = true
+        })
+        // eslint-disable-next-line
+        .catch((error) => {
+          // eslint-disable-next-line
+          // console.error(error)
+          this.applied = false
+        })
+    },
+    applyAction () {
+      if (!this.applied) {
+        const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
+        const values = {
+          job_offer_id: this.id
+        }
+        if (this.applyMessage !== null) {
+          values.info = this.applyMessage
+        }
+        axios.post(path, values, {
+          auth: {username: this.token}})
+          .then((res) => {
+            console.log('Job Offer correctly applied')
+            this.applied = true
+          })
+          .catch((error) => {
+            alert(error.response.data.message)
+          })
+      }
+    },
+    resetApplyModal () {
+      this.applyMessage = null
+    },
     onHome () {
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
     },
     getValidationState ({dirty, validated, valid = null}) {
       return dirty || validated ? valid : null
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({path: '/job_seeker/' + this.username})
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({path: '/login'})
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({path: '/companies'})
+      this.$router.push('/companies')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
-    },
-    onJobOfferView () {
-      this.jobOfferView = !this.jobOfferView
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({path: '/about_us'})
+      this.$router.push('/about_us')
     },
     getJobOffer (id) {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + id
@@ -162,6 +224,7 @@ export default {
     this.token = this.$store.state.token
     this.is_admin = this.$store.state.isAdmin
     this.id = this.$route.path.split('job_posting/')[1]
+    this.getApplied()
     this.getJobOffer(this.id)
   },
   computed: mapState({
@@ -176,5 +239,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -2,9 +2,13 @@ from db import db
 
 
 class EducationsModel(db.Model):
-    """
-    Model of a education.
+    """Model of a education.
     Job Seeker 1 ---> * Educations
+
+    Args:
+
+    Returns:
+
     """
     __tablename__ = 'educations'
 
@@ -32,17 +36,25 @@ class EducationsModel(db.Model):
         self.currently = currently
 
     def json(self):
-        """
-        Function that returns the education info as json
+        """Function that returns the education info as json
         :return: json object with the information
+
+        Args:
+
+        Returns:
+
         """
         return {'id': self.id, 'username': self.username, 'title': self.title, 'institution': self.institution,
                 'start_date': self.start_date, 'end_date': self.end_date,'currently': self.currently}
 
     def delete_from_db(self, database=None):
-        """
-        Function that the deletes from the database the education
-        :param database: database instance
+        """Function that the deletes from the database the education
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -51,9 +63,13 @@ class EducationsModel(db.Model):
 
     @classmethod
     def show_educations(cls):
-        """
-        Function that shows all the educations in the database
+        """Function that shows all the educations in the database
         :return: list of the educations
+
+        Args:
+
+        Returns:
+
         """
         return [education.json() for education in cls.query.all()]
 

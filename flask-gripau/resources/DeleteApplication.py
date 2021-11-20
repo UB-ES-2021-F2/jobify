@@ -6,18 +6,20 @@ from db import db
 
 
 class DeleteApplication(Resource):
-    """
-    Resource related to the deletion of an Application
-    """
+    """Resource related to the deletion of an Application"""
 
     @auth.login_required(role='user')
     def post(self, job_seeker_username):
-        """
-        HTTP POST method to delete an application
-        :param job_seeker_username: username of the job seeker that deletes the application
+        """HTTP POST method to delete an application
+
+        Args:
+          job_seeker_username: username of the job seeker that deletes the application
         Request fields:
         - id: id of the application (Required)
-        :return: status message
+
+        Returns:
+          status message
+
         """
         if job_seeker_username != g.user.username:
             return {'message': 'Access denied'}, 400

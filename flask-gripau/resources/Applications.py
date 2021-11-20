@@ -6,16 +6,18 @@ from db import db
 
 
 class Applications(Resource):
-    """
-    Resource related to the Applications endpoint
-    """
+    """Resource related to the Applications endpoint"""
 
     def get(self, job_seeker_username, job_offer_id):
-        """
-        HTTP GET method that gets the list of applications of a specific job seeker
-        :param job_seeker_username: name of the job seeker
-        :param job_offer_id: id of the job offer
-        :return: application for the given offer and the given job seeker
+        """HTTP GET method that gets the list of applications of a specific job seeker
+
+        Args:
+          job_seeker_username: name of the job seeker
+          job_offer_id: id of the job offer
+
+        Returns:
+          list of json objects with the job seeker's applications information
+
         """
         for application in ApplicationModel.find_by_job_seeker_username(job_seeker_username):
             if application.job_offer_id == job_offer_id:
@@ -24,13 +26,17 @@ class Applications(Resource):
 
     @auth.login_required(role='user')
     def post(self, job_seeker_username):
-        """
-        HTTP POST method to create an application
-        :param job_seeker_username: username of the job seeker that posts the application
+        """HTTP POST method to create an application
+
+        Args:
+          job_seeker_username: username of the job seeker that posts the application
         Request fields:
         - job_offer_id: id of the job offer (Required)
         - info: additional information the job seeker wants to give (Optional)
-        :return:  json object with the created application information
+
+        Returns:
+          json object with the created application information
+
         """
         if job_seeker_username != g.user.username:
             return {'message': 'Access denied'}, 400

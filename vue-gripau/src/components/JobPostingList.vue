@@ -43,7 +43,6 @@
         </b-row>
         <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
           <b-card
-            :title="job_offer.job_name"
             tag="article"
             class="mb-2"
             style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
@@ -51,23 +50,34 @@
             id="jobOfferCard"
           >
             <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            <b-card-text id="companyName">
-              <p>{{ job_offer.company }}</p>
-            </b-card-text>
             <footer>
               <b-container fluid style="font-family: 'Work Sans'">
                 <b-row no-gutters>
-                  <b-col lg v-if="job_offer.contract_type.length > 0">
-                    <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                  <b-col cols="8">
+                    <b-card-text id="companyName" >
+                      <p class="titleJobOfferCard">{{ job_offer.job_name }}</p>
+                      <p class="companyNameJobOfferCard">{{ job_offer.company_name }}</p>
+                    </b-card-text>
+                    <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
+                      <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                    </b-col>
+                    <!--<b-col lg v-if="job_offer.working_hours > 0">
+                      <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                    </b-col> potser no posarho a la card-->
+                    <b-col lg>
+                      <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                    </b-col>
+                    <b-col lg>
+                      <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                    </b-col>
                   </b-col>
-                  <b-col lg v-if="job_offer.working_hours > 0">
-                    <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                  <b-col v-if="companies_logos[job_offer.company]!=null" cols="4">
+                    <img class="card-img" :src="companies_logos[job_offer.company]" alt=""
+                         style="width:128px;height:128px">
                   </b-col>
-                  <b-col lg>
-                    <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                  </b-col>
-                  <b-col lg>
-                    <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                  <b-col v-if="companies_logos[job_offer.company]==null" cols="4">
+                    <img class="card-img" src="../assets/images/company_avatar.png" alt=""
+                         style="width:128px;height:128px">
                   </b-col>
                 </b-row>
               </b-container>
@@ -79,7 +89,6 @@
                id="job-offer-modal"
                title="Post a job offer"
                hide-footer
-               hide-backdrop
       >
         <validation-observer ref="observer" v-slot="{ handleSubmit }">
           <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
@@ -107,7 +116,7 @@
               </b-form-group>
             </validation-provider>
 
-            <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
+            <validation-provider name="ContractType"  :rules="{ max: 500}" v-slot="validationContext">
               <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
                 <b-form-select id="contractTypeInput" v-model="jobOfferForm.contractType" :options="optionsContractType" placeholder="" type="text" :state="getValidationState(validationContext)"
                                aria-describedby="input-2-live-feedback"></b-form-select>
@@ -140,43 +149,6 @@
       </b-modal>
     </div>
     <!-- /Job offers company view -->
-    <!-- Job offer view -->
-    <div id="jobOfferView" v-if="this.jobOfferView">
-      <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
-      <b-container align="left">
-        <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
-          <p>{{jobOfferCurrentView.description}}</p>
-        </div>
-        <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
-          <p>{{jobOfferCurrentView.companyName}}</p>
-        </div>
-        <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
-          <p>{{jobOfferCurrentView.location}}</p>
-        </div>
-        <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
-          <p>{{jobOfferCurrentView.contractType}}</p>
-        </div>
-        <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
-          <p>{{jobOfferCurrentView.workingHours}}</p>
-        </div>
-        <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
-          <p>{{jobOfferCurrentView.salary}}</p>
-        </div>
-        <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
-          <p>{{jobOfferCurrentView.publicationDate}}</p>
-        </div>
-      </b-container>
-      <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobOfferView">Seen</b-button>
-      <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-    </div>
-    <!-- /Job offer view -->
   </div>
 </template>
 
@@ -184,7 +156,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import {mapState} from 'vuex'
-// import firebase from 'firebase/compat'
+import firebase from 'firebase/compat'
 
 export default {
   data () {
@@ -205,38 +177,39 @@ export default {
         contractType: '',
         workingHours: ''
       },
-      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
+      companies_logos: {}
     }
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     getValidationState ({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push({ path: '/companies' })
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     onJobOffer (id) {
-      this.$router.replace({ path: '/job_posting/' + id })
+      this.$router.push('/job_posting/' + id)
     },
     getJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers'
@@ -245,27 +218,42 @@ export default {
           this.job_offers = []
           for (var jobOffer in res.data.OfferList) {
             jobOffer = res.data.OfferList[jobOffer]
-            console.log(jobOffer)
             jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
             this.job_offers.push(jobOffer)
+            this.getCompaniesLogos()
           }
         })
         .catch((error) => {
           console.error(error)
         })
     },
+    getCompaniesLogos () {
+      for (let o in this.job_offers) {
+        let offer = this.job_offers[o]
+        this.companies_logos[offer.company] = null
+        firebase.storage().ref(`images/${offer.company}/avatar`).getDownloadURL()
+          .then((url) => {
+            this.companies_logos[offer.company] = url
+            console.log(url)
+            this.$forceUpdate()
+          })
+      }
+      this.$forceUpdate()
+    },
     onSubmitNewOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
       var values = {
         job_name: this.jobOfferForm.jobName,
         description: this.jobOfferForm.description,
-        location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType
+        location: this.jobOfferForm.location
       }
-      if (!isNaN(this.jobOfferForm.salary)) {
+      if (this.jobOfferForm.contractType !== '' && this.jobOfferForm.contractType !== null) {
+        values.contract_type = this.jobOfferForm.contractType
+      }
+      if (this.jobOfferForm.salary !== '' && this.jobOfferForm.salary !== null) {
         values.salary = this.jobOfferForm.salary
       }
-      if (!isNaN(this.jobOfferForm.workingHours)) {
+      if (!isNaN(this.jobOfferForm.workingHours) && this.jobOfferForm.workingHours !== '') {
         values.working_hours = this.jobOfferForm.workingHours
       }
       console.log(values)
@@ -321,5 +309,16 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.companyNameJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+  margin-bottom: 0.3rem;
+}
+.titleJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 0;
 }
 </style>

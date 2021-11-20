@@ -11,7 +11,9 @@
         <b-navbar-nav>
           <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
           <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+
+          <b-nav-item id="companiesNavbarButton" v-if="this.username===this.company_name_profile" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="companiesNavbarButtonIfWatchingCompany" v-else active @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -21,7 +23,7 @@
 
         <b-navbar-nav v-if="logged" class="ml-auto">
           <b-nav-item id="activeProfileNavbarButton" active v-if="this.username===this.company_name_profile">{{ this.username }}</b-nav-item>
-          <b-nav-item id="profileNavbarButton" v-else>{{ this.username }}</b-nav-item>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()" v-else>{{ this.username }}</b-nav-item>
           <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
@@ -247,7 +249,6 @@
                        id="job-offer-modal"
                        title="Post a job offer"
                        hide-footer
-                       hide-backdrop
               >
                 <validation-observer ref="observer" v-slot="{ handleSubmit }">
                   <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
@@ -341,8 +342,34 @@
                   <p>{{jobOfferCurrentView.publicationDate}}</p>
                 </div>
               </b-container>
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
-              <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobView">Seen</b-button>
+              <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+              <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+              <b-button v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+              <b-modal
+                hide-backdrop
+                id="modal-apply"
+                ref="modal"
+                title="Do you want to add some additional information?"
+                @ok="applyAction"
+                @show="resetApplyModal"
+                @hidden="resetApplyModal"
+              >
+                <form ref="form">
+                  <b-form-group
+                    label-for="name-input"
+                  >
+                    <b-form-textarea
+                      v-model="applyMessage"
+                      placeholder="Write here (optional)"
+                      rows="3"
+                      max-rows="6"
+                    >
+
+                    </b-form-textarea>
+                  </b-form-group>
+                </form>
+              </b-modal>
             </div>
             <!-- /Job offer view -->
           </div>
@@ -420,22 +447,70 @@ export default {
       file: null,
       uploadValue: 0,
       previewSrc: null,
-      downloadImage: null
+      downloadImage: null,
+      applied: false,
+      applyMessage: null
     }
   },
   methods: {
+    getApplied () {
+      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
+      axios.get(path)
+        .then((res) => {
+          var application = res.data.application
+          console.log(application)
+          this.applied = true
+        })
+        // eslint-disable-next-line
+        .catch((error) => {
+          // eslint-disable-next-line
+          // console.error(error)
+          this.applied = false
+        })
+    },
+    applyAction () {
+      if (!this.applied) {
+        const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
+        const values = {
+          job_offer_id: this.jobOfferCurrentView.id
+        }
+        if (this.applyMessage !== null) {
+          values.info = this.applyMessage
+        }
+        axios.post(path, values, {
+          auth: {username: this.token}})
+          .then((res) => {
+            console.log('Job Offer correctly applied')
+            this.applied = true
+          })
+          .catch((error) => {
+            alert(error.response.data.message)
+          })
+      }
+    },
+    resetApplyModal () {
+      this.applyMessage = null
+    },
+    onProfile () {
+      if (this.is_jobseeker && this.logged) {
+        this.$router.replace({ path: '/job_seeker/' + this.username })
+      } else if (this.is_company && this.logged) {
+        this.$router.replace({path: '/company/' + this.username})
+      }
+    },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onProfileView () {
       this.profileView = true
       this.jobView = false
+      this.jobOfferView = false
     },
     onJobView () {
       this.profileView = false
@@ -446,17 +521,19 @@ export default {
       this.jobOfferView = false
     },
     onJobOfferView () {
-      this.jobOfferView = !this.jobOfferView
+      this.jobOfferView = true
+      this.jobView = true
+      this.profileView = false
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     editDescription () {
       this.edit.description = !this.edit.description
@@ -614,7 +691,8 @@ export default {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
       axios.delete(path)
         .then((res) => {
-          window.location.reload()
+          this.getCompanyJobOffers()
+          this.onJobView()
         })
         .catch((error) => {
           console.error(error)
@@ -667,6 +745,8 @@ export default {
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
+          console.log(this.jobOfferCurrentView)
+          this.getApplied()
           this.onJobOfferView()
         })
         .catch((error) => {

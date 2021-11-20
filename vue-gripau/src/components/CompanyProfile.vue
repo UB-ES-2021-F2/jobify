@@ -76,7 +76,7 @@
                   <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
                 </div>
                 <div class="name-profile">
-                  Amazon Inc. <!--{{company.company}} -->
+                  {{company.company}} <!--Amazon Inc.-->
                 </div>
               </div>
               <div id="divName" class="col-12 col-sm-12 col-md-6 col-lg-4">

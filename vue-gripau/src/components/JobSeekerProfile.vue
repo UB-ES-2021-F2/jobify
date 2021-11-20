@@ -145,7 +145,7 @@
 
       </div>
 
-        <b-modal id="addWorkModal" hide-footer hide-backdrop ref="addWorkModal">
+        <b-modal id="addWorkModal" hide-footer ref="addWorkModal">
           <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add work experience</h5></template>
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form ref="addWorkForm" @submit.prevent="handleSubmit(submitAddWork)" style="font-family: 'Work Sans SemiBold'">
@@ -198,7 +198,7 @@
           </validation-observer>
         </b-modal>
 
-        <b-modal id="addSkillModal" hide-footer hide-backdrop ref="addSkillModal">
+        <b-modal id="addSkillModal" hide-footer ref="addSkillModal">
           <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add Skill</h5></template>
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form ref="addSkillForm" @submit.prevent="handleSubmit(submitAddSkill)" style="font-family: 'Work Sans SemiBold'">
@@ -219,7 +219,7 @@
           </validation-observer>
         </b-modal>
 
-        <b-modal id="addEducationModal" hide-footer hide-backdrop  ref="addEducationModal">
+        <b-modal id="addEducationModal" hide-footer  ref="addEducationModal">
           <template #modal-header><h5 style="font-family: 'Work Sans SemiBold'">Add previous education</h5></template>
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form ref="addEducationForm" @submit.prevent="handleSubmit(submitAddEducation)" style="font-family: 'Work Sans SemiBold'">
@@ -318,28 +318,28 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onUserProfile () {
       if (this.is_jobseeker & this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       }
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     editBio () {
       this.edit_bio = !this.edit_bio

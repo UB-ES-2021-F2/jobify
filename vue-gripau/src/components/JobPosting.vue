@@ -65,9 +65,9 @@
         </b-col>
       </b-container>
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
-      <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+      <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
       <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
+      <b-button v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
       <b-modal
         hide-backdrop
         id="modal-apply"
@@ -174,53 +174,39 @@ export default {
           .catch((error) => {
             alert(error.response.data.message)
           })
-      } else {
-        const path = Vue.prototype.$API_BASE_URL + 'delete_application/' + this.username
-        const values = {
-          id: this.id
-        }
-        axios.post(path, values, {
-          auth: {username: this.token}})
-          .then((res) => {
-            console.log('Apply job offer correct deleted')
-            this.applied = false
-          })
-          .catch((error) => {
-            alert(error.response.data.message)
-          })
       }
     },
     resetApplyModal () {
       this.applyMessage = null
     },
     onHome () {
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
     },
     getValidationState ({dirty, validated, valid = null}) {
       return dirty || validated ? valid : null
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({path: '/job_seeker/' + this.username})
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({path: '/login'})
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({path: '/companies'})
+      this.$router.push('/companies')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({path: '/about_us'})
+      this.$router.push('/about_us')
     },
     getJobOffer (id) {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + id

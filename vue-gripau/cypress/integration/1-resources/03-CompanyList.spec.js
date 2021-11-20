@@ -1,22 +1,21 @@
-// JobOfferList.spec.js created with Cypress
+// 03-CompanyList.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,
 // check out the link below and learn how to write your first test:
 // https://on.cypress.io/writing-first-test
 
-describe('JobOfferList resource', () => {
-  context('GET offers', () => {
-    it('should return the information of all job offers posted by all companies (now only one job offer by ub)', () => {
+describe('CompanyList resource', () => {
+  context('GET companies', () => {
+    it('should return the information of the registered companies (now only one company)', () => {
       cy.request({
         method: 'GET',
-        url: 'offers'
+        url: 'companies'
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(200)
-          expect(response.body.OfferList.length).to.eq(1)
-          expect(response.body.OfferList[0].job_name).to.eq('professor')
+          expect(response.body.length).to.eq(1)
         })
     })
   })

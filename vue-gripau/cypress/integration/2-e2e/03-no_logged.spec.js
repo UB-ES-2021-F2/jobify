@@ -1,4 +1,4 @@
-// logged_company.spec.js created with Cypress
+// 01-logged_company.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,

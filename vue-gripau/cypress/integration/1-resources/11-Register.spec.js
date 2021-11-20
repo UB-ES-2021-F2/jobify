@@ -1,4 +1,4 @@
-// Register.spec.js created with Cypress
+// 11-Register.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,

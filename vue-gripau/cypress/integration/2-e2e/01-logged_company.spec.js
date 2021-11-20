@@ -1,4 +1,4 @@
-// logged_company.spec.js created with Cypress
+// 01-logged_company.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,
@@ -45,13 +45,13 @@ describe('Logged company', () => {
       cy.get('[id=profileNavbarButton]').should('exist')
       cy.get('[id=addJobOfferCard]').should('exist')
     })
-    // it('should delete a job offer', () => {
-    //   cy.get('id=jobOfferCard').should('exist')
-    //   cy.get('[id=deleteJobOfferButton]').click()
-    //   cy.get('id=jobOfferCard').should('not.exist')
-    // })
+    it('should delete a job offer', () => {
+      cy.get('id=jobOfferCard').should('exist')
+      cy.get('[id=deleteJobOfferButton]').click()
+      cy.get('id=jobOfferCard').should('not.exist')
+    })
     it('should post a new job offer from job postings page', () => {
-      // cy.get('id=jobOfferCard').should('not.exist')
+      cy.get('id=jobOfferCard').should('not.exist')
       cy.get('[id=addJobOfferCard]').click()
       cy.get('[id=job-offer-modal]').should('exist')
       cy.get('[id=jobNameInput]').type('professor')
@@ -148,7 +148,6 @@ describe('Logged company', () => {
       cy.get('[id=submitEditDescriptionButton]').click()
       cy.get('[id=descriptionCompany1]').should('contain', 'hola, som la UB')
     })
-    /*
     it('should edit email', () => {
       cy.get('[id=emailCompany]').should('contain', 'hola, som la UB')
       cy.get('[id=enableEditEmailButton]').click()
@@ -161,7 +160,6 @@ describe('Logged company', () => {
       cy.get('[id=submitEditEmailButton]').click()
       cy.get('[id=emailCompany]').should('contain', 'ub@gmail.com')
     })
-     */
     it('should edit sector', () => {
       cy.get('[id=sectorCompany]').should('contain', 'Unknown')
       cy.get('[id=enableEditSectorButton]').click()

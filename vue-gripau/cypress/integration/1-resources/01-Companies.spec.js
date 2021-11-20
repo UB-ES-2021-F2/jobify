@@ -1,4 +1,4 @@
-// Companies.spec.js created with Cypress
+// 01-Companies.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,

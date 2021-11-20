@@ -1,10 +1,3 @@
 {
-  "baseUrl": "http://localhost:5000/api/",
-  "testFiles": [
-    "cypress/integration/1-resources/*.spec.js",
-    "cypress/integration/2-e2e/logged_company.spec.js",
-    "cypress/integration/2-e2e/logged_jobseeker.spec.js",
-    "cypress/integration/2-e2e/no_logged.spec.js",
-    "cypress/integration/2-e2e/restore_database.spec.js"
-  ]
+  "baseUrl": "http://localhost:5000/api/"
 }

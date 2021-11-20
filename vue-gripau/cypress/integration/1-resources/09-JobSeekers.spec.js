@@ -1,4 +1,4 @@
-// JobSeekers.spec.js created with Cypress
+// 09-JobSeekers.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,

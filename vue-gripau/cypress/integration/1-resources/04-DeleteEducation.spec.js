@@ -1,4 +1,4 @@
-// DeleteEducation.spec.js created with Cypress
+// 04-DeleteEducation.spec.js created with Cypress
 //
 // Start writing your Cypress tests below!
 // If you're unfamiliar with how Cypress works,

@@ -151,7 +151,6 @@ describe('Logged company', () => {
       cy.get('[id=descriptionCompany1]').should('contain', 'hola, som la UB')
     })
     it('should edit email', () => {
-      cy.get('[id=emailCompany]').should('contain', 'hola, som la UB')
       cy.get('[id=enableEditEmailButton]').click()
       cy.get('[id=editEmailField]').should('exist')
       cy.get('[id=emailInput]').clear().type('cypress@cypress.com')
@@ -217,8 +216,8 @@ describe('Logged company', () => {
     })
     it('should login as the new company created and go to home page', () => {
       cy.get('[id=username-input]').type('cycompany')
-      cy.get('[id=password-input').type('Cypress123')
-      cy.get('[id=logInButton').click()
+      cy.get('[id=password-input]').type('Cypress123')
+      cy.get('[id=logInButton]').click()
       cy.url().should('eq', 'http://localhost:5000/')
       cy.get('[id=profileNavbarButton]').should('contain', 'cycompany')
     })

@@ -117,7 +117,7 @@
                   <div id="emailCompany" v-if="!edit.email">
                     <p>{{company.email}}</p>
                   </div>
-                  <b-container v-if="edit.email" fluid>
+                  <b-container id="editEmailField" v-if="edit.email" fluid>
                     <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
                       <b-row align="left">
                         <b-col sm="5">

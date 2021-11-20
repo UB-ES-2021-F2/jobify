@@ -11,8 +11,7 @@ class Companies(Resource):
         """HTTP GET method that gets a specific company
 
         Args:
-          username: username of the company to return
-          company: 
+          company: username of the company to return
 
         Returns:
           json object with the company information
@@ -29,8 +28,7 @@ class Companies(Resource):
         """HTTP DELETE method to delete a specific company
 
         Args:
-          username: username of the company to delete
-          company: 
+          company:  username of the company to delete
 
         Returns:
           status message
@@ -40,10 +38,16 @@ class Companies(Resource):
             return {'message': 'Access denied'}, 400
 
         account = CompanyModel.find_by_username(company)
-        if account:
-            account.delete_from_db(db)
-            return {'message': "Account deleted"}, 200
 
+        if account:
+            try:
+                for offer in account.job_offers:
+                    db.session.delete(offer)
+                account.delete_from_db(db)
+                return {'message': "Account deleted"}, 200
+            except Exception:
+                db.session.rollback()
+                return {'message': 'An error occurred deleting the account'}
         return {'message': "Account doesn't exist"}, 400
 
     @auth.login_required(role='user')

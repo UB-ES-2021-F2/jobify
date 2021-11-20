@@ -238,7 +238,6 @@
                        id="job-offer-modal"
                        title="Post a job offer"
                        hide-footer
-                       hide-backdrop
               >
                 <validation-observer ref="observer" v-slot="{ handleSubmit }">
                   <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
@@ -332,10 +331,10 @@
                   <p>{{jobOfferCurrentView.publicationDate}}</p>
                 </div>
               </b-container>
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
-              <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobView">Seen</b-button>
+              <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
               <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-              <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
+              <b-button v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
               <b-modal
                 hide-backdrop
                 id="modal-apply"
@@ -476,27 +475,10 @@ export default {
           .catch((error) => {
             alert(error.response.data.message)
           })
-      } else {
-        const path = Vue.prototype.$API_BASE_URL + 'delete_application/' + this.username
-        const values = {
-          id: this.jobOfferCurrentView.id
-        }
-        axios.post(path, values, {
-          auth: {username: this.token}})
-          .then((res) => {
-            console.log('Apply job offer correct deleted')
-            this.applied = false
-          })
-          .catch((error) => {
-            alert(error.response.data.message)
-          })
       }
     },
     resetApplyModal () {
       this.applyMessage = null
-    },
-    onJoOfferView () {
-      this.jobOfferView = !this.jobOfferView
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
@@ -506,17 +488,18 @@ export default {
       }
     },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onProfileView () {
       this.profileView = true
       this.jobView = false
+      this.jobOfferView = false
     },
     onJobView () {
       this.profileView = false
@@ -527,17 +510,19 @@ export default {
       this.jobOfferView = false
     },
     onJobOfferView () {
-      this.jobOfferView = !this.jobOfferView
+      this.jobOfferView = true
+      this.jobView = true
+      this.profileView = false
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     editDescription () {
       this.edit.description = !this.edit.description
@@ -695,7 +680,8 @@ export default {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
       axios.delete(path)
         .then((res) => {
-          window.location.reload()
+          this.getCompanyJobOffers()
+          this.onJobView()
         })
         .catch((error) => {
           console.error(error)
@@ -748,6 +734,7 @@ export default {
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
+          console.log(this.jobOfferCurrentView)
           this.getApplied()
           this.onJobOfferView()
         })

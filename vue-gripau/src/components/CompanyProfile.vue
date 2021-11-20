@@ -493,7 +493,7 @@ export default {
     },
     resetApplyModal () {
       this.applyMessage = null
-    },    
+    },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
         this.$router.replace({ path: '/job_seeker/' + this.username })

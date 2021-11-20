@@ -29,35 +29,40 @@
 
     <div id="jobOfferView">
       <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{job_name}}</h2>
-      <b-container align="left">
-        <div id="descriptionJobOffer" v-if="description !== '' && description !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
-          <p>{{description}}</p>
-        </div>
-        <div id="companyNameJobOffer" v-if="company_name !== '' && company_name !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
-          <p>{{company_name}}</p>
-        </div>
-        <div id="locationJobOffer" v-if="location !== '' && location !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
-          <p>{{location}}</p>
-        </div>
-        <div id="contractTypeJobOffer" v-if="contract_type !== '' && contract_type !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
-          <p>{{contract_type}}</p>
-        </div>
-        <div id="workingHoursJobOffer" v-if="working_hours !== '' && working_hours !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
-          <p>{{working_hours}}</p>
-        </div>
-        <div id="salaryJobOffer" v-if="salary !== '' && salary !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
-          <p>{{salary}}</p>
-        </div>
-        <div id="publicationDateJobOffer" v-if="publication_date !== '' && publication_date !== null" class="p-2 pb-3" style="max-width: 50rem">
-          <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
-          <p>{{publication_date}}</p>
-        </div>
+      <b-container fluid >
+        <b-col align="left">
+          <div id="descriptionJobOffer" v-if="description !== '' && description !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
+            <p>{{description}}</p>
+          </div>
+          <div id="companyNameJobOffer" v-if="company_name !== '' && company_name !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
+            <p>{{company_name}}</p>
+          </div>
+          <div id="locationJobOffer" v-if="location !== '' && location !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
+            <p>{{location}}</p>
+          </div>
+          <div id="contractTypeJobOffer" v-if="contract_type !== '' && contract_type !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
+            <p>{{contract_type}}</p>
+          </div>
+          <div id="workingHoursJobOffer" v-if="working_hours !== '' && working_hours !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
+            <p>{{working_hours}}</p>
+          </div>
+          <div id="salaryJobOffer" v-if="salary !== '' && salary !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
+            <p>{{salary}}</p>
+          </div>
+          <div id="publicationDateJobOffer" v-if="publication_date !== '' && publication_date !== null" class="p-2 pb-3" style="max-width: 50rem">
+            <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
+            <p>{{publication_date}}</p>
+          </div>
+        </b-col>
+        <b-col align="right" v-if="this.is_company && this.company_name === username">
+          <p>{{this.applicants_list}}</p>
+        </b-col>
       </b-container>
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
       <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
@@ -116,10 +121,26 @@ export default {
       contract_type: '',
       working_hours: '',
       applied: false,
-      applyMessage: null
+      applyMessage: null,
+      applicants_list: []
     }
   },
   methods: {
+    getApplicants () {
+      const path = Vue.prototype.$API_BASE_URL + '/offer_applicants/' + this.id
+      axios.get(path)
+        .then((res) => {
+          this.applicants_list = []
+          for (let applicant in res.data) {
+            this.applicants_list.push(res.data[applicant].username)
+          }
+        })
+        // eslint-disable-next-line
+        .catch((error) => {
+          // eslint-disable-next-line
+           console.error(error)
+        })
+    },
     getApplied () {
       const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.id
       axios.get(path)
@@ -240,6 +261,7 @@ export default {
     this.id = this.$route.path.split('job_posting/')[1]
     this.getApplied()
     this.getJobOffer(this.id)
+    this.getApplicants()
   },
   computed: mapState({
     token: state => state.token,

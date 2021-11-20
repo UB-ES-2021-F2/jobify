@@ -1,6 +1,7 @@
 from flask import g
 from flask_restful import Resource, Api, reqparse
 from models import CompanyModel, JobSeekersModel
+from resources.Register import validate_password
 from db import db
 from models.company import auth
 
@@ -84,8 +85,16 @@ class Companies(Resource):
         if account:
             data = parser.parse_args()
             if data.password:
+                # Validate password
+                if not validate_password(data.password):
+                    return {'message': "Password invalid! Does not meet requirements"}, 405
                 account.hash_password(data.password)
             if data.email:
+                # Check email doesn't exist
+                if JobSeekersModel.find_by_email(data.email):
+                    return {'message': "Email already exists"}, 408
+                if CompanyModel.find_by_email(data.email):
+                    return {'message': "Email already exists"}, 409
                 account.email = data.email
             if data.description or data.description == '':
                 account.description = data.description
@@ -106,3 +115,5 @@ class Companies(Resource):
             return account.json(), 202
 
         return {'message': "Company doesn't exist"}, 400
+
+

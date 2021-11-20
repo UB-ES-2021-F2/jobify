@@ -333,8 +333,8 @@
               </b-container>
               <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobView">Seen</b-button>
               <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-              <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-              <b-button v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+              <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+              <b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
               <b-modal
                 hide-backdrop
                 id="modal-apply"
@@ -349,6 +349,7 @@
                     label-for="name-input"
                   >
                     <b-form-textarea
+                      id="applyMessageInput"
                       v-model="applyMessage"
                       placeholder="Write here (optional)"
                       rows="3"

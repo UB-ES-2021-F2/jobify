@@ -62,7 +62,7 @@
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
       <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
       <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button v-if="applied && is_jobseeker && logged " @click="applyAction" variant="outline-success">Applied</b-button>
+      <b-button v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
       <b-modal
         hide-backdrop
         id="modal-apply"
@@ -149,20 +149,6 @@ export default {
           .then((res) => {
             console.log('Job Offer correctly applied')
             this.applied = true
-          })
-          .catch((error) => {
-            alert(error.response.data.message)
-          })
-      } else {
-        const path = Vue.prototype.$API_BASE_URL + 'delete_application/' + this.username
-        const values = {
-          id: this.id
-        }
-        axios.post(path, values, {
-          auth: {username: this.token}})
-          .then((res) => {
-            console.log('Apply job offer correct deleted')
-            this.applied = false
           })
           .catch((error) => {
             alert(error.response.data.message)

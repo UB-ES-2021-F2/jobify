@@ -78,7 +78,7 @@
 import {mapState} from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
-import firebase from 'firebase/compat'
+// import firebase from 'firebase/compat'
 
 export default {
   data () {

@@ -4,7 +4,7 @@ from models import JobSeekersModel, CompanyModel
 from db import db
 from models.job_seeker import auth
 from models.skill import SkillsModel
-from resources.Register import validate_password
+from resources.Register import validate_password, validate_email
 
 
 class JobSeekers(Resource):
@@ -67,7 +67,7 @@ class JobSeekers(Resource):
         """
 
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('password', type=str)
@@ -89,6 +89,9 @@ class JobSeekers(Resource):
                     return {'message': "Password invalid! Does not meet requirements"}, 405
                 account.hash_password(data.password)
             if data.email:
+                # Validate email
+                if not validate_email(data.email):
+                    return {'message': 'Email wrong format!'}, 402
                 # Check email doesn't exist
                 if JobSeekersModel.find_by_email(data.email):
                     return {'message': "Email already exists"}, 408

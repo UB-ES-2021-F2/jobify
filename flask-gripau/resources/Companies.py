@@ -1,7 +1,7 @@
 from flask import g
 from flask_restful import Resource, Api, reqparse
 from models import CompanyModel, JobSeekersModel
-from resources.Register import validate_password
+from resources.Register import validate_password, validate_email
 from db import db
 from models.company import auth
 
@@ -36,7 +36,7 @@ class Companies(Resource):
 
         """
         if company != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         account = CompanyModel.find_by_username(company)
 
@@ -49,7 +49,7 @@ class Companies(Resource):
             except Exception:
                 db.session.rollback()
                 return {'message': 'An error occurred deleting the account'}
-        return {'message': "Account doesn't exist"}, 400
+        return {'message': "Account doesn't exist"}, 404
 
     @auth.login_required(role='user')
     def put(self, company):
@@ -72,7 +72,7 @@ class Companies(Resource):
         if company != g.user.username:
             print(g.user.username)
             print(company)
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('password', type=str)
@@ -87,12 +87,14 @@ class Companies(Resource):
             if data.password:
                 # Validate password
                 if not validate_password(data.password):
-                    return {'message': "Password invalid! Does not meet requirements"}, 405
+                    return {'message': "Password invalid! Does not meet requirements"}, 406
                 account.hash_password(data.password)
             if data.email:
+                if not validate_email(data.email):
+                    return {'message': 'Email wrong format!'}, 402
                 # Check email doesn't exist
                 if JobSeekersModel.find_by_email(data.email):
-                    return {'message': "Email already exists"}, 408
+                    return {'message': "Email already exists"}, 409
                 if CompanyModel.find_by_email(data.email):
                     return {'message': "Email already exists"}, 409
                 account.email = data.email
@@ -112,8 +114,8 @@ class Companies(Resource):
                 account.save_to_db(db)
             except:
                 return {"message": "An error occurred modifying the account."}, 500
-            return account.json(), 202
+            return account.json(), 200
 
-        return {'message': "Company doesn't exist"}, 400
+        return {'message': "Company doesn't exist"}, 404
 
 

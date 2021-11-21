@@ -40,7 +40,8 @@ describe('JobOffers resource', () => {
     it('should return a message that the job offer with id 1 has been deleted', () => {
       cy.request({
         method: 'DELETE',
-        url: 'job_offer/1'
+        url: 'job_offer/1',
+        auth: {username: localStorage.getItem('token')}
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
@@ -52,6 +53,7 @@ describe('JobOffers resource', () => {
       cy.request({
         method: 'DELETE',
         url: 'job_offer/0',
+        auth: {username: localStorage.getItem('token')},
         failOnStatusCode: false
       })
         .should((response) => {
@@ -107,6 +109,7 @@ describe('JobOffers resource', () => {
     it('should return a message that the job offer with id 1 has been deleted', () => {
       cy.request({
         method: 'DELETE',
+        auth: {username: localStorage.getItem('token')},
         url: 'job_offer/1'
       })
         .should((response) => {

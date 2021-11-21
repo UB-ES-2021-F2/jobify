@@ -59,7 +59,7 @@ describe('JobSeekers resource', () => {
           expect(response.body.name).to.eq('cypress')
         })
     })
-    it('should return error 400 because we are trying to modify another jobseeker', () => {
+    it('should return error 401 because we are trying to modify another jobseeker', () => {
       cy.request({
         method: 'PUT',
         url: 'jobseeker/cypresstest',
@@ -77,12 +77,11 @@ describe('JobSeekers resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(401)
           expect(response.body.message).to.eq('Access denied')
         })
     })
-    /*
-    it('should return error 400 because the new password does not meet requirements', () => {
+    it('should return error 405 because the new password does not meet requirements', () => {
       cy.request({
         method: 'PUT',
         url: 'jobseeker/lordsergi',
@@ -99,11 +98,11 @@ describe('JobSeekers resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Password does not meet requirements')
+          expect(response.status).to.eq(405)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
-    it('should return error 400 because we are trying to remove an inexisting skill', () => {
+    it('should return 202 because if we are trying to remove an inexisting skill, we do not want any error', () => {
       cy.request({
         method: 'PUT',
         url: 'jobseeker/lordsergi',
@@ -117,12 +116,10 @@ describe('JobSeekers resource', () => {
           skills: ['cypress', 'testing'],
           remove_skills: ['pokemon']
         },
-        failOnStatusCode: false
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Fields too long')
+          expect(response.status).to.eq(202)
         })
     })
     it('should return error 400 because the new fields are too long', () => {
@@ -142,11 +139,10 @@ describe('JobSeekers resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Fields too long')
+          expect(response.status).to.eq(405)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
-    */
     it('should return the modified job seeker account', () => {
       cy.request({
         method: 'PUT',
@@ -169,7 +165,6 @@ describe('JobSeekers resource', () => {
         })
     })
   })
-  /*
   context('DELETE jobseeker/username', () => {
     it('should return error 400 because we are trying to delete another jobseeker', () => {
       cy.request({
@@ -187,7 +182,7 @@ describe('JobSeekers resource', () => {
     it('should return a message confirming account deleted', () => {
       cy.request({
         method: 'DELETE',
-        url: 'company/lordsergi',
+        url: 'jobseeker/lordsergi',
         auth: {username: localStorage.getItem('token')}
       })
         .should((response) => {
@@ -202,19 +197,75 @@ describe('JobSeekers resource', () => {
         url: 'register',
         body: {
           username: 'lordsergi',
-          name: 'cypress',
-          surname: 'test',
+          name: 'Sergi',
+          surname: 'Bech',
           password: 'Password12',
           is_job_seeker: 1,
-          email: 'cypressjobseeker@cypress.com',
-          description: 'prova description'
+          email: 'sergi@gmail.com',
+          description: 'hola, soc estudiant'
         }
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(201)
-          expect(response.body.username).to.eq('cypresstestjobseeker')
+          expect(response.body.username).to.eq('lordsergi')
         })
     })
-  }) */
+    it('should return the education added to the user lordsergi', () => {
+      cy.request({
+        method: 'POST',
+        url: 'education/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          title: 'professor',
+          institution: 'universitat de barcelona',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.education.username).to.eq('lordsergi')
+          expect(response.body.education.title).to.eq('professor')
+        })
+    })
+    it('should return the work experience added to the user lordsergi', () => {
+      cy.request({
+        method: 'POST',
+        url: 'work_experience/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'professor',
+          description: 'professor de EDS',
+          company: 'cypress',
+          start_date: '2021-04',
+          end_date: '2021-05',
+          currently: false
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(200)
+          expect(response.body.work_experience.username).to.eq('lordsergi')
+          expect(response.body.work_experience.job_name).to.eq('professor')
+        })
+    })
+    it('should return the modified job seeker account', () => {
+      cy.request({
+        method: 'PUT',
+        url: 'jobseeker/lordsergi',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          skills: ['python']
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(202)
+          expect(response.body.username).to.eq('lordsergi')
+        })
+    })
+  })
 })

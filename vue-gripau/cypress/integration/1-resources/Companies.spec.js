@@ -116,8 +116,8 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Too large fields')
+          expect(response.status).to.eq(405)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
     it('should return the modified company account', () => {

@@ -141,8 +141,8 @@ describe('JobSeekers resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Fields too long')
+          expect(response.status).to.eq(405)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
     it('should return the modified job seeker account', () => {

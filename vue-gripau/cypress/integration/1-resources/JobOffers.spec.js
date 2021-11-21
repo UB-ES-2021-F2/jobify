@@ -109,6 +109,7 @@ describe('JobOffers resource', () => {
     it('should return a message that the job offer with id 1 has been deleted', () => {
       cy.request({
         method: 'DELETE',
+        auth: {username: localStorage.getItem('token')},
         url: 'job_offer/1'
       })
         .should((response) => {

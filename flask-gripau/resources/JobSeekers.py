@@ -41,8 +41,20 @@ class JobSeekers(Resource):
 
         account = JobSeekersModel.find_by_username(username)
         if account:
-            account.delete_from_db(db)
-            return {'message': "Account deleted"}, 200
+            try:
+                for education in account.educations:
+                    db.session.delete(education)
+                for work_experience in account.work_experiences:
+                    db.session.delete(work_experience)
+                for skill in account.skills:
+                    db.session.delete(skill)
+                for application in account.applications:
+                    db.session.delete(application)
+                account.delete_from_db(db)
+                return {'message': "Account deleted"}, 200
+            except Exception:
+                db.session.rollback()
+                return {'message': 'An error occurred deleting the account'}
 
         return {'message': "Account doesn't exist"}, 400
 
@@ -88,7 +100,7 @@ class JobSeekers(Resource):
                 if not validate_password(data.password):
                     return {'message': "Password invalid! Does not meet requirements"}, 405
                 account.hash_password(data.password)
-            if data.email:
+            if data.email and data.email != account.email:
                 # Validate email
                 if not validate_email(data.email):
                     return {'message': 'Email wrong format!'}, 402
@@ -112,7 +124,8 @@ class JobSeekers(Resource):
             if data.remove_skills:
                 for skill in data.remove_skills:
                     remove_skill = SkillsModel.find_by_username_and_name(username, skill)
-                    remove_skill.delete_from_db()
+                    if remove_skill:
+                        remove_skill.delete_from_db()
                     #account.skills.remove(remove_skill)
 
             try:

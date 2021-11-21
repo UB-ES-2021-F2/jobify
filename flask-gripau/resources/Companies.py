@@ -89,7 +89,7 @@ class Companies(Resource):
                 if not validate_password(data.password):
                     return {'message': "Password invalid! Does not meet requirements"}, 406
                 account.hash_password(data.password)
-            if data.email:
+            if data.email and data.email != account.email:
                 if not validate_email(data.email):
                     return {'message': 'Email wrong format!'}, 402
                 # Check email doesn't exist

@@ -65,7 +65,11 @@
             <b-card>
               <p>Applicants</p>
               <div>
-                <b-table striped hover :items="this.applicants_list"></b-table>
+                <b-table :fields="fields" striped hover :items="this.applicants_list">
+                    <template #cell(Profile)="data">
+                      <router-link :to="`/job_seeker/${data.value}`" replace>{{data.value}}</router-link>
+                    </template>
+                </b-table>
               </div>
             </b-card>
           </b-col>
@@ -139,7 +143,7 @@ export default {
         .then((res) => {
           this.applicants_list = []
           for (let applicant in res.data) {
-            this.applicants_list.push({'Name': res.data[applicant].name, 'Email': res.data[applicant].email,'Link': Vue.prototype.$API_BASE_URL +'job_seeker/' + res.data[applicant].username})
+            this.applicants_list.push({'Name': res.data[applicant].name, 'Email': res.data[applicant].email, 'Profile': res.data[applicant].username})
           }
         })
         // eslint-disable-next-line

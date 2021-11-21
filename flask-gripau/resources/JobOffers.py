@@ -93,11 +93,10 @@ class JobOffers(Resource):
 
         offer = JobOfferModel.find_by_id(id)
 
-        if offer.company != g.user.username:
-            print(g.user.username)
-            return {'message': 'Access denied'}, 400
-
         if offer:
+            if offer.company != g.user.username:
+                print(g.user.username)
+                return {'message': 'Access denied'}, 400
             offer.delete_from_db(db)
             return {'message': "Offer with id [{}] deleted".format(id)}, 200
 

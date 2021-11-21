@@ -80,7 +80,7 @@ describe('WorkExperience resource', () => {
           expect(response.body.message).to.eq('Access denied')
         })
     })
-    it('should return error 400 because we are trying to add dates in a wrong format', () => {
+    it('should return error 400 because we are trying to add start-date in a wrong date format (mm-yyyy)', () => {
       cy.request({
         method: 'POST',
         url: 'work_experience/lordsergi',
@@ -98,7 +98,7 @@ describe('WorkExperience resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Date format is wrong, try (yyyy-mm)')
+          expect(response.body.message).to.eq('Dates need to be between years 1900 and 2100')
         })
     })
     it('should return error 400 because we are trying to add a work experience with blank job name', () => {

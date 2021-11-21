@@ -10,6 +10,7 @@ reg_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 
 class Register(Resource):
     """Resource that manages the registration to the app"""
+
     def post(self):
         """HTTP POST method to register in the application
         Request fields:
@@ -101,6 +102,7 @@ def validate_password(password):
     # searching regex
     mat = re.search(pat, password)
     return mat
+
 
 def validate_email(email):
     """Function that validates that the email matches the requirements

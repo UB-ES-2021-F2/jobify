@@ -60,7 +60,6 @@ describe('Companies resource', () => {
           expect(response.body.location).to.eq('cypress')
         })
     })
-    /*
     it('should return error 400 because we are trying to add a password which does not meet requirements', () => {
       cy.request({
         method: 'PUT',
@@ -121,7 +120,6 @@ describe('Companies resource', () => {
           expect(response.body.message).to.eq('Too large fields')
         })
     })
-    */
     it('should return the modified company account', () => {
       cy.request({
         method: 'PUT',
@@ -142,7 +140,6 @@ describe('Companies resource', () => {
         })
     })
   })
-  /*
   context('DELETE company/company_name', () => {
     it('should return error 400 because we are trying to delete another company', () => {
       cy.request({

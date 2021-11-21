@@ -27,7 +27,7 @@ describe('Register resource', () => {
           expect(response.body.username).to.eq('cypresstestjobseeker')
         })
     })
-    it('should return an error 406 because the jobseeker already exist ', () => {
+    it('should return an error 409 because the jobseeker already exist ', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -44,7 +44,7 @@ describe('Register resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(406)
+          expect(response.status).to.eq(409)
         })
     })
     it('should return the new company account created', () => {
@@ -67,7 +67,7 @@ describe('Register resource', () => {
           expect(response.body.username).to.eq('cypresstestcompany')
         })
     })
-    it('should return an error 407 because the company already exist ', () => {
+    it('should return an error 409 because the company already exist ', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -84,7 +84,7 @@ describe('Register resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(407)
+          expect(response.status).to.eq(409)
         })
     })
     it('should return an error 400 because the username is not alphanumeric ', () => {
@@ -107,7 +107,7 @@ describe('Register resource', () => {
           expect(response.status).to.eq(400)
         })
     })
-    it('should return an error 401 because the name must contain only alphanumeric characters or spaces ', () => {
+    it('should return an error 400 because the name must contain only alphanumeric characters or spaces ', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -124,10 +124,11 @@ describe('Register resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(401)
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Name must contain only alphanumeric characters or spaces')
         })
     })
-    it('should return an error 402 because the surname must contain only alphanumeric characters', () => {
+    it('should return an error 400 because the surname must contain only alphanumeric characters', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -144,10 +145,11 @@ describe('Register resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(402)
+          expect(response.status).to.eq(400)
+          expect(response.body.message).to.eq('Surname must contain only alphanumeric characters')
         })
     })
-    it('should return an error 405 because the password does not meet requirements', () => {
+    it('should return an error 406 because the password does not meet requirements', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -164,10 +166,11 @@ describe('Register resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(405)
+          expect(response.status).to.eq(406)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
-    it('should return an error 408 because a jobseeker aleady has this email', () => {
+    it('should return an error 409 because a jobseeker aleady has this email', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -184,10 +187,11 @@ describe('Register resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(408)
+          expect(response.status).to.eq(409)
+          expect(response.body.message).to.eq('Email already exists')
         })
     })
-    it('should return an error 408 because a company aleady has this email', () => {
+    it('should return an error 409 because a company aleady has this email', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -205,6 +209,7 @@ describe('Register resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(409)
+          expect(response.body.message).to.eq('Email already exists')
         })
     })
   })

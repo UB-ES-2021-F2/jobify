@@ -21,7 +21,7 @@ class DeleteEducation(Resource):
 
         user = JobSeekersModel.find_by_username(username)
 
-        education=user.delete_education(data.id)
+        education = user.delete_education(data.id)
 
         if education:
             education.delete_from_db(db)

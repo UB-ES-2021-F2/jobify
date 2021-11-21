@@ -18,7 +18,7 @@ class WorkExperiencesModel(db.Model):
     description = db.Column(db.String(1000), unique=False, nullable=False)
     company = db.Column(db.String(128), unique=False, nullable=False)
     start_date = db.Column(db.String(7), unique=False, nullable=False)
-    end_date = db.Column(db.String(7), unique=False, nullable=False)
+    end_date = db.Column(db.String(7), unique=False, nullable=True)
     currently = db.Column(db.Boolean, unique=False, nullable=False)
 
     def __init__(self, job_name, description, company, start_date, end_date, currently):

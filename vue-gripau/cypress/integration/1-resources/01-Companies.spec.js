@@ -52,7 +52,7 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(202)
+          expect(response.status).to.eq(200)
           expect(response.body.username).to.eq('universitat123')
           expect(response.body.email).to.eq('cypress@cypress.com')
           expect(response.body.description).to.eq('new description')
@@ -60,8 +60,7 @@ describe('Companies resource', () => {
           expect(response.body.location).to.eq('cypress')
         })
     })
-    /*
-    it('should return error 400 because we are trying to add a password which does not meet requirements', () => {
+    it('should return error 406 because we are trying to add a password which does not meet requirements', () => {
       cy.request({
         method: 'PUT',
         url: 'company/universitat123',
@@ -77,8 +76,8 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Wrong email format')
+          expect(response.status).to.eq(406)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
     it('should return error 400 because we are trying to add an incorrect email', () => {
@@ -97,11 +96,11 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Wrong email format')
+          expect(response.status).to.eq(402)
+          expect(response.body.message).to.eq('Email wrong format!')
         })
     })
-    it('should return error 400 because we are trying to add too large fields', () => {
+    it('should return error 406 because we are trying to add too large fields', () => {
       cy.request({
         method: 'PUT',
         url: 'company/universitat123',
@@ -117,11 +116,10 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Too large fields')
+          expect(response.status).to.eq(406)
+          expect(response.body.message).to.eq('Password invalid! Does not meet requirements')
         })
     })
-    */
     it('should return the modified company account', () => {
       cy.request({
         method: 'PUT',
@@ -137,14 +135,13 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(202)
+          expect(response.status).to.eq(200)
           expect(response.body.username).to.eq('universitat123')
         })
     })
   })
-  /*
   context('DELETE company/company_name', () => {
-    it('should return error 400 because we are trying to delete another company', () => {
+    it('should return error 401 because we are trying to delete another company', () => {
       cy.request({
         method: 'DELETE',
         url: 'company/cypressuniversity',
@@ -153,7 +150,7 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(401)
           expect(response.body.message).to.eq('Access denied')
         })
     })
@@ -175,12 +172,11 @@ describe('Companies resource', () => {
         url: 'register',
         body: {
           username: 'universitat123',
-          name: 'cypress',
-          surname: 'test',
+          name: 'ub',
           password: 'Password12',
           is_job_seeker: 0,
-          email: 'cypresscompany@cypress.com',
-          description: 'prova description'
+          email: 'ub@gmail.com',
+          description: 'hola, som la UB'
         }
       })
         .should((response) => {
@@ -189,5 +185,26 @@ describe('Companies resource', () => {
           expect(response.body.username).to.eq('universitat123')
         })
     })
-  }) */
+    it('should restore the job offer that the company universitat123 had', () => {
+      cy.request({
+        method: 'POST',
+        url: 'job_offer/universitat123',
+        auth: {username: localStorage.getItem('token')},
+        body: {
+          job_name: 'professor',
+          description: 'professor de EDS',
+          salary: '5000',
+          location: 'Barcelona',
+          contract_type: 'Indefinite',
+          working_hours: 8
+        }
+      })
+        .should((response) => {
+          cy.log(JSON.stringify(response.body))
+          expect(response.status).to.eq(201)
+          expect(response.body.company).to.eq('universitat123')
+          expect(response.body.job_name).to.eq('professor')
+        })
+    })
+  })
 })

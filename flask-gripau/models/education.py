@@ -17,7 +17,7 @@ class EducationsModel(db.Model):
     title = db.Column(db.String(128), unique=False, nullable=False)
     institution = db.Column(db.String(128), unique=False, nullable=False)
     start_date = db.Column(db.String(7), unique=False, nullable=False)
-    end_date = db.Column(db.String(7), unique=False, nullable=False)
+    end_date = db.Column(db.String(7), unique=False, nullable=True)
     currently = db.Column(db.Boolean, unique=False, nullable=False)
 
     def __init__(self, title, institution, start_date, end_date, currently):

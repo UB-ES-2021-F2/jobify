@@ -96,8 +96,8 @@ describe('Companies resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Wrong email format')
+          expect(response.status).to.eq(402)
+          expect(response.body.message).to.eq('Email wrong format!')
         })
     })
     it('should return error 400 because we are trying to add too large fields', () => {

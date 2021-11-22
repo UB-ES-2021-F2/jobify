@@ -14,6 +14,7 @@
     "cypress:run": "cypress run --spec \"**/*.spec.js\""
   },
   "dependencies": {
+    "apidoc": "^0.50.2",
     "axios": "^0.23.0",
     "bootstrap-vue": "^2.21.2",
     "firebase": "^9.4.1",

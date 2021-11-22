@@ -19,13 +19,13 @@ class JobSeekers(Resource):
         Returns:
           json object with the job seeker information
 
-        @api {get} /user/:username Request JobSeeker information
+        @api {get} /jobseeker/:username Request JobSeeker information
         @apiName GetJobSeeker
         @apiGroup JobSeeker
 
         @apiParam {String} username Username of the JobSeeker
         @apiSuccess {Object} jobseeker Data of the JobSeeker matching username
-        @apiError None Jobseeker with <code>username</code> was not foud
+        @apiError (Error 404) NotFound Jobseeker with <code>username</code> was not found
         """
         account = JobSeekersModel.find_by_username(username)
         if account:
@@ -43,6 +43,15 @@ class JobSeekers(Resource):
         Returns:
           status message
 
+        @api {delete} /jobseeker/:username Delete JobSeeker information
+        @apiName DeleteJobSeeker
+        @apiGroup JobSeeker
+
+        @apiParam {String} username Username of the JobSeeker
+        @apiSuccess {Object} jobseeker Data of the JobSeeker matching username
+        @apiError (Error 404) NotFound Jobseeker with <code>username</code> was not found
+        @apiError (Error 401) AccesDenied Acces denied (no valid authentication or authenticated user doesn't match username)
+        @apiError (Error 400) IternalError Backend error when updating the database
         """
         if username != g.user.username:
             return {'message': 'Access denied'}, 401
@@ -84,6 +93,25 @@ class JobSeekers(Resource):
         Returns:
           json object with the updated job seeker information
 
+        @api {put} /jobseeker/:username Update JobSeeker information
+        @apiName PutJobSeeker
+        @apiGroup JobSeeker
+
+        @apiParam {String} username Username of the job seeker
+        @apiParam {String} [name] First name of the job seeker
+        @apiParam {String} [surname] Last name of the job seeker
+        @apiParam {String} [password] Password of the account
+        @apiParam {String} [email] Email of the job seeker
+        @apiParam {String} [bio] Biography/information that the job seeker would want to share
+        @apiParam {Object[]} [skills] List of skills to add to the skills list of the job seeker
+        @apiParam {Object[]} [remove_skills] List of skills to remove from the skills list of the job seeker
+
+        @apiSuccess {Object} jobseeker Data of the JobSeeker matching username
+        @apiError (Error 400) NotFound Jobseeker with <code>username</code> was not found
+        @apiError (Error 405) InvalidPasswordFormat Password invalid! Does not meet requirements
+        @apiError (Error 402) InvalidEmailFormat Incorrect email format
+        @apiError (Error 408/409) EmailAlreadyExists This email is in use by another account
+        @apiError (Error 500) IternalError Backend error when updating the database
         """
 
         if username != g.user.username:

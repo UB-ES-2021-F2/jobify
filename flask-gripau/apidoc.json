@@ -1,0 +1,7 @@
+{
+    "name": "Jobify API",
+    "version": "0.3.0",
+    "description": "Jobify API for the jobify website",
+    "title": "Jobify API",
+    "url" : "https://ub-jobify.herokuapp.com/api"
+  }

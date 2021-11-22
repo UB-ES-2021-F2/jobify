@@ -56,7 +56,7 @@ class JobSeekers(Resource):
                 db.session.rollback()
                 return {'message': 'An error occurred deleting the account'}
 
-        return {'message': "Account doesn't exist"}, 400
+        return {'message': "Account doesn't exist"}, 404
 
     @auth.login_required(role='user')
     def put(self, username):
@@ -135,4 +135,4 @@ class JobSeekers(Resource):
                 return {"message": "An error occurred modifying the account."}, 500
             return account.json(), 202
 
-        return {'message': "Company doesn't exist"}, 400
+        return {'message': "Job seeker doesn't exist"}, 400

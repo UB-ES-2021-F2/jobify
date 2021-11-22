@@ -1,6 +1,17 @@
 html, body{
   height: 100%;
 }
+input:focus, button:focus, textarea:focus{
+  border-color: rgba(255,205, 0, 0.8) !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255,205, 0, 0.6) !important;
+  outline: 0 none !important;
+}
+
+button:focus{
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: 0 none !important;
+}
 
 #app{
   height: 100%;
@@ -212,8 +223,8 @@ html, body{
   width:200px;
   height:200px;
   border-radius: 50%;
+  margin-top: 2px;
 }
-
 
 .name-profile {
   font-size: 1.6rem;
@@ -221,15 +232,83 @@ html, body{
   margin: 20px 0;
 }
 
-#divName .content-table {
-  height: 71% !important;
+
+.edit-button {
+  background-color: transparent;
+  display: inline-block;
+  width: 10%;
+}
+
+.text-edit, .text-edit input, .text-edit textarea {
+  display: inline-block;
+  width: 80%;
+}
+
+.text-edit textarea {
+  resize: none;
+}
+
+.save-input {
+  display: inline-block;
+  /*width: 80%;*/
+}
+
+.save-button{
+  width: 10%;
+}
+
+.save-button button, .save-button {
+  background-color: transparent !important;
+  border: 0 !important;
+  display: inline-block !important;
+}
+
+.save-button button:hover {
+  background-color: transparent  !important;
+  border: 0 !important;
+}
+
+.save-button svg {
+  color: gray !important;
+}
+
+#default-avatar {
+  margin-bottom: 20px;
+}
+
+#divName {
+  margin-bottom: 114px;
 }
 
 #divName svg {
-  width: 15px;
-  height: auto;
   color: gray;
 }
+
+#divBio{
+  margin: 29px  0;
+  text-align: justify;
+}
+
+.custom-file-label::after{
+  background-color: #ffcd01;
+  color: #000;
+  border: 0 !important;
+}
+
+#editDescriptionField{
+  height: 80%;
+}
+
+  #editDescriptionField .save-button{
+    float: left;
+    margin-left: 40%;
+  }
+
+  #enableEditDescriptionButton{
+    float: right;
+    margin-right: 40%;
+    color: gray;
+  }
 
 .description-text {
   text-align: justify;
@@ -238,4 +317,46 @@ html, body{
 .company-info {
   text-align: left;
   margin: 15px 0;
+}
+
+#descriptionInput{
+  height: 100% !important;
+}
+
+.big-button {
+  background-color: #ffcd01 !important;
+  color: #000000 !important;
+  border: 0 !important;
+  display: inline-block !important;
+  width: 100%;
+}
+
+.big-button svg {
+  margin-left: 3px;
+}
+
+.browser-container{
+  text-align: left;
+}
+
+.was-validated .custom-file-input:invalid ~ .custom-file-label, .custom-file-input.is-invalid ~ .custom-file-label,
+.was-validated .form-control:valid, .form-control.is-valid, .was-validated .custom-select:valid, .custom-select.is-valid {
+  border-color: #ced4da !important;
+}
+
+@media (max-width: 960px) {
+  #divBio{
+    margin: 35px 0;
+  }
+}
+
+@media (max-width: 720px) {
+  #divBio{
+    margin: 35px 0;
+    padding: 0 35px;
+  }
+
+  #divName{
+    margin: 0;
+  }
 }

@@ -52,7 +52,7 @@ class Applications(Resource):
         job_offer = JobOfferModel.find_by_id(data.job_offer_id)
 
         if not user or not job_offer:
-            return {"message": "The user or the job offer doesn't exist."}, 500
+            return {"message": "The user or the job offer doesn't exist."}, 404
 
         new_application = ApplicationModel(data.info)
         new_application.job_seeker_username = user.username

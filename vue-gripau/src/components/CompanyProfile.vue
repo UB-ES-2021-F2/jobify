@@ -82,7 +82,7 @@
                     Upload  <b-icon-upload font-scale="1" shift-v="-2"></b-icon-upload>
                   </b-button>
                 </div>
-                <div class="name-profile">
+                <div id="nameCompany" class="name-profile">
                   {{company.company}} <!--Amazon Inc.-->
                 </div>
               </div>
@@ -98,7 +98,7 @@
                         <div class="text-edit" id="emailCompany" v-if="!edit.email">
                           <span>{{company.email}}</span> <!-- amazon@amazon.com -->
                         </div>
-                        <div v-if="edit.email" class="text-edit">
+                        <div id="editEmailField" v-if="edit.email" class="text-edit">
                           <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
                             <b-form-input id="emailInput" v-model="modify.email" rows="1" max-rows="2" type="email" :state="getValidationState(validationContext)"
                                           aria-describedby="input-2c-live-feedback"/>
@@ -225,7 +225,7 @@
                     <footer>
                       <b-container fluid style="font-family: 'Work Sans'">
                         <b-row no-gutters>
-                          <b-col lg v-if="job_offer.contract_type.length > 0">
+                          <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
                             <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
                           </b-col>
                           <b-col lg v-if="job_offer.workingHours > 0">
@@ -274,7 +274,7 @@
                       </b-form-group>
                     </validation-provider>
 
-                    <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
+                    <validation-provider name="ContractType"  :rules="{ max: 500}" v-slot="validationContext">
                       <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
                         <b-form-select id="contractTypeInput" v-model="jobOfferForm.contractType" :options="optionsContractType"  type="text" :state="getValidationState(validationContext)"
                                        aria-describedby="input-2-live-feedback"></b-form-select>
@@ -342,8 +342,8 @@
               </b-container>
               <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobView">Seen</b-button>
               <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-              <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-              <b-button v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+              <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+              <b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
               <b-modal
                 hide-backdrop
                 id="modal-apply"
@@ -358,6 +358,7 @@
                     label-for="name-input"
                   >
                     <b-form-textarea
+                      id="applyMessageInput"
                       v-model="applyMessage"
                       placeholder="Write here (optional)"
                       rows="3"
@@ -663,13 +664,15 @@ export default {
       var values = {
         job_name: this.jobOfferForm.jobName,
         description: this.jobOfferForm.description,
-        location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType
+        location: this.jobOfferForm.location
       }
-      if (this.jobOfferForm.salary !== '') {
+      if (this.jobOfferForm.contractType !== '' && this.jobOfferForm.contractType !== null) {
+        values.contract_type = this.jobOfferForm.contractType
+      }
+      if (this.jobOfferForm.salary !== '' && this.jobOfferForm.salary !== null) {
         values.salary = this.jobOfferForm.salary
       }
-      if (this.jobOfferForm.workingHours !== '') {
+      if (!isNaN(this.jobOfferForm.workingHours) && this.jobOfferForm.workingHours !== '') {
         values.working_hours = this.jobOfferForm.workingHours
       }
       console.log(values)
@@ -701,6 +704,9 @@ export default {
         .then((url) => {
           this.downloadImage = url
           console.log(url)
+        })
+        .catch(() => {
+          console.log('This avatar does not exist yet')
         })
     },
     onUpload () {

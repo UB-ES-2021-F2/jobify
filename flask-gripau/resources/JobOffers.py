@@ -9,6 +9,7 @@ from models.company import auth
 
 class JobOffers(Resource):
     """Resource related to the table JobOffer"""
+
     def get(self, id):
         """HTTP GET method that gets a specific job offer
 
@@ -65,7 +66,8 @@ class JobOffers(Resource):
         if not company:
             return {"message": "This company is not registered yet."}, 500
 
-        offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.location, data.salary, data.working_hours, data.contract_type)
+        offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.location, data.salary,
+                              data.working_hours, data.contract_type)
 
         company.job_offers.append(offer)
         try:
@@ -77,6 +79,7 @@ class JobOffers(Resource):
 
         return offer.json(), 201
 
+    @auth.login_required(role='user')
     def delete(self, id):
         """HTTP DELETE method to delete a specific job offer
 
@@ -87,8 +90,13 @@ class JobOffers(Resource):
           status message
 
         """
+
         offer = JobOfferModel.find_by_id(id)
+
         if offer:
+            if offer.company != g.user.username:
+                print(g.user.username)
+                return {'message': 'Access denied'}, 400
             offer.delete_from_db(db)
             return {'message': "Offer with id [{}] deleted".format(id)}, 200
 

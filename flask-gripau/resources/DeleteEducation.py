@@ -11,7 +11,7 @@ class DeleteEducation(Resource):
     def post(self, username):
 
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()
 
@@ -27,7 +27,7 @@ class DeleteEducation(Resource):
             education.delete_from_db(db)
             return {'message': "Education with id [{}] deleted".format(data.id)}, 200
 
-        return {'message': "Education with id [{}] don't exists".format(data.id)}, 400
+        return {'message': "Education with id [{}] doesn't exist".format(data.id)}, 404
 
 
 

@@ -1,5 +1,10 @@
-import { shallowMount, mount } from '@vue/test-utils'
 import Home from '../../src/components/Home.vue'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
+import VueRouter from 'vue-router'
+
+const localVue = createLocalVue()
+localVue.use(VueRouter)
+const router = new VueRouter()
 
 describe('Homepage not logged ', () => {
   let wrapper;
@@ -20,7 +25,9 @@ describe('Homepage not logged ', () => {
           }
         }
       }
-    })
+    },
+      localVue,
+      router)
   });
 
   it('welcome_message', () => {

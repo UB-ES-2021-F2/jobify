@@ -10,14 +10,22 @@ from resources.Register import validate_password, validate_email
 class JobSeekers(Resource):
     """Resource related to the table Jobseeker"""
     def get(self, username):
-        """HTTP GET method that gets a specific job seeker
-
+        """
+        HTTP GET method that gets a specific job seeker
+        
         Args:
           username: username of the job seeker to return
 
         Returns:
           json object with the job seeker information
 
+        @api {get} /user/:username Request JobSeeker information
+        @apiName GetJobSeeker
+        @apiGroup JobSeeker
+
+        @apiParam {String} username Username of the JobSeeker
+        @apiSuccess {Object} jobseeker Data of the JobSeeker matching username
+        @apiError None Jobseeker with <code>username</code> was not foud
         """
         account = JobSeekersModel.find_by_username(username)
         if account:
@@ -37,7 +45,7 @@ class JobSeekers(Resource):
 
         """
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         account = JobSeekersModel.find_by_username(username)
         if account:
@@ -54,9 +62,9 @@ class JobSeekers(Resource):
                 return {'message': "Account deleted"}, 200
             except Exception:
                 db.session.rollback()
-                return {'message': 'An error occurred deleting the account'}
+                return {'message': 'An error occurred deleting the account'}, 400
 
-        return {'message': "Account doesn't exist"}, 400
+        return {'message': "Account doesn't exist"}, 404
 
     @auth.login_required(role='user')
     def put(self, username):

@@ -47,6 +47,13 @@ class TestApplicationsResource(BaseTestCase):
         response = self.client.get('/api/application/test/1')
         self.assertEquals(response.status_code, 200)
 
+    def test_failed_get(self):
+        self._add_data()
+
+        response = self.client.get('/api/application/test/7')
+        self.assertEquals(response.status_code, 404)
+        self.assertDictEqual(response.json, {"application": None})
+
     def test_access_denied_post(self):
         self._add_data()
 

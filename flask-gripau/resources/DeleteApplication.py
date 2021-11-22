@@ -22,7 +22,7 @@ class DeleteApplication(Resource):
 
         """
         if job_seeker_username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()
 
@@ -37,4 +37,4 @@ class DeleteApplication(Resource):
             application.delete_from_db(db)
             return {'message': "Application with id [{}] deleted".format(data.id)}, 200
 
-        return {'message': "Application with id [{}] don't exists".format(data.id)}, 400
+        return {'message': "Application with id [{}] doesn't exist".format(data.id)}, 404

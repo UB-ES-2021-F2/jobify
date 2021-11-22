@@ -153,6 +153,9 @@ export default {
             this.companies_logos[comp.username] = url
             this.$forceUpdate()
           })
+          .catch(() => {
+            console.log('This avatar does not exist yet')
+          })
       }
       this.loadedLogos = true
       this.$forceUpdate()

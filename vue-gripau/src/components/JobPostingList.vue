@@ -37,7 +37,7 @@
             style="width: 90%; max-width: 600px"
             id="addJobOfferCard"
           >
-            <b-link id="showJobOfferModal" v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
+            <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
             <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
           </b-card>
         </b-row>
@@ -49,8 +49,7 @@
             align="left"
             id="jobOfferCard"
           >
-            <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            <footer>
+            <div>
               <b-container fluid style="font-family: 'Work Sans'">
                 <b-row no-gutters>
                   <b-col cols="8">
@@ -81,7 +80,8 @@
                   </b-col>
                 </b-row>
               </b-container>
-            </footer>
+              <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+            </div>
           </b-card>
         </b-row>
       </b-container>
@@ -234,8 +234,12 @@ export default {
         firebase.storage().ref(`images/${offer.company}/avatar`).getDownloadURL()
           .then((url) => {
             this.companies_logos[offer.company] = url
+            this.companies_logos[offer.company] = url
             console.log(url)
             this.$forceUpdate()
+          })
+          .catch(() => {
+            console.log('This avatar does not exist')
           })
       }
       this.$forceUpdate()

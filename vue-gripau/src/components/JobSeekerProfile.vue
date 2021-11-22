@@ -62,7 +62,7 @@
               </div>
             </div>
             <div id="divName" class="col-lg-8 text-left order-0 float-left">
-              <p class="page-title">
+              <p id="nameSurnameFields" class="page-title">
                 {{ name }} {{ surname }}
               </p>
             </div>
@@ -590,6 +590,9 @@ export default {
         .then((url) => {
           this.downloadImage = url
           console.log(url)
+        })
+        .catch(() => {
+          console.log('This avatar does not exist yet')
         })
     },
     onUpload () {

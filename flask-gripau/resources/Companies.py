@@ -17,6 +17,13 @@ class Companies(Resource):
         Returns:
           json object with the company information
 
+        @api {get} /company/<string:username> Get company information
+        @apiName GetCompany
+        @apiGroup Company
+
+        @apiParam {String} oompany Name of the company
+        @apiSuccess {Object} company Data of the Company with matching name
+        @apiError (Error 404) NotFound Company with <code>name</code> was not found
         """
         account = CompanyModel.find_by_username(company)
         if account:
@@ -34,6 +41,16 @@ class Companies(Resource):
         Returns:
           status message
 
+        @api {delete} /company/<string:username> Delete Company information
+        @apiName DeleteCompany
+        @apiGroup Company
+        @apiPermission user
+
+        @apiParam {String} username Username of the company
+        @apiSuccess {String} message Company deleted
+        @apiError (Error 404) NotFound Company with <code>username</code> was not found
+        @apiError (Error 401) AccesDenied Acces denied (no valid authentication or authenticated user doesn't match username)
+        @apiError (Error 500) IternalError Backend error when updating the database
         """
         if company != g.user.username:
             return {'message': 'Access denied'}, 401
@@ -48,7 +65,7 @@ class Companies(Resource):
                 return {'message': "Account deleted"}, 200
             except Exception:
                 db.session.rollback()
-                return {'message': 'An error occurred deleting the account'}
+                return {'message': 'An error occurred deleting the account'}, 500
         return {'message': "Account doesn't exist"}, 404
 
     @auth.login_required(role='user')
@@ -67,6 +84,27 @@ class Companies(Resource):
         Returns:
           json object with the updated company information
 
+        @api {put} /company/<string:username> Update Company information
+        @apiName PutCompany
+        @apiGroup Company
+        @apiPermission user
+
+        @apiParam {String} username Username of the job seeker
+        @apiParam {String} [name] First name of the job seeker
+        @apiParam {String} [surname] Last name of the job seeker
+        @apiParam {String} [password] Password of the account
+        @apiParam {String} [email] Email of the job seeker
+        @apiParam {String} [bio] Biography/information that the job seeker would want to share
+        @apiParam {Object[]} [skills] List of skills to add to the skills list of the job seeker
+        @apiParam {Object[]} [remove_skills] List of skills to remove from the skills list of the job seeker
+
+        @apiSuccess {Object} company Data of the Company matching username
+        @apiError (Error 400) NotFound Company with <code>username</code> was not found
+        @apiError (Error 401) AccesDenied Acces denied (no valid authentication or authenticated user doesn't match username)
+        @apiError (Error 405) InvalidPasswordFormat Password invalid! Does not meet requirements
+        @apiError (Error 402) InvalidEmailFormat Incorrect email format
+        @apiError (Error 408/409) EmailAlreadyExists This email is in use by another account
+        @apiError (Error 500) IternalError Backend error when updating the database
         """
 
         if company != g.user.username:

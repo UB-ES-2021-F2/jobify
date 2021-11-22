@@ -13,6 +13,13 @@ class CompanyList(Resource):
 
         Returns:
 
+        
+        @api {get} /companies/ Get all companies in database 
+        @apiName GetCompanies
+        @apiGroup Company
+
+        @apiSuccess {Object[]} companies Array of companies
+        @apiError (Error 404) NotFound No companies in database
         """
         companyList = [x.json() for x in CompanyModel.query.all()]
         if len(companyList) > 0:

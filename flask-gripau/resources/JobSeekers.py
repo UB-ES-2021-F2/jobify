@@ -19,7 +19,7 @@ class JobSeekers(Resource):
         Returns:
           json object with the job seeker information
 
-        @api {get} /jobseeker/:username Request JobSeeker information
+        @api {get} /jobseeker/<string:username> Get JobSeeker information
         @apiName GetJobSeeker
         @apiGroup JobSeeker
 
@@ -43,12 +43,13 @@ class JobSeekers(Resource):
         Returns:
           status message
 
-        @api {delete} /jobseeker/:username Delete JobSeeker information
+        @api {delete} /jobseeker/<string:username> Delete JobSeeker information
         @apiName DeleteJobSeeker
         @apiGroup JobSeeker
+        @apiPermission user
 
         @apiParam {String} username Username of the JobSeeker
-        @apiSuccess {Object} jobseeker Data of the JobSeeker matching username
+        @apiSuccess {String} message Account deleted
         @apiError (Error 404) NotFound Jobseeker with <code>username</code> was not found
         @apiError (Error 401) AccesDenied Acces denied (no valid authentication or authenticated user doesn't match username)
         @apiError (Error 400) IternalError Backend error when updating the database
@@ -93,9 +94,10 @@ class JobSeekers(Resource):
         Returns:
           json object with the updated job seeker information
 
-        @api {put} /jobseeker/:username Update JobSeeker information
+        @api {put} /jobseeker/<string:username> Update JobSeeker information
         @apiName PutJobSeeker
         @apiGroup JobSeeker
+        @apiPermission user
 
         @apiParam {String} username Username of the job seeker
         @apiParam {String} [name] First name of the job seeker

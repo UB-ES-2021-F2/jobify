@@ -24,7 +24,7 @@ describe('Logged company', () => {
       cy.get('[id=jobPostingsNavbarButton]').click()
       cy.url().should('eq', 'http://localhost:5000/job_postings')
       cy.get('[id=profileNavbarButton]').should('exist')
-      cy.get('[id=addJobOfferCard]').should('exist')
+      cy.get('[id=showJobOfferModal]').should('exist')
       cy.get('[id=jobOfferCard]').should('exist')
     })
     it('should go to the job offer professor ub description page', () => {
@@ -43,7 +43,7 @@ describe('Logged company', () => {
       cy.get('[id=jobPostingsButton]').click()
       cy.url().should('eq', 'http://localhost:5000/job_postings')
       cy.get('[id=profileNavbarButton]').should('exist')
-      cy.get('[id=addJobOfferCard]').should('exist')
+      cy.get('[id=showJobOfferModal]').should('exist')
     })
     it('should delete a job offer', () => {
       cy.get('[id=jobOfferCard]').should('exist')

@@ -53,7 +53,7 @@ describe('Logged company', () => {
     })
     it('should post a new job offer from job postings page', () => {
       cy.get('[id=jobOfferCard]').should('not.exist')
-      cy.get('[id=addJobOfferButton]').click()
+      cy.get('[id=showJobOfferModal]').click()
       cy.get('[id=job-offer-modal]').should('exist')
       cy.get('[id=jobNameInput]').type('professor')
       cy.get('[id=salaryInput]').type('5000')

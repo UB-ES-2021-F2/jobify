@@ -439,6 +439,21 @@ button:focus{
       background-color: #dc3545 !important;
     }
 
+.job-offer-button-apply {
+  display: inline-block;
+  margin: auto;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+  .job-offer-button-apply button {
+    width: 100%;
+  }
+
+    .job-offer-button-apply:hover button{
+      border: 1px solid #28a745 !important;
+      background-color: #28a745 !important;
+    }
 /****** MEDIA ******/
 @media (max-width: 960px) {
   #divBio{

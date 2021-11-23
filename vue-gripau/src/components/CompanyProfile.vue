@@ -332,11 +332,17 @@
                       <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
                     </b-button>
                   </div>
+                  <div class="col-12 col-sm-12 col-lg-6 job-offer-button-apply">
+                    <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6 job-offer-button-applied">
+                    <b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+                  </div>
                 </div>
               </div>
 
-              <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-              <b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+              <!--<b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>-->
+              <!--<b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>-->
               <b-modal
                 hide-backdrop
                 id="modal-apply"

@@ -74,7 +74,7 @@ describe('DeleteWorkExperience resource', () => {
       })
         .should((response) => {
           expect(response.status).to.eq(404)
-          expect(response.body.message).to.eq('Work experience with id [0] don\'t exists')
+          expect(response.body.message).to.eq('Work experience with id [0] doesn\'t exist')
         })
     })
   })

@@ -53,7 +53,7 @@ describe('DeleteEducation resource', () => {
       })
         .should((response) => {
           expect(response.status).to.eq(404)
-          expect(response.body.message).to.eq('Education with id [0] don\'t exists')
+          expect(response.body.message).to.eq('Education with id [0] doesn\'t exist')
         })
     })
     it('should return the education added to the user lordsergi', () => {

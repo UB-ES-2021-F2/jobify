@@ -113,7 +113,7 @@ describe('Logged company', () => {
       cy.url().should('eq', 'http://localhost:5000/company/universitat123')
       cy.get('[id=activeProfileNavbarButton]').should('exist')
       cy.get('[id=profileNavbarButton]').should('not.exist')
-      cy.get('[id=companyNameNavbar').should('contain', 'ub')
+      cy.get('[id=companyNameNavbar]').should('contain', 'ub')
     })
     it('should edit description', () => {
       cy.get('[id=descriptionCompany1]').should('contain', 'hola, som la UB')

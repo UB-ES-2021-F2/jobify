@@ -44,10 +44,10 @@ class Register(Resource):
         if not data.username.isalnum():
             return {'message': "Username must contain only alphanumeric characters"}, 400
         elif not all(x.isalpha() or x.isspace() for x in data.name):
-            return {'message': "Name must contain only alphanumeric characters or spaces"}, 400
+            return {'message': "Name must contain only alphabetic characters or spaces"}, 400
         if data.surname:
             if not data.surname.isalpha():
-                return {'message': "Surname must contain only alphanumeric characters"}, 400
+                return {'message': "Surname must contain only alphabetic characters"}, 400
 
         # Convert username to lowercase
         data.username = data.username.lower()

@@ -29,5 +29,23 @@ describe('Homepage not logged ', () => {
       localVue,
       router)
   });
+  it('welcome_message', () => {
+    expect(wrapper.vm.welcome_message).toEqual('Welcome to Jobify!')
+  })
+  it('logged', () => {
+    expect(wrapper.vm.logged).toEqual(false)
+  })
+  it('is_jobseeker', () => {
+    expect(wrapper.vm.is_jobseeker).toEqual(false)
+  })
+  it('is_company', () => {
+    expect(wrapper.vm.is_company).toEqual(false)
+  })
+  it('token', () => {
+    expect(wrapper.vm.token).toEqual(null)
+  })
+  it('is_admin', () => {
+    expect(wrapper.vm.is_admin).toEqual(false)
+  })
 
 })

@@ -666,10 +666,11 @@ export default {
     },
     deleteJobOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
-      axios.delete(path)
+      axios.delete(path, {
+        auth: {username: this.token}})
         .then((res) => {
           this.getCompanyJobOffers()
-          // this.onJobView()
+          this.jobOfferView = false
         })
         .catch((error) => {
           console.error(error)

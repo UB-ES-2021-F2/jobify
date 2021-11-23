@@ -32,24 +32,8 @@
 
     <b-container>
       <b-row>
-        <!-- Local Navbar
-        <b-col style="background-color: #00000007" cols="">
-          <b-nav sticky toggleable="false" type="light" variant="light" vertical>
-            <b-navbar-brand style="text-align: center;width: 100%;" >
-              <div >
-                <h2 id="companyNameNavbar" style="font-family: 'Vollkorn', serif; text-align:center">{{company.company}}</h2>
-                <b-icon icon="building"></b-icon>
-              </div>
-            </b-navbar-brand>
-            <b-nav-item active id="activeProfileViewButton" style="text-decoration: underline; text-decoration-thickness:5px; text-decoration-color: #ffc107; text-align: center; width: 100%" v-if="this.profileView" @click="onProfileView()">Profile</b-nav-item>
-            <b-nav-item v-else id="profileViewButton" style="text-align: center; width: 100%" @click="onProfileView()">Profile</b-nav-item>
-            <b-nav-item active id="activeJobViewButton" class="active" style="text-decoration: underline; text-decoration-thickness:5px; text-decoration-color: #ffc107; text-align: center; width: 100%" v-if="this.jobView" @click="onJobView()">Jobs</b-nav-item>
-            <b-nav-item v-else id="jobViewButton" style="text-align: center; width: 100%" @click="onJobView()">Jobs</b-nav-item>
-          </b-nav>
-        </b-col>
-        Local Navbar -->
         <b-col cols="12">
-          <div id="profileView" v-if="this.profileView && !this.jobView">
+          <div id="profileView" v-if="!this.jobOfferView">
             <div class="row">
               <div id="divAvatar" class="col-12 col-sm-12 col-md-6 col-lg-3">
                 <div v-if="downloadImage != null" id="firebase-avatar">
@@ -59,8 +43,8 @@
                   <img :src="previewSrc" alt="">
                 </div>
                 <div v-else id="default-avatar">
-                <img :src="require('../assets/images/company_avatar.png')" alt="">
-              </div>
+                  <img :src="require('../assets/images/company_avatar.png')" alt="">
+                </div>
                 <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 browser-container">
                   <b-form-group id="fileInput">
                     <b-form-file center
@@ -71,13 +55,6 @@
                                  accept="image/jpeg, image/png, image/gif"
                     ></b-form-file>
                   </b-form-group>
-                  <!--<div class="container-md-5 p-2 align-items-center" v-if="file">
-                    <img :src="previewSrc" height='128'>
-                    <br>
-                    <br>
-                    <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
-                    <br>
-                  </div>-->
                   <b-button v-if="file" class="big-button" variant="success" :disabled="!file" @click="onUpload">
                     Upload  <b-icon-upload font-scale="1" shift-v="-2"></b-icon-upload>
                   </b-button>
@@ -193,56 +170,54 @@
 
           </div>
           <!-- Job Offers page -->
-          <div id="jobView"> <!--v-if="this.profileView === false && this.jobView === true"> -->
+          <div id="jobView">
             <!-- Job offers company view -->
             <div id="jobOffersCompanyView" v-if="!this.jobOfferView">
-              <h2 style="font-family: 'Vollkorn', serif"> Job Offers </h2>
-              <b-container fluid>
-                <b-row align-h="center" v-if="edit_mode">
-                  <b-card
-                    tag="article"
-                    class="text-center mb-2"
-                    style="width: 90%; max-width: 600px"
-                    id="addJobOfferCard"
-                  >
-                    <b-link id="showJobOfferModal" v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
-                    <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
-                  </b-card>
-                </b-row>
-                <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
-                  <b-card
-                    :title="job_offer.job_name"
-                    tag="article"
-                    class="mb-2"
-                    style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
-                    align="left"
-                    id="jobOfferCard"
-                  >
-                    <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-                    <b-card-text id="companyName">
-                      {{ job_offer.company_name }}
-                    </b-card-text>
-                    <footer>
-                      <b-container fluid style="font-family: 'Work Sans'">
-                        <b-row no-gutters>
-                          <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
-                            <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                          </b-col>
-                          <b-col lg v-if="job_offer.workingHours > 0">
-                            <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                          </b-col>
-                          <b-col lg>
-                            <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                          </b-col>
-                          <b-col lg>
-                            <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                          </b-col>
-                        </b-row>
-                      </b-container>
-                    </footer>
-                  </b-card>
-                </b-row>
-              </b-container>
+              <h2 class="title-offer"> Job Offers </h2>
+              <b-link v-if="edit_mode" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
+                <b-icon icon="patch-plus" font-scale="2"></b-icon>
+              </b-link>
+              <div class="container">
+                <div class="row" align-h="center">
+                  <!--<div class="col-6">
+                    <b-card tag="article" class="text-center mb-2" id="addJobOfferCard">
+
+                      <p class="h1"></p>
+                    </b-card>
+                  </div>-->
+                  <div class="col-12 col-sm-12 col-md-6" align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
+                    <b-card :title="job_offer.job_name"
+                            tag="article"
+                            align="left"
+                            id="jobOfferCard"
+                    >
+                      <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+                      <b-card-text id="companyName">
+                        {{ job_offer.company_name }}
+                      </b-card-text>
+                      <footer>
+                        <b-container fluid style="font-family: 'Work Sans'">
+                          <b-row no-gutters>
+                            <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
+                              <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                            </b-col>
+                            <b-col lg v-if="job_offer.workingHours > 0">
+                              <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                            </b-col>
+                            <b-col lg>
+                              <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                            </b-col>
+                            <b-col lg>
+                              <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                            </b-col>
+                          </b-row>
+                        </b-container>
+                      </footer>
+                    </b-card>
+                  </div>
+                </div>
+
+              </div>
               <b-modal ref="jobOfferModal"
                        id="job-offer-modal"
                        title="Post a job offer"
@@ -308,40 +283,58 @@
             </div>
             <!-- /Job offers company view -->
             <!-- Job offer view -->
-            <div id="jobOfferCompanyView" v-if="this.jobOfferView">
-              <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
-              <b-container align="left">
-                <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
-                  <p>{{jobOfferCurrentView.description}}</p>
+            <div id="jobOfferCompanyView" v-if="this.jobOfferView" class="job-offer-container">
+              <h2 id="jobOfferJobName" class="job-offer-title">{{jobOfferCurrentView.jobName}}</h2>
+              <div class="container">
+                <div class="row row-attributes">
+                  <div class="col-12">
+                    <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text">{{jobOfferCurrentView.description}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="companyIcon" icon="building"></b-icon>{{jobOfferCurrentView.companyName}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="locationIcon2" icon="geo-alt-fill"></b-icon>{{jobOfferCurrentView.location}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="contractIcon" icon="journal-text"></b-icon>{{jobOfferCurrentView.contractType}} contract</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="hoursIcon" icon="hourglass-split"></b-icon>{{jobOfferCurrentView.workingHours}} hours/week</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="cash"></b-icon>{{jobOfferCurrentView.salary}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="calendar-day"></b-icon>First published on: {{jobOfferCurrentView.publicationDate}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
+                    <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
+                      <!--<b-icon id="salaryIcon" icon="arrow-left"></b-icon>--> Back
+                    </b-button>
+                  </div>
+                  <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
+                    <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
+                      <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
+                    </b-button>
+                  </div>
                 </div>
-                <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
-                  <p>{{jobOfferCurrentView.companyName}}</p>
-                </div>
-                <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
-                  <p>{{jobOfferCurrentView.location}}</p>
-                </div>
-                <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
-                  <p>{{jobOfferCurrentView.contractType}}</p>
-                </div>
-                <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
-                  <p>{{jobOfferCurrentView.workingHours}}</p>
-                </div>
-                <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
-                  <p>{{jobOfferCurrentView.salary}}</p>
-                </div>
-                <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
-                  <p>{{jobOfferCurrentView.publicationDate}}</p>
-                </div>
-              </b-container>
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobView">Seen</b-button>
-              <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+              </div>
+
               <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
               <b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
               <b-modal
@@ -409,8 +402,6 @@ export default {
         sector: '',
         location: ''
       },
-      profileView: true,
-      jobView: false,
       jobOfferView: false,
       logged: false,
       is_jobseeker: true,
@@ -506,23 +497,8 @@ export default {
     onCompanies () {
       this.$router.push('/companies')
     },
-    onProfileView () {
-      this.profileView = true
-      this.jobView = false
-      this.jobOfferView = false
-    },
-    onJobView () {
-      this.profileView = false
-      this.jobView = true
-      this.edit.description = false
-      this.edit.sector = false
-      this.edit.location = false
-      this.jobOfferView = false
-    },
     onJobOfferView () {
       this.jobOfferView = true
-      this.jobView = true
-      this.profileView = false
     },
     onLogOut () {
       this.$store.commit('logout')
@@ -693,7 +669,7 @@ export default {
       axios.delete(path)
         .then((res) => {
           this.getCompanyJobOffers()
-          this.onJobView()
+          // this.onJobView()
         })
         .catch((error) => {
           console.error(error)
@@ -756,6 +732,9 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    onSeenOffer () {
+      this.jobOfferView = false
     }
   },
   watch: {
@@ -775,8 +754,6 @@ export default {
     this.token = this.$store.state.token
     this.is_admin = this.$store.state.isAdmin
     this.edit_mode = this.username === this.company_name_profile
-    this.jobView = false
-    this.profileView = true
     this.getCompany()
     this.downloadAvatar()
     this.getCompanyJobOffers()

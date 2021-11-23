@@ -232,7 +232,6 @@ button:focus{
   margin: 20px 0;
 }
 
-
 .edit-button {
   background-color: transparent;
   display: inline-block;
@@ -278,6 +277,7 @@ button:focus{
 
 #divName {
   margin-bottom: 114px;
+  padding: 0 35px;
 }
 
 #divName svg {
@@ -344,9 +344,109 @@ button:focus{
   border-color: #ced4da !important;
 }
 
+.card {
+  margin: 14px 0;
+}
+
+.card-body {
+  min-height: 170px;
+}
+
+.title-offer{
+  font-family: 'Vollkorn', serif;
+  display: inline-block
+}
+
+.add-offer{
+  display: inline-block;
+  margin: 0 10px;
+  color: unset;
+}
+
+.add-offer:hover{
+  color: unset;
+}
+
+/****** JOB OFFER ******/
+
+.row-attributes {
+  text-align: left;
+}
+
+.job-offer-container {
+  border: 1px solid #9e9e9d;
+  border-radius: 20px;
+  text-align: center;
+  width: 55%;
+  margin: 20px auto;
+}
+
+.job-offer-title {
+  font-family: 'Vollkorn', serif;
+  margin: 30px 0;
+}
+
+.job-offer-field-container {
+  padding: 10px;
+}
+
+  .job-offer-field-name {
+    font-family: 'Vollkorn', serif;
+    font-size: 1.5rem;
+  }
+
+  .job-offer-field-text {
+  }
+
+  .job-offer-field-text svg {
+    margin-right: 10px;
+  }
+
+.job-offer-button-back {
+  display: inline-block;
+  margin: auto;
+  margin-bottom:20px;
+}
+
+  .job-offer-button-back button, .job-offer-button-delete button{
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  .job-offer-button-back svg {
+    display: inline-block;
+    color: #9e9e9d;
+  }
+
+    .job-offer-button-back:hover button{
+      border: 1px solid #ffc107 !important;
+      background-color: #ffc107 !important;
+    }
+
+.job-offer-button-delete {
+  display: inline-block;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+  .job-offer-button-delete svg {
+    display: inline-block;
+    color: #9e9e9d;
+  }
+
+    .job-offer-button-delete:hover button{
+      border: 1px solid #dc3545 !important;
+      background-color: #dc3545 !important;
+    }
+
+/****** MEDIA ******/
 @media (max-width: 960px) {
   #divBio{
     margin: 35px 0;
+  }
+
+  .job-offer-container{
+    width: 90%;
   }
 }
 

@@ -28,9 +28,12 @@
     <!--/.Navbar -->
     <!-- Job offers company view -->
     <div id="jobPostingsView" v-show="!this.jobOfferView">
-      <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
+      <h2 class="title-offer"> {{ message }} </h2>
+      <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
+        <b-icon icon="patch-plus" font-scale="2"></b-icon>
+      </b-link>
       <b-container fluid>
-        <b-row align-h="center" v-if="is_company">
+        <!--<b-row align-h="center" v-if="is_company">
           <b-card
             tag="article"
             class="text-center mb-2"
@@ -40,7 +43,7 @@
             <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
             <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
           </b-card>
-        </b-row>
+        </b-row>-->
         <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
           <b-card
             tag="article"

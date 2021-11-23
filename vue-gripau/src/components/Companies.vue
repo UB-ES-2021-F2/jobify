@@ -46,10 +46,10 @@
                       <p class="titleCompanyCard">{{ company.company }}</p>
                     </b-card-text>
                     <b-col lg>
-                      <b-icon id="emailIcon" icon="envelope"></b-icon> {{company.email}}
+                      <b-icon id="emailIcon" icon="envelope-fill"></b-icon> {{company.email}}
                     </b-col>
                     <b-col lg v-if="company.sector !== 'Unknown'">
-                      <b-icon id="sectorIcon" icon="building"></b-icon> {{ company.sector }}
+                      <b-icon id="sectorIcon" icon="inboxes-fill"></b-icon> {{ company.sector }}
                     </b-col>
                     <b-col lg v-if="company.location !== 'Unknown'">
                       <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
@@ -152,6 +152,9 @@ export default {
           .then((url) => {
             this.companies_logos[comp.username] = url
             this.$forceUpdate()
+          })
+          .catch(() => {
+            console.log('This avatar does not exist yet')
           })
       }
       this.loadedLogos = true

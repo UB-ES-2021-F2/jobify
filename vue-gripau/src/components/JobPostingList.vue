@@ -28,19 +28,22 @@
     <!--/.Navbar -->
     <!-- Job offers company view -->
     <div id="jobPostingsView" v-show="!this.jobOfferView">
-      <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
+      <h2 class="title-offer"> {{ message }} </h2>
+      <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
+        <b-icon icon="patch-plus" font-scale="2"></b-icon>
+      </b-link>
       <b-container fluid>
-        <b-row align-h="center" v-if="is_company">
+        <!--<b-row align-h="center" v-if="is_company">
           <b-card
             tag="article"
             class="text-center mb-2"
             style="width: 90%; max-width: 600px"
             id="addJobOfferCard"
           >
-            <b-link id="showJobOfferModal" v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
+            <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
             <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
           </b-card>
-        </b-row>
+        </b-row>-->
         <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
           <b-card
             tag="article"
@@ -49,8 +52,7 @@
             align="left"
             id="jobOfferCard"
           >
-            <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            <footer>
+            <div>
               <b-container fluid style="font-family: 'Work Sans'">
                 <b-row no-gutters>
                   <b-col cols="8">
@@ -81,7 +83,8 @@
                   </b-col>
                 </b-row>
               </b-container>
-            </footer>
+              <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+            </div>
           </b-card>
         </b-row>
       </b-container>
@@ -234,8 +237,12 @@ export default {
         firebase.storage().ref(`images/${offer.company}/avatar`).getDownloadURL()
           .then((url) => {
             this.companies_logos[offer.company] = url
+            this.companies_logos[offer.company] = url
             console.log(url)
             this.$forceUpdate()
+          })
+          .catch(() => {
+            console.log('This avatar does not exist')
           })
       }
       this.$forceUpdate()

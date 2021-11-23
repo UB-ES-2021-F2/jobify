@@ -1,2 +1,2 @@
 [run]
-omit = Testing/*, migrations/*, venv/*, add_data.py, resources/*
+omit = Testing/*, migrations/*, venv/*, add_data.py

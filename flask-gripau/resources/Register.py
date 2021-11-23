@@ -10,6 +10,7 @@ reg_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 
 class Register(Resource):
     """Resource that manages the registration to the app"""
+
     def post(self):
         """HTTP POST method to register in the application
         Request fields:
@@ -43,10 +44,10 @@ class Register(Resource):
         if not data.username.isalnum():
             return {'message': "Username must contain only alphanumeric characters"}, 400
         elif not all(x.isalpha() or x.isspace() for x in data.name):
-            return {'message': "Name must contain only alphanumeric characters or spaces"}, 400
+            return {'message': "Name must contain only alphabetic characters or spaces"}, 400
         if data.surname:
             if not data.surname.isalpha():
-                return {'message': "Surname must contain only alphanumeric characters"}, 400
+                return {'message': "Surname must contain only alphabetic characters"}, 400
 
         # Convert username to lowercase
         data.username = data.username.lower()
@@ -101,6 +102,7 @@ def validate_password(password):
     # searching regex
     mat = re.search(pat, password)
     return mat
+
 
 def validate_email(email):
     """Function that validates that the email matches the requirements

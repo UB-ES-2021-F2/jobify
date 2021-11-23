@@ -32,7 +32,6 @@
     <b-container fluid>
       <b-row align-h="center" v-for="(company) in companies" :key="company.id">
         <b-card
-          :title="company.company"
           tag="article"
           class="mb-2"
           style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
@@ -43,17 +42,18 @@
               <b-container fluid style="font-family: 'Work Sans'">
                 <b-row no gutters>
                   <b-col cols="8">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item border-0">
-                        <b-icon id="emailIcon" icon="envelope"></b-icon> {{company.email}}
-                      </li>
-                      <li class="list-group-item border-0" v-if="company.sector !== 'Unknown'">
-                        <b-icon id="sectorIcon" icon="building"></b-icon> {{ company.sector }}
-                      </li>
-                      <li class="list-group-item border-0" v-if="company.location !== 'Unknown'">
-                        <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
-                      </li>
-                    </ul>
+                    <b-card-text id="companyName" >
+                      <p class="titleCompanyCard">{{ company.company }}</p>
+                    </b-card-text>
+                    <b-col lg>
+                      <b-icon id="emailIcon" icon="envelope-fill"></b-icon> {{company.email}}
+                    </b-col>
+                    <b-col lg v-if="company.sector !== 'Unknown'">
+                      <b-icon id="sectorIcon" icon="inboxes-fill"></b-icon> {{ company.sector }}
+                    </b-col>
+                    <b-col lg v-if="company.location !== 'Unknown'">
+                      <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
+                    </b-col>
                   </b-col>
                   <b-col v-if="companies_logos[company.username]!=null" cols="4">
                     <img v-if="loadedLogos" class="card-img" :src="companies_logos[company.username]" alt=""
@@ -99,20 +99,20 @@ export default {
   methods: {
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({path: '/login'})
+      this.$router.push('/login')
     },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({path: '/'})
+      this.$router.push('/')
       this.logged = false
       this.username = null
       this.token = null
@@ -121,13 +121,13 @@ export default {
       this.is_admin = null
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     onCompany (username) {
-      this.$router.replace({ path: '/company/' + username })
+      this.$router.push('/company/' + username)
     },
     getCompanies () {
       const path = Vue.prototype.$API_BASE_URL + 'companies'
@@ -152,6 +152,9 @@ export default {
           .then((url) => {
             this.companies_logos[comp.username] = url
             this.$forceUpdate()
+          })
+          .catch(() => {
+            console.log('This avatar does not exist yet')
           })
       }
       this.loadedLogos = true
@@ -185,5 +188,11 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.titleCompanyCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 0.3rem;
 }
 </style>

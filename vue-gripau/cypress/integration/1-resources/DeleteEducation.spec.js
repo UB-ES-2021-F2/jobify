@@ -37,7 +37,7 @@ describe('DeleteEducation resource', () => {
         failOnStatusCode: false
       })
         .should((response) => {
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(401)
           expect(response.body.message).to.eq('Access denied')
         })
     })
@@ -52,7 +52,7 @@ describe('DeleteEducation resource', () => {
         failOnStatusCode: false
       })
         .should((response) => {
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(404)
           expect(response.body.message).to.eq('Education with id [0] don\'t exists')
         })
     })

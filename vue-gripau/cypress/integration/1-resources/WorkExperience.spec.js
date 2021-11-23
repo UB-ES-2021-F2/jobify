@@ -59,7 +59,7 @@ describe('WorkExperience resource', () => {
           expect(response.body.work_experience.job_name).to.eq('work experience test cypress')
         })
     })
-    it('should return error 400 because we are trying to add a work experience to another user', () => {
+    it('should return error 401 because we are trying to add a work experience to another user', () => {
       cy.request({
         method: 'POST',
         url: 'work_experience/cytest',
@@ -76,7 +76,7 @@ describe('WorkExperience resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(401)
           expect(response.body.message).to.eq('Access denied')
         })
     })

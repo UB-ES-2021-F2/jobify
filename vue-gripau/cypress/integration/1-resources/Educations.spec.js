@@ -58,7 +58,7 @@ describe('Educations resource', () => {
           expect(response.body.education.title).to.eq('education test cypress')
         })
     })
-    it('should return error 400 because we are trying to add a education to another user', () => {
+    it('should return error 401 because we are trying to add a education to another user', () => {
       cy.request({
         method: 'POST',
         url: 'education/cytest',
@@ -74,7 +74,7 @@ describe('Educations resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(401)
           expect(response.body.message).to.eq('Access denied')
         })
     })

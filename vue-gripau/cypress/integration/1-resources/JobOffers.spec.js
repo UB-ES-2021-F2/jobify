@@ -49,7 +49,7 @@ describe('JobOffers resource', () => {
           expect(response.body.message).to.eq('Offer with id [1] deleted')
         })
     })
-    it('should return error 400 because there is no offer with id 0', () => {
+    it('should return error 404 because there is no offer with id 0', () => {
       cy.request({
         method: 'DELETE',
         url: 'job_offer/0',
@@ -57,7 +57,7 @@ describe('JobOffers resource', () => {
         failOnStatusCode: false
       })
         .should((response) => {
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(404)
         })
     })
   })
@@ -83,7 +83,7 @@ describe('JobOffers resource', () => {
           expect(response.body.job_name).to.eq('job offer cypress test')
         })
     })
-    it('should return error 400 because we are trying to add a job offer with another company', () => {
+    it('should return error 401 because we are trying to add a job offer with another company', () => {
       cy.request({
         method: 'POST',
         url: 'job_offer/cypressuniversity',
@@ -100,7 +100,7 @@ describe('JobOffers resource', () => {
       })
         .should((response) => {
           cy.log(JSON.stringify(response.body))
-          expect(response.status).to.eq(400)
+          expect(response.status).to.eq(401)
           expect(response.body.message).to.eq('Access denied')
         })
     })

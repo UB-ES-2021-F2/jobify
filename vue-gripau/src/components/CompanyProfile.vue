@@ -448,7 +448,7 @@ export default {
   },
   methods: {
     getApplied () {
-      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
+      const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username + '/' + this.jobOfferCurrentView.id
       axios.get(path, {
         auth: {username: this.token}})
         .then((res) => {

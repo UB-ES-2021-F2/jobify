@@ -138,7 +138,7 @@ export default {
   },
   methods: {
     getApplicants () {
-      const path = Vue.prototype.$API_BASE_URL + '/offer_applicants/' + this.id
+      const path = Vue.prototype.$API_BASE_URL + 'offer_applicants/' + this.id
       axios.get(path, {
         auth: {username: this.token}})
         .then((res) => {
@@ -154,7 +154,7 @@ export default {
         })
     },
     getApplied () {
-      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.id
+      const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username + '/' + this.id
       axios.get(path, {
         auth: {username: this.token}})
         .then((res) => {
@@ -259,9 +259,12 @@ export default {
     this.token = this.$store.state.token
     this.is_admin = this.$store.state.isAdmin
     this.id = this.$route.path.split('job_posting/')[1]
-    this.getApplied()
+    if (this.is_jobseeker) {
+      this.getApplied()
+    } else {
+      this.getApplicants()
+    }
     this.getJobOffer(this.id)
-    this.getApplicants()
   },
   computed: mapState({
     token: state => state.token,

@@ -1,6 +1,8 @@
 from flask_restful import Resource
+from flask import g
 
-from models import ApplicationModel, JobSeekersModel
+from models import ApplicationModel, JobSeekersModel, JobOfferModel
+from models.company import auth
 
 
 class JobOfferApplicants(Resource):

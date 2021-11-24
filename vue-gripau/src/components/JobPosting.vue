@@ -67,7 +67,7 @@
               <div>
                 <b-table :fields="fields" striped hover :items="this.applicants_list">
                     <template #cell(Profile)="data">
-                      <router-link :to="`/job_seeker/${data.value}`" replace>{{data.value}}</router-link>
+                      <router-link :to="`/job_seeker/${data.value}`">{{data.value}}</router-link>
                     </template>
                 </b-table>
               </div>

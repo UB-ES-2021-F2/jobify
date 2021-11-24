@@ -14,11 +14,11 @@ class JobOfferApplicants(Resource):
         :return: list of all the applicants of an offer
         """
         # check if this job offer is made by the company logged
-        offer = JobOfferModel.find_by_id(id)
+        offer = JobOfferModel.find_by_id(job_offer_id)
         if offer:
             if offer.company != g.user.username:
                 return {'message': 'Access denied'}, 401
-                
+
             applications = [x for x in ApplicationModel.find_by_job_offer_id(job_offer_id)]
             applicants = []
             for a in applications:

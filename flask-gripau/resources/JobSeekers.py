@@ -4,17 +4,20 @@ from models import JobSeekersModel, CompanyModel
 from db import db
 from models.job_seeker import auth
 from models.skill import SkillsModel
+from resources.Register import validate_password, validate_email
 
 
 class JobSeekers(Resource):
-    """
-    Resource related to the table Jobseeker
-    """
+    """Resource related to the table Jobseeker"""
     def get(self, username):
-        """
-        HTTP GET method that gets a specific job seeker
-        :param username: username of the job seeker to return
-        :return: json object with the job seeker information
+        """HTTP GET method that gets a specific job seeker
+
+        Args:
+          username: username of the job seeker to return
+
+        Returns:
+          json object with the job seeker information
+
         """
         account = JobSeekersModel.find_by_username(username)
         if account:
@@ -24,26 +27,43 @@ class JobSeekers(Resource):
 
     @auth.login_required(role='user')
     def delete(self, username):
-        """
-        HTTP DELETE method to delete a specific job seeker
-        :param username: username of the job seeker to delete
-        :return: status message
+        """HTTP DELETE method to delete a specific job seeker
+
+        Args:
+          username: username of the job seeker to delete
+
+        Returns:
+          status message
+
         """
         if username != g.user.username:
             return {'message': 'Access denied'}, 400
 
         account = JobSeekersModel.find_by_username(username)
         if account:
-            account.delete_from_db(db)
-            return {'message': "Account deleted"}, 200
+            try:
+                for education in account.educations:
+                    db.session.delete(education)
+                for work_experience in account.work_experiences:
+                    db.session.delete(work_experience)
+                for skill in account.skills:
+                    db.session.delete(skill)
+                for application in account.applications:
+                    db.session.delete(application)
+                account.delete_from_db(db)
+                return {'message': "Account deleted"}, 200
+            except Exception:
+                db.session.rollback()
+                return {'message': 'An error occurred deleting the account'}
 
-        return {'message': "Account doesn't exist"}, 400
+        return {'message': "Account doesn't exist"}, 404
 
     @auth.login_required(role='user')
     def put(self, username):
-        """
-        HTTP PUT method to update a specific job seeker
-        :param username: name of the job seeker to update
+        """HTTP PUT method to update a specific job seeker
+
+        Args:
+          username: name of the job seeker to update
         Request fields:
         - name: real name of the job seeker (Optional)
         - surname: real surname of the job seeker (Optional)
@@ -52,11 +72,14 @@ class JobSeekers(Resource):
         - bio: biography/information that the job seeker would want to share (Optional)
         - skills: list of skills to add to the skills list of the job seeker (Optional)
         - remove_skills: list of skills to remove from the skills list of the job seeker (Optional)
-        :return: json object with the updated job seeker information
+
+        Returns:
+          json object with the updated job seeker information
+
         """
 
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('password', type=str)
@@ -73,8 +96,19 @@ class JobSeekers(Resource):
         if account:
             data = parser.parse_args()
             if data.password:
+                # Validate password
+                if not validate_password(data.password):
+                    return {'message': "Password invalid! Does not meet requirements"}, 405
                 account.hash_password(data.password)
-            if data.email:
+            if data.email and data.email != account.email:
+                # Validate email
+                if not validate_email(data.email):
+                    return {'message': 'Email wrong format!'}, 402
+                # Check email doesn't exist
+                if JobSeekersModel.find_by_email(data.email):
+                    return {'message': "Email already exists"}, 408
+                if CompanyModel.find_by_email(data.email):
+                    return {'message': "Email already exists"}, 409
                 account.email = data.email
             if data.bio or data.bio == '':
                 account.bio = data.bio
@@ -90,7 +124,8 @@ class JobSeekers(Resource):
             if data.remove_skills:
                 for skill in data.remove_skills:
                     remove_skill = SkillsModel.find_by_username_and_name(username, skill)
-                    remove_skill.delete_from_db()
+                    if remove_skill:
+                        remove_skill.delete_from_db()
                     #account.skills.remove(remove_skill)
 
             try:
@@ -100,4 +135,4 @@ class JobSeekers(Resource):
                 return {"message": "An error occurred modifying the account."}, 500
             return account.json(), 202
 
-        return {'message': "Company doesn't exist"}, 400
+        return {'message': "Job seeker doesn't exist"}, 400

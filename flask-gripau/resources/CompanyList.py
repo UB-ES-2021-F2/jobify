@@ -4,13 +4,15 @@ from models.company import CompanyModel
 
 
 class CompanyList(Resource):
-    """
-    Resource that lists all the companies in the database
-    """
+    """Resource that lists all the companies in the database"""
     def get(self):
-        """
-        HTTP method of the resource CompanyList
+        """HTTP method of the resource CompanyList
         :return: list of all the companies in the database
+
+        Args:
+
+        Returns:
+
         """
         companyList = [x.json() for x in CompanyModel.query.all()]
         if len(companyList) > 0:

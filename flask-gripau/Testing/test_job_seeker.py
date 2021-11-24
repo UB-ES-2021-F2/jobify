@@ -26,6 +26,8 @@ class TestJobSeeker(BaseTestCase):
         self._add_data_to_db(new_job_seeker)
         find = JobSeekersModel.find_by_username('test')
         assert find.json()['username'] == 'test'
+        find = JobSeekersModel.find_by_username('')
+        assert find is None
 
     def test_json(self):
         new_job_seeker = JobSeekersModel('test', 'Sergi', 'Bech', 'test@hotmail.com', 'hola, soc un test')

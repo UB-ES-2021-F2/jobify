@@ -11,7 +11,9 @@
         <b-navbar-nav>
           <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
           <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+
+          <b-nav-item id="companiesNavbarButton" v-if="this.username===this.company_name_profile" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="companiesNavbarButtonIfWatchingCompany" v-else active @click="onCompanies()">Companies</b-nav-item>
           <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
 
@@ -21,222 +23,205 @@
 
         <b-navbar-nav v-if="logged" class="ml-auto">
           <b-nav-item id="activeProfileNavbarButton" active v-if="this.username===this.company_name_profile">{{ this.username }}</b-nav-item>
-          <b-nav-item id="profileNavbarButton" v-else>{{ this.username }}</b-nav-item>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()" v-else>{{ this.username }}</b-nav-item>
           <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
     <!--/.Navbar -->
 
-    <b-container fluid>
-      <b-row align-v="stretch">
-        <!-- Local Navbar -->
-        <b-col style="background-color: #00000007" cols="">
-          <b-nav sticky toggleable="false" type="light" variant="light" vertical>
-            <b-navbar-brand style="text-align: center;width: 100%;" >
-              <div >
-                <h2 id="companyNameNavbar" style="font-family: 'Vollkorn', serif; text-align:center">{{company.company}}</h2>
-                <b-icon icon="building"></b-icon>
-              </div>
-            </b-navbar-brand>
-            <b-nav-item active id="activeProfileViewButton" style="text-decoration: underline; text-decoration-thickness:5px; text-decoration-color: #ffc107; text-align: center; width: 100%" v-if="this.profileView" @click="onProfileView()">Profile</b-nav-item>
-            <b-nav-item v-else id="profileViewButton" style="text-align: center; width: 100%" @click="onProfileView()">Profile</b-nav-item>
-            <b-nav-item active id="activeJobViewButton" class="active" style="text-decoration: underline; text-decoration-thickness:5px; text-decoration-color: #ffc107; text-align: center; width: 100%" v-if="this.jobView" @click="onJobView()">Jobs</b-nav-item>
-            <b-nav-item v-else id="jobViewButton" style="text-align: center; width: 100%" @click="onJobView()">Jobs</b-nav-item>
-          </b-nav>
-        </b-col>
-        <!--/.Local Navbar -->
-        <b-col fluid lg="10" cols="12">
-          <div id="profileView" v-if="this.profileView && !this.jobView">
+    <b-container>
+      <b-row>
+        <b-col cols="12">
+          <div id="profileView" v-if="!this.jobOfferView">
             <div class="row">
-              <div class="row d-flex d-lg-block">
-                <div id="divAvatar" class="col-lg-4 order-1 float-left align-items-center">
-                  <div v-if="downloadImage != null" id="firebase-avatar">
-                    <img class="rounded" style="width:200px;height:200px" :src="downloadImage" alt="">
-                  </div>
-                  <div v-else id="default-avatar">
-                    <img class="rounded" style="width:200px;height:200px" :src="require('../assets/images/company_avatar.png')" alt="">
-                  </div>
-                  <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 align-items-center">
-                    <b-form-group id="fileInput">
-                      <b-form-file center
-                                   v-model="file"
-                                   :state="Boolean(file)"
-                                   placeholder="Choose or drop a file"
-                                   drop-placeholder="Drop file here..."
-                                   accept="image/jpeg, image/png, image/gif"
-                      ></b-form-file>
-                    </b-form-group>
-                    <div class="container-md-5 p-2 align-items-center" v-if="file">
-                      <img :src="previewSrc" height='128'>
-                      <br>
-                      <br>
-                      <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
-                      <br>
+              <div id="divAvatar" class="col-12 col-sm-12 col-md-6 col-lg-3">
+                <div v-if="downloadImage != null" id="firebase-avatar">
+                  <img :src="downloadImage" alt="">
+                </div>
+                <div v-else-if="file">
+                  <img :src="previewSrc" alt="">
+                </div>
+                <div v-else id="default-avatar">
+                  <img :src="require('../assets/images/company_avatar.png')" alt="">
+                </div>
+                <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 browser-container">
+                  <b-form-group id="fileInput">
+                    <b-form-file center
+                                 v-model="file"
+                                 :state="Boolean(file)"
+                                 placeholder="Choose a file"
+                                 drop-placeholder="Drop file here..."
+                                 accept="image/jpeg, image/png, image/gif"
+                    ></b-form-file>
+                  </b-form-group>
+                  <b-button v-if="file" class="big-button" variant="success" :disabled="!file" @click="onUpload">
+                    Upload  <b-icon-upload font-scale="1" shift-v="-2"></b-icon-upload>
+                  </b-button>
+                </div>
+                <div id="nameCompany" class="name-profile">
+                  {{company.company}} <!--Amazon Inc.-->
+                </div>
+              </div>
+              <div id="divName" class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="content-table">
+                  <div class="content-table-cell">
+                    <!-- company email -->
+                    <div no-gutters>
+                      <div v-if="(company.email !== 'Unknown' && company.email) || edit_mode " class="company-info" style="max-width: 50rem">
+                        <span>
+                          <b-icon id="emailIcon" icon="envelope-fill"></b-icon>
+                        </span>
+                        <div class="text-edit" id="emailCompany" v-if="!edit.email">
+                          <span>{{company.email}}</span> <!-- amazon@amazon.com -->
+                        </div>
+                        <div id="editEmailField" v-if="edit.email" class="text-edit">
+                          <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
+                            <b-form-input id="emailInput" v-model="modify.email" rows="1" max-rows="2" type="email" :state="getValidationState(validationContext)"
+                                          aria-describedby="input-2c-live-feedback"/>
+                            <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                            <b-button class="save-button" id="submitEditEmailButton" :disabled="!validationContext.valid" variant="success" @click="modifyEmail()">
+                              <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                            </b-button>
+                            <p></p>
+                          </validation-provider>
+                        </div>
+                        <button id="enableEditEmailButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-1"></b-icon-pencil-fill></button>
+                      </div>
                     </div>
-                    <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
+                    <!-- /company email -->
+                    <!-- company sector -->
+                    <div no-gutters>
+                      <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="company-info" style="max-width: 50rem">
+                        <span>
+                          <b-icon id="sectorIcon" icon="inboxes-fill"></b-icon>
+                        </span>
+                        <div class="text-edit" id="sectorCompany" v-if="!edit.sector">
+
+                          <span>{{company.sector}}</span> <!-- Computer Sience -->
+                        </div>
+                        <div id="editSectorField" class="text-edit" v-if="edit.sector" fluid>
+                          <!--<div class="save-input">-->
+                            <b-form-input id="sectorInput" v-model="modify.sector" rows="1" max-rows="1"/>
+                          <!--</div>-->
+                          <div class="save-button">
+                            <b-button id="submitEditSectorButton" variant="success" @click="modifySector()">
+                              <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                            </b-button>
+                          </div>
+                          <p></p>
+                        </div>
+                        <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                      </div>
+                    </div>
+                    <!-- /company sector -->
+                    <!-- company location -->
+                    <div no-gutters>
+                      <div v-if="(company.location !== 'Unknown' && company.location) || edit_mode " class="company-info" style="max-width: 50rem">
+                        <span>
+                          <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon>
+                        </span>
+                        <div class="text-edit" id="locationCompany" v-if="!edit.location">
+                          <span>{{company.location}}</span> <!-- California, CA. Cupertino -->
+                        </div>
+                        <div id="editLocationField" class="text-edit" v-if="edit.location">
+                          <b-form-input id="locationInput" v-model="modify.location" rows="1" max-rows="1"/>
+                          <b-button class="save-button" id="submitEditLocationButton" variant="success" @click="modifyLocation()">
+                            <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                          </b-button>
+                          <p></p>
+                        </div>
+                        <button id="enableEditLocationButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editLocation()" >
+                          <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /company location -->
                   </div>
                 </div>
-                <div id="divName" class="col-lg-8 text-left order-0 float-left">
-                  <p class="page-title">
-                    {{company.company}} profile
-                  </p>
-                </div>
-                <div id="divBio" class="col-lg-8 text-left order-1 float-left">
-                  <!-- company description -->
-                  <div id="descriptionCompany1" v-if="company.description != null && company.description !== '' && !edit.description " class="bio-text">
-                    {{company.description}}
-                    <p></p>
+
+              </div>
+              <div id="divBio" class="col-12 col-sm-12 col-md-12 col-lg-5">
+                <!-- company description -->
+                <div id="descriptionCompany1" v-if="company.description != null && company.description !== '' && !edit.description " class="bio-text">
+                  {{company.description}}
+                  <div class="description-text">
+                    <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.-->
                   </div>
-                  <div id="descriptionCompany2" v-if="(company.description === null || company.description === '') && !edit.description && edit_mode" class="bio-text">
-                    <p>Write about your company!</p>
-                  </div>
-                  <b-container id="editDescriptionField" v-if="edit.description" fluid>
-                    <b-row align="center">
-                      <b-col sm="10">
-                        <b-form-textarea id="descriptionInput" v-model="modify.description" rows="3" max-rows="8"/>
-                      </b-col>
-                      <b-col align-self="center" sm="1">
-                        <b-button id="submitEditDescriptionButton" variant="success" @click="modifyDescription()">Save</b-button>
-                      </b-col>
-                    </b-row>
-                    <p></p>
-                  </b-container>
-                  <button id="enableEditDescriptionButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editDescription()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-                  <!-- /company description -->
                 </div>
+                <div id="descriptionCompany2" v-if="(company.description === null || company.description === '') && !edit.description && edit_mode" class="bio-text">
+                  <p>Write about your company!</p>
+                </div>
+                <div id="editDescriptionField" v-if="edit.description" fluid>
+                  <b-form-textarea id="descriptionInput" v-model="modify.description" rows="3" max-rows="8"/>
+                  <b-button class="save-button" id="submitEditDescriptionButton" variant="success" @click="modifyDescription()">
+                    <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                  </b-button>
+                  <p></p>
+                </div>
+                <button id="enableEditDescriptionButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editDescription()" >
+                  <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+                </button>
+                <!-- /company description -->
               </div>
             </div>
             <div class="row d-flex d-lg-block p-2 align-items-center">
-              <!-- company email -->
-              <b-row no-gutters>
-                <div v-if="(company.email !== 'Unknown' && company.email) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
-                  <h3 style="font-family: 'Vollkorn', serif"> Email</h3>
-                  <div id="emailCompany" v-if="!edit.email">
-                    <p>{{company.email}}</p>
-                  </div>
-                  <b-container v-if="edit.email" fluid>
-                    <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
-                      <b-row align="left">
-                        <b-col sm="5">
-                          <b-form-input id="emailInput" v-model="modify.email" rows="1" max-rows="2" type="email" :state="getValidationState(validationContext)"
-                                        aria-describedby="input-2c-live-feedback"/>
-                          <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-                        </b-col>
-                        <b-col align-self="center" sm="1">
-                          <b-button id="submitEditEmailButton" :disabled="!validationContext.valid" variant="success" @click="modifyEmail()">Save</b-button>
-                        </b-col>
-                      </b-row>
-                      <p></p>
-                    </validation-provider>
-                  </b-container>
-                  <button id="enableEditEmailButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editEmail()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-1"></b-icon-pencil-fill></button>
-                </div>
-              </b-row>
-              <!-- /company email -->
-              <!-- company sector -->
-              <b-row no-gutters>
-                <div v-if="(company.sector !== 'Unknown' && company.sector) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
-                  <h3 style="font-family: 'Vollkorn', serif"> Sector</h3>
-                  <div id="sectorCompany" v-if="!edit.sector">
-                    <p>{{company.sector}}</p>
-                  </div>
-                  <b-container id="editSectorField" v-if="edit.sector" fluid>
-                    <b-row align="left">
-                      <b-col sm="5">
-                        <b-form-textarea id="sectorInput" v-model="modify.sector" rows="1" max-rows="2"/>
-                      </b-col>
-                      <b-col align-self="center" sm="1">
-                        <b-button id="submitEditSectorButton" variant="success" @click="modifySector()">Save</b-button>
-                      </b-col>
-                    </b-row>
-                    <p></p>
-                  </b-container>
-                  <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-                </div>
-              </b-row>
-              <!-- /company sector -->
-              <!-- company location -->
-              <b-row no-gutters>
-                <div v-if="(company.location !== 'Unknown' && company.location) || edit_mode " class="text-left p-2 pb-3" style="max-width: 50rem">
-                <h3 style="font-family: 'Vollkorn', serif"> Location</h3>
-                <div id="locationCompany" v-if="!edit.location">
-                  <p>{{company.location}}</p>
-                </div>
-                <b-container id="editLocationField" v-if="edit.location" fluid>
-                  <b-row align="left">
-                    <b-col sm="5">
-                      <b-form-textarea id="locationInput" v-model="modify.location" rows="1" max-rows="2"/>
-                    </b-col>
-                    <b-col align-self="center" sm="1">
-                      <b-button id="submitEditLocationButton" variant="success" @click="modifyLocation()">Save</b-button>
-                    </b-col>
-                  </b-row>
-                  <p></p>
-                </b-container>
-                <button id="enableEditLocationButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editLocation()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
-              </div>
-              </b-row>
-              <!-- /company location -->
             </div>
 
           </div>
           <!-- Job Offers page -->
-          <div id="jobView" v-if="this.profileView === false && this.jobView === true">
+          <div id="jobView">
             <!-- Job offers company view -->
             <div id="jobOffersCompanyView" v-if="!this.jobOfferView">
-              <h2 style="font-family: 'Vollkorn', serif"> Job Offers </h2>
-              <b-container fluid>
-                <b-row align-h="center" v-if="edit_mode">
-                  <b-card
-                    tag="article"
-                    class="text-center mb-2"
-                    style="width: 90%; max-width: 600px"
-                    id="addJobOfferCard"
-                  >
-                    <b-link id="showJobOfferModal" v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
-                    <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
-                  </b-card>
-                </b-row>
-                <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
-                  <b-card
-                    :title="job_offer.job_name"
-                    tag="article"
-                    class="mb-2"
-                    style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
-                    align="left"
-                    id="jobOfferCard"
-                  >
-                    <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-                    <b-card-text id="companyName">
-                      {{ job_offer.company_name }}
-                    </b-card-text>
-                    <footer>
-                      <b-container fluid style="font-family: 'Work Sans'">
-                        <b-row no-gutters>
-                          <b-col lg v-if="job_offer.contract_type.length > 0">
-                            <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                          </b-col>
-                          <b-col lg v-if="job_offer.workingHours > 0">
-                            <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                          </b-col>
-                          <b-col lg>
-                            <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                          </b-col>
-                          <b-col lg>
-                            <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                          </b-col>
-                        </b-row>
-                      </b-container>
-                    </footer>
-                  </b-card>
-                </b-row>
-              </b-container>
+              <h2 class="title-offer"> Job Offers </h2>
+              <b-link v-if="edit_mode" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
+                <b-icon icon="patch-plus" font-scale="2"></b-icon>
+              </b-link>
+              <div class="container">
+                <div class="row" align-h="center">
+                  <!--<div class="col-6">
+                    <b-card tag="article" class="text-center mb-2" id="addJobOfferCard">
+
+                      <p class="h1"></p>
+                    </b-card>
+                  </div>-->
+                  <div class="col-12 col-sm-12 col-md-6" align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
+                    <b-card :title="job_offer.job_name"
+                            tag="article"
+                            align="left"
+                            id="jobOfferCard"
+                    >
+                      <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+                      <b-card-text id="companyName">
+                        {{ job_offer.company_name }}
+                      </b-card-text>
+                      <footer>
+                        <b-container fluid style="font-family: 'Work Sans'">
+                          <b-row no-gutters>
+                            <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
+                              <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                            </b-col>
+                            <b-col lg v-if="job_offer.workingHours > 0">
+                              <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                            </b-col>
+                            <b-col lg>
+                              <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                            </b-col>
+                            <b-col lg>
+                              <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                            </b-col>
+                          </b-row>
+                        </b-container>
+                      </footer>
+                    </b-card>
+                  </div>
+                </div>
+
+              </div>
               <b-modal ref="jobOfferModal"
                        id="job-offer-modal"
                        title="Post a job offer"
                        hide-footer
-                       hide-backdrop
               >
                 <validation-observer ref="observer" v-slot="{ handleSubmit }">
                   <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmitNewOffer)">
@@ -264,7 +249,7 @@
                       </b-form-group>
                     </validation-provider>
 
-                    <validation-provider name="ContractType"  :rules="{ max: 500, required:true}" v-slot="validationContext">
+                    <validation-provider name="ContractType"  :rules="{ max: 500}" v-slot="validationContext">
                       <b-form-group id="input-group-2" label="Contract type" label-for="input-2">
                         <b-form-select id="contractTypeInput" v-model="jobOfferForm.contractType" :options="optionsContractType"  type="text" :state="getValidationState(validationContext)"
                                        aria-describedby="input-2-live-feedback"></b-form-select>
@@ -298,40 +283,89 @@
             </div>
             <!-- /Job offers company view -->
             <!-- Job offer view -->
-            <div id="jobOfferCompanyView" v-if="this.jobOfferView">
-              <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{jobOfferCurrentView.jobName}}</h2>
-              <b-container align="left">
-                <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
-                  <p>{{jobOfferCurrentView.description}}</p>
+            <div id="jobOfferCompanyView" v-if="this.jobOfferView" class="job-offer-container">
+              <h2 id="jobOfferJobName" class="job-offer-title">{{jobOfferCurrentView.jobName}}</h2>
+              <div class="container">
+                <div class="row row-attributes">
+                  <div class="col-12">
+                    <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text">{{jobOfferCurrentView.description}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="companyIcon" icon="building"></b-icon>{{jobOfferCurrentView.companyName}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="locationIcon2" icon="geo-alt-fill"></b-icon>{{jobOfferCurrentView.location}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="contractIcon" icon="journal-text"></b-icon>{{jobOfferCurrentView.contractType}} contract</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="hoursIcon" icon="hourglass-split"></b-icon>{{jobOfferCurrentView.workingHours}} hours/week</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="cash"></b-icon>{{jobOfferCurrentView.salary}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="job-offer-field-container">
+                      <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="calendar-day"></b-icon>First published on: {{jobOfferCurrentView.publicationDate}}</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
+                    <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
+                      <!--<b-icon id="salaryIcon" icon="arrow-left"></b-icon>--> Back
+                    </b-button>
+                  </div>
+                  <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
+                    <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
+                      <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
+                    </b-button>
+                  </div>
+                  <div class="col-12 col-sm-12 col-lg-6">
+                    <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+                    <b-button id="appliedButton" class="job-offer-button-apply" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+                  </div>
                 </div>
-                <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
-                  <p>{{jobOfferCurrentView.companyName}}</p>
-                </div>
-                <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
-                  <p>{{jobOfferCurrentView.location}}</p>
-                </div>
-                <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
-                  <p>{{jobOfferCurrentView.contractType}}</p>
-                </div>
-                <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
-                  <p>{{jobOfferCurrentView.workingHours}}</p>
-                </div>
-                <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
-                  <p>{{jobOfferCurrentView.salary}}</p>
-                </div>
-                <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="p-2 pb-3" style="max-width: 50rem">
-                  <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
-                  <p>{{jobOfferCurrentView.publicationDate}}</p>
-                </div>
-              </b-container>
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJoOfferView">Seen</b-button>
-              <b-button id="deleteButton" v-if="this.is_company" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+              </div>
+
+              <!--<b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>-->
+              <!--<b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>-->
+              <b-modal
+                hide-backdrop
+                id="modal-apply"
+                ref="modal"
+                title="Do you want to add some additional information?"
+                @ok="applyAction"
+                @show="resetApplyModal"
+                @hidden="resetApplyModal"
+              >
+                <form ref="form">
+                  <b-form-group
+                    label-for="name-input"
+                  >
+                    <b-form-textarea
+                      id="applyMessageInput"
+                      v-model="applyMessage"
+                      placeholder="Write here (optional)"
+                      rows="3"
+                      max-rows="6"
+                    >
+
+                    </b-form-textarea>
+                  </b-form-group>
+                </form>
+              </b-modal>
             </div>
             <!-- /Job offer view -->
           </div>
@@ -372,8 +406,6 @@ export default {
         sector: '',
         location: ''
       },
-      profileView: true,
-      jobView: false,
       jobOfferView: false,
       logged: false,
       is_jobseeker: true,
@@ -409,43 +441,78 @@ export default {
       file: null,
       uploadValue: 0,
       previewSrc: null,
-      downloadImage: null
+      downloadImage: null,
+      applied: false,
+      applyMessage: null
     }
   },
   methods: {
+    getApplied () {
+      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
+      axios.get(path)
+        .then((res) => {
+          var application = res.data.application
+          console.log(application)
+          this.applied = true
+        })
+        // eslint-disable-next-line
+        .catch((error) => {
+          // eslint-disable-next-line
+          // console.error(error)
+          this.applied = false
+        })
+    },
+    applyAction () {
+      if (!this.applied) {
+        const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username
+        const values = {
+          job_offer_id: this.jobOfferCurrentView.id
+        }
+        if (this.applyMessage !== null) {
+          values.info = this.applyMessage
+        }
+        axios.post(path, values, {
+          auth: {username: this.token}})
+          .then((res) => {
+            console.log('Job Offer correctly applied')
+            this.applied = true
+          })
+          .catch((error) => {
+            alert(error.response.data.message)
+          })
+      }
+    },
+    resetApplyModal () {
+      this.applyMessage = null
+    },
+    onProfile () {
+      if (this.is_jobseeker && this.logged) {
+        this.$router.replace({ path: '/job_seeker/' + this.username })
+      } else if (this.is_company && this.logged) {
+        this.$router.replace({path: '/company/' + this.username})
+      }
+    },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
-    },
-    onProfileView () {
-      this.profileView = true
-      this.jobView = false
-    },
-    onJobView () {
-      this.profileView = false
-      this.jobView = true
-      this.edit.description = false
-      this.edit.sector = false
-      this.edit.location = false
-      this.jobOfferView = false
+      this.$router.push('/companies')
     },
     onJobOfferView () {
-      this.jobOfferView = !this.jobOfferView
+      this.jobOfferView = true
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     editDescription () {
       this.edit.description = !this.edit.description
@@ -577,13 +644,15 @@ export default {
       var values = {
         job_name: this.jobOfferForm.jobName,
         description: this.jobOfferForm.description,
-        location: this.jobOfferForm.location,
-        contract_type: this.jobOfferForm.contractType
+        location: this.jobOfferForm.location
       }
-      if (this.jobOfferForm.salary !== '') {
+      if (this.jobOfferForm.contractType !== '' && this.jobOfferForm.contractType !== null) {
+        values.contract_type = this.jobOfferForm.contractType
+      }
+      if (this.jobOfferForm.salary !== '' && this.jobOfferForm.salary !== null) {
         values.salary = this.jobOfferForm.salary
       }
-      if (this.jobOfferForm.workingHours !== '') {
+      if (!isNaN(this.jobOfferForm.workingHours) && this.jobOfferForm.workingHours !== '') {
         values.working_hours = this.jobOfferForm.workingHours
       }
       console.log(values)
@@ -601,9 +670,11 @@ export default {
     },
     deleteJobOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
-      axios.delete(path)
+      axios.delete(path, {
+        auth: {username: this.token}})
         .then((res) => {
-          window.location.reload()
+          this.getCompanyJobOffers()
+          this.jobOfferView = false
         })
         .catch((error) => {
           console.error(error)
@@ -614,6 +685,9 @@ export default {
         .then((url) => {
           this.downloadImage = url
           console.log(url)
+        })
+        .catch(() => {
+          console.log('This avatar does not exist yet')
         })
     },
     onUpload () {
@@ -656,11 +730,16 @@ export default {
           this.jobOfferCurrentView.contractType = res.data.offer.contract_type
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
+          console.log(this.jobOfferCurrentView)
+          this.getApplied()
           this.onJobOfferView()
         })
         .catch((error) => {
           console.error(error)
         })
+    },
+    onSeenOffer () {
+      this.jobOfferView = false
     }
   },
   watch: {
@@ -680,8 +759,6 @@ export default {
     this.token = this.$store.state.token
     this.is_admin = this.$store.state.isAdmin
     this.edit_mode = this.username === this.company_name_profile
-    this.jobView = false
-    this.profileView = true
     this.getCompany()
     this.downloadAvatar()
     this.getCompanyJobOffers()

@@ -4,16 +4,18 @@ from models import JobSeekersModel, CompanyModel
 
 
 class Login(Resource):
-    """
-    Resource that manages the application log in
-    """
+    """Resource that manages the application log in"""
     def post(self):
-        """
-        HTTP POST method to log in the application
+        """HTTP POST method to log in the application
         Request fields:
         - username: username of the job seeker  or company (Required)
         - password: password of the job seeker (Required)
         :return: token of the user that logs in
+
+        Args:
+
+        Returns:
+
         """
         parser = reqparse.RequestParser()
         parser.add_argument('username', type=str, required=True, help="This field cannot be left blanck")

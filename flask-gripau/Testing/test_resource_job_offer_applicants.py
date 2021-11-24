@@ -32,7 +32,7 @@ class TestJobOfferApplicantsResource(BaseTestCase):
     def test_successful_get(self):
         self._add_data()
         login = self.client.post('/api/login', json={
-            'username': 'test', 'password': 'test'
+            'username': 'universitat123', 'password': 'Password12'
         })
         token = login.json['token']
         valid_credentials = base64.b64encode(bytes(token+":", 'utf-8')).decode()
@@ -42,7 +42,7 @@ class TestJobOfferApplicantsResource(BaseTestCase):
 
     def test_failed_get(self):
         login = self.client.post('/api/login', json={
-            'username': 'test', 'password': 'test'
+            'username': 'universitat123', 'password': 'Password12'
         })
         token = login.json['token']
         valid_credentials = base64.b64encode(bytes(token+":", 'utf-8')).decode()

@@ -97,6 +97,8 @@ class JobOffers(Resource):
             if offer.company != g.user.username:
                 print(g.user.username)
                 return {'message': 'Access denied'}, 401
+            for application in offer.applications:
+                db.session.delete(application)
             offer.delete_from_db(db)
             return {'message': "Offer with id [{}] deleted".format(id)}, 200
 

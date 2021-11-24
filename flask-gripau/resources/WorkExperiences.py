@@ -21,7 +21,7 @@ class WorkExperiences(Resource):
         """
         account = JobSeekersModel.find_by_username(username)
         if not account:
-            return {'account': None}, 404
+            return {'work_experience': None}, 404
         return [work_experience.json() for work_experience in account.work_experiences], 200
 
     @auth.login_required(role='user')
@@ -43,7 +43,7 @@ class WorkExperiences(Resource):
 
         """
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()
 

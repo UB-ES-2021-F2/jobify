@@ -21,7 +21,7 @@ class Educations(Resource):
         """
         account = JobSeekersModel.find_by_username(username)
         if not account:
-            return {'account': None}, 404
+            return {'education': None}, 404
         return [education.json() for education in account.educations], 200
 
     @auth.login_required(role='user')
@@ -42,14 +42,14 @@ class Educations(Resource):
 
         """
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()
 
         parser.add_argument('title', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('institution', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('start_date', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('end_date', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('end_date', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('currently', type=bool, required=True, help="This field cannot be left blank")
 
         data = parser.parse_args()

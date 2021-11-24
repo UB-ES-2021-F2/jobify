@@ -47,7 +47,7 @@ class JobOffers(Resource):
         """
         if company != g.user.username:
             print(g.user.username)
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('job_name', type=str, required=True, help="This field cannot be left blank")
@@ -96,8 +96,8 @@ class JobOffers(Resource):
         if offer:
             if offer.company != g.user.username:
                 print(g.user.username)
-                return {'message': 'Access denied'}, 400
+                return {'message': 'Access denied'}, 401
             offer.delete_from_db(db)
             return {'message': "Offer with id [{}] deleted".format(id)}, 200
 
-        return {'message': "Offer with id [{}] don't exists".format(id)}, 400
+        return {'message': "Offer with id [{}] don't exists".format(id)}, 404

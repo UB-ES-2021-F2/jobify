@@ -107,7 +107,7 @@ describe('Register resource', () => {
           expect(response.status).to.eq(400)
         })
     })
-    it('should return an error 400 because the name must contain only alphanumeric characters or spaces ', () => {
+    it('should return an error 400 because the name must contain only alphabetic characters or spaces ', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -125,10 +125,10 @@ describe('Register resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Name must contain only alphanumeric characters or spaces')
+          expect(response.body.message).to.eq('Name must contain only alphabetic characters or spaces')
         })
     })
-    it('should return an error 400 because the surname must contain only alphanumeric characters', () => {
+    it('should return an error 400 because the surname must contain only alphabetic characters', () => {
       cy.request({
         method: 'POST',
         url: 'register',
@@ -146,7 +146,7 @@ describe('Register resource', () => {
         .should((response) => {
           cy.log(JSON.stringify(response.body))
           expect(response.status).to.eq(400)
-          expect(response.body.message).to.eq('Surname must contain only alphanumeric characters')
+          expect(response.body.message).to.eq('Surname must contain only alphabetic characters')
         })
     })
     it('should return an error 406 because the password does not meet requirements', () => {

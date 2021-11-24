@@ -48,7 +48,7 @@ class Companies(Resource):
                 return {'message': "Account deleted"}, 200
             except Exception:
                 db.session.rollback()
-                return {'message': 'An error occurred deleting the account'}
+                return {'message': 'An error occurred deleting the account'}, 500
         return {'message': "Account doesn't exist"}, 404
 
     @auth.login_required(role='user')

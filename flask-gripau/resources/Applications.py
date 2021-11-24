@@ -20,11 +20,9 @@ class Applications(Resource):
           list of json objects with the job seeker's applications information
 
         """
-        #check if the logged user is the job_seeker_username or if the logged user is the company which posted the job offer
-        offer = JobOfferModel.find_by_id(job_offer_id)
-        if offer:
-            if (offer.company != g.user.username) and (job_seeker_username != g.user.username):
-                return {'message': 'Access denied'}, 401
+        #check if the logged user is the job_seeker_username
+        if job_seeker_username != g.user.username:
+            return {'message': 'Access denied'}, 401
 
         for application in ApplicationModel.find_by_job_seeker_username(job_seeker_username):
             if application.job_offer_id == job_offer_id:

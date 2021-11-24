@@ -28,50 +28,63 @@
     <!--/.Navbar -->
     <!-- Job offers company view -->
     <div id="jobPostingsView" v-show="!this.jobOfferView">
-      <h2 style="font-family: 'Vollkorn"> {{ message }} </h2>
+      <h2 class="title-offer"> {{ message }} </h2>
+      <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
+        <b-icon icon="patch-plus" font-scale="2"></b-icon>
+      </b-link>
       <b-container fluid>
-        <b-row align-h="center" v-if="is_company">
+        <!--<b-row align-h="center" v-if="is_company">
           <b-card
             tag="article"
             class="text-center mb-2"
             style="width: 90%; max-width: 600px"
             id="addJobOfferCard"
           >
-            <b-link id="showJobOfferModal" v-b-modal.job-offer-modal style="position: absolute; top:0; left:0; height: 100%; width:100%"></b-link>
+            <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
             <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
           </b-card>
-        </b-row>
+        </b-row>-->
         <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
           <b-card
-            :title="job_offer.job_name"
             tag="article"
             class="mb-2"
             style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
             align="left"
             id="jobOfferCard"
           >
-            <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            <b-card-text id="companyName">
-              <p>{{ job_offer.company }}</p>
-            </b-card-text>
-            <footer>
+            <div>
               <b-container fluid style="font-family: 'Work Sans'">
                 <b-row no-gutters>
-                  <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
-                    <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                  <b-col cols="8">
+                    <b-card-text id="companyName" >
+                      <p class="titleJobOfferCard">{{ job_offer.job_name }}</p>
+                      <p class="companyNameJobOfferCard">{{ job_offer.company_name }}</p>
+                    </b-card-text>
+                    <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
+                      <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
+                    </b-col>
+                    <!--<b-col lg v-if="job_offer.working_hours > 0">
+                      <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                    </b-col> potser no posarho a la card-->
+                    <b-col lg>
+                      <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
+                    </b-col>
+                    <b-col lg>
+                      <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                    </b-col>
                   </b-col>
-                  <b-col lg v-if="job_offer.working_hours > 0">
-                    <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
+                  <b-col v-if="companies_logos[job_offer.company]!=null" cols="4">
+                    <img class="card-img" :src="companies_logos[job_offer.company]" alt=""
+                         style="width:128px;height:128px">
                   </b-col>
-                  <b-col lg>
-                    <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                  </b-col>
-                  <b-col lg>
-                    <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
+                  <b-col v-if="companies_logos[job_offer.company]==null" cols="4">
+                    <img class="card-img" src="../assets/images/company_avatar.png" alt=""
+                         style="width:128px;height:128px">
                   </b-col>
                 </b-row>
               </b-container>
-            </footer>
+              <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+            </div>
           </b-card>
         </b-row>
       </b-container>
@@ -146,7 +159,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import {mapState} from 'vuex'
-// import firebase from 'firebase/compat'
+import firebase from 'firebase/compat'
+
 export default {
   data () {
     return {
@@ -166,7 +180,8 @@ export default {
         contractType: '',
         workingHours: ''
       },
-      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice']
+      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
+      companies_logos: {}
     }
   },
   methods: {
@@ -206,14 +221,31 @@ export default {
           this.job_offers = []
           for (var jobOffer in res.data.OfferList) {
             jobOffer = res.data.OfferList[jobOffer]
-            console.log(jobOffer)
             jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
             this.job_offers.push(jobOffer)
+            this.getCompaniesLogos()
           }
         })
         .catch((error) => {
           console.error(error)
         })
+    },
+    getCompaniesLogos () {
+      for (let o in this.job_offers) {
+        let offer = this.job_offers[o]
+        this.companies_logos[offer.company] = null
+        firebase.storage().ref(`images/${offer.company}/avatar`).getDownloadURL()
+          .then((url) => {
+            this.companies_logos[offer.company] = url
+            this.companies_logos[offer.company] = url
+            console.log(url)
+            this.$forceUpdate()
+          })
+          .catch(() => {
+            console.log('This avatar does not exist')
+          })
+      }
+      this.$forceUpdate()
     },
     onSubmitNewOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
@@ -284,5 +316,16 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.companyNameJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+  margin-bottom: 0.3rem;
+}
+.titleJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 0;
 }
 </style>

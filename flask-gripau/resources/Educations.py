@@ -1,3 +1,5 @@
+from datetime import date
+
 from flask import g
 from flask_restful import Resource, Api, reqparse
 from models import EducationsModel, JobSeekersModel
@@ -19,7 +21,7 @@ class Educations(Resource):
         """
         account = JobSeekersModel.find_by_username(username)
         if not account:
-            return {'account': None}, 404
+            return {'education': None}, 404
         return [education.json() for education in account.educations], 200
 
     @auth.login_required(role='user')
@@ -40,14 +42,14 @@ class Educations(Resource):
 
         """
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()
 
         parser.add_argument('title', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('institution', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('start_date', type=str, required=True, help="This field cannot be left blank")
-        parser.add_argument('end_date', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('end_date', type=str, required=False, help="This field cannot be left blank")
         parser.add_argument('currently', type=bool, required=True, help="This field cannot be left blank")
 
         data = parser.parse_args()
@@ -61,25 +63,48 @@ class Educations(Resource):
             return {'user': None}, 404
 
         # Date validations
+        if not data.end_date and not data.currently:
+            return {"message": "End date is required if \"currently\" is false"}, 400
+
+        today = date.today()
         try:
             start_year, start_month = data.start_date.split('-')
-            end_year, end_month = data.end_date.split('-')
         except ValueError:
             return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
-        if not start_year.isnumeric() or not start_month.isnumeric() or \
-                not end_year.isnumeric() or not end_month.isnumeric():
-            return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
-        elif int(start_year) < 1900 or int(end_year) < 1900 or int(start_year) > 2100 or int(end_year) > 2100:
-            return {"message": "Dates need to be between years 1900 and 2100"}, 400
-        elif int(start_month) < 1 or int(end_month) < 1 or int(start_month) > 12 or int(end_month) > 12:
-            return {"message": "Dates need to be between months 1 and 12"}, 400
 
-        if not data.currently:
-            if int(start_year) > int(end_year):
+        if not start_year.isnumeric() or not start_month.isnumeric():
+            return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
+        elif int(start_year) < 1900 or int(start_year) > 2100:
+            return {"message": "Dates need to be between years 1900 and 2100"}, 400
+        elif int(start_month) < 1 or int(start_month) > 12:
+            return {"message": "Dates need to be between months 1 and 12"}, 400
+        elif int(start_year) > today.year or (int(start_year) == today.year and int(start_month) > today.month):
+            return {"message": "Start date cannot be posterior to current date"}, 400
+
+        if data.end_date:
+            try:
+                end_year, end_month = data.end_date.split('-')
+            except ValueError:
+                return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
+
+            if not end_year.isnumeric() or not end_month.isnumeric():
+                return {"message": "Date format is wrong, try (yyyy-mm)"}, 400
+            elif int(end_year) < 1900 or int(end_year) > 2100:
+                return {"message": "Dates need to be between years 1900 and 2100"}, 400
+            elif int(end_month) < 1 or int(end_month) > 12:
+                return {"message": "Dates need to be between months 1 and 12"}, 400
+            elif int(start_year) > int(end_year):
                 return {"message": "Start date cannot be posterior than end date"}, 400
             elif int(start_year) == int(end_year):
                 if int(start_month) > int(end_month):
                     return {"message": "Start date cannot be posterior than end date"}, 400
+
+            if data.currently:
+                if int(end_year) < today.year or (int(end_year) == today.year and int(end_month) < today.month):
+                    return {"message": "End date cannot be previous to current date if \"currently\" is true"}, 400
+            else:
+                if int(end_year) > today.year or (int(end_year) == today.year and int(end_month) > today.month):
+                    return {"message": "End date cannot be posterior to current date if \"currently\" is false"}, 400
 
         new_education = EducationsModel(data.title, data.institution, data.start_date, data.end_date, data.currently)
         user.educations.append(new_education)

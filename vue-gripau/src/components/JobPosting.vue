@@ -77,8 +77,8 @@
       </b-container>
       <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
       <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-      <b-button v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
+      <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+      <b-button id="appliedButton" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
       <b-modal
         hide-backdrop
         id="modal-apply"
@@ -93,12 +93,12 @@
             label-for="name-input"
           >
             <b-form-textarea
+              id="applyMessageInput"
               v-model="applyMessage"
               placeholder="Write here (optional)"
               rows="3"
               max-rows="6"
             >
-
             </b-form-textarea>
           </b-form-group>
         </form>
@@ -239,7 +239,8 @@ export default {
     },
     deleteJobOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.id
-      axios.delete(path)
+      axios.delete(path, {
+        auth: {username: this.token}})
         .then((res) => {
           this.onJobPostings()
         })

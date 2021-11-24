@@ -1,17 +1,24 @@
-import AboutUs from '../../src/components/AboutUs.vue'
+import Companies from '../../src/components/Companies.vue'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import VueRouter from 'vue-router'
+import './firebase-mock'
 
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 const router = new VueRouter()
+/*
+jest.mock("firebase/firestore", () => {
+  return {
+    getFirestore: jest.fn(),
+  };
+});
 
 describe('Homepage not logged ', () => {
   let wrapper;
 
   beforeEach(() => {
     // use this to check the state of anything in the view
-    wrapper = shallowMount(AboutUs, {
+    wrapper = shallowMount(Companies, {
         mocks: {
           $store: {
             state: {
@@ -60,7 +67,7 @@ describe('Homepage logged jobSeeker ', () => {
       path: '/'
     }
     // use this to check the state of anything in the view
-    wrapper = shallowMount(AboutUs, {
+    wrapper = shallowMount(Companies, {
       mocks: {
         $route,
         $store: {
@@ -79,9 +86,9 @@ describe('Homepage logged jobSeeker ', () => {
       router})
   });
 
-  /*it('logged', () => {
+  it('logged', () => {
     expect(wrapper.vm.logged).toEqual(true)
-  })*/
+  })
   it('is_jobseeker', () => {
     expect(wrapper.vm.is_jobseeker).toEqual(true)
   })
@@ -110,7 +117,7 @@ describe('Homepage logged company ', () => {
       path: '/'
     }
     // use this to check the state of anything in the view
-    wrapper = shallowMount(AboutUs, {
+    wrapper = shallowMount(Companies, {
       mocks: {
         $route,
         $store: {
@@ -168,13 +175,19 @@ describe('Homepage logged company ', () => {
     console.log(wrapper.vm.$route.path)
     expect(wrapper.vm.$route.path).toEqual('/job_postings')
   })
-  /*it('onLogOut()', () => {
-    wrapper.vm.onLogOut()
-    expect(wrapper.vm.logged).toEqual(false)
-    expect(wrapper.vm.username).toEqual(null)
-    expect(wrapper.vm.token).toEqual(null)
-    expect(wrapper.vm.is_jobseeker).toEqual(null)
-    expect(wrapper.vm.is_company).toEqual(null)
-    expect(wrapper.vm.is_admin).toEqual(null)
-  })*/
-})
+  it('onAboutUs()', () => {
+    console.log(wrapper.vm.$route.path)
+    wrapper.vm.onAboutUs()
+    console.log(wrapper.vm.$route.path)
+    expect(wrapper.vm.$route.path).toEqual('/about_us')
+  })
+  //it('onLogOut()', () => {
+  //  wrapper.vm.onLogOut()
+  //  expect(wrapper.vm.logged).toEqual(false)
+  //  expect(wrapper.vm.username).toEqual(null)
+  //  expect(wrapper.vm.token).toEqual(null)
+  //  expect(wrapper.vm.is_jobseeker).toEqual(null)
+  //  expect(wrapper.vm.is_company).toEqual(null)
+  //  expect(wrapper.vm.is_admin).toEqual(null)
+  //})
+})*/

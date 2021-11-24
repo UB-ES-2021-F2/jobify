@@ -6,13 +6,18 @@ const localVue = createLocalVue()
 localVue.use(VueRouter)
 const router = new VueRouter()
 
+/*
 describe('Homepage not logged ', () => {
   let wrapper;
 
   beforeEach(() => {
+    const $route = {
+      path: '/'
+    }
     // use this to check the state of anything in the view
     wrapper = shallowMount(CompanyProfile, {
         mocks: {
+          $route,
           $store: {
             state: {
               logged : false,
@@ -173,13 +178,13 @@ describe('Homepage logged company ', () => {
     console.log(wrapper.vm.$route.path)
     expect(wrapper.vm.$route.path).toEqual('/about_us')
   })
-  /*it('onLogOut()', () => {
-    wrapper.vm.onLogOut()
-    expect(wrapper.vm.logged).toEqual(false)
-    expect(wrapper.vm.username).toEqual(null)
-    expect(wrapper.vm.token).toEqual(null)
-    expect(wrapper.vm.is_jobseeker).toEqual(null)
-    expect(wrapper.vm.is_company).toEqual(null)
-    expect(wrapper.vm.is_admin).toEqual(null)
-  })*/
-})
+  //it('onLogOut()', () => {
+  //  wrapper.vm.onLogOut()
+  //  expect(wrapper.vm.logged).toEqual(false)
+  //  expect(wrapper.vm.username).toEqual(null)
+  //  expect(wrapper.vm.token).toEqual(null)
+  //  expect(wrapper.vm.is_jobseeker).toEqual(null)
+  //  expect(wrapper.vm.is_company).toEqual(null)
+  //  expect(wrapper.vm.is_admin).toEqual(null)
+  //})
+})*/

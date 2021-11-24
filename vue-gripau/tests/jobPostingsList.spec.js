@@ -1,24 +1,17 @@
-import Companies from '../../src/components/Companies.vue'
+import JobPostingList from '../../src/components/JobPostingList.vue'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import VueRouter from 'vue-router'
-import './firebase-mock'
 
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 const router = new VueRouter()
-
-jest.mock("firebase/firestore", () => {
-  return {
-    getFirestore: jest.fn(),
-  };
-});
-
+/*
 describe('Homepage not logged ', () => {
   let wrapper;
 
   beforeEach(() => {
     // use this to check the state of anything in the view
-    wrapper = shallowMount(Companies, {
+    wrapper = shallowMount(JobPostingList, {
         mocks: {
           $store: {
             state: {
@@ -61,13 +54,12 @@ describe('Homepage not logged ', () => {
 
 describe('Homepage logged jobSeeker ', () => {
   let wrapper;
-
   beforeEach(() => {
     const $route = {
       path: '/'
     }
     // use this to check the state of anything in the view
-    wrapper = shallowMount(Companies, {
+    wrapper = shallowMount(JobPostingList, {
       mocks: {
         $route,
         $store: {
@@ -117,7 +109,7 @@ describe('Homepage logged company ', () => {
       path: '/'
     }
     // use this to check the state of anything in the view
-    wrapper = shallowMount(Companies, {
+    wrapper = shallowMount(JobPostingList, {
       mocks: {
         $route,
         $store: {
@@ -181,13 +173,13 @@ describe('Homepage logged company ', () => {
     console.log(wrapper.vm.$route.path)
     expect(wrapper.vm.$route.path).toEqual('/about_us')
   })
-  /*it('onLogOut()', () => {
-    wrapper.vm.onLogOut()
-    expect(wrapper.vm.logged).toEqual(false)
-    expect(wrapper.vm.username).toEqual(null)
-    expect(wrapper.vm.token).toEqual(null)
-    expect(wrapper.vm.is_jobseeker).toEqual(null)
-    expect(wrapper.vm.is_company).toEqual(null)
-    expect(wrapper.vm.is_admin).toEqual(null)
-  })*/
-})
+//  it('onLogOut()', () => {
+//    wrapper.vm.onLogOut()
+//    expect(wrapper.vm.logged).toEqual(false)
+//    expect(wrapper.vm.username).toEqual(null)
+//    expect(wrapper.vm.token).toEqual(null)
+//    expect(wrapper.vm.is_jobseeker).toEqual(null)
+//    expect(wrapper.vm.is_company).toEqual(null)
+//    expect(wrapper.vm.is_admin).toEqual(null)
+//  })
+})*/

@@ -10,9 +10,13 @@ describe('Homepage not logged ', () => {
   let wrapper;
 
   beforeEach(() => {
+    const $route = {
+      path: '/'
+    }
     // use this to check the state of anything in the view
     wrapper = shallowMount(JobPosting, {
         mocks: {
+          $route,
           $store: {
             state: {
               logged : false,
@@ -30,9 +34,9 @@ describe('Homepage not logged ', () => {
       router)
   });
 
-  it('welcome_message', () => {
-    expect(wrapper.vm.welcome_message).toEqual('Welcome to Jobify!')
-  })
+  //it('welcome_message', () => {
+  //  expect(wrapper.vm.welcome_message).toEqual('Welcome to Jobify!')
+  //})
   it('logged', () => {
     expect(wrapper.vm.logged).toEqual(false)
   })

@@ -139,7 +139,8 @@ export default {
   methods: {
     getApplicants () {
       const path = Vue.prototype.$API_BASE_URL + '/offer_applicants/' + this.id
-      axios.get(path)
+      axios.get(path, {
+        auth: {username: this.token}})
         .then((res) => {
           this.applicants_list = []
           for (let applicant in res.data) {
@@ -154,7 +155,8 @@ export default {
     },
     getApplied () {
       const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.id
-      axios.get(path)
+      axios.get(path, {
+        auth: {username: this.token}})
         .then((res) => {
           var application = res.data.application
           console.log(application)

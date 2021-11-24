@@ -732,7 +732,10 @@ export default {
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
           console.log(this.jobOfferCurrentView)
-          this.getApplied()
+          if (this.logged && this.is_jobseeker)
+          {
+            this.getApplied()
+          }
           this.onJobOfferView()
         })
         .catch((error) => {

@@ -43,7 +43,7 @@ jobs:
         with:
           pytest-coverage: ${{env.working-directory}}/pytest-coverage.txt
   test-frontend:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Run Jest tests and run coverage report

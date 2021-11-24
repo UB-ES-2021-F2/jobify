@@ -31,7 +31,7 @@
       <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{job_name}}</h2>
       <b-container fluid >
         <b-row>
-          <b-col align="center">
+          <b-col align="left">
             <div id="descriptionJobOffer" v-if="description !== '' && description !== null" class="p-2 pb-3" style="max-width: 50rem">
               <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
               <p>{{description}}</p>

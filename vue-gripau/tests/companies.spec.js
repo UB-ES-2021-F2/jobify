@@ -6,7 +6,7 @@ import './firebase-mock'
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 const router = new VueRouter()
-/*
+
 jest.mock("firebase/firestore", () => {
   return {
     getFirestore: jest.fn(),
@@ -190,4 +190,4 @@ describe('Homepage logged company ', () => {
   //  expect(wrapper.vm.is_company).toEqual(null)
   //  expect(wrapper.vm.is_admin).toEqual(null)
   //})
-})*/
+})

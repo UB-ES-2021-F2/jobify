@@ -6,7 +6,7 @@ const localVue = createLocalVue()
 localVue.use(VueRouter)
 const router = new VueRouter()
 
-/*
+
 describe('Homepage not logged ', () => {
   let wrapper;
 
@@ -187,4 +187,4 @@ describe('Homepage logged company ', () => {
   //  expect(wrapper.vm.is_company).toEqual(null)
   //  expect(wrapper.vm.is_admin).toEqual(null)
   //})
-})*/
+})

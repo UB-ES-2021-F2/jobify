@@ -29,7 +29,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
     </b-navbar>
     <!--/.Navbar -->
     <!-- Job offers company view -->
-    <div id="jobPostingsView" v-show="!this.jobOfferView">
+    <div class="mx-2" id="jobPostingsView" v-show="!this.jobOfferView">
       <h2 class="title-offer"> {{ message }} </h2>
       <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
         <b-icon icon="patch-plus" font-scale="2"></b-icon>

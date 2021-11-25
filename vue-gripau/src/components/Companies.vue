@@ -29,48 +29,44 @@
     <!--/.Navbar -->
 
     <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
-    <b-container fluid>
-      <b-row class="m-1">
-        <b-col align="center" align-self="stretch" v-for="(company) in companies" :key="company.id">
+    <div class="mx-2" id="companiesView">
+      <b-row >
+        <b-col class="mb-4" align="center"  align-self="stretch" v-for="(company) in companies" :key="company.id">
           <b-card
             tag="article"
-            style="height: 90%; width: 500px; font-family: 'Work Sans SemiBold'"
+            style="height: 100%; min-width: 350px; max-width: 500px; font-family: 'Work Sans SemiBold'"
             id="companyCard"
           >
-            <div class="row no-gutters">
-                <b-container fluid style="font-family: 'Work Sans'">
-                  <b-row no gutters>
-                    <b-col cols="8">
-                      <b-card-text id="companyName" >
-                        <p class="titleCompanyCard">{{ company.company }}</p>
-                      </b-card-text>
-                      <b-col lg>
-                        <b-icon id="emailIcon" icon="envelope-fill"></b-icon> {{company.email}}
-                      </b-col>
-                      <b-col lg v-if="company.sector !== 'Unknown'">
-                        <b-icon id="sectorIcon" icon="inboxes-fill"></b-icon> {{ company.sector }}
-                      </b-col>
-                      <b-col lg v-if="company.location !== 'Unknown'">
-                        <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
-                      </b-col>
-                    </b-col>
-                    <b-col v-if="companies_logos[company.username]!=null" cols="4">
-                      <img v-if="loadedLogos" class="card-img" :src="companies_logos[company.username]" alt=""
-                          style="width:128px;height:128px">
-                    </b-col>
-                    <b-col v-if="companies_logos[company.username]==null" cols="4">
-                      <img class="card-img" src="../assets/images/company_avatar.png" alt=""
-                          style="width:128px;height:128px">
-                    </b-col>
-                  </b-row>
-                </b-container>
-              <b-button id="companyButton" class="btn btn-outline-light active" @click="onCompany(company.username)"
-                        style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            </div>
+            <b-container style="font-family: 'Work Sans'">
+              <b-row align-v="center">
+                <b-col align="left" cols="8">
+                  <b-card-text id="companyName" >
+                    <p class="titleCompanyCard">{{ company.company }}</p>
+                  </b-card-text>
+                  <b-col>
+                    <b-icon id="emailIcon"  icon="envelope-fill"></b-icon> {{ company.email}}
+                  </b-col>
+                  <b-col lg v-if="company.sector !== 'Unknown'">
+                    <b-icon id="sectorIcon" icon="inboxes-fill"></b-icon> {{ company.sector }}
+                  </b-col>
+                  <b-col lg v-if="company.location !== 'Unknown'">
+                    <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ company.location }}
+                  </b-col>
+                </b-col>
+                <b-col align-v="center">
+                  <img v-if="companies_logos[company.username]!=null" class="card-img" :src="companies_logos[company.username]" alt=""
+                      style="max-width:128px; max-height:128px">
+                  <img v-if="companies_logos[company.username]==null" class="card-img" src="../assets/images/company_avatar.png" alt=""
+                      style="max-width:128px; max-height:128px">
+                </b-col>
+              </b-row>
+            </b-container>
+          <b-button id="companyButton" class="btn btn-outline-light active" @click="onCompany(company.username)"
+                    style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
           </b-card>
         </b-col>
       </b-row>
-    </b-container>
+    </div>
   </div>
 </template>
 

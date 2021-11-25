@@ -6,7 +6,7 @@
   >
     <b-container style="font-family: 'Work Sans'">
       <b-row align-v="center">
-        <b-col cols="8">
+        <b-col align="left" cols="8">
           <b-card-text id="companyName" >
           <p class="titleJobOfferCard">{{ job_name }}</p>
           <p class="companyNameJobOfferCard">{{ company_name }}</p>

@@ -9,6 +9,7 @@ Flask-RESTful==0.3.8
 Flask-Cors==3.0.8
 Flask-Migrate==2.5.3
 Flask-HTTPAuth==4.0.0
+fuzzywuzzy==0.18.0
 passlib==1.7.2
 itsdangerous==1.1.0
 python-dateutil==2.8.1

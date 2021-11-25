@@ -287,15 +287,4 @@ export default {
   padding: 20px;
   margin-bottom: 20px;
 }
-.companyNameJobOfferCard{
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-size: 18px;
-  margin-bottom: 0.3rem;
-}
-.titleJobOfferCard{
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 0;
-}
 </style>

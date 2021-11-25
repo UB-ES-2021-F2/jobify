@@ -21,8 +21,11 @@ class TestJobOfferApplicantsResource(BaseTestCase):
         new_company = CompanyModel('universitat123', 'ub', 'ub@gmail.com', 'hola, som la UB')
         new_company.hash_password('Password12')
         new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 'Barcelona', 5000,
-                                      8, 'Temporal')
+                                              8, 'Temporal')
         new_company.job_offers.append(new_job_offer)
+        new_job_offer_2 = JobOfferModel('teacher', 'test de EDS', datetime.datetime(2021, 4, 7), 'Barcelona', 5000,
+                                              8, 'Temporal')
+        new_company.job_offers.append(new_job_offer_2)
         new_application = ApplicationModel()
         new_job_seeker.applications.append(new_application)
         new_job_offer.applications.append(new_application)
@@ -41,14 +44,15 @@ class TestJobOfferApplicantsResource(BaseTestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_failed_get(self):
+        self._add_data()
         login = self.client.post('/api/login', json={
             'username': 'universitat123', 'password': 'Password12'
         })
         token = login.json['token']
         valid_credentials = base64.b64encode(bytes(token+":", 'utf-8')).decode()
-        response = self.client.get('/api/offer_applicants/1', headers={"Authorization": "Basic " + valid_credentials})
+        response = self.client.get('/api/offer_applicants/2', headers={"Authorization": "Basic " + valid_credentials})
         self.assertEquals(response.status_code, 404)
-        self.assertDictEqual(response.json, {'message': "There are no applicants to the offer [1]"})
+        self.assertDictEqual(response.json, {'message': "There are no applicants to the offer [2]"})
 
 
 if __name__ == '__main__':

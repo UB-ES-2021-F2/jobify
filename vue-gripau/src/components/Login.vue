@@ -2,17 +2,17 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand href="#" @click="onHome">
+      <b-navbar-brand id="logoNavbar" href="#" @click="onHome">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="onHome()">Home</b-nav-item>
-          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
-          <b-nav-item @click="onAboutUs()">About Us</b-nav-item>
+          <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
+          <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="aboutUsNavbarButton" @click="onAboutUs()">About Us</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -39,10 +39,10 @@
                   </b-form-input>
                 </b-form-group>
                 <div>
-                  <b-button type="submit" variant="primary" class='btn-login' >Login</b-button>
+                  <b-button id="logInButton" type="submit" variant="primary" class='btn-login' >Login</b-button>
                 </div>
                 <div class="signup-container">
-                  You don't have an account?<b-button v-b-modal.register-modal variant="secondary" class='btn-signup'>Sign Up</b-button>
+                  You don't have an account?<b-button id="signUpButton" v-b-modal.register-modal variant="secondary" class='btn-signup'>Sign Up</b-button>
                 </div>
               </b-form>
 
@@ -56,17 +56,16 @@
              id="register-modal"
              title="Become a member"
              hide-footer
-             hide-backdrop
     >
       <b-tabs v-model="tabIndex" content-class="mt-3" fill>
         <!--Job Seeker form -->
-        <b-tab title="Job Seeker" active>
+        <b-tab id="jobSeekerTab" title="Job Seeker" active>
           <validation-observer ref="observer" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)">
 
               <validation-provider name="FirstName"  :rules="{ alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1" label="First Name" label-for="input-1">
-                  <b-form-input v-model="registerS.fName" placeholder="" type="text" :state="getValidationState(validationContext)"
+                  <b-form-input id="firstNameJobseekerInput" v-model="registerS.fName" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -74,7 +73,7 @@
 
               <validation-provider name="LastName"  :rules="{ alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-2" label="Last Name" label-for="input-2">
-                  <b-form-input v-model="registerS.lName" placeholder="" type="text" :state="getValidationState(validationContext)"
+                  <b-form-input id="lastNameJobseekerInput" v-model="registerS.lName" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-2-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -82,7 +81,7 @@
 
               <validation-provider name="Username"  :rules="{ alpha_num, required: true, min:4, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-3" label="Username" label-for="input-3">
-                  <b-form-input v-model="registerS.username" placeholder="" type="text" :state="getValidationState(validationContext)"
+                  <b-form-input id="usernameJobseekerInput" v-model="registerS.username" placeholder="" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-3-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -90,7 +89,7 @@
 
               <validation-provider name="Email"  :rules="{ email, required: true, max: 128}" v-slot="validationContext">
                 <b-form-group id="input-group-4" label="Email" label-for="input-4">
-                  <b-form-input v-model="registerS.email" placeholder="" type="email" :state="getValidationState(validationContext)"
+                  <b-form-input id="emailJobseekerInput" v-model="registerS.email" placeholder="" type="email" :state="getValidationState(validationContext)"
                                 aria-describedby="input-4-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-4-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -98,7 +97,7 @@
 
               <validation-provider name="password"  :rules="{required: true, regex: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/ }" v-slot="validationContext" vid="password">
                 <b-form-group id="input-group-5" label="Password" label-for="input-5">
-                  <b-form-input v-model="registerS.password" placeholder="" type="password" :state="getValidationState(validationContext)"
+                  <b-form-input id="passwordJobseekerInput" v-model="registerS.password" placeholder="" type="password" :state="getValidationState(validationContext)"
                                 aria-describedby="input-5-live-feedback"></b-form-input>
                   <b-form-text id="password-help-block">
                     Your password must be 8-20 characters long and contain numbers and both uppercase and lowercase letters
@@ -109,36 +108,36 @@
 
               <validation-provider name="confirmation"  rules="required|confirmed:password" v-slot="validationContext">
                 <b-form-group id="input-group-6" label="Confirm password" label-for="input-6">
-                  <b-form-input v-model="registerS.confirmation" placeholder="" type="password" :state="getValidationState(validationContext)"
+                  <b-form-input id="confirmationJobseekerInput" v-model="registerS.confirmation" placeholder="" type="password" :state="getValidationState(validationContext)"
                                 aria-describedby="input-6-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-6-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
               </validation-provider>
 
               <!--
-              <b-form-checkbox id="checkbox-1" :state="this.registerS.rTandC" v-model="registerS.rTandC" name="checkbox-1">
+              <b-form-checkbox id="checkboxTermsJobseeker" :state="this.registerS.rTandC" v-model="registerS.rTandC" name="checkbox-1">
                 I have read and accept the terms and conditions and privacy policy.
               </b-form-checkbox>-->
 
-              <b-form-checkbox id="checkbox-2" v-model="registerS.newsletter" name="checkbox-2">
+              <b-form-checkbox id="checkboxNewsletterJobseeker" v-model="registerS.newsletter" name="checkbox-2">
                 I do not want to receive the Jungle Newsletter and tips to optimise my job search.
               </b-form-checkbox>
 
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-warning justify-content-md-end">Join Jobify!</button>
+                <button id="submitJobseeker" class="btn btn-warning justify-content-md-end">Join Jobify!</button>
               </div>
             </b-form>
           </validation-observer>
         </b-tab>
         <!--/Job Seeker form -->
         <!--Company form -->
-        <b-tab title="Company">
+        <b-tab id="companyTab" title="Company">
           <validation-observer ref="observerCompany" v-slot="{ handleSubmit }">
             <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(onSubmit)" >
 
               <validation-provider name="Username"  :rules="{alpha_num, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-0C" label="Company username" label-for="input-0C">
-                  <b-form-input v-model="registerC.username" placeholder="e.g. jobify123" type="text" :state="getValidationState(validationContext)"
+                  <b-form-input id="usernameCompanyInput" v-model="registerC.username" placeholder="e.g. jobify123" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-0c-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-0c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -146,7 +145,7 @@
 
               <validation-provider name="Company name"  :rules="{alpha_spaces, required: true, max: 30}" v-slot="validationContext">
                 <b-form-group id="input-group-1C" label="Company name" label-for="input-1C">
-                  <b-form-input v-model="registerC.company" placeholder="e.g. Jobify" type="text" :state="getValidationState(validationContext)"
+                  <b-form-input id="nameCompanyInput" v-model="registerC.company" placeholder="e.g. Jobify" type="text" :state="getValidationState(validationContext)"
                                 aria-describedby="input-1c-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-1c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -154,7 +153,7 @@
 
               <validation-provider name="Company email"  :rules="{email, required: true, max: 128}" v-slot="validationContext">
                 <b-form-group id="input-group-2C" label="Email" label-for="input-2C">
-                  <b-form-input v-model="registerC.email" placeholder="" type="email" :state="getValidationState(validationContext)"
+                  <b-form-input id="emailCompanyInput" v-model="registerC.email" placeholder="" type="email" :state="getValidationState(validationContext)"
                                 aria-describedby="input-2c-live-feedback">></b-form-input>
                   <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
@@ -162,7 +161,7 @@
 
               <validation-provider name="Company password"  :rules="{required: true, regex: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/ }" v-slot="validationContext" vid="passwordc">
                 <b-form-group id="input-group-3C" label="Password" label-for="input-3C">
-                  <b-form-input v-model="registerC.password" placeholder="" type="password" :state="getValidationState(validationContext)"
+                  <b-form-input id="passwordCompanyInput" v-model="registerC.password" placeholder="" type="password" :state="getValidationState(validationContext)"
                                 aria-describedby="input-3C-live-feedback"></b-form-input>
                   <b-form-text id="password-help-block">
                     Your password must be 8-20 characters long and contain numbers and both uppercase and lowercase letters
@@ -173,22 +172,22 @@
 
               <validation-provider name="confirmation"  rules="required|confirmed:passwordc" v-slot="validationContext">
                 <b-form-group id="input-group-4C" label="Confirm password" label-for="input-4C">
-                  <b-form-input v-model="registerC.confirmation" placeholder="" type="password" :state="getValidationState(validationContext)"
+                  <b-form-input id="confirmationCompanyInput" v-model="registerC.confirmation" placeholder="" type="password" :state="getValidationState(validationContext)"
                                 aria-describedby="input-4C-live-feedback"></b-form-input>
                   <b-form-invalid-feedback id="input-4C-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                 </b-form-group>
               </validation-provider>
               <!--
-              <b-form-checkbox id="checkbox-1C" :state="this.registerC.rTandC" v-model="registerC.rTandC" name="checkbox-1C" required>
+              <b-form-checkbox id="checkboxTermsCompany" :state="this.registerC.rTandC" v-model="registerC.rTandC" name="checkbox-1C" required>
                 I have read and accept the terms and conditions and privacy policy.
               </b-form-checkbox>-->
 
-              <b-form-checkbox id="checkbox-2C" v-model="registerC.newsletter" name="checkbox-2C">
+              <b-form-checkbox id="checkboxNewsletterCompany" v-model="registerC.newsletter" name="checkbox-2C">
                 I do not want to receive the Jungle Newsletter and tips to optimise my company interests.
               </b-form-checkbox>
 
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-warning justify-content-md-end">Join Jobify!</button>
+                <button id="submitCompany" class="btn btn-warning justify-content-md-end">Join Jobify!</button>
               </div>
             </b-form>
           </validation-observer>
@@ -265,16 +264,16 @@ export default {
       return dirty || validated ? valid : null
     },
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onAboutUs () {
-      this.$router.replace({ path: '/about_us' })
+      this.$router.push('/about_us')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     getAccount (type = 'jobseeker') {
       if (type === 'jobseeker') {
@@ -283,7 +282,7 @@ export default {
           .then((res) => {
             const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: true, isCompany: false}
             this.$store.commit('login', storeData)
-            this.$router.replace({path: '/'})
+            this.$router.push('/')
           })
           .catch(() => {
             // eslint-disable-next-line
@@ -297,7 +296,7 @@ export default {
           .then((res) => {
             const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: false, isCompany: true}
             this.$store.commit('login', storeData)
-            this.$router.replace({path: '/'})
+            this.$router.push('/')
           })
           .catch((error) => {
             // eslint-disable-next-line

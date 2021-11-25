@@ -11,7 +11,7 @@ class DeleteWorkExperience(Resource):
     def post(self, username):
 
         if username != g.user.username:
-            return {'message': 'Access denied'}, 400
+            return {'message': 'Access denied'}, 401
 
         parser = reqparse.RequestParser()
 
@@ -27,5 +27,5 @@ class DeleteWorkExperience(Resource):
             work_exp.delete_from_db(db)
             return {'message': "Work experience with id [{}] deleted".format(data.id)}, 200
 
-        return {'message': "Work experience with id [{}] don't exists".format(data.id)}, 400
+        return {'message': "Work experience with id [{}] doesn't exist".format(data.id)}, 404
 

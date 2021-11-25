@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import JobSeekerProfile from '@/components/JobSeekerProfile'
-import JobPostings from '@/components/JobPostings'
+import JobPostings from '@/components/JobPostingList'
 import AboutUs from '@/components/AboutUs'
 import Login from '@/components/Login'
 import CompanyProfile from '@/components/CompanyProfile'
+import JobPosting from '@/components/JobPosting'
 import Companies from '@/components/Companies'
 
 Vue.use(Router)
@@ -25,7 +26,16 @@ const Company = {
   `
 }
 
+const Job = {
+  template: `
+    <div class="job">
+      <router-view></router-view>
+    </div>
+  `
+}
+
 export default new Router({
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -60,6 +70,14 @@ export default new Router({
       path: '/job_postings',
       name: 'JobPostings',
       component: JobPostings
+    },
+    {
+      path: '/job_posting/:jobid',
+      name: 'JobPosting',
+      component: Job,
+      children: [
+        { path: '', component: JobPosting }
+      ]
     },
     {
       path: '/companies',

@@ -1,10 +1,13 @@
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 import '@/../bootstrap/css/bootstrap.css'
-import '@/../src/assets/styles/login.css'
+import '@/../src/assets/styles/styles.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// Import the functions you need from the SDKs you need
+import firebase from 'firebase/compat/app'
 
 // Veevalidate imports
 import {
@@ -37,5 +40,20 @@ Vue.prototype.$API_BASE_URL = 'http://localhost:5000/api/'
 new Vue({
   router,
   store,
-  render: (h) => h(App)
+  render: (h) => h(App),
+  created () {
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: 'AIzaSyAvkUYwd-EUzWggK1e4864PBKZ8youpnGQ',
+      authDomain: 'gripau-8cd1b.firebaseapp.com',
+      projectId: 'gripau-8cd1b',
+      storageBucket: 'gripau-8cd1b.appspot.com',
+      messagingSenderId: '238784150968',
+      appId: '1:238784150968:web:8c60da0985eb474b2d234d'
+    }
+
+    // Initialize Firebase
+    /* eslint-disable */
+    const app = firebase.initializeApp(firebaseConfig)
+  }
 }).$mount('#app')

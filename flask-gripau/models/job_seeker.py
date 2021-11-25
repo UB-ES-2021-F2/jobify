@@ -8,9 +8,7 @@ auth = HTTPBasicAuth()
 
 
 class JobSeekersModel(db.Model):
-    """
-    Model of a job seeker
-    """
+    """Model of a job seeker"""
     __tablename__ = 'jobseekers'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -25,6 +23,7 @@ class JobSeekersModel(db.Model):
     educations = db.relationship('EducationsModel', backref='educations', lazy=True)
     work_experiences = db.relationship('WorkExperiencesModel', backref='work_experiences', lazy=True)
     skills = db.relationship('SkillsModel', backref='skills', lazy=True)
+    applications = db.relationship('ApplicationModel', backref='job_seeker_applications', lazy=True)
 
     def __init__(self, username, name, surname, email, bio, is_admin=0):
         """
@@ -44,20 +43,29 @@ class JobSeekersModel(db.Model):
         self.bio = bio
 
     def json(self):
-        """
-        Function that returns the job seeker info as json
+        """Function that returns the job seeker info as json
         :return: json object with the information'
+
+        Args:
+
+        Returns:
+
         """
         return {'id': self.id, 'username': self.username, 'name': self.name, 'surname': self.surname,
                 'email': self.email, 'is_admin': self.is_admin,
                 'bio': self.bio, 'educations': [education.json() for education in self.educations],
                 'work_experiences': [we.json() for we in self.work_experiences],
-                'skills': [skill.skill_name() for skill in self.skills]}
+                'skills': [skill.skill_name() for skill in self.skills],
+                'applications': [application.json() for application in self.applications]}
 
     def save_to_db(self, database=None):
-        """
-        Function that saves to the database the job seeker
-        :param database: database instance
+        """Function that saves to the database the job seeker
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -65,9 +73,13 @@ class JobSeekersModel(db.Model):
         database.session.commit()
 
     def delete_from_db(self, database=None):
-        """
-        Function that the deletes from the database the job seeker
-        :param database: database instance
+        """Function that the deletes from the database the job seeker
+
+        Args:
+          database: database instance (Default value = None)
+
+        Returns:
+
         """
         if database is None:
             database = db
@@ -75,34 +87,50 @@ class JobSeekersModel(db.Model):
         database.session.commit()
 
     def hash_password(self, password):
-        """
-        Function that encrypts and sets the password of the user
-        :param password: password of the job seeker
+        """Function that encrypts and sets the password of the user
+
+        Args:
+          password: password of the job seeker
+
+        Returns:
+
         """
         self.password = pwd_context.encrypt(password)
 
     def verify_password(self, password):
-        """
-        Function that verifies if the password is the user's one
-        :param password: password to verify
-        :return: boolean, True (correct password) / False (incorrect password)
+        """Function that verifies if the password is the user's one
+
+        Args:
+          password: password to verify
+
+        Returns:
+          : boolean, True (correct password) / False (incorrect password)
+
         """
         return pwd_context.verify(password, self.password)
 
     def generate_auth_token(self, expiration=4000):
-        """
-        Function that generates an authentication token for the user
-        :param expiration: expiration time of the token
-        :return: token
+        """Function that generates an authentication token for the user
+
+        Args:
+          expiration: expiration time of the token (Default value = 4000)
+
+        Returns:
+          : token
+
         """
         s = Serializer(current_app.secret_key, expires_in=expiration)
         return s.dumps({'username': self.username})
 
     def delete_education(self, id):
-        """
-        Function that deletes an education from the education list of the job seeker
-        :param id: id of the education
-        :return: the education removed, None if the education does not exist
+        """Function that deletes an education from the education list of the job seeker
+
+        Args:
+          id: id of the education
+
+        Returns:
+          : the education removed, None if the education does not exist
+
         """
         for e in self.educations:
             if e.id == id:
@@ -111,10 +139,14 @@ class JobSeekersModel(db.Model):
         return None
 
     def delete_work_experience(self, id):
-        """
-        Function that deletes a work experience from the work experience list of the job seeker
-        :param id: id of the work experience
-        :return: the work experience removed, None if the work experience does not exist
+        """Function that deletes a work experience from the work experience list of the job seeker
+
+        Args:
+          id: id of the work experience
+
+        Returns:
+          : the work experience removed, None if the work experience does not exist
+
         """
         for w in self.work_experiences:
             if w.id == id:
@@ -122,12 +154,32 @@ class JobSeekersModel(db.Model):
                 return w
         return None
 
+    def delete_application(self, id):
+        """Function that deletes an application from the applications list of the job seeker
+
+        Args:
+          id: id of the application
+
+        Returns:
+          : the application removed, None if the application does not exist
+
+        """
+        for a in self.applications:
+            if a.id == id:
+                self.applications.remove(a)
+                return a
+        return None
+
     @classmethod
     def verify_auth_token(cls, token):
-        """
-        Function that returns the user related to the token
-        :param token: token of the user
-        :return: user, None if the token is expired or invalid
+        """Function that returns the user related to the token
+
+        Args:
+          token: token of the user
+
+        Returns:
+          : user, None if the token is expired or invalid
+
         """
         s = Serializer(current_app.secret_key)
         try:
@@ -143,10 +195,14 @@ class JobSeekersModel(db.Model):
 
     @classmethod
     def find_by_username(cls, username):
-        """
-        Function that returns a job seeker given the username
-        :param username: username of the job seeker
-        :return: job seeker
+        """Function that returns a job seeker given the username
+
+        Args:
+          username: username of the job seeker
+
+        Returns:
+          : job seeker
+
         """
         if not username:
             return None
@@ -154,28 +210,41 @@ class JobSeekersModel(db.Model):
 
     @classmethod
     def find_by_email(cls, email):
-        """
-        Function that returns a job seeker given the email
-        :param email: email of the job seeker
-        :return: job seeker
+        """Function that returns a job seeker given the email
+
+        Args:
+          email: email of the job seeker
+
+        Returns:
+          : job seeker
+
         """
         return cls.query.filter_by(email=email).first()
 
     @classmethod
     def show_accounts(cls):
-        """
-        Function that shows all the job seekers in the database
+        """Function that shows all the job seekers in the database
         :return: list of the job seekers
+
+        Args:
+
+        Returns:
+
         """
         return [user.json() for user in cls.query.all()]
 
 
 @auth.verify_password
 def verify_password(token, password):
-    """
-    Function that sets the actual user as the user related to the token
-    :param token: token of the user
-    :return: job seeker
+    """Function that sets the actual user as the user related to the token
+
+    Args:
+      token: token of the user
+      password: 
+
+    Returns:
+      : job seeker
+
     """
     account = JobSeekersModel.verify_auth_token(token)
     if account:
@@ -185,10 +254,14 @@ def verify_password(token, password):
 
 @auth.get_user_roles
 def get_user_roles(user):
-    """
-    Function that returns the roles of a job seeker
-    :param user: job seeker
-    :return: roles
+    """Function that returns the roles of a job seeker
+
+    Args:
+      user: job seeker
+
+    Returns:
+      : roles
+
     """
     if user.is_admin == 1:
         return ['admin']

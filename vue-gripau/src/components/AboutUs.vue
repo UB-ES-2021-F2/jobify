@@ -2,26 +2,26 @@
   <div id="app">
     <!--Navbar -->
     <b-navbar sticky toggleable="lg" type="light" variant="light">
-      <b-navbar-brand @click="onHome()">
+      <b-navbar-brand id="logoNavbar" href="#" @click="onHome()">
         <img style="max-width: 150px" :src="require('../assets/logo.svg')">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="onHome()">Home</b-nav-item>
-          <b-nav-item @click="onJobPostings()">Job postings</b-nav-item>
-          <b-nav-item @click="onCompanies()">Companies</b-nav-item>
-          <b-nav-item active>About Us</b-nav-item>
+          <b-nav-item id="homeNavbarButton" @click="onHome()">Home</b-nav-item>
+          <b-nav-item id="jobPostingsNavbarButton" @click="onJobPostings()">Job postings</b-nav-item>
+          <b-nav-item id="companiesNavbarButton" @click="onCompanies()">Companies</b-nav-item>
+          <b-nav-item id="aboutUsNavbarButton" active>About Us</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="!logged" class="ml-auto">
-          <b-nav-item @click="onLogIn()">Log in</b-nav-item>
+          <b-nav-item id="logInNavbarButton" @click="onLogIn()">Log in</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item @click="onProfile()">{{ this.username }}</b-nav-item>
-          <button class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
+          <b-nav-item id="profileNavbarButton" @click="onProfile()">{{ this.username }}</b-nav-item>
+          <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -29,7 +29,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div class="aboutus-title"> {{ message }} </div>
+          <div id="aboutUsTitle" class="aboutus-title"> {{ message }} </div>
           <div class="row">
             <!-- Our Project -->
             <div class="ourproject-container">
@@ -314,27 +314,27 @@ export default {
   },
   methods: {
     onHome () {
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push('/job_seeker/' + this.username)
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push('/company/' + this.username)
       }
     },
     onLogIn () {
-      this.$router.replace({ path: '/login' })
+      this.$router.push('/login')
     },
     onCompanies () {
-      this.$router.replace({ path: '/companies' })
+      this.$router.push('/companies')
     },
     onLogOut () {
       this.$store.commit('logout')
-      this.$router.replace({ path: '/' })
+      this.$router.push('/')
     },
     onJobPostings () {
-      this.$router.replace({ path: '/job_postings' })
+      this.$router.push('/job_postings')
     },
     computed: mapState({
       token: state => state.token,

@@ -43,7 +43,7 @@
           <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
         </b-card>
       </b-row>-->
-      <b-row class="md-2">
+      <b-row class="m-1">
         <b-col align="center" align-self="stretch" v-for="(job_offer) in job_offers" :key="job_offer.id">
           <b-card
             tag="article"

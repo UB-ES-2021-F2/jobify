@@ -1,3 +1,5 @@
+import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
+
 <template>
   <div id="app">
     <!--Navbar -->
@@ -27,67 +29,35 @@
     </b-navbar>
     <!--/.Navbar -->
     <!-- Job offers company view -->
-    <div id="jobPostingsView" v-show="!this.jobOfferView">
+    <div class="mx-2" id="jobPostingsView" v-show="!this.jobOfferView">
       <h2 class="title-offer"> {{ message }} </h2>
       <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
         <b-icon icon="patch-plus" font-scale="2"></b-icon>
       </b-link>
-      <b-container fluid>
-        <!--<b-row align-h="center" v-if="is_company">
-          <b-card
-            tag="article"
-            class="text-center mb-2"
-            style="width: 90%; max-width: 600px"
-            id="addJobOfferCard"
-          >
-            <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
-          </b-card>
-        </b-row>-->
-        <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
-          <b-card
-            tag="article"
-            class="mb-2"
-            style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
-            align="left"
-            id="jobOfferCard"
-          >
-            <div>
-              <b-container fluid style="font-family: 'Work Sans'">
-                <b-row no-gutters>
-                  <b-col cols="8">
-                    <b-card-text id="companyName" >
-                      <p class="titleJobOfferCard">{{ job_offer.job_name }}</p>
-                      <p class="companyNameJobOfferCard">{{ job_offer.company_name }}</p>
-                    </b-card-text>
-                    <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
-                      <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                    </b-col>
-                    <!--<b-col lg v-if="job_offer.working_hours > 0">
-                      <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                    </b-col> potser no posarho a la card-->
-                    <b-col lg>
-                      <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                    </b-col>
-                    <b-col lg>
-                      <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                    </b-col>
-                  </b-col>
-                  <b-col v-if="companies_logos[job_offer.company]!=null" cols="4">
-                    <img class="card-img" :src="companies_logos[job_offer.company]" alt=""
-                         style="width:128px;height:128px">
-                  </b-col>
-                  <b-col v-if="companies_logos[job_offer.company]==null" cols="4">
-                    <img class="card-img" src="../assets/images/company_avatar.png" alt=""
-                         style="width:128px;height:128px">
-                  </b-col>
-                </b-row>
-              </b-container>
-              <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            </div>
-          </b-card>
-        </b-row>
-      </b-container>
+      <!--<b-row align-h="center" v-if="is_company">
+        <b-card
+          tag="article"
+          class="text-center mb-2"
+          style="width: 90%; max-width: 600px"
+          id="addJobOfferCard"
+        >
+          <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
+          <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
+        </b-card>
+      </b-row>-->
+      <b-row>
+        <b-col class="mb-4" align="center" align-self="stretch" v-for="(job_offer) in job_offers" :key="job_offer.id">
+          <job-offer-card
+            v-bind:id = "job_offer.id"
+            v-bind:job_name = "job_offer.job_name"
+            v-bind:company_name = "job_offer.company_name"
+            v-bind:contract_type = "job_offer.contract_type"
+            v-bind:publication_date = "job_offer.publication_date"
+            v-bind:location =  "job_offer.location"
+            v-bind:company_logo =  "companies_logos[job_offer.company]"
+          ></job-offer-card>
+        </b-col>
+      </b-row>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
                title="Post a job offer"
@@ -316,16 +286,5 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
-}
-.companyNameJobOfferCard{
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-size: 18px;
-  margin-bottom: 0.3rem;
-}
-.titleJobOfferCard{
-  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
-  font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 0;
 }
 </style>

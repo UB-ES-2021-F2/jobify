@@ -1,3 +1,5 @@
+import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
+
 <template>
   <div id="app">
     <!--Navbar -->
@@ -43,43 +45,17 @@
           <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
         </b-card>
       </b-row>-->
-      <b-row class="m-1">
-        <b-col align="center" align-self="stretch" v-for="(job_offer) in job_offers" :key="job_offer.id">
-          <b-card
-            tag="article"
-            style="height: 90%; width: 500px; font-family: 'Work Sans SemiBold'"
-            id="jobOfferCard"
-          >
-            <b-container  fluid style="font-family: 'Work Sans'">
-              <b-row align-v="center">
-                <b-col align-v="stretch" cols="8">
-                  <b-card-text id="companyName" >
-                    <p class="titleJobOfferCard">{{ job_offer.job_name }}</p>
-                    <p class="companyNameJobOfferCard">{{ job_offer.company_name }}</p>
-                  </b-card-text>
-                  <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
-                    <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                  </b-col>
-                  <!--<b-col lg v-if="job_offer.working_hours > 0">
-                    <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                  </b-col> potser no posarho a la card-->
-                  <b-col lg>
-                    <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                  </b-col>
-                  <b-col lg>
-                    <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                  </b-col>
-                </b-col>
-                <b-col align-v="stretch" cols="4">
-                  <img v-if="companies_logos[job_offer.company]!=null" class="card-img" :src="companies_logos[job_offer.company]" alt=""
-                      style="width:128px;height:128px">
-                  <img v-if="companies_logos[job_offer.company]==null" class="card-img" src="../assets/images/company_avatar.png" alt=""
-                      style="width:128px;height:128px">
-                </b-col>
-              </b-row>
-            </b-container>
-            <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-          </b-card>
+      <b-row>
+        <b-col class="mb-4" align="center" align-self="stretch" v-for="(job_offer) in job_offers" :key="job_offer.id">
+          <job-offer-card
+            v-bind:id = "job_offer.id"
+            v-bind:job_name = "job_offer.job_name"
+            v-bind:company_name = "job_offer.company_name"
+            v-bind:contract_type = "job_offer.contract_type"
+            v-bind:publication_date = "job_offer.publication_date"
+            v-bind:location =  "job_offer.location"
+            v-bind:company_logo =  "companies_logos[job_offer.company]"
+          ></job-offer-card>
         </b-col>
       </b-row>
       <b-modal ref="jobOfferModal"

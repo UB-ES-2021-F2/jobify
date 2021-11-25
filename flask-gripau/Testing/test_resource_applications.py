@@ -44,13 +44,24 @@ class TestApplicationsResource(BaseTestCase):
     def test_successful_get(self):
         self._add_data()
 
-        response = self.client.get('/api/application/test/1')
+        login = self.client.post('/api/login', json={
+            'username': 'test', 'password': 'test'
+        })
+        token = login.json['token']
+        valid_credentials = base64.b64encode(bytes(token+":", 'utf-8')).decode()
+
+        response = self.client.get('/api/application/test/1', headers={"Authorization": "Basic " + valid_credentials})
         self.assertEquals(response.status_code, 200)
 
     def test_failed_get(self):
         self._add_data()
+        login = self.client.post('/api/login', json={
+            'username': 'test', 'password': 'test'
+        })
+        token = login.json['token']
+        valid_credentials = base64.b64encode(bytes(token+":", 'utf-8')).decode()
 
-        response = self.client.get('/api/application/test/7')
+        response = self.client.get('/api/application/test/7', headers={"Authorization": "Basic " + valid_credentials})
         self.assertEquals(response.status_code, 404)
         self.assertDictEqual(response.json, {"application": None})
 

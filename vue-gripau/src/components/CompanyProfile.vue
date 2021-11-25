@@ -448,8 +448,9 @@ export default {
   },
   methods: {
     getApplied () {
-      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
-      axios.get(path)
+      const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username + '/' + this.jobOfferCurrentView.id
+      axios.get(path, {
+        auth: {username: this.token}})
         .then((res) => {
           var application = res.data.application
           console.log(application)
@@ -731,7 +732,10 @@ export default {
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
           console.log(this.jobOfferCurrentView)
-          this.getApplied()
+          if (this.logged && this.is_jobseeker)
+          {
+            this.getApplied()
+          }
           this.onJobOfferView()
         })
         .catch((error) => {

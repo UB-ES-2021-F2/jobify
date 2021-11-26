@@ -259,7 +259,7 @@ export default {
     this.token = this.$store.state.token
     this.is_admin = this.$store.state.isAdmin
     this.id = this.$route.path.split('job_posting/')[1]
-    if (this.logged){
+    if (this.logged) {
       if (this.is_jobseeker) {
         this.getApplied()
       } else {

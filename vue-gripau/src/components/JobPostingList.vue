@@ -29,7 +29,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
     </b-navbar>
     <!--/.Navbar -->
     <!-- Job offers company view -->
-    <div class="mx-2" id="jobPostingsView" v-show="!this.jobOfferView">
+    <div class="mx-1" id="jobPostingsView" v-show="!this.jobOfferView">
       <h2 class="title-offer"> {{ message }} </h2>
       <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
         <b-icon icon="patch-plus" font-scale="2"></b-icon>
@@ -45,19 +45,10 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
           <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
         </b-card>
       </b-row>-->
-      <b-row>
-        <b-col class="mb-4" align="center" align-self="stretch" v-for="(job_offer) in job_offers" :key="job_offer.id">
-          <job-offer-card
-            v-bind:id = "job_offer.id"
-            v-bind:job_name = "job_offer.job_name"
-            v-bind:company_name = "job_offer.company_name"
-            v-bind:contract_type = "job_offer.contract_type"
-            v-bind:publication_date = "job_offer.publication_date"
-            v-bind:location =  "job_offer.location"
-            v-bind:company_logo =  "companies_logos[job_offer.company]"
-          ></job-offer-card>
-        </b-col>
-      </b-row>
+      <job-offer-view
+        v-bind:job_offers = "job_offers"
+        v-bind:companies_logos = "companies_logos"
+      ></job-offer-view>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
                title="Post a job offer"

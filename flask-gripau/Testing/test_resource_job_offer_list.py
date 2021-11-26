@@ -53,11 +53,17 @@ class TestJobOfferListResource(BaseTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(response.json['OfferList']), 1)
 
-    def test_successful_get_with_keyword_ub(self):
+    def test_successful_get_with_keyword_test(self):
         self._add_data()
 
         response = self.client.get('/api/offers',json={'keyword': 'test'})
         self.assertEquals(response.status_code, 200)
         self.assertEquals(len(response.json['OfferList']), 2)
+    def test_successful_get_with_two_keywords(self):
+            self._add_data()
+
+            response = self.client.get('/api/offers',json={'keyword': 'professor musica'})
+            self.assertEquals(response.status_code, 200)
+            self.assertEquals(len(response.json['OfferList']), 1)
 if __name__ == '__main__':
     unittest.main()

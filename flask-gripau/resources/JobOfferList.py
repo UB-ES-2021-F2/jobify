@@ -30,20 +30,20 @@ class JobOfferList(Resource):
                     offers.append(offer.json())
         else:
             for company in CompanyModel.query.all():
-                to_append = False
-                for word in company.company.split(" "):
-                    if fuzz.ratio(word, data.keyword) > 80:
-                        to_append = True
+                to_append = True
+                for word in data.keyword.split(" "):
+                    if fuzz.partial_ratio(word, company.company) < 80:
+                        to_append = False
                         break
                 for offer in company.job_offers:
                     if to_append:
                         offers.append(offer.json())
                     else:
-                        offer_name = offer.job_name
-                        appended=False
-                        for word in offer_name.split(" "):
-                            if fuzz.ratio(word, data.keyword) > 80:
-                                offers.append(offer.json())
-                                appended = True
+                        append = True
+                        for word in data.keyword.split(" "):
+                            if fuzz.partial_ratio(word, offer.job_name) < 80:
+                                append = False
                                 break
+                        if append:
+                            offers.append(offer.json())
         return {'OfferList': offers}, 200

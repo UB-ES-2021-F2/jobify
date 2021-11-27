@@ -280,7 +280,7 @@ export default {
         const pathJobseeker = Vue.prototype.$API_BASE_URL + 'jobseeker/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathJobseeker)
           .then((res) => {
-            const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: true, isCompany: false}
+            const storeData = {token: this.token, username: this.loginForm.username.toLowerCase(), isAdmin: res.data.account.is_admin !== 0, isJobSeeker: true, isCompany: false}
             this.$store.commit('login', storeData)
             this.$router.push('/')
           })
@@ -294,7 +294,7 @@ export default {
         const pathCompany = Vue.prototype.$API_BASE_URL + 'company/' + this.loginForm.username.toLowerCase() // to change check endpoints backend
         axios.get(pathCompany)
           .then((res) => {
-            const storeData = {token: this.token, username: this.loginForm.username, isAdmin: res.data.account.is_admin !== 0, isJobSeeker: false, isCompany: true}
+            const storeData = {token: this.token, username: this.loginForm.username.toLowerCase(), isAdmin: res.data.account.is_admin !== 0, isJobSeeker: false, isCompany: true}
             this.$store.commit('login', storeData)
             this.$router.push('/')
           })
@@ -309,7 +309,7 @@ export default {
       const path = Vue.prototype.$API_BASE_URL + 'register'
       if (this.tabIndex === 0) {
         const values = {
-          username: this.registerS.username,
+          username: this.registerS.username.toLowerCase(),
           password: this.registerS.password,
           name: this.registerS.fName,
           surname: this.registerS.lName,
@@ -327,7 +327,7 @@ export default {
           })
       } else {
         const values = {
-          username: this.registerC.username,
+          username: this.registerC.username.toLowerCase(),
           name: this.registerC.company,
           password: this.registerC.password,
           email: this.registerC.email,

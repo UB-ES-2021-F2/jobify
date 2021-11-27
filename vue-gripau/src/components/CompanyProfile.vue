@@ -324,7 +324,7 @@
                   </div>
                   <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
                     <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
-                      <!--<b-icon id="salaryIcon" icon="arrow-left"></b-icon>--> Back
+                      Back
                     </b-button>
                   </div>
                   <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
@@ -332,9 +332,9 @@
                       <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
                     </b-button>
                   </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-                    <b-button id="appliedButton" class="job-offer-button-apply" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
+                  <div v-if="is_jobseeker && logged" class="col-12 col-sm-12 col-lg-6">
+                    <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied" v-b-modal.modal-apply variant="success">Apply</b-button>
+                    <b-button id="appliedButton" class="job-offer-button-apply" v-else disabled variant="outline-success">Applied</b-button>
                   </div>
                 </div>
               </div>
@@ -448,8 +448,9 @@ export default {
   },
   methods: {
     getApplied () {
-      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
-      axios.get(path)
+      const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username + '/' + this.jobOfferCurrentView.id
+      axios.get(path, {
+        auth: {username: this.token}})
         .then((res) => {
           var application = res.data.application
           console.log(application)
@@ -731,7 +732,9 @@ export default {
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
           console.log(this.jobOfferCurrentView)
-          this.getApplied()
+          if (this.logged && this.is_jobseeker) {
+            this.getApplied()
+          }
           this.onJobOfferView()
         })
         .catch((error) => {

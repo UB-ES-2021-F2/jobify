@@ -37,7 +37,7 @@
 export default{
   props: {
     job_offers: { required: true, type: Array },
-    companies_logos: { required: false, type: Array },
+    companies_logos: { required: false, type: Object },
     per_page: {type: Number, default: 25}
   },
   data () {

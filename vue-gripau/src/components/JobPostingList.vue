@@ -76,49 +76,10 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
         </b-row>
       </b-container>
       <b-container>
-        <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
-          <b-card
-            tag="article"
-            class="mb-2"
-            style="width: 90%; max-width: 600px; font-family: 'Work Sans SemiBold'"
-            align="left"
-            id="jobOfferCard"
-          >
-            <div>
-              <b-container fluid style="font-family: 'Work Sans'">
-                <b-row no-gutters>
-                  <b-col cols="8">
-                    <b-card-text id="companyName" >
-                      <p class="titleJobOfferCard">{{ job_offer.job_name }}</p>
-                      <p class="companyNameJobOfferCard">{{ job_offer.company_name }}</p>
-                    </b-card-text>
-                    <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
-                      <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                    </b-col>
-                    <!--<b-col lg v-if="job_offer.working_hours > 0">
-                      <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                    </b-col> potser no posarho a la card-->
-                    <b-col lg>
-                      <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                    </b-col>
-                    <b-col lg>
-                      <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                    </b-col>
-                  </b-col>
-                  <b-col v-if="companies_logos[job_offer.company]!=null" cols="4">
-                    <img class="card-img" :src="companies_logos[job_offer.company]" alt=""
-                         style="width:128px;height:128px">
-                  </b-col>
-                  <b-col v-if="companies_logos[job_offer.company]==null" cols="4">
-                    <img class="card-img" src="../assets/images/company_avatar.png" alt=""
-                         style="width:128px;height:128px">
-                  </b-col>
-                </b-row>
-              </b-container>
-              <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-            </div>
-          </b-card>
-        </b-row>
+        <job-offer-view
+          v-bind:job_offers = "job_offers"
+          v-bind:companies_logos = "companies_logos"
+        ></job-offer-view>
       </b-container>
       <b-container fluid v-if="notFound" id="notFoundContainer">
         <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>

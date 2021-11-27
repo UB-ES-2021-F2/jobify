@@ -79,6 +79,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
         <job-offer-view
           v-bind:job_offers = "job_offers"
           v-bind:companies_logos = "companies_logos"
+          :key = "loaded_logos"
         ></job-offer-view>
       </b-container>
       <b-container fluid v-if="notFound" id="notFoundContainer">
@@ -191,7 +192,8 @@ export default {
         { item: 'Freelance', name: 'Freelance' }
       ],
       notFound: false,
-      notFoundMessage: 'Oops, we did not find any job offer matching your search...'
+      notFoundMessage: 'Oops, we did not find any job offer matching your search...',
+      loaded_logos: 0
     }
   },
   methods: {
@@ -263,20 +265,19 @@ export default {
         })
     },
     getCompaniesLogos () {
+      this.loaded_logos = 0
       for (let o in this.job_offers) {
         let offer = this.job_offers[o]
         this.companies_logos[offer.company] = null
         firebase.storage().ref(`images/${offer.company}/avatar`).getDownloadURL()
           .then((url) => {
             this.companies_logos[offer.company] = url
-            this.companies_logos[offer.company] = url
-            this.$forceUpdate()
+            this.loaded_logos += 1
           })
           .catch(() => {
             console.log('This avatar does not exist')
           })
       }
-      this.$forceUpdate()
     },
     onSubmitNewOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username

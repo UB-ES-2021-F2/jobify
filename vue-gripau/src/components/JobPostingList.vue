@@ -37,7 +37,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
       <b-container fluid id="searchContainer"  style="padding: 20px; align-self: center;
                                                 font-family:'Work Sans SemiBold', Montserrat, sans-serif">
         <b-row align-h="center" id="searchTitleRow" class="mb-1">
-          <p class="text-center" style="font-size: 20px">Find your perfect job!</p>
+          <p class="text-center" style="font-size: 22px">Find your perfect job!</p>
         </b-row>
         <b-row align-h="center" id="searchContentRow" class="mb-2" style="font-family:'Work Sans', sans-serif">
           <b-row id="searchSearchbarRow">
@@ -70,12 +70,12 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
           </b-row>
         </b-row>
         <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
-          <b-button id="searchButton" variant="warning">
+          <b-button id="searchButton" variant="warning" @click="searchJobOffers">
             Search!
           </b-button>
         </b-row>
       </b-container>
-      <b-container fluid>
+      <b-container>
         <b-row align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
           <b-card
             tag="article"
@@ -119,6 +119,9 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
             </div>
           </b-card>
         </b-row>
+      </b-container>
+      <b-container fluid v-if="notFound" id="notFoundContainer">
+        <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
@@ -225,7 +228,9 @@ export default {
         { item: 'Part-time', name: 'Part-time' },
         { item: 'Internship', name: 'Internship' },
         { item: 'Freelance', name: 'Freelance' }
-      ]
+      ],
+      notFound: false,
+      notFoundMessage: 'Oops, we did not find any job offer matching your search...'
     }
   },
   methods: {
@@ -267,7 +272,29 @@ export default {
             jobOffer = res.data.OfferList[jobOffer]
             jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
             this.job_offers.push(jobOffer)
-            this.getCompaniesLogos()
+          }
+          this.getCompaniesLogos()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    searchJobOffers () {
+      const path = Vue.prototype.$API_BASE_URL + 'offers'
+      const searchParams = {params: {'keyword': this.search}}
+      axios.get(path, searchParams)
+        .then((res) => {
+          this.job_offers = []
+          for (var jobOffer in res.data.OfferList) {
+            jobOffer = res.data.OfferList[jobOffer]
+            jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
+            this.job_offers.push(jobOffer)
+          }
+          this.getCompaniesLogos()
+          if (this.job_offers.length > 0) {
+            this.notFound = false
+          } else {
+            this.notFound = true
           }
         })
         .catch((error) => {
@@ -282,7 +309,6 @@ export default {
           .then((url) => {
             this.companies_logos[offer.company] = url
             this.companies_logos[offer.company] = url
-            console.log(url)
             this.$forceUpdate()
           })
           .catch(() => {
@@ -363,5 +389,21 @@ export default {
 }
 .custom-control-label:after{
   background-color:#ffc106;
+}
+.companyNameJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+  margin-bottom: 0.3rem;
+}
+.titleJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 0;
+}
+.not-found-message{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 22px;
+  padding: 50px;
 }
 </style>

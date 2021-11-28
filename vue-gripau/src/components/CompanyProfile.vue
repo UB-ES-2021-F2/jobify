@@ -186,10 +186,10 @@
                     </b-card>
                   </div>-->
                   <b-container>
-                    <job-offer-view
+                    <job-postings-view
                       v-bind:job_offers = "job_offers"
                       v-bind:show_company = false
-                    ></job-offer-view>
+                    ></job-postings-view>
                   </b-container>
                 </div>
               </div>

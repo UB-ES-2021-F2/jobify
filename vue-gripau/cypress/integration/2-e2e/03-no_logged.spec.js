@@ -52,7 +52,7 @@ describe('No logged', () => {
     })
     it('should go to the job offer professor ub description page inside ub profile', () => {
       cy.get('[id=jobOfferCard]').first().click()
-      cy.url().should('eq', 'http://localhost:5000/company/universitat123')
+      cy.url().should('eq', 'http://localhost:5000/job_posting/1')
       cy.get('[id=jobOfferJobName]').should('contain', 'professor')
       cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
     })

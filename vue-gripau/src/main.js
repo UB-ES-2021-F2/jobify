@@ -6,8 +6,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import JobOfferCard from './components/JobOfferCard'
-import JobOfferView from './components/JobOfferView'
+import JobPostingCard from './components/JobPostingCard'
+import JobPostingsView from './components/JobPostingsView'
 // Import the functions you need from the SDKs you need
 import firebase from 'firebase/compat/app'
 
@@ -32,8 +32,8 @@ localize('en', en)
 Vue.component('ValidationObserver', ValidationObserver)
 Vue.component('ValidationProvider', ValidationProvider)
 
-Vue.component('job-offer-card', JobOfferCard)
-Vue.component('job-offer-view', JobOfferView)
+Vue.component('job-posting-card', JobPostingCard)
+Vue.component('job-postings-view', JobPostingsView)
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)

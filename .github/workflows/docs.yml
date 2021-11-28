@@ -29,6 +29,7 @@ jobs:
       - name: Build docs
         run: |
           pdoc --html --output-dir ../docs resources --force
+          pdoc --html --output-dir ../docs models --force
         working-directory: ${{env.working-directory}}
       - name: Commit files
         run: |

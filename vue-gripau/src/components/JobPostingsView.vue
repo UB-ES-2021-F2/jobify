@@ -2,15 +2,16 @@
   <b-col>
     <b-row>
       <b-col class="mb-4" align="center" align-self="stretch" v-for="(job_offer) in job_offers.slice((current_page-1)*per_page, current_page*per_page)" :key="job_offer.id">
-        <job-offer-card
+        <job-posting-card
+          v-bind="$attrs"
           v-bind:id = "job_offer.id"
           v-bind:job_name = "job_offer.job_name"
           v-bind:company_name = "job_offer.company_name"
           v-bind:contract_type = "job_offer.contract_type"
           v-bind:publication_date = "job_offer.publication_date"
           v-bind:location =  "job_offer.location"
-          v-bind:company_logo =  "companies_logos[job_offer.company]"
-        ></job-offer-card>
+          v-bind:company_logo =  "companies_logos ? companies_logos[job_offer.company] : null"
+        ></job-posting-card>
       </b-col>
     </b-row>
     <b-row class="mt-4" align-h="center">

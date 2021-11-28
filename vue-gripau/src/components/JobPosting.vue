@@ -74,12 +74,12 @@
               </b-button>
             </div>
             <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
-              <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
+              <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
                 <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
               </b-button>
             </div>
             <div v-if="is_jobseeker && logged" class="col-12 col-sm-12 col-lg-6">
-              <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied" v-b-modal.modal-apply variant="success">Apply</b-button>
+              <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
               <b-button id="appliedButton" class="job-offer-button-apply" v-else disabled variant="outline-success">Applied</b-button>
             </div>
           </div>
@@ -179,7 +179,7 @@
             label-for="name-input"
           >
             <b-form-textarea
-              id="applyMessageInput"
+              id="applyMessageInputOld"
               v-model="applyMessage"
               placeholder="Write here (optional)"
               rows="3"

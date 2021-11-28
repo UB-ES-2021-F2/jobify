@@ -28,92 +28,6 @@
     <!--/.Navbar -->
 
     <div id="jobOfferView">
-      <!-- Job offer view (el que hi havia a company profile) -->
-      <div id="jobOfferCompanyView" class="job-offer-container">
-        <h2 id="jobOfferJobName" class="job-offer-title">{{job_name}}</h2>
-        <div class="container">
-          <div class="row row-attributes">
-            <div class="col-12">
-              <div id="descriptionJobOffer" v-if="description !== '' && description !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text">{{description}}</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <div id="companyNameJobOffer" v-if="company_name !== '' && company_name !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text"><b-icon id="companyIcon" icon="building"></b-icon>{{company_name}}</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <div id="locationJobOffer" v-if="location !== '' && location !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text"><b-icon id="locationIcon2" icon="geo-alt-fill"></b-icon>{{location}}</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <div id="contractTypeJobOffer" v-if="contract_type !== '' && contract_type !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text"><b-icon id="contractIcon" icon="journal-text"></b-icon>{{contract_type}} contract</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <div id="workingHoursJobOffer" v-if="working_hours !== '' && working_hours !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text"><b-icon id="hoursIcon" icon="hourglass-split"></b-icon>{{working_hours}} hours/week</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <div id="salaryJobOffer" v-if="salary !== '' && salary !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="cash"></b-icon>{{salary}}</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <div id="publicationDateJobOffer" v-if="publication_date !== '' && publication_date !== null" class="job-offer-field-container">
-                <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="calendar-day"></b-icon>First published on: {{publication_date}}</p>
-              </div>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
-                Back
-              </b-button>
-            </div>
-            <div class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
-              <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
-                <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
-              </b-button>
-            </div>
-            <div v-if="is_jobseeker && logged" class="col-12 col-sm-12 col-lg-6">
-              <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-              <b-button id="appliedButton" class="job-offer-button-apply" v-else disabled variant="outline-success">Applied</b-button>
-            </div>
-          </div>
-        </div>
-
-        <!--<b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>-->
-        <!--<b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>-->
-        <b-modal
-          hide-backdrop
-          id="modal-apply"
-          ref="modal"
-          title="Do you want to add some additional information?"
-          @ok="applyAction"
-          @show="resetApplyModal"
-          @hidden="resetApplyModal"
-        >
-          <form ref="form">
-            <b-form-group
-              label-for="name-input"
-            >
-              <b-form-textarea
-                id="applyMessageInput"
-                v-model="applyMessage"
-                placeholder="Write here (optional)"
-                rows="3"
-                max-rows="6"
-              >
-
-              </b-form-textarea>
-            </b-form-group>
-          </form>
-        </b-modal>
-      </div>
-      <!-- /Job offer view (el que hi havia a company profile) -->
       <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{job_name}}</h2>
       <b-container fluid >
         <b-row>
@@ -161,14 +75,14 @@
           </b-col>
         </b-row>
       </b-container>
-      <b-button id="seenButtonOld" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
-      <b-button id="deleteButtonOld" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-      <b-button id="applyButtonOld" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button id="appliedButtonOld" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
+      <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
+      <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
+      <b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+      <b-button id="appliedButton" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
       <b-modal
         hide-backdrop
-        id="modal-applyOld"
-        ref="modalOld"
+        id="modal-apply"
+        ref="modal"
         title="Do you want to add some additional information?"
         @ok="applyAction"
         @show="resetApplyModal"
@@ -179,7 +93,7 @@
             label-for="name-input"
           >
             <b-form-textarea
-              id="applyMessageInputOld"
+              id="applyMessageInput"
               v-model="applyMessage"
               placeholder="Write here (optional)"
               rows="3"
@@ -335,9 +249,6 @@ export default {
         .catch((error) => {
           console.error(error)
         })
-    },
-    onSeenOffer () {
-      this.$router.go(-1)
     }
   },
   created () {

@@ -76,7 +76,7 @@ jobs:
           flask db init
           flask db migrate
           flask db upgrade
-          python add_data_test.py
+          python add_data.py
           python app.py &
         working-directory: ${{ env.flask-directory }}
       - name: Setup Node.js ${{ matrix.node-version }}

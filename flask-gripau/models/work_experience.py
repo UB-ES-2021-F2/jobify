@@ -15,7 +15,7 @@ class WorkExperiencesModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), db.ForeignKey('jobseekers.username'), nullable=False)
     job_name = db.Column(db.String(128), unique=False, nullable=False)
-    description = db.Column(db.String(1000), unique=False, nullable=False)
+    description = db.Column(db.String(5000), unique=False, nullable=False)
     company = db.Column(db.String(128), unique=False, nullable=False)
     start_date = db.Column(db.String(7), unique=False, nullable=False)
     end_date = db.Column(db.String(7), unique=False, nullable=True)

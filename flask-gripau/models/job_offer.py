@@ -19,7 +19,7 @@ class JobOfferModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company = db.Column(db.String(30), db.ForeignKey('companies.username'), nullable=False)
     job_name = db.Column(db.String(128), unique=False, nullable=False)
-    description = db.Column(db.String(3000), unique=False)
+    description = db.Column(db.String(5000), unique=False)
     publication_date = db.Column(db.DateTime, unique=False, nullable=False)
     salary = db.Column(db.String(30), unique=False)
     location = db.Column(db.String(30), unique=False, nullable=False)

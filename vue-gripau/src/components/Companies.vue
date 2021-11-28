@@ -30,6 +30,24 @@
 
     <h2 style="font-family: 'Vollkorn', serif"> {{ message }} </h2>
     <div class="mx-2" id="companiesView">
+      <b-container fluid id="searchContainer"  style="padding: 20px; align-self: center;
+                                                font-family:'Work Sans SemiBold', Montserrat, sans-serif">
+        <b-row align-h="center" id="searchTitleRow" class="mb-1">
+          <p class="text-center" style="font-size: 22px">Find your ideal company!</p>
+        </b-row>
+        <b-row align-h="center" id="searchContentRow" class="mb-2" style="font-family:'Work Sans', sans-serif">
+          <b-row id="searchSearchbarRow">
+            <b-input id="searchbar" type="text" length=60 v-model="search"
+                     placeholder="Search company...   "
+                     style="border-radius: 0 !important" />
+          </b-row>
+        </b-row>
+        <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
+          <b-button id="searchButton" variant="warning" @click="searchCompanies">
+            Search!
+          </b-button>
+        </b-row>
+      </b-container>
       <b-row>
         <b-col class="mb-4" align="center"  align-self="stretch" v-for="(company) in companies.slice((current_page-1)*per_page, current_page*per_page)" :key="company.id">
           <b-card
@@ -109,7 +127,10 @@ export default {
       renderKey: 0,
       current_page: 1,
       options: [5, 10, 25, 50],
-      per_page: 25
+      per_page: 25,
+      search: '',
+      notFound: false,
+      notFoundMessage: 'Oops, we did not find any company matching your search...'
     }
   },
   methods: {
@@ -175,6 +196,34 @@ export default {
       }
       this.loadedLogos = true
       this.$forceUpdate()
+    },
+    searchCompanies () {
+      const path = Vue.prototype.$API_BASE_URL + 'companies'
+      let searchParams = {}
+      if ((this.search === '')) {
+        searchParams = {params: {}}
+      } else if ((this.search !== '')) {
+        searchParams = {params: {'keyword': this.search}}
+      }
+
+      axios.get(path, searchParams)
+        .then((res) => {
+          this.companies = []
+          this.companies = res.data
+          for (let c in this.companies) {
+            let comp = this.companies[c]
+            this.companies_logos[comp.username] = null
+          }
+          this.getCompaniesLogos()
+          if (this.companies.length > 0) {
+            this.notFound = false
+          } else {
+            this.notFound = true
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   },
   created () {

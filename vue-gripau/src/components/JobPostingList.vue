@@ -34,21 +34,57 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
       <b-link v-if="is_company" id="showJobOfferModal" class="add-offer" v-b-modal.job-offer-modal>
         <b-icon icon="patch-plus" font-scale="2"></b-icon>
       </b-link>
-      <!--<b-row align-h="center" v-if="is_company">
-        <b-card
-          tag="article"
-          class="text-center mb-2"
-          style="width: 90%; max-width: 600px"
-          id="addJobOfferCard"
-        >
-          <b-button id="addJobOfferButton" v-b-modal.job-offer-modal class="btn btn-outline-light active" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-          <p class="h1" style="margin:0 auto"><b-icon icon="patch-plus"></b-icon></p>
-        </b-card>
-      </b-row>-->
-      <job-offer-view
-        v-bind:job_offers = "job_offers"
-        v-bind:companies_logos = "companies_logos"
-      ></job-offer-view>
+      <b-container fluid id="searchContainer"  style="padding: 20px; align-self: center;
+                                                font-family:'Work Sans SemiBold', Montserrat, sans-serif">
+        <b-row align-h="center" id="searchTitleRow" class="mb-1">
+          <p class="text-center" style="font-size: 22px">Find your perfect job!</p>
+        </b-row>
+        <b-row align-h="center" id="searchContentRow" class="mb-2" style="font-family:'Work Sans', sans-serif">
+          <b-row id="searchSearchbarRow">
+            <b-input id="searchbar" type="text" length=60 v-model="search"
+                     placeholder="Search job offer...   "
+                     style="border-radius: 0 !important" />
+          </b-row>
+          <b-row id="searchFiltersRow">
+            <b-dropdown variant="light" class="ml-4" text="Job type" checkbox-menu allow-focus>
+            <template #button-content>
+             <span>
+               Job type <font-awesome-icon size="1x" :icon="['fas', 'filter']" />
+             </span>
+            </template>
+            <b-dropdown-form style="font-family: 'Work Sans',sans-serif">
+              <b-form-checkbox button-variant="warning" v-model="checkedFullTime" id="checkbox-full-time" name="checkbox-full-time" value=1 unchecked-value=0>
+                Full-time
+              </b-form-checkbox>
+              <b-form-checkbox v-model="checkedPartTime" id="checkbox-part-time" name="checkbox-part-time" value=1 unchecked-value=0>
+                Part-time
+              </b-form-checkbox>
+              <b-form-checkbox v-model="checkedInternship" id="checkbox-internship" name="checkbox-internship" value=1 unchecked-value=0>
+                Internship
+              </b-form-checkbox>
+              <b-form-checkbox v-model="checkedFreelance" id="checkbox-freelance" name="checkbox-freelance" value=1 unchecked-value=0>
+                Freelance
+              </b-form-checkbox>
+            </b-dropdown-form>
+          </b-dropdown>
+          </b-row>
+        </b-row>
+        <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
+          <b-button id="searchButton" variant="warning" @click="searchJobOffers">
+            Search!
+          </b-button>
+        </b-row>
+      </b-container>
+      <b-container>
+        <job-offer-view
+          v-bind:job_offers = "job_offers"
+          v-bind:companies_logos = "companies_logos"
+          :key = "loaded_logos"
+        ></job-offer-view>
+      </b-container>
+      <b-container fluid v-if="notFound" id="notFoundContainer">
+        <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
+      </b-container>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
                title="Post a job offer"
@@ -142,7 +178,22 @@ export default {
         workingHours: ''
       },
       optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
-      companies_logos: {}
+      companies_logos: {},
+      selected: [],
+      search: '',
+      checkedFullTime: 1,
+      checkedPartTime: 1,
+      checkedInternship: 1,
+      checkedFreelance: 1,
+      options: [
+        { item: 'Full-time', name: 'Full-time' },
+        { item: 'Part-time', name: 'Part-time' },
+        { item: 'Internship', name: 'Internship' },
+        { item: 'Freelance', name: 'Freelance' }
+      ],
+      notFound: false,
+      notFoundMessage: 'Oops, we did not find any job offer matching your search...',
+      loaded_logos: 0
     }
   },
   methods: {
@@ -184,7 +235,29 @@ export default {
             jobOffer = res.data.OfferList[jobOffer]
             jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
             this.job_offers.push(jobOffer)
-            this.getCompaniesLogos()
+          }
+          this.getCompaniesLogos()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    searchJobOffers () {
+      const path = Vue.prototype.$API_BASE_URL + 'offers'
+      const searchParams = {params: {'keyword': this.search}}
+      axios.get(path, searchParams)
+        .then((res) => {
+          this.job_offers = []
+          for (var jobOffer in res.data.OfferList) {
+            jobOffer = res.data.OfferList[jobOffer]
+            jobOffer.publication_date = jobOffer.publication_date.split('T')[0]
+            this.job_offers.push(jobOffer)
+          }
+          this.getCompaniesLogos()
+          if (this.job_offers.length > 0) {
+            this.notFound = false
+          } else {
+            this.notFound = true
           }
         })
         .catch((error) => {
@@ -192,21 +265,19 @@ export default {
         })
     },
     getCompaniesLogos () {
+      this.loaded_logos = 0
       for (let o in this.job_offers) {
         let offer = this.job_offers[o]
         this.companies_logos[offer.company] = null
         firebase.storage().ref(`images/${offer.company}/avatar`).getDownloadURL()
           .then((url) => {
             this.companies_logos[offer.company] = url
-            this.companies_logos[offer.company] = url
-            console.log(url)
-            this.$forceUpdate()
+            this.loaded_logos += 1
           })
           .catch(() => {
             console.log('This avatar does not exist')
           })
       }
-      this.$forceUpdate()
     },
     onSubmitNewOffer () {
       const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.username
@@ -277,5 +348,24 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.custom-control-label:after{
+  background-color:#ffc106;
+}
+.companyNameJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+  margin-bottom: 0.3rem;
+}
+.titleJobOfferCard{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 0;
+}
+.not-found-message{
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 22px;
+  padding: 50px;
 }
 </style>

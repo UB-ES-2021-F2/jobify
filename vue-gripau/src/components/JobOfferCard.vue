@@ -23,9 +23,9 @@
         </b-col>
         <b-col align-v="center">
           <img v-if="company_logo !=null" class="card-img" :src=company_logo alt=""
-            style="max-width:128px; max-height:128px">
+            style="max-width:128px; max-height:128px; border-radius: 128px">
           <img v-if="company_logo == null" class="card-img" src="../assets/images/company_avatar.png" alt=""
-            style="max-width:128px; max-height:128px">
+            style="max-width:128px; max-height:128px; border-radius: 128px; opacity: 0.3">
         </b-col>
       </b-row>
     </b-container>

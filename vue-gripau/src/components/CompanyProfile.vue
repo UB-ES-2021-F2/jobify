@@ -185,6 +185,12 @@
                       <p class="h1"></p>
                     </b-card>
                   </div>-->
+                  <b-container>
+                    <job-offer-view
+                      v-bind:job_offers = "job_offers"
+                      v-bind:show_company = false
+                    ></job-offer-view>
+                  </b-container>
                   <div class="col-12 col-sm-12 col-md-6" align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
                     <b-card :title="job_offer.job_name"
                             tag="article"

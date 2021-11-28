@@ -6,10 +6,10 @@
   >
     <b-container style="font-family: 'Work Sans'">
       <b-row align-v="center">
-        <b-col align="left" cols="8">
+        <b-col align="left">
           <b-card-text id="companyName" >
           <p class="titleJobOfferCard">{{ job_name }}</p>
-          <p class="companyNameJobOfferCard">{{ company_name }}</p>
+          <p  v-if="show_company" class="companyNameJobOfferCard">{{ company_name }}</p>
           </b-card-text>
           <b-col lg v-if="contract_type !== null && contract_type !== ''">
           <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{ contract_type }}
@@ -21,11 +21,9 @@
           <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ location }}
           </b-col>
         </b-col>
-        <b-col align-v="center">
-          <img v-if="company_logo !=null" class="card-img" :src=company_logo alt=""
-            style="max-width:128px; max-height:128px; border-radius: 128px">
-          <img v-if="company_logo == null" class="card-img" src="../assets/images/company_avatar.png" alt=""
-            style="max-width:128px; max-height:128px; border-radius: 128px; opacity: 0.3">
+        <b-col v-if="show_company"  align-v="center" cols="4">
+          <img v-if="company_logo !=null" class="card-img companyAvatar" :src=company_logo alt="">
+          <img v-if="company_logo == null" class="card-img companyAvatar" src="../assets/images/company_avatar.png" alt="">
         </b-col>
       </b-row>
     </b-container>
@@ -42,12 +40,16 @@ export default{
     contract_type: { required: true, type: String },
     publication_date: { required: true, type: String },
     location: { required: true, type: String },
-    company_logo: { required: false, type: String }
+    company_logo: { required: false, type: String },
+    show_company: { type: Boolean, default: true }
   },
   methods: {
     onJobOffer (id) {
       this.$router.push('/job_posting/' + id)
     }
+  },
+  created () {
+    console.log(this.$props)
   }
 }
 </script>
@@ -63,5 +65,10 @@ export default{
   font-weight: bold;
   font-size: 24px;
   margin-bottom: 0;
+}
+.companyAvatar{
+  max-width:128px;
+  max-height:128px;
+  border-radius: 128px;
 }
 </style>

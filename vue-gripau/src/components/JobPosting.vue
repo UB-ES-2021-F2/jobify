@@ -73,7 +73,7 @@
                 Back
               </b-button>
             </div>
-            <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
+            <div class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
               <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
                 <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
               </b-button>
@@ -167,8 +167,8 @@
       <b-button id="appliedButtonOld" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
       <b-modal
         hide-backdrop
-        id="modal-apply"
-        ref="modal"
+        id="modal-applyOld"
+        ref="modalOld"
         title="Do you want to add some additional information?"
         @ok="applyAction"
         @show="resetApplyModal"

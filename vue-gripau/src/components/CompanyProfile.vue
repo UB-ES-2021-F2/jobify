@@ -43,7 +43,7 @@
                   <img :src="previewSrc" alt="">
                 </div>
                 <div v-else id="default-avatar">
-                  <img :src="require('../assets/images/company_avatar.png')" alt="">
+                  <img :src="require('../assets/images/company_avatar.png')" alt="" style="opacity: 0.3">
                 </div>
                 <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 browser-container">
                   <b-form-group id="fileInput">

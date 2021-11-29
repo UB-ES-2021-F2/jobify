@@ -194,9 +194,9 @@
         </b-tab>
         <!--/Company form -->
       </b-tabs>
-
     </b-modal>
   </div>
+
 </template>
 
 <script>
@@ -236,10 +236,19 @@ export default {
         confirmation: '',
         rTandC: false,
         newsletter: false
-      }
+      },
+      errorLogin: ''
     }
   },
   methods: {
+    showToastError () {
+      /* eslint-disable */
+      this.$bvToast.toast('Username or Password incorrect', {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
+    },
     checkLogin () {
       const parameters = {
         username: this.loginForm.username.toLowerCase(),
@@ -257,7 +266,7 @@ export default {
           console.error(error)
           this.loginForm.username = ''
           this.loginForm.password = ''
-          alert('Username or Password incorrect')
+          this.showToastError()
         })
     },
     getValidationState ({ dirty, validated, valid = null }) {

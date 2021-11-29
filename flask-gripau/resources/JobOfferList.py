@@ -19,12 +19,12 @@ class JobOfferList(Resource):
 
         parser = reqparse.RequestParser()  # create parameters parser from request
         parser.add_argument('keyword', type=str, required=False)
+        parser.add_argument('job_type', type=str, required=False)
 
         data = parser.parse_args()
 
-
         offers = []
-        if data.keyword is None:
+        if data.keyword is None or data.keyword == '':
             for company in CompanyModel.query.all():
                 for offer in company.job_offers:
                     offers.append(offer.json())
@@ -32,7 +32,7 @@ class JobOfferList(Resource):
             for company in CompanyModel.query.all():
                 to_append = True
                 for word in data.keyword.split(" "):
-                    if fuzz.partial_ratio(word, company.company) < 80:
+                    if fuzz.partial_ratio(word.lower(), company.company.lower()) < 60:
                         to_append = False
                         break
                 for offer in company.job_offers:
@@ -41,9 +41,15 @@ class JobOfferList(Resource):
                     else:
                         append = True
                         for word in data.keyword.split(" "):
-                            if fuzz.partial_ratio(word, offer.job_name) < 80:
+                            if fuzz.partial_ratio(word.lower(), offer.job_name.lower()) < 60:
                                 append = False
                                 break
                         if append:
                             offers.append(offer.json())
+
+        if data.job_type is not None and data.job_type != '':
+            job_types = data.job_type.split(',')
+            filtered_offers = [o for o in offers if o['contract_type'] in job_types]
+            offers = filtered_offers
+
         return {'OfferList': offers}, 200

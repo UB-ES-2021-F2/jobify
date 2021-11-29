@@ -2,7 +2,7 @@ from db import db
 from models import CompanyModel
 
 
-# contract_types = ('INDEFINITE', 'DETERMINED_DURATION', 'STAND_ALONE', 'PART_TIME', 'TRAINING')
+# contract_types = ('Full-time', 'Part-time', 'Internship', 'Freelance', 'Other')
 
 
 class JobOfferModel(db.Model):

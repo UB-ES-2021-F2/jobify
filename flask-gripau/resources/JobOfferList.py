@@ -24,7 +24,7 @@ class JobOfferList(Resource):
         data = parser.parse_args()
 
         offers = []
-        if data.keyword is None:
+        if data.keyword is None or data.keyword == '':
             for company in CompanyModel.query.all():
                 for offer in company.job_offers:
                     offers.append(offer.json())

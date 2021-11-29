@@ -10,6 +10,7 @@ from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
 from models.education import EducationsModel
 from models.job_offer import JobOfferModel
+import json
 
 app = Flask(__name__)
 environment = config['development']
@@ -19,22 +20,30 @@ app.config.from_object(environment)
 db = SQLAlchemy(app)
 db.init_app(app)
 
-new_job_seeker = JobSeekersModel('lordsergi', 'Sergi', 'Bech', 'sergi@gmail.com', 'hola, soc estudiant')
-new_job_seeker.hash_password('Password12')
+with open('data.json', 'rt') as data_file:
+    data = json.load(data_file)
 
-new_education = EducationsModel('Maths phd', 'UB', '2021-09', '2022-10', True)
-new_workexperience = WorkExperiencesModel('professor', 'professor de EDS', 'ub', '2020-03', '2020-06', False)
-new_skill = SkillsModel('python')
-new_job_seeker.work_experiences.append(new_workexperience)
-new_job_seeker.educations.append(new_education)
-new_job_seeker.skills.append(new_skill)
-db.session.add(new_job_seeker)
+for job_seeker in data['jobseekers']:
+    new_job_seeker = JobSeekersModel(job_seeker['username'], job_seeker['first-name'], job_seeker['last-name'], job_seeker['email'], job_seeker['bio'])
+    new_job_seeker.hash_password(job_seeker['password'])
+    for ed in job_seeker['educations']:
+        new_education = EducationsModel(ed['title'], ed['institution'], ed['start-date'], ed['end-date'], ed['currently'])
+        new_job_seeker.educations.append(new_education)
+    for sk in job_seeker['skills']:
+        new_skill = SkillsModel(sk)
+        new_job_seeker.skills.append(new_skill)
+    for we in job_seeker['work-experiences']:
+        new_workexperience = WorkExperiencesModel(we['job-name'], we['description'], we['company'], we['start-date'], we['end-date'], we['currently'])
+        new_job_seeker.work_experiences.append(new_workexperience)
+    db.session.add(new_job_seeker)
 
-new_company = CompanyModel('universitat123', 'ub', 'ub@gmail.com', 'hola, som la UB')
-new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 'Barcelona', 5000, 8, 'Temporal')
-new_company.hash_password('Password12')
-new_company.job_offers.append(new_job_offer)
-db.session.add(new_company)
+for company in data['companies']:
+    new_company = CompanyModel(company['username'], company['name'], company['email'], company["description"])
+    new_company.hash_password(company['password'])
+    for jo in company['job-offers']:
+        new_job_offer = JobOfferModel(jo['job-name'], jo['description'], datetime.datetime(jo['posted-year'], jo['posted-month'], jo['posted-day']), jo['location'], jo['salary'], jo['weekly-working-hours'], jo['contract-type'])
+        new_company.job_offers.append(new_job_offer)
+    db.session.add(new_company)
 
 db.session.commit()
 db.session.close()

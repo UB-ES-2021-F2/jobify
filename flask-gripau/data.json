@@ -1,0 +1,62 @@
+{
+  "jobseekers":
+          [
+            {
+              "username": "lordsergi",
+              "first-name": "Sergi",
+              "last-name": "Bech",
+              "email": "sergi@gmail.com",
+              "bio": "hola, soc estudiant",
+              "work-experiences":
+                      [
+                        {
+                          "job-name": "professor",
+                          "description": "professor de EDS",
+                          "company": "ub",
+                          "start-date": "2020-03",
+                          "end-date": "2020-06",
+                          "currently": false
+                        }
+                      ],
+              "skills":
+                      [
+                        "python", "programacio"
+                      ],
+              "educations":
+                      [
+                        {
+                          "title": "Maths phd",
+                          "institution": "UB",
+                          "start-date": "2020-03",
+                          "end-date": "2020-06",
+                          "currently": false
+                        }
+                      ],
+              "password": "Password12"
+            }
+          ],
+  "companies":
+          [
+            {
+              "username": "amazon",
+              "name": "Amazon Inc",
+              "email": "amazon@amazonjobs.com",
+              "description": "We make money",
+              "password": "Amazon12",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "Frontend developer",
+                          "salary": "30000$/y",
+                          "location": "Barcelona",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 26,
+                          "posted-month": 9,
+                          "posted-year": 2021,
+                          "description": "We search for a frontend developer to join our company. REQUIREMENTS: react, bootstrap-vue and angular"
+                        }
+                      ]
+            }
+          ]
+}

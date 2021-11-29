@@ -402,6 +402,10 @@ button:focus{
     margin-right: 10px;
   }
 
+.buttons-container {
+  text-align: center;
+}
+
 .job-offer-button-back {
   display: inline-block;
   margin: auto;
@@ -419,8 +423,9 @@ button:focus{
   }
 
     .job-offer-button-back:hover button{
-      border: 1px solid #ffc107 !important;
+      border: 0 !important;
       background-color: #ffc107 !important;
+
     }
 
 .job-offer-button-delete {

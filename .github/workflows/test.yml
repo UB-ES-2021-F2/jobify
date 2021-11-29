@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-models:
+  test-backend:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -42,7 +42,16 @@ jobs:
         uses: coroo/pytest-coverage-commentator@v1.0.2
         with:
           pytest-coverage: ${{env.working-directory}}/pytest-coverage.txt
-  test-api:
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Jest tests and run coverage report
+        uses: artiomtr/jest-coverage-report-action@v2.0-rc.5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ./vue-gripau
+  test-cypress:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -67,7 +76,7 @@ jobs:
           flask db init
           flask db migrate
           flask db upgrade
-          python add_data.py
+          python add_data_test.py
           python app.py &
         working-directory: ${{ env.flask-directory }}
       - name: Setup Node.js ${{ matrix.node-version }}

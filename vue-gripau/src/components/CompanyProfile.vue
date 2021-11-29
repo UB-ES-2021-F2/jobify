@@ -43,7 +43,7 @@
                   <img :src="previewSrc" alt="">
                 </div>
                 <div v-else id="default-avatar">
-                  <img :src="require('../assets/images/company_avatar.png')" alt="">
+                  <img :src="require('../assets/images/company_avatar.png')" alt="" style="opacity: 0.3">
                 </div>
                 <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 browser-container">
                   <b-form-group id="fileInput">
@@ -185,38 +185,13 @@
                       <p class="h1"></p>
                     </b-card>
                   </div>-->
-                  <div class="col-12 col-sm-12 col-md-6" align-h="center" v-for="(job_offer) in job_offers" :key="job_offer.id">
-                    <b-card :title="job_offer.job_name"
-                            tag="article"
-                            align="left"
-                            id="jobOfferCard"
-                    >
-                      <b-button id="jobOfferButton" class="btn btn-outline-light active" @click="onJobOffer(job_offer.id)" style="background-color:transparent; position: absolute; top:0; left:0; height: 100%; width:100%"></b-button>
-                      <b-card-text id="companyName">
-                        {{ job_offer.company_name }}
-                      </b-card-text>
-                      <footer>
-                        <b-container fluid style="font-family: 'Work Sans'">
-                          <b-row no-gutters>
-                            <b-col lg v-if="job_offer.contract_type !== null && job_offer.contract_type !== ''">
-                              <b-icon id="contractTypeIcon" icon="briefcase"></b-icon> {{job_offer.contract_type}}
-                            </b-col>
-                            <b-col lg v-if="job_offer.workingHours > 0">
-                              <b-icon id="workingHoursIcon" icon="alarm"></b-icon> {{job_offer.working_hours}} h
-                            </b-col>
-                            <b-col lg>
-                              <b-icon id="publicationDateIcon" icon="calendar3-event"></b-icon> {{ job_offer.publication_date }}
-                            </b-col>
-                            <b-col lg>
-                              <b-icon id="locationIcon" icon="geo-alt-fill"></b-icon> {{ job_offer.location }}
-                            </b-col>
-                          </b-row>
-                        </b-container>
-                      </footer>
-                    </b-card>
-                  </div>
+                  <b-container>
+                    <job-postings-view
+                      v-bind:job_offers = "job_offers"
+                      v-bind:show_company = false
+                    ></job-postings-view>
+                  </b-container>
                 </div>
-
               </div>
               <b-modal ref="jobOfferModal"
                        id="job-offer-modal"
@@ -281,93 +256,6 @@
                 </validation-observer>
               </b-modal>
             </div>
-            <!-- /Job offers company view -->
-            <!-- Job offer view -->
-            <div id="jobOfferCompanyView" v-if="this.jobOfferView" class="job-offer-container">
-              <h2 id="jobOfferJobName" class="job-offer-title">{{jobOfferCurrentView.jobName}}</h2>
-              <div class="container">
-                <div class="row row-attributes">
-                  <div class="col-12">
-                    <div id="descriptionJobOffer" v-if="jobOfferCurrentView.description !== '' && jobOfferCurrentView.description !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text">{{jobOfferCurrentView.description}}</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <div id="companyNameJobOffer" v-if="jobOfferCurrentView.companyName !== '' && jobOfferCurrentView.companyName !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text"><b-icon id="companyIcon" icon="building"></b-icon>{{jobOfferCurrentView.companyName}}</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <div id="locationJobOffer" v-if="jobOfferCurrentView.location !== '' && jobOfferCurrentView.location !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text"><b-icon id="locationIcon2" icon="geo-alt-fill"></b-icon>{{jobOfferCurrentView.location}}</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <div id="contractTypeJobOffer" v-if="jobOfferCurrentView.contractType !== '' && jobOfferCurrentView.contractType !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text"><b-icon id="contractIcon" icon="journal-text"></b-icon>{{jobOfferCurrentView.contractType}} contract</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <div id="workingHoursJobOffer" v-if="jobOfferCurrentView.workingHours !== '' && jobOfferCurrentView.workingHours !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text"><b-icon id="hoursIcon" icon="hourglass-split"></b-icon>{{jobOfferCurrentView.workingHours}} hours/week</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <div id="salaryJobOffer" v-if="jobOfferCurrentView.salary !== '' && jobOfferCurrentView.salary !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="cash"></b-icon>{{jobOfferCurrentView.salary}}</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <div id="publicationDateJobOffer" v-if="jobOfferCurrentView.publicationDate !== '' && jobOfferCurrentView.publicationDate !== null" class="job-offer-field-container">
-                      <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="calendar-day"></b-icon>First published on: {{jobOfferCurrentView.publicationDate}}</p>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
-                    <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
-                      <!--<b-icon id="salaryIcon" icon="arrow-left"></b-icon>--> Back
-                    </b-button>
-                  </div>
-                  <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
-                    <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
-                      <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
-                    </b-button>
-                  </div>
-                  <div class="col-12 col-sm-12 col-lg-6">
-                    <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-                    <b-button id="appliedButton" class="job-offer-button-apply" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>
-                  </div>
-                </div>
-              </div>
-
-              <!--<b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>-->
-              <!--<b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>-->
-              <b-modal
-                hide-backdrop
-                id="modal-apply"
-                ref="modal"
-                title="Do you want to add some additional information?"
-                @ok="applyAction"
-                @show="resetApplyModal"
-                @hidden="resetApplyModal"
-              >
-                <form ref="form">
-                  <b-form-group
-                    label-for="name-input"
-                  >
-                    <b-form-textarea
-                      id="applyMessageInput"
-                      v-model="applyMessage"
-                      placeholder="Write here (optional)"
-                      rows="3"
-                      max-rows="6"
-                    >
-
-                    </b-form-textarea>
-                  </b-form-group>
-                </form>
-              </b-modal>
-            </div>
-            <!-- /Job offer view -->
           </div>
           <!-- /Job Offers page -->
         </b-col>
@@ -448,8 +336,9 @@ export default {
   },
   methods: {
     getApplied () {
-      const path = Vue.prototype.$API_BASE_URL + '/application/' + this.username + '/' + this.jobOfferCurrentView.id
-      axios.get(path)
+      const path = Vue.prototype.$API_BASE_URL + 'application/' + this.username + '/' + this.jobOfferCurrentView.id
+      axios.get(path, {
+        auth: {username: this.token}})
         .then((res) => {
           var application = res.data.application
           console.log(application)
@@ -668,18 +557,6 @@ export default {
       this.$bvModal.hide('job-offer-modal')
       this.onReset()
     },
-    deleteJobOffer () {
-      const path = Vue.prototype.$API_BASE_URL + 'job_offer/' + this.jobOfferCurrentView.id
-      axios.delete(path, {
-        auth: {username: this.token}})
-        .then((res) => {
-          this.getCompanyJobOffers()
-          this.jobOfferView = false
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
     downloadAvatar () {
       firebase.storage().ref(`images/${this.company_name_profile}/avatar`).getDownloadURL()
         .then((url) => {
@@ -731,15 +608,14 @@ export default {
           this.jobOfferCurrentView.id = res.data.offer.id
           this.jobOfferCurrentView.company = res.data.offer.company
           console.log(this.jobOfferCurrentView)
-          this.getApplied()
+          if (this.logged && this.is_jobseeker) {
+            this.getApplied()
+          }
           this.onJobOfferView()
         })
         .catch((error) => {
           console.error(error)
         })
-    },
-    onSeenOffer () {
-      this.jobOfferView = false
     }
   },
   watch: {

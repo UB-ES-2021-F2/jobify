@@ -498,6 +498,7 @@ export default {
         .then((res) => {
           this.getSkills()
           this.$refs.addSkillModal.hide()
+          this.addSkill = {skill: ''}
         })
         .catch((error) => {
           console.error(error)

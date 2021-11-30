@@ -131,7 +131,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 
             <validation-provider name="WorkingHours"  rules="numeric|max:60" v-slot="validationContext">
               <b-form-group id="input-group-3" label="Weekly working hours" label-for="input-3">
-                <b-form-input id="workingHoursInput" v-model="jobOfferForm.workingHours" placeholder="" type="number" :state="getValidationState(validationContext)"
+                <b-form-input id="workingHoursInput" v-model="jobOfferForm.workingHours" placeholder="" type="number" min=0 max=168 :state="getValidationState(validationContext)"
                               aria-describedby="input-3-live-feedback"></b-form-input>
                 <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>

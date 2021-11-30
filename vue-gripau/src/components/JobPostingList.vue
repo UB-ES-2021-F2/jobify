@@ -136,7 +136,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
               </b-form-group>
             </validation-provider>
 
-            <validation-provider name="Description"  :rules="{ max: 2000}" v-slot="validationContext">
+            <validation-provider name="Description"  :rules="{ max: 3000}" v-slot="validationContext">
               <b-form-group id="input-group-2" label="Description" label-for="input-2">
                 <b-form-textarea id="descriptionInput" v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
                                  aria-describedby="input-2-live-feedback"  rows="5"

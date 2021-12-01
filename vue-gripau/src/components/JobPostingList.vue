@@ -328,7 +328,8 @@ export default {
           this.getJobOffers()
         })
         .catch((error) => {
-          this.showToastSubmitNewOfferError(error.response.data.message)
+          console.error(error)
+          this.showToastSubmitNewOfferError()
         })
       this.$bvModal.hide('job-offer-modal')
       this.onReset()
@@ -343,7 +344,7 @@ export default {
     },
     showToastSubmitNewOfferError (error) {
       /* eslint-disable */
-      this.$bvToast.toast('Submit new offer fail: ' + error, {
+      this.$bvToast.toast('Error while trying to submit offer ', {
         title: `Warning`,
         variant: 'danger',
         solid: true

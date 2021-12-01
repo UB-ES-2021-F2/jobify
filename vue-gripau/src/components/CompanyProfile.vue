@@ -475,13 +475,30 @@ export default {
         axios.post(path, values, {
           auth: {username: this.token}})
           .then((res) => {
-            console.log('Job Offer correctly applied')
+            this.showToastSuccess('Job Offer correctly applied')
             this.applied = true
           })
           .catch((error) => {
-            alert(error.response.data.message)
+            this.showToastError('An error occurred while was applying')
+            console.error(error)
           })
       }
+    },
+    showToastError (error) {
+      /* eslint-disable */
+      this.$bvToast.toast(error, {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
+    },
+    showToastSuccess (message) {
+      /* eslint-disable */
+      this.$bvToast.toast(message, {
+        title: `Information`,
+        variant: 'success',
+        solid: true
+      })
     },
     resetApplyModal () {
       this.applyMessage = null
@@ -549,7 +566,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred modifying description')
+          this.showToastError('An error occurred modifying description')
         })
     },
     modifySector () {
@@ -565,7 +582,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred creating the account')
+          this.showToastError('An error occurred')
         })
     },
     modifyLocation () {
@@ -581,7 +598,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred creating the account')
+          this.showToastError('An error occurred modifying the location')
         })
     },
     modifyEmail () {
@@ -597,7 +614,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred editing the email')
+          this.showToastError('An error occurred editing the email')
         })
     },
     getCompany () {
@@ -664,7 +681,8 @@ export default {
           this.getCompanyJobOffers()
         })
         .catch((error) => {
-          alert(error.response.data.message)
+          this.showToastError('Error while trying to submit offer')
+          console.error(error)
         })
       this.$bvModal.hide('job-offer-modal')
       this.onReset()

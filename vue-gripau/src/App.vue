@@ -1,12 +1,12 @@
 <template>
-
-  <head>
-      <meta charset="utf-8">
-      <link rel="shortcut icon" type="image/png" href="require('../assets/favicon.png')"/>
-      <title>Jobify</title>
-  </head>
-
-  <router-view/>
+  <div>
+    <head>
+        <meta charset="utf-8">
+        <link rel="shortcut icon" type="image/png" href="require('../assets/favicon.png')"/>
+        <title>Jobify</title>
+    </head>
+    <router-view/>
+  </div>
 </template>
 
 <script>

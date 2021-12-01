@@ -77,6 +77,16 @@ api.add_resource(JobOfferApplicants, '/api/offer_applicants/<int:job_offer_id>')
 def render_vue():
     return render_template("index.html")
 
+# For fixing reload bug?
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return app.send_static_file('index.html')
+
+@app.errorhandler(404)   
+def not_found(e):   
+  return app.send_static_file('index.html')
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

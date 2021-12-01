@@ -20,17 +20,38 @@ class TestCompanyListResource(BaseTestCase):
         new_company.hash_password('Password12')
         self._add_data_to_db(new_company)
 
+        new_company = CompanyModel('test123', 'company test', 'test@companytest.com', 'hola, som una empresa de test')
+        new_company.hash_password('Password12')
+        self._add_data_to_db(new_company)
+
+        new_company = CompanyModel('123test', 'test segon', 'testdos@companytest.com', 'hola, som una altra empresa de test')
+        new_company.hash_password('Password12')
+        self._add_data_to_db(new_company)
+
     def test_successful_get(self):
         self._add_data()
 
         response = self.client.get('/api/companies')
         self.assertEquals(response.status_code, 200)
 
-    def test_failed_get(self):
+    def test_successful_get_empty(self):
         response = self.client.get('/api/companies')
-        self.assertEquals(response.status_code, 404)
-        self.assertDictEqual(response.json, {'message': "There are no companies"})
+        self.assertEquals(len(response.json), 0)
+        self.assertEquals(response.status_code, 200)
 
+    def test_successful_get_test(self):
+        self._add_data()
+
+        response = self.client.get('/api/companies', json={'keyword': 'test'})
+        self.assertEquals(len(response.json), 2)
+        self.assertEquals(response.status_code, 200)
+
+    def test_successful_get_companytest(self):
+        self._add_data()
+
+        response = self.client.get('/api/companies', json={'keyword': 'company test'})
+        self.assertEquals(len(response.json), 1)
+        self.assertEquals(response.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()

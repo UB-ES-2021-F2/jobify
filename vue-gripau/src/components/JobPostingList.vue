@@ -53,24 +53,28 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
              </span>
             </template>
             <b-dropdown-form style="font-family: 'Work Sans',sans-serif">
-              <b-form-checkbox button-variant="warning" v-model="checkedFullTime" id="checkbox-full-time" name="checkbox-full-time" value=1 unchecked-value=0>
+              <b-form-checkbox v-model="checkedFullTime" id="checkbox-full-time" name="checkbox-full-time">
                 Full-time
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedPartTime" id="checkbox-part-time" name="checkbox-part-time" value=1 unchecked-value=0>
+              <b-form-checkbox v-model="checkedPartTime" id="checkbox-part-time" name="checkbox-part-time">
                 Part-time
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedInternship" id="checkbox-internship" name="checkbox-internship" value=1 unchecked-value=0>
+              <b-form-checkbox v-model="checkedInternship" id="checkbox-internship" name="checkbox-internship">
                 Internship
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedFreelance" id="checkbox-freelance" name="checkbox-freelance" value=1 unchecked-value=0>
+              <b-form-checkbox v-model="checkedFreelance" id="checkbox-freelance" name="checkbox-freelance">
                 Freelance
+              </b-form-checkbox>
+              <b-form-checkbox v-model="checkedOther" id="checkbox-other" name="checkbox-other">
+                Other
               </b-form-checkbox>
             </b-dropdown-form>
           </b-dropdown>
           </b-row>
         </b-row>
         <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
-          <b-button id="searchButton" variant="warning" @click="searchJobOffers">
+          <b-button id="searchButton" variant="warning" :disabled="!(checkedFullTime||checkedPartTime||checkedInternship
+          ||checkedFreelance||checkedOther)" @click="searchJobOffers">
             Search!
           </b-button>
         </b-row>
@@ -132,7 +136,7 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
               </b-form-group>
             </validation-provider>
 
-            <validation-provider name="Description"  :rules="{ max: 2000}" v-slot="validationContext">
+            <validation-provider name="Description"  :rules="{ max: 3000}" v-slot="validationContext">
               <b-form-group id="input-group-2" label="Description" label-for="input-2">
                 <b-form-textarea id="descriptionInput" v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
                                  aria-describedby="input-2-live-feedback"  rows="5"
@@ -177,19 +181,21 @@ export default {
         contractType: '',
         workingHours: ''
       },
-      optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
+      optionsContractType: ['Full-time', 'Part-time', 'Internship', 'Freelance', 'Other'],
       companies_logos: {},
       selected: [],
       search: '',
-      checkedFullTime: 1,
-      checkedPartTime: 1,
-      checkedInternship: 1,
-      checkedFreelance: 1,
+      checkedFullTime: true,
+      checkedPartTime: true,
+      checkedInternship: true,
+      checkedFreelance: true,
+      checkedOther: true,
       options: [
         { item: 'Full-time', name: 'Full-time' },
         { item: 'Part-time', name: 'Part-time' },
         { item: 'Internship', name: 'Internship' },
-        { item: 'Freelance', name: 'Freelance' }
+        { item: 'Freelance', name: 'Freelance' },
+        { item: 'Other', name: 'Other' }
       ],
       notFound: false,
       notFoundMessage: 'Oops, we did not find any job offer matching your search...',
@@ -244,7 +250,26 @@ export default {
     },
     searchJobOffers () {
       const path = Vue.prototype.$API_BASE_URL + 'offers'
-      const searchParams = {params: {'keyword': this.search}}
+      let searchParams = {}
+      const noFilters = this.checkedFullTime && this.checkedPartTime && this.checkedInternship && this.checkedFreelance && this.checkedOther
+      if ((this.search === '') && noFilters) {
+        searchParams = {params: {}}
+      } else if ((this.search !== '') && noFilters) {
+        searchParams = {params: {'keyword': this.search}}
+      } else {
+        let checkedFilters = ''
+        if (this.checkedFullTime) { checkedFilters += 'Full-time,' }
+        if (this.checkedPartTime) { checkedFilters += 'Part-time,' }
+        if (this.checkedInternship) { checkedFilters += 'Internship,' }
+        if (this.checkedFreelance) { checkedFilters += 'Freelance,' }
+        if (this.checkedOther) { checkedFilters += 'Other' }
+        if (this.search !== '') {
+          searchParams = {params: {'keyword': this.search, 'job_type': checkedFilters}}
+        } else {
+          searchParams = {params: {'job_type': checkedFilters}}
+        }
+      }
+
       axios.get(path, searchParams)
         .then((res) => {
           this.job_offers = []

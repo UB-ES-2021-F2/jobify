@@ -18,7 +18,7 @@ class ApplicationModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     job_seeker_username = db.Column(db.String(30), db.ForeignKey('jobseekers.username'), nullable=False)
     job_offer_id = db.Column(db.Integer, db.ForeignKey('job_offer.id'), nullable=False)
-    info = db.Column(db.String(500), unique=False, nullable=True)
+    info = db.Column(db.String(5000), unique=False, nullable=True)
 
     def __init__(self, info=None):
         """

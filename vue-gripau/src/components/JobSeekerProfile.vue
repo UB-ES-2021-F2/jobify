@@ -358,8 +358,16 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred modifying bio')
+          this.showToastError('An error occurred modifying bio')
         })
+    },
+    showToastError (error) {
+      /* eslint-disable */
+      this.$bvToast.toast(error, {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
     },
     getValidationState ({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null
@@ -445,7 +453,8 @@ export default {
           }
         })
         .catch((error) => {
-          alert(error.response.data.message)
+          this.showToastError('An error occurred modifying Work experience')
+          console.error(error)
         })
     },
     deleteWork (work) {
@@ -458,7 +467,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error deleting work experience')
+          this.showToastError('Error deleting work experience')
         })
     },
     onAddEducation () {
@@ -488,7 +497,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error adding education')
+          this.showToastError('Error adding education')
         })
     },
     submitAddSkill () {
@@ -503,7 +512,7 @@ export default {
         .catch((error) => {
           console.error(error)
           console.log(this.addSkill.skill)
-          alert('Error Adding Skills')
+          this.showToastError('Error Adding Skills')
         })
     },
     onAddSkill () {
@@ -529,7 +538,8 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error deleting education')
+          this.showToastError('Error deleting education')
+
         })
     },
     deleteSkill (skill) {
@@ -541,7 +551,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error Adding Skills')
+          this.showToastError('Error Adding Skills')
         })
     },
     resetAddWork () {

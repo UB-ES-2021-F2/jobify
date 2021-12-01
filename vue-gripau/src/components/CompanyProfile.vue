@@ -153,10 +153,27 @@
                   <p>Write about your company!</p>
                 </div>
                 <div id="editDescriptionField" v-if="edit.description" fluid>
-                  <b-form-textarea id="descriptionInput" v-model="modify.description" rows="3" max-rows="8"/>
-                  <b-button class="save-button" id="submitEditDescriptionButton" variant="success" @click="modifyDescription()">
-                    <b-icon icon="check-circle" font-scale="1.5"></b-icon>
-                  </b-button>
+
+                  <validation-observer ref="observer" v-slot="{ handleSubmit }">
+                    <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(modifyDescription)">
+                      <b-row align="center">
+                        <b-col sm="10">
+                          <ValidationProvider name="description"  rules="max: 1000" v-slot="validationContext">
+                            <b-form-group id="input-group-1">
+                              <b-form-textarea id="descriptionInput" v-model="modify.description" placeholder="Write your bio here..." rows="4" :state="getValidationState(validationContext)"
+                                               aria-describedby="input-1-live-feedback"></b-form-textarea>
+                              <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                            </b-form-group>
+                          </ValidationProvider>
+                        </b-col>
+                        <b-col align-self="center" sm="1">
+                          <b-button class="save-button" id="submitEditDescriptionButton" variant="success" type="submit">
+                            <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                          </b-button>
+                        </b-col>
+                      </b-row>
+                    </b-form>
+                  </validation-observer>
                   <p></p>
                 </div>
                 <button id="enableEditDescriptionButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editDescription()" >
@@ -265,7 +282,7 @@
                       </b-form-group>
                     </validation-provider>
 
-                    <validation-provider name="Description"  :rules="{ max: 2000}" v-slot="validationContext">
+                    <validation-provider name="Description"  :rules="{ max: 3000}" v-slot="validationContext">
                       <b-form-group id="input-group-2" label="Description" label-for="input-2">
                         <b-form-textarea id="descriptionInput" v-model="jobOfferForm.description" :state="getValidationState(validationContext)"
                                          aria-describedby="input-2-live-feedback"  rows="5"

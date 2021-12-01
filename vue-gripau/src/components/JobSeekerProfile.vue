@@ -61,32 +61,43 @@
                 <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
               </div>
             </div>
-            <div id="divName" class="col-lg-8 text-left order-0 float-left">
+            <div id="divName" class="col-lg-4 order-0 float-left text-left" style="margin-bottom: 0; padding-bottom: 0">
               <p id="nameSurnameFields" class="page-title">
                 {{ name }} {{ surname }}
               </p>
             </div>
-            <div id="divBio" class="col-lg-8 text-left order-1 float-left">
-              <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-bottom: 5px; margin-left: 20px" @click="editBio()" >
-                <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
-              </button>
-              <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text pt-3">
+            <div id="divBio" class="col-lg-8 order-1 float-right text-left " style="margin-top: 0; padding-top: 0">
+              <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
                 {{bio}}
                 <p></p>
               </div>
-              <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text pt-3">
+              <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text">
                 Write about yourself!
               </div>
               <b-container id="editBioField" v-if="edit_bio" fluid>
-                <b-row align="center">
-                  <b-col sm="10">
-                    <b-form-textarea id="bioInput" v-model="modify_bio" rows="3" max-rows="8"/>
-                  </b-col>
-                  <b-col align-self="center" sm="1">
-                    <b-button id="submitEditBioButton" variant="success" @click="modifyBio()">Save</b-button>
-                  </b-col>
-                </b-row>
+                <validation-observer ref="observer" v-slot="{ handleSubmit }">
+                  <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(modifyBio)">
+                    <b-row align="center">
+                      <b-col sm="10">
+                        <ValidationProvider name="bio"  rules="max: 1000" v-slot="validationContext">
+                          <b-form-group id="input-group-1">
+                            <b-form-textarea id="bioInput" v-model="modify_bio" placeholder="Write your bio here..." rows="4" :state="getValidationState(validationContext)"
+                                          aria-describedby="input-1-live-feedback"></b-form-textarea>
+                            <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                          </b-form-group>
+                        </ValidationProvider>
+                      </b-col>
+                      <b-col align-self="center" sm="1">
+                        <b-button id="submitEditBioButton" variant="success" type="submit">Save</b-button>
+                      </b-col>
+                    </b-row>
+                  </b-form>
+                </validation-observer>
               </b-container>
+              <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-top: 0; padding-top: 0;
+               margin-bottom: 5px; margin-left: 20px" @click="editBio()" >
+                <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+              </button>
             </div>
           </div>
         </div>

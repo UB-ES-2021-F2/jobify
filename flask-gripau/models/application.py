@@ -1,5 +1,5 @@
 from db import db
-from models import JobOfferModel
+from models import JobOfferModel, CompanyModel
 
 
 class ApplicationModel(db.Model):
@@ -38,11 +38,14 @@ class ApplicationModel(db.Model):
         """
 
         job_offer_name = None
-        if JobOfferModel.find_by_id(self.job_offer_id):
-            job_offer_name = JobOfferModel.find_by_id(self.job_offer_id).job_name
+        job_offer_company = None
+        job_offer = JobOfferModel.find_by_id(self.job_offer_id)
+        if job_offer:
+            job_offer_name = job_offer.job_name
+            job_offer_company = CompanyModel.find_by_username(job_offer.company).company
 
         return {'id': self.id, 'job_seeker_username': self.job_seeker_username, 'job_offer_id': self.job_offer_id,
-                'job_offer_name': job_offer_name, 'info': self.info}
+                'job_offer_name': job_offer_name, 'job_offer_company': job_offer_company, 'info': self.info}
 
     def delete_from_db(self, database=None):
         """Function that the deletes from the database the application

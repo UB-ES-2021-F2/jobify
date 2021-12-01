@@ -324,14 +324,30 @@ export default {
       axios.post(path, values, {
         auth: {username: this.token}})
         .then((res) => {
-          console.log('Job Offer correctly posted')
+          this.showToastSubmitNewOffer()
           this.getJobOffers()
         })
         .catch((error) => {
-          alert(error.response.data.message)
+          this.showToastSubmitNewOfferError(error.response.data.message)
         })
       this.$bvModal.hide('job-offer-modal')
       this.onReset()
+    },
+    showToastSubmitNewOffer () {
+      /* eslint-disable */
+      this.$bvToast.toast('Job Offer correctly posted', {
+        title: `Information`,
+        variant: 'success',
+        solid: true
+      })
+    },
+    showToastSubmitNewOfferError (error) {
+      /* eslint-disable */
+      this.$bvToast.toast('Submit new offer fail: ' + error, {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
     },
     initJobOfferForm () {
       this.jobOfferForm.jobName = ''

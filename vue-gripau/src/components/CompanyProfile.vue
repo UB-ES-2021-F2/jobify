@@ -196,11 +196,6 @@
               </b-link>
               <div class="container">
                 <div class="row" align-h="center">
-                  <!--<div class="col-6">
-                    <b-card tag="article" class="text-center mb-2" id="addJobOfferCard">
-                      <p class="h1"></p>
-                    </b-card>
-                  </div>-->
                   <b-container>
                     <job-postings-view
                       v-bind:job_offers = "job_offers"

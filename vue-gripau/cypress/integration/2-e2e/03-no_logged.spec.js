@@ -6,13 +6,36 @@
 // https://on.cypress.io/writing-first-test
 
 describe('No logged', () => {
-  context('Navigate to job offer description page through job postings component and return to home page', () => {
+  context('Navigate to job offer description page through job postings component, use filters and return to home page', () => {
     it('should go to job postings page through navbar', () => {
       cy.visit('http://localhost:5000').get('[id=jobPostingsNavbarButton]').click()
       cy.url().should('eq', 'http://localhost:5000/job_postings')
       cy.get('[id=profileNavbarButton]').should('not.exist')
       cy.get('[id=logInNavbarButton]').should('exist')
       cy.get('[id=addJobOfferCard]').should('not.exist')
+      cy.get('[id=jobOfferCard]').should('exist')
+    })
+    it('should search for job professorat, then search for company ub and finally job test', () => {
+      cy.get('[id=searchbar]').type('professorat')
+      cy.get('[id=searchButton]').click()
+      cy.get('[id=jobOfferCard]').should('exist')
+      cy.get('[id=searchbar]').clear().type('ub')
+      cy.get('[id=searchButton]').click()
+      cy.get('[id=jobOfferCard]').should('exist')
+      cy.get('[id=searchbar]').clear().type('test')
+      cy.get('[id=searchButton]').click()
+      cy.get('[id=jobOfferCard]').should('not.exist')
+      cy.get('[id=searchbar]').clear()
+      cy.get('[id=searchButton]').click()
+    })
+    it('should search using job type filter', () => {
+      cy.get('[id=filterJobTypeDropdown]').click()
+      cy.get('[id=checkboxFullTime]').uncheck({force: true})
+      cy.get('[id=searchButton]').click()
+      cy.get('[id=jobOfferCard]').should('not.exist')
+      cy.get('[id=filterJobTypeDropdown]').click()
+      cy.get('[id=checkboxFullTime]').check({force: true})
+      cy.get('[id=searchButton]').click()
       cy.get('[id=jobOfferCard]').should('exist')
     })
     it('should go to the job offer professor ub description page', () => {
@@ -65,6 +88,8 @@ describe('No logged', () => {
       cy.get('[id=logoNavbar]').click()
       cy.url().should('eq', 'http://localhost:5000/')
     })
+  })
+  context('Navigate to companies page, search for companies and return to home page', () => {
     it('should go to companies page through "Check our companies" button', () => {
       cy.get('[id=companiesButton]').click()
       cy.url().should('eq', 'http://localhost:5000/companies')
@@ -72,6 +97,15 @@ describe('No logged', () => {
       cy.get('[id=logInNavbarButton]').should('exist')
       cy.get('[id=companyCard]').should('exist')
     })
+    it('should search for company ub and company test', () => {
+      cy.get('[id=searchbar]').type('ub')
+      cy.get('[id=searchButton]').click()
+      cy.get('[id=companyCard]').should('exist')
+      cy.get('[id=searchbar]').clear().type('test')
+      cy.get('[id=searchButton]').click()
+      cy.get('[id=companyCard]').should('not.exist')
+    })
+
     it('should return to home page through "Home" in navbar', () => {
       cy.get('[id=homeNavbarButton]').click()
       cy.url().should('eq', 'http://localhost:5000/')

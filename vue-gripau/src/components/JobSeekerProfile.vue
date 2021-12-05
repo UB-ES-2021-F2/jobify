@@ -430,7 +430,7 @@ export default {
         .then((res) => {
           this.jobs_applied = []
           for (let application in res.data) {
-            this.jobs_applied.push({'Offer': res.data[application].job_offer_name, 'Company': res.data[application].job_offer_company, 'Reference': res.data[application].job_offer_id, 'Username': res.data[application].job_offer_username})
+            this.jobs_applied.push({'Offer': res.data[application].job_offer_name, 'Company': res.data[application].job_offer_company, 'Reference': res.data[application].job_offer_id, 'Username': res.data[application].company_username})
           }
         })
         // eslint-disable-next-line

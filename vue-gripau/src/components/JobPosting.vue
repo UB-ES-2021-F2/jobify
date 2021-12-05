@@ -267,13 +267,30 @@ export default {
         axios.post(path, values, {
           auth: {username: this.token}})
           .then((res) => {
-            console.log('Job Offer correctly applied')
             this.applied = true
+            this.showToastSuccess()
           })
           .catch((error) => {
-            alert(error.response.data.message)
+            console.error(error)
+            this.showToastError()
           })
       }
+    },
+    showToastSuccess () {
+      /* eslint-disable */
+      this.$bvToast.toast('Job Offer correctly applied', {
+        title: `Information`,
+        variant: 'success',
+        solid: true
+      })
+    },
+    showToastError () {
+      /* eslint-disable */
+      this.$bvToast.toast('Some error happened when you try to apply, Please check or report the error', {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
     },
     resetApplyModal () {
       this.applyMessage = null

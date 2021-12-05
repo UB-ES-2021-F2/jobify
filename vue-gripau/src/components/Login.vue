@@ -194,9 +194,9 @@
         </b-tab>
         <!--/Company form -->
       </b-tabs>
-
     </b-modal>
   </div>
+
 </template>
 
 <script>
@@ -236,10 +236,19 @@ export default {
         confirmation: '',
         rTandC: false,
         newsletter: false
-      }
+      },
+      errorLogin: ''
     }
   },
   methods: {
+    showToastError () {
+      /* eslint-disable */
+      this.$bvToast.toast('Username or Password incorrect', {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
+    },
     checkLogin () {
       const parameters = {
         username: this.loginForm.username.toLowerCase(),
@@ -257,7 +266,7 @@ export default {
           console.error(error)
           this.loginForm.username = ''
           this.loginForm.password = ''
-          alert('Username or Password incorrect')
+          this.showToastError()
         })
     },
     getValidationState ({ dirty, validated, valid = null }) {
@@ -318,12 +327,12 @@ export default {
         }
         axios.post(path, values)
           .then((res) => {
-            console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            this.showToastRegisterDone()
             this.onReset()
             this.$bvModal.hide('register-modal')
           })
           .catch((error) => {
-            alert(error.response.data.message)
+            this.showToastRegisterError(error.response.data.message)
           })
       } else {
         const values = {
@@ -335,16 +344,32 @@ export default {
         }
         axios.post(path, values)
           .then((res) => {
-            console.log('Correctly registered ' + this.registerS.username + '. You can now sign in!')
+            this.showToastRegisterDone()
             this.onReset()
             this.$bvModal.hide('register-modal')
           })
           .catch((error) => {
-            alert(error.response.data.message)
+            this.showToastRegisterError(error.response.data.message)
           })
       }
       this.$bvModal.hide('register-modal')
       this.onReset()
+    },
+    showToastRegisterDone () {
+      /* eslint-disable */
+      this.$bvToast.toast('Correctly registered. You can now sign in!', {
+        title: `Information`,
+        variant: 'success',
+        solid: true
+      })
+    },
+    showToastRegisterError (error) {
+      /* eslint-disable */
+      this.$bvToast.toast('Register fail: ' + error, {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
     },
     initRegisterForm () {
       this.registerS.username = ''

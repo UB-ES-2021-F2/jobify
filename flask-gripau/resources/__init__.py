@@ -16,3 +16,4 @@ from resources.DeleteWorkExperience import DeleteWorkExperience
 from resources.Applications import Applications
 from resources.DeleteApplication import DeleteApplication
 from resources.JobOfferApplicants import JobOfferApplicants
+from resources.JobSeekerApplications import JobSeekerApplications

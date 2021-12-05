@@ -5,7 +5,7 @@ from db import db
 from flask_cors import CORS
 
 # Imports de resources
-from resources import JobSeekers, Applications, DeleteApplication, JobOfferApplicants
+from resources import JobSeekers, Applications, DeleteApplication, JobOfferApplicants, JobSeekerApplications
 from resources import Companies
 from resources import Login
 from resources import Register
@@ -72,10 +72,21 @@ api.add_resource(Applications, '/api/application/<string:job_seeker_username>/<i
                  '/api/application/<string:job_seeker_username>', '/api/application')
 api.add_resource(DeleteApplication, '/api/delete_application/<string:job_seeker_username>')
 api.add_resource(JobOfferApplicants, '/api/offer_applicants/<int:job_offer_id>')
+api.add_resource(JobSeekerApplications, '/api/applications/<string:username>')
 
 @app.route('/')
 def render_vue():
     return render_template("index.html")
+
+# For fixing reload bug?
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return app.send_static_file('index.html')
+
+@app.errorhandler(404)   
+def not_found(e):   
+  return app.send_static_file('index.html')
 
 
 if __name__ == '__main__':

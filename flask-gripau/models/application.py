@@ -1,5 +1,5 @@
 from db import db
-from models import JobOfferModel
+from models import JobOfferModel, CompanyModel
 
 
 class ApplicationModel(db.Model):
@@ -18,7 +18,7 @@ class ApplicationModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     job_seeker_username = db.Column(db.String(30), db.ForeignKey('jobseekers.username'), nullable=False)
     job_offer_id = db.Column(db.Integer, db.ForeignKey('job_offer.id'), nullable=False)
-    info = db.Column(db.String(500), unique=False, nullable=True)
+    info = db.Column(db.String(5000), unique=False, nullable=True)
 
     def __init__(self, info=None):
         """
@@ -38,11 +38,14 @@ class ApplicationModel(db.Model):
         """
 
         job_offer_name = None
-        if JobOfferModel.find_by_id(self.job_offer_id):
-            job_offer_name = JobOfferModel.find_by_id(self.job_offer_id).job_name
+        job_offer_company = None
+        job_offer = JobOfferModel.find_by_id(self.job_offer_id)
+        if job_offer:
+            job_offer_name = job_offer.job_name
+            job_offer_company = CompanyModel.find_by_username(job_offer.company).company
 
         return {'id': self.id, 'job_seeker_username': self.job_seeker_username, 'job_offer_id': self.job_offer_id,
-                'job_offer_name': job_offer_name, 'info': self.info}
+                'job_offer_name': job_offer_name, 'job_offer_company': job_offer_company, 'info': self.info}
 
     def delete_from_db(self, database=None):
         """Function that the deletes from the database the application

@@ -16,7 +16,7 @@ class JobSeekersModel(db.Model):
     name = db.Column(db.String(30), nullable=False)
     surname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
-    bio = db.Column(db.String(1024), unique=False, nullable=True)
+    bio = db.Column(db.String(5000), unique=False, nullable=True)
     password = db.Column(db.String(128), nullable=False)
     # 0 not admin/ 1 is admin
     is_admin = db.Column(db.Integer, nullable=False, default=False)

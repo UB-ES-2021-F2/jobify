@@ -6,33 +6,66 @@
               "first-name": "Sergi",
               "last-name": "Bech",
               "email": "sergi@gmail.com",
-              "bio": "hola, soc estudiant",
+              "bio": "Em dic Sergi i soc estudiant d'últim curs de matemàtiques i enginyeria informàtica",
               "work-experiences":
                       [
                         {
-                          "job-name": "professor",
-                          "description": "professor de EDS",
-                          "company": "ub",
-                          "start-date": "2020-03",
-                          "end-date": "2020-06",
+                          "job-name": "Undergraduate researcher",
+                          "description": "Work with climate predictions and machine learning",
+                          "company": "BSC",
+                          "start-date": "2020-06",
+                          "end-date": "2020-12",
                           "currently": false
                         }
                       ],
               "skills":
                       [
-                        "python", "programacio"
+                        "python", "programacio", "machine learning", "IA", "maths", "solving problems"
                       ],
               "educations":
                       [
                         {
-                          "title": "Maths phd",
+                          "title": "Doble grau de matemàtiques i enginyeria informàtica",
                           "institution": "UB",
-                          "start-date": "2020-03",
-                          "end-date": "2020-06",
-                          "currently": false
+                          "start-date": "2016-08",
+                          "end-date": "",
+                          "currently": true
                         }
                       ],
               "password": "Password12"
+            },
+            {
+              "username": "drial",
+              "first-name": "David",
+              "last-name": "Rial",
+              "email": "david_rial@gmail.com",
+              "bio": "Em dic David i estic estudiant matemàtiques i enginyeria informàtica i treballant de software developer",
+              "work-experiences":
+                      [
+                        {
+                          "job-name": "Junior software developer",
+                          "description": "Work with database and with large data files",
+                          "company": "UBSolutions",
+                          "start-date": "2021-06",
+                          "end-date": "",
+                          "currently": true
+                        }
+                      ],
+              "skills":
+                      [
+                        "python", "SQL", "java", "HTML", "maths", "solving problems"
+                      ],
+              "educations":
+                      [
+                        {
+                          "title": "Doble grau de matemàtiques i enginyeria informàtica",
+                          "institution": "UB",
+                          "start-date": "2016-08",
+                          "end-date": "",
+                          "currently": true
+                        }
+                      ],
+              "password": "David123"
             }
           ],
   "companies":

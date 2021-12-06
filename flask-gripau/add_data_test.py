@@ -31,7 +31,7 @@ new_job_seeker.skills.append(new_skill)
 db.session.add(new_job_seeker)
 
 new_company = CompanyModel('universitat123', 'ub', 'ub@gmail.com', 'hola, som la UB')
-new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 'Barcelona', 5000, 8, 'Temporal')
+new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 'Barcelona', 5000, 8, 'Full-time')
 new_company.hash_password('Password12')
 new_company.job_offers.append(new_job_offer)
 db.session.add(new_company)

@@ -46,26 +46,26 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
                      style="border-radius: 0 !important" />
           </b-row>
           <b-row id="searchFiltersRow">
-            <b-dropdown variant="light" class="ml-4" text="Job type" checkbox-menu allow-focus>
+            <b-dropdown id="filterJobTypeDropdown" variant="light" class="ml-4" text="Job type" checkbox-menu allow-focus>
             <template #button-content>
              <span>
                Job type <font-awesome-icon size="1x" :icon="['fas', 'filter']" />
              </span>
             </template>
             <b-dropdown-form style="font-family: 'Work Sans',sans-serif">
-              <b-form-checkbox v-model="checkedFullTime" id="checkbox-full-time" name="checkbox-full-time">
+              <b-form-checkbox v-model="checkedFullTime" id="checkboxFullTime" name="checkbox-full-time">
                 Full-time
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedPartTime" id="checkbox-part-time" name="checkbox-part-time">
+              <b-form-checkbox v-model="checkedPartTime" id="checkboxPartTime" name="checkbox-part-time">
                 Part-time
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedInternship" id="checkbox-internship" name="checkbox-internship">
+              <b-form-checkbox v-model="checkedInternship" id="checkboxInternship" name="checkbox-internship">
                 Internship
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedFreelance" id="checkbox-freelance" name="checkbox-freelance">
+              <b-form-checkbox v-model="checkedFreelance" id="checkboxFreelance" name="checkbox-freelance">
                 Freelance
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedOther" id="checkbox-other" name="checkbox-other">
+              <b-form-checkbox v-model="checkedOther" id="checkboxOther" name="checkbox-other">
                 Other
               </b-form-checkbox>
             </b-dropdown-form>

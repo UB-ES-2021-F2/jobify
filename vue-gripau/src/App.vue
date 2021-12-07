@@ -7,7 +7,7 @@
     </head>
     <router-view style="min-height: 100vh"/>
     <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Card Title" style="font-family:'Work Sans', Helvetica, Arial, sans-serif; margin-top: 20px">
-      <div style="padding-inline: 100px">
+      <div style="padding-inline: 10%">
         <b-container>
           <b-row>
             <b-col style="flex-grow: 0">

@@ -5,7 +5,42 @@
         <link rel="shortcut icon" type="image/png" href="require('../assets/favicon.png')"/>
         <title>Jobify</title>
     </head>
-    <router-view/>
+    <router-view style="min-height: 100vh"/>
+<!--    <div class="fluid-container">-->
+<!--      <p class="text-center">Copyright &copy 2018, ABC Marketing. All Rights Reserved.</p>-->
+<!--    </div>-->
+    <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Card Title" style="font-family:'Work Sans', Helvetica, Arial, sans-serif">
+      <div style="padding-inline: 100px">
+        <b-container>
+          <b-row>
+            <b-col style="flex-grow: 0">
+              <img style="max-width: 150px" :src="require('./assets/logoWhite.png')">
+            </b-col>
+            <b-col align-self="center" >
+              <b-card-text>
+                <p>
+                  This website has been created for educational purposes only.
+                </p>
+                <p style="margin: 0">
+                  If you have any questions or suggestions, please don't hesitate to contact us.
+                </p>
+              </b-card-text>
+<!--              <b-card-text>-->
+<!--                This website has been created for educational purposes only.-->
+<!--              </b-card-text>-->
+<!--              <b-card-text>-->
+<!--              If you have any questions or suggestions, please don't hesitate to contact us.-->
+<!--              </b-card-text>-->
+            </b-col>
+          </b-row>
+        </b-container>
+<!--        <b-button href="#" variant="primary">Go somewhere</b-button>-->
+        <hr style="background-color: #ffc107" />
+        <div align="center">
+          <b>Jobify 2021</b>
+        </div>
+      </div>
+    </b-card-footer>
   </div>
 </template>
 

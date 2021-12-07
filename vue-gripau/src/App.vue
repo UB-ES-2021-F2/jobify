@@ -6,7 +6,7 @@
         <title>Jobify</title>
     </head>
     <router-view style="min-height: 100vh"/>
-    <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Card Title" style="font-family:'Work Sans', Helvetica, Arial, sans-serif; margin-top: 20px">
+    <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Footer" style="font-family:'Work Sans', Helvetica, Arial, sans-serif; margin-top: 20px">
       <div style="padding-inline: 10%">
         <b-container>
           <b-row>
@@ -19,7 +19,7 @@
                   This website has been created for educational purposes only.
                 </p>
                 <p style="margin: 0">
-                  If you have any questions or suggestions, please don't hesitate to contact us.
+                  If you have any questions or suggestions, please don't hesitate to <b><a style="color: white" href="#" @click="onAboutUs" >contact us.</a></b>
                 </p>
               </b-card-text>
             </b-col>
@@ -43,6 +43,11 @@ export default {
       handler (to, from) {
         document.title = to.meta.title || 'Jobify'
       }
+    }
+  },
+  methods: {
+    onAboutUs () {
+      this.$router.push('/about_us')
     }
   }
 }

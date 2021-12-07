@@ -6,10 +6,7 @@
         <title>Jobify</title>
     </head>
     <router-view style="min-height: 100vh"/>
-<!--    <div class="fluid-container">-->
-<!--      <p class="text-center">Copyright &copy 2018, ABC Marketing. All Rights Reserved.</p>-->
-<!--    </div>-->
-    <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Card Title" style="font-family:'Work Sans', Helvetica, Arial, sans-serif">
+    <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Card Title" style="font-family:'Work Sans', Helvetica, Arial, sans-serif; margin-top: 20px">
       <div style="padding-inline: 100px">
         <b-container>
           <b-row>
@@ -25,19 +22,12 @@
                   If you have any questions or suggestions, please don't hesitate to contact us.
                 </p>
               </b-card-text>
-<!--              <b-card-text>-->
-<!--                This website has been created for educational purposes only.-->
-<!--              </b-card-text>-->
-<!--              <b-card-text>-->
-<!--              If you have any questions or suggestions, please don't hesitate to contact us.-->
-<!--              </b-card-text>-->
             </b-col>
           </b-row>
         </b-container>
-<!--        <b-button href="#" variant="primary">Go somewhere</b-button>-->
         <hr style="background-color: #ffc107" />
         <div align="center">
-          <b>Jobify 2021</b>
+          <b>Jobify 2021</b> - University of Barcelona
         </div>
       </div>
     </b-card-footer>

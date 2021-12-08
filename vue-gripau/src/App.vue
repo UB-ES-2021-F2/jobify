@@ -15,7 +15,7 @@
             </b-col>
             <b-col align-self="center" >
               <b-card-text>
-                <p>
+                <p style="margin-bottom: 0.3rem">
                   This website has been created for educational purposes only.
                 </p>
                 <p style="margin: 0">

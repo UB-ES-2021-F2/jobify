@@ -402,6 +402,47 @@ button:focus{
     margin-right: 10px;
   }
 
+.table-wrapper-scroll-y {
+  position: relative;
+  height: 200px;
+  overflow: auto;
+  display: block;
+  padding-right: 10px;
+}
+/*
+.table-wrapper-scroll-y::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-wrapper-scroll-y::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  margin-right: 5px;
+  background-color: grey;
+}
+
+.table-wrapper-scroll-y::-webkit-scrollbar-track {
+  border-radius: 10px;
+  margin-right: 5px;
+  background-color: #eae9e9;
+}
+*/
+.applicants-container {
+  padding: 10px;
+}
+
+  .applicants-title {
+    font-weight: 900;
+    font-size: 1.2rem;
+  }
+
+  .applicants-table th {
+    border-top: 0px !important;
+  }
+  .applicants-table td {
+    border: 0px !important;
+  }
+
+
 .buttons-container {
   text-align: center;
 }
@@ -480,3 +521,6 @@ button:focus{
     margin: 0;
   }
 }
+
+
+

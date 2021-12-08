@@ -30,7 +30,7 @@
       <div class="row">
         <div class="col-12">
           <div id="aboutUsTitle" class="aboutus-title"> {{ message }} </div>
-          <div class="row">
+          <div class="row" style="height: fit-content">
             <!-- Our Project -->
             <div class="ourproject-container">
               <div class="col-12">

@@ -69,7 +69,7 @@
               </div>
             </div>
 
-            <div class="col-12" v-if="this.is_company && this.company === this.username">
+            <div class="col-12" v-if="this.applicants_list.length > 0 && this.is_company && this.company === this.username">
               <div class="applicants-container">
                 <p class="applicants-title">Applicants</p>
                 <div class="table-wrapper-scroll-y">

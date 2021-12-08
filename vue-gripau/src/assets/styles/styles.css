@@ -458,16 +458,20 @@ button:focus{
     margin: 0 !important;
   }
 
+.job-offer-button-back button:hover, .job-offer-button-delete button:hover{
+  outline: 0 none !important;
+  margin: 0 !important;
+}
+
   .job-offer-button-back svg {
     display: inline-block;
     color: #9e9e9d;
   }
 
-    .job-offer-button-back:hover button{
-      border: 0 !important;
-      background-color: #ffc107 !important;
-
-    }
+  .job-offer-button-back:hover button{
+    border: 0 !important;
+    background-color: #ffc107 !important;
+  }
 
 .job-offer-button-delete {
   display: inline-block;
@@ -480,10 +484,10 @@ button:focus{
     color: #9e9e9d;
   }
 
-    .job-offer-button-delete:hover button{
-      border: 1px solid #dc3545 !important;
-      background-color: #dc3545 !important;
-    }
+  .job-offer-button-delete:hover button{
+    border: 1px solid #dc3545 !important;
+    background-color: #dc3545 !important;
+  }
 
 .job-offer-button-apply {
   display: inline-block;

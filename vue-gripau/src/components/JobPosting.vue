@@ -81,14 +81,13 @@
                 </div>
               </div>
             </div>
-
             <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
-                Back
-              </b-button>
+                <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
+                  Back
+                </b-button>
             </div>
-            <div v-if="edit_mode" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
-              <b-button id="deleteButton" v-if="this.is_company && this.company_name_profile === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
+            <div v-if="this.is_company && this.company === this.username" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
+              <b-button id="deleteButton" btn variant="danger" class='m-2' @click="deleteJobOffer()">
                 <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
               </b-button>
             </div>

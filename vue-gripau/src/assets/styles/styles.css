@@ -1,7 +1,7 @@
 html, body{
   height: 100%;
 }
-input:focus, button:focus, textarea:focus{
+input:focus, textarea:focus{
   border-color: rgba(255,205, 0, 0.8) !important;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255,205, 0, 0.6) !important;
   outline: 0 none !important;
@@ -395,9 +395,6 @@ button:focus{
     font-size: 1.5rem;
   }
 
-  .job-offer-field-text {
-  }
-
   .job-offer-field-text svg {
     margin-right: 10px;
   }
@@ -442,14 +439,8 @@ button:focus{
     border: 0px !important;
   }
 
-
-.buttons-container {
-  text-align: center;
-}
-
 .job-offer-button-back {
   display: inline-block;
-  margin: auto;
   margin-bottom:20px;
 }
 
@@ -469,13 +460,12 @@ button:focus{
   }
 
   .job-offer-button-back:hover button{
-    border: 0 !important;
+    border-color: #ffc107 !important;
     background-color: #ffc107 !important;
   }
 
 .job-offer-button-delete {
   display: inline-block;
-  margin: auto;
   margin-bottom: 20px;
 }
 
@@ -485,13 +475,12 @@ button:focus{
   }
 
   .job-offer-button-delete:hover button{
-    border: 1px solid #dc3545 !important;
+    border-color: #dc3545 !important;
     background-color: #dc3545 !important;
   }
 
 .job-offer-button-apply {
   display: inline-block;
-  margin: auto;
   margin-bottom: 20px;
   width: 100%;
 }
@@ -501,7 +490,7 @@ button:focus{
   }
 
     .job-offer-button-apply:hover button{
-      border: 1px solid #28a745 !important;
+      border-color: #28a745 !important;
       background-color: #28a745 !important;
     }
 /****** MEDIA ******/

@@ -68,18 +68,31 @@
                 <p class="job-offer-field-text"><b-icon id="salaryIcon" icon="calendar-day"></b-icon>First published on: {{publication_date}}</p>
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
-              <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
-                Back
-              </b-button>
+
+            <div class="col-12" v-if="this.applicants_list.length > 0 && this.is_company && this.company === this.username">
+              <div class="applicants-container">
+                <p class="applicants-title">Applicants</p>
+                <div class="table-wrapper-scroll-y">
+                  <b-table :fields="fields" hover :items="this.applicants_list" class="applicants-table">
+                    <template #cell(Profile)="data">
+                      <router-link :to="`/job_seeker/${data.value}`">{{data.value}}</router-link>
+                    </template>
+                  </b-table>
+                </div>
+              </div>
             </div>
-            <div class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
-              <b-button id="deleteButton" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">
+            <div class="col-12 col-sm-12 col-lg-6 job-offer-button-back">
+                <b-button id="seenButton" btn variant="warning" class='btn-home' @click="onSeenOffer()">
+                  Back
+                </b-button>
+            </div>
+            <div v-if="this.is_company && this.company === this.username" class="col-12 col-sm-12 col-lg-6 job-offer-button-delete">
+              <b-button id="deleteButton" btn variant="danger" class='m-2' @click="deleteJobOffer()">
                 <!--<b-icon id="salaryIcon" icon="trash"></b-icon>--> Delete
               </b-button>
             </div>
             <div v-if="is_jobseeker && logged" class="col-12 col-sm-12 col-lg-6">
-              <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
+              <b-button id="applyButton" class="job-offer-button-apply" v-if="!applied" v-b-modal.modal-apply variant="success">Apply</b-button>
               <b-button id="appliedButton" class="job-offer-button-apply" v-else disabled variant="outline-success">Applied</b-button>
             </div>
           </div>
@@ -113,8 +126,9 @@
           </form>
         </b-modal>
       </div>
+
       <!-- /Job offer view (el que hi havia a company profile) -->
-      <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{job_name}}</h2>
+      <!-- <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{job_name}}</h2>
       <b-container fluid >
         <b-row>
           <b-col align="left">
@@ -161,10 +175,11 @@
           </b-col>
         </b-row>
       </b-container>
+
       <b-button id="seenButtonOld" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
       <b-button id="deleteButtonOld" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
       <b-button id="applyButtonOld" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button id="appliedButtonOld" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button>
+      <b-button id="appliedButtonOld" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button> -->
       <b-modal
         hide-backdrop
         id="modal-applyOld"

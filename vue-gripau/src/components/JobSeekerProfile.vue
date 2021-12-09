@@ -28,45 +28,40 @@
     </b-navbar>
     <!--/.Navbar -->
 
-    <b-container>
-
-      <div class="col">
-
-        <div class="row">
-          <div class="row d-flex d-lg-block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
             <div id="divAvatar" class="col-lg-4 order-1 float-left align-items-center">
               <div v-if="downloadImage != null" id="firebase-avatar">
                 <img class="rounded" style="width:200px;height:200px" :src="downloadImage" alt="">
               </div>
+              <div v-else-if="file">
+                <img :src="previewSrc" alt="">
+              </div>
               <div v-else id="default-avatar">
                 <img class="rounded" style="width:200px;height:200px" :src="require('../assets/images/avatar.png')" alt="">
               </div>
-              <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 align-items-center">
+              <div id="avatar-edit" v-if="edit_mode" class="container-md-5 p-2 browser-container">
                 <b-form-group id="fileInput">
                   <b-form-file center
-                    v-model="file"
-                    :state="Boolean(file)"
-                    placeholder="Choose or drop a file"
-                    drop-placeholder="Drop file here..."
-                    accept="image/jpeg, image/png, image/gif"
+                               v-model="file"
+                               :state="Boolean(file)"
+                               placeholder="Choose a file"
+                               drop-placeholder="Drop file here..."
+                               accept="image/jpeg, image/png, image/gif"
                   ></b-form-file>
                 </b-form-group>
-                <div class="container-md-5 p-2 align-items-center" v-if="file">
-                  <img :src="previewSrc" height='128'>
-                  <br>
-                  <br>
-                  <b-progress :value="uploadValue" :max="100" class="mb-3"></b-progress>
-                  <br>
-                </div>
-                <b-button variant="success" :disabled="!file" @click="onUpload">Upload</b-button>
+                <b-button v-if="file" class="big-button" variant="success" :disabled="!file" @click="onUpload">
+                  Upload  <b-icon-upload font-scale="1" shift-v="-2"></b-icon-upload>
+                </b-button>
               </div>
             </div>
-            <div id="divName" class="col-lg-4 order-0 float-left text-left" style="margin-bottom: 0; padding-bottom: 0">
-              <p id="nameSurnameFields" class="page-title">
-                {{ name }} {{ surname }}
-              </p>
-            </div>
-            <div id="divBio" class="col-lg-8 order-1 float-right text-left " style="margin-top: 0; padding-top: 0">
+            <div id="divBio" class="col-lg-8 order-1 float-right text-left">
+              <div id="divName" class=" jobseeker-name">
+                <p id="nameSurnameFields" class="page-title">
+                  {{ name }} {{ surname }}
+                </p>
+              </div>
               <div id="bioField1" v-if="bio != null && bio !== '' && !edit_bio " class="bio-text">
                 {{bio}}
                 <p></p>
@@ -74,34 +69,38 @@
               <div id="bioField2" v-if="(bio === null || bio === '') && !edit_bio && edit_mode" class="bio-text">
                 Write about yourself!
               </div>
-              <b-container id="editBioField" v-if="edit_bio" fluid>
+              <div id="editBioField" v-if="edit_bio">
                 <validation-observer ref="observer" v-slot="{ handleSubmit }">
                   <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(modifyBio)">
-                    <b-row align="center">
-                      <b-col sm="10">
-                        <ValidationProvider name="bio"  rules="max: 1000" v-slot="validationContext">
+                    <ValidationProvider name="bio"  rules="max: 1000" v-slot="validationContext">
                           <b-form-group id="input-group-1">
                             <b-form-textarea id="bioInput" v-model="modify_bio" placeholder="Write your bio here..." rows="4" :state="getValidationState(validationContext)"
                                           aria-describedby="input-1-live-feedback"></b-form-textarea>
                             <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                           </b-form-group>
                         </ValidationProvider>
-                      </b-col>
-                      <b-col align-self="center" sm="1">
-                        <b-button id="submitEditBioButton" variant="success" type="submit">Save</b-button>
-                      </b-col>
-                    </b-row>
+                    <div v-if="edit_bio" align-self="center" class="jobseeker-save-button">
+                      <b-button id="submitEditBioButton" variant="success" type="submit">
+                        <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                      </b-button>
+                    </div>
                   </b-form>
                 </validation-observer>
-              </b-container>
-              <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm" style="margin-top: 0; padding-top: 0;
-               margin-bottom: 5px; margin-left: 20px" @click="editBio()" >
-                <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
-              </button>
+              </div>
+              <div class="jobseeker-editbio-buttons-container">
+                <!--div v-if="edit_bio" align-self="center" class="jobseeker-save-button">
+                  <b-button id="submitEditBioButton" variant="success" type="submit">
+                    <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                  </b-button>
+                </div-->
+                <div class="jobseeker-edit-button">
+                <button id="enableEditBioButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editBio()">
+                  <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+                </button>
+              </div>
+              </div>
             </div>
-          </div>
         </div>
-
         <div class="row d-flex d-lg-block p-2 align-items-center">
           <b-row no-gutters>
             <div id="divSkills" class="text-left p-2 pb-3" style="max-width: 50rem">
@@ -166,7 +165,6 @@
               </div>
           </v-row>
         </div>
-
       </div>
 
         <b-modal id="addWorkModal" hide-footer ref="addWorkModal">
@@ -288,7 +286,7 @@
           </validation-observer>
         </b-modal>
 
-    </b-container>
+    </div>
   </div>
 </template>
 

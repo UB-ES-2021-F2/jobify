@@ -111,7 +111,9 @@
                           </div>
                           <p></p>
                         </div>
-                        <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                        <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editSector()" >
+                          <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+                        </button>
                       </div>
                     </div>
                     <!-- /company sector -->

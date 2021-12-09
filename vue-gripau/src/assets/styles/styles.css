@@ -232,11 +232,24 @@ button:focus{
   margin: 20px 0;
 }
 
+.jobseeker-edit-button, .jobseeker-save-button{
+  background-color: transparent;
+  display: inline-block;
+}
+
+.jobseeker-editbio-buttons-container{
+  text-align: center;
+}
+
 .edit-button {
   background-color: transparent;
   display: inline-block;
   width: 10%;
 }
+
+  .edit-button svg {
+    color: gray !important;
+  }
 
 .text-edit, .text-edit input, .text-edit textarea {
   display: inline-block;
@@ -256,15 +269,17 @@ button:focus{
   width: 10%;
 }
 
-.save-button button, .save-button {
+.save-button button, .save-button, .jobseeker-save-button button {
   background-color: transparent !important;
   border: 0 !important;
   display: inline-block !important;
+  color: gray;
 }
 
-.save-button button:hover {
+.save-button button:hover, .jobseeker-save-button button:hover {
   background-color: transparent  !important;
   border: 0 !important;
+  color: gray;
 }
 
 .save-button svg {
@@ -455,10 +470,18 @@ button:focus{
     width: 100%;
   }
 
-    .job-offer-button-apply:hover button{
+    .job-offer-button-apply:hover button {
       border: 1px solid #28a745 !important;
       background-color: #28a745 !important;
     }
+
+/****** JOBSEEKER PROFILE ******/
+
+#divName.jobseeker-name {
+  padding-left: 0 !important;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 /****** MEDIA ******/
 @media (max-width: 960px) {
   #divBio{

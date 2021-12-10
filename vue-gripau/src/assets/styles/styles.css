@@ -256,6 +256,10 @@ button:focus{
   width: 80%;
 }
 
+#editDescriptionField span, #editDescriptionField form, #editDescriptionField .form-group, #editDescriptionField div{
+  height: 100%;
+}
+
 .text-edit textarea {
   resize: none;
 }
@@ -299,9 +303,14 @@ button:focus{
   color: gray;
 }
 
-#divBio{
+#divBio {
   margin: 29px  0;
   text-align: justify;
+}
+
+#divSkills {
+  margin: 29px  0;
+  text-align: left;
 }
 
 .custom-file-label::after{
@@ -314,12 +323,12 @@ button:focus{
   height: 80%;
 }
 
-  #editDescriptionField .save-button{
+  #editDescriptionField .save-button, #submitEditBioButton{
     float: left;
     margin-left: 40%;
   }
 
-  #enableEditDescriptionButton{
+  #enableEditDescriptionButton, #enableEditBioButton{
     float: right;
     margin-right: 40%;
     color: gray;
@@ -372,14 +381,20 @@ button:focus{
   display: inline-block
 }
 
-.add-offer{
+.add-offer, .add-skill{
   display: inline-block;
   margin: 0 10px;
   color: unset;
+  background-color: transparent;
 }
 
 .add-offer:hover{
   color: unset;
+}
+
+.job-offers-company-container{
+  text-align: left !important;
+  align-content: start !important;
 }
 
 /****** JOB OFFER ******/
@@ -482,6 +497,72 @@ button:focus{
   margin-bottom: 0;
   padding-bottom: 0;
 }
+
+#nameSkill{
+  display: inline-block;
+  font-size: 14px;
+  font-family: 'Work Sans SemiBold'
+}
+
+.badge-container{
+  background-color: transparent;
+  border: 1px solid #ffc107;
+}
+
+.badge-button, .badge-button:hover{
+  background-color: transparent;
+  border: 0;
+  color: unset;
+}
+#editBioField{
+  height: 75%;
+}
+
+#editBioField span, #editBioField form, #editBioField .form-group, #editBioField div{
+  height: 100%;
+}
+
+textarea#bioInput {
+  resize: none;
+  height: 100%;
+}
+
+#deleteEducationButton, #deleteWorkButton{
+  background-color: transparent;
+}
+
+.jobseeker-description-container{
+  margin-bottom: 25px;
+}
+
+.education-name, .work-name{
+  border-bottom: 2px solid #ffcd01;
+  margin-bottom: 10px;
+}
+
+.education-time svg, .education-time p, .work-time svg, .work-time p{
+  display: inline-block;
+}
+
+.education-title, .work-title{
+  text-align: left;
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+}
+
+.delete-education, .delete-work{
+  text-align: right;
+}
+
+#descriptionWorkExperience{
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+#bioField1, #bioField2, #editBioField, #descriptionCompany1, #descriptionCompany2, #editDescriptionField{
+  text-align: justify;
+}
+
 /****** MEDIA ******/
 @media (max-width: 960px) {
   #divBio{

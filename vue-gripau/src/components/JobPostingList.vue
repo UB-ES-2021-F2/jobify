@@ -70,14 +70,15 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
               </b-form-checkbox>
             </b-dropdown-form>
           </b-dropdown>
+              <b-button id="searchButton" variant="warning" :disabled="!(checkedFullTime||checkedPartTime||checkedInternship
+            ||checkedFreelance||checkedOther)" @click="searchJobOffers">
+                Search!
+              </b-button>
           </b-row>
         </b-row>
-        <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
-          <b-button id="searchButton" variant="warning" :disabled="!(checkedFullTime||checkedPartTime||checkedInternship
-          ||checkedFreelance||checkedOther)" @click="searchJobOffers">
-            Search!
-          </b-button>
-        </b-row>
+      </b-container>
+      <b-container fluid v-if="notFound" id="notFoundContainer">
+        <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
       <b-container>
         <job-postings-view
@@ -85,9 +86,6 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
           v-bind:companies_logos = "companies_logos"
           :key = "loaded_logos"
         ></job-postings-view>
-      </b-container>
-      <b-container fluid v-if="notFound" id="notFoundContainer">
-        <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"

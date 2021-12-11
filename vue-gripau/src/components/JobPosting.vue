@@ -97,9 +97,6 @@
             </div>
           </div>
         </div>
-
-        <!--<b-button id="applyButton" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>-->
-        <!--<b-button id="appliedButton" v-if="applied && is_jobseeker && logged " disabled variant="outline-success">Applied</b-button>-->
         <b-modal
           hide-backdrop
           id="modal-apply"
@@ -126,60 +123,6 @@
           </form>
         </b-modal>
       </div>
-
-      <!-- /Job offer view (el que hi havia a company profile) -->
-      <!-- <h2 id="jobOfferJobName" style="font-family: 'Vollkorn', serif">{{job_name}}</h2>
-      <b-container fluid >
-        <b-row>
-          <b-col align="left">
-            <div id="descriptionJobOffer" v-if="description !== '' && description !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Description</h4>
-              <p>{{description}}</p>
-            </div>
-            <div id="companyNameJobOffer" v-if="company_name !== '' && company_name !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Company</h4>
-              <p>{{company_name}}</p>
-            </div>
-            <div id="locationJobOffer" v-if="location !== '' && location !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Location</h4>
-              <p>{{location}}</p>
-            </div>
-            <div id="contractTypeJobOffer" v-if="contract_type !== '' && contract_type !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Contract type</h4>
-              <p>{{contract_type}}</p>
-            </div>
-            <div id="workingHoursJobOffer" v-if="working_hours !== '' && working_hours !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Weekly working hours</h4>
-              <p>{{working_hours}}</p>
-            </div>
-            <div id="salaryJobOffer" v-if="salary !== '' && salary !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Salary</h4>
-              <p>{{salary}}</p>
-            </div>
-            <div id="publicationDateJobOffer" v-if="publication_date !== '' && publication_date !== null" class="p-2 pb-3" style="max-width: 50rem">
-              <h4 style="font-family: 'Vollkorn', serif"> Publication date</h4>
-              <p>{{publication_date}}</p>
-            </div>
-          </b-col>
-          <b-col align="left" v-if="this.is_company && this.company === this.username">
-            <b-card>
-              <p>Applicants</p>
-              <div>
-                <b-table :fields="fields" striped hover :items="this.applicants_list">
-                    <template #cell(Profile)="data">
-                      <router-link :to="`/job_seeker/${data.value}`">{{data.value}}</router-link>
-                    </template>
-                </b-table>
-              </div>
-            </b-card>
-          </b-col>
-        </b-row>
-      </b-container>
-
-      <b-button id="seenButtonOld" btn variant="warning" class='btn-home' @click="onJobPostings">Seen</b-button>
-      <b-button id="deleteButtonOld" v-if="this.is_company && this.company === this.username" btn variant="danger" class='m-2' @click="deleteJobOffer()">Delete Job Offer</b-button>
-      <b-button id="applyButtonOld" v-if="!applied && is_jobseeker && logged" v-b-modal.modal-apply variant="success">Apply</b-button>
-      <b-button id="appliedButtonOld" v-if="applied && is_jobseeker && logged" disabled variant="outline-success">Applied</b-button> -->
       <b-modal
         hide-backdrop
         id="modal-applyOld"

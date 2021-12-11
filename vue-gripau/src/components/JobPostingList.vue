@@ -70,12 +70,10 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
               </b-form-checkbox>
             </b-dropdown-form>
           </b-dropdown>
-            <div id="searchButtonRow" >
               <b-button id="searchButton" variant="warning" :disabled="!(checkedFullTime||checkedPartTime||checkedInternship
             ||checkedFreelance||checkedOther)" @click="searchJobOffers">
                 Search!
               </b-button>
-            </div>
           </b-row>
         </b-row>
       </b-container>

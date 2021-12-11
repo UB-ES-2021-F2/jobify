@@ -114,7 +114,7 @@
             </button>
             <div class="education-item" v-for="ed in education" :key="ed.id">
               <div class="row education-name">
-                  <div class="col-6 education-title">
+                  <div id="titleEducation" class="col-6 education-title">
                     {{ed.title}}
                   </div>
                   <div class="col-6 delete-education">

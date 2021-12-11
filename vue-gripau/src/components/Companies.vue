@@ -41,7 +41,7 @@
                      placeholder="Search company...   "
                      style="border-radius: 0 !important" />
           </b-row>
-          <b-button id="searchButton" variant="warning" @click="searchCompanies">
+          <b-button style="margin-left: 15px" id="searchButton" variant="warning" @click="searchCompanies">
             Search!
           </b-button>
         </b-row>

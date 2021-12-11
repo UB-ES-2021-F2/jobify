@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-col>
     <b-row>
       <b-col class="mb-4" align-self="stretch" v-for="(job_offer) in job_offers.slice((current_page-1)*per_page, current_page*per_page)" :key="job_offer.id">
         <job-posting-card
@@ -31,7 +31,7 @@
     <b-col class="pb-4" align="center">
       <b-form-select style="width:10%; min-width: 60px" v-model="per_page" :options="options" size="sm">Items per page:</b-form-select>
     </b-col>
-  </div>
+  </b-col>
 </template>
 
 <script>

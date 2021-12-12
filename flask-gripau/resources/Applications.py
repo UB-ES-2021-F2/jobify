@@ -59,6 +59,9 @@ class Applications(Resource):
         if not user or not job_offer:
             return {"message": "The user or the job offer doesn't exist."}, 404
 
+        if data.info and len(data.info) > 5000:
+            return {"message": "The info field can't be larger than 5000 characters."}, 431
+
         new_application = ApplicationModel(data.info)
         new_application.job_seeker_username = user.username
         new_application.job_offer_id = job_offer.id

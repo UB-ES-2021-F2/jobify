@@ -106,6 +106,12 @@ class Educations(Resource):
                 if int(end_year) > today.year or (int(end_year) == today.year and int(end_month) > today.month):
                     return {"message": "End date cannot be posterior to current date if \"currently\" is false"}, 400
 
+        if data.title and len(data.title) > 128:
+            return {"message": "The title field can't be larger than 128 characters."}, 431
+
+        if data.institution and len(data.institution) > 128:
+            return {"message": "The institution field can't be larger than 128 characters."}, 431
+
         new_education = EducationsModel(data.title, data.institution, data.start_date, data.end_date, data.currently)
         user.educations.append(new_education)
 

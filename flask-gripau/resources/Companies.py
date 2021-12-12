@@ -100,6 +100,16 @@ class Companies(Resource):
                 if CompanyModel.find_by_email(data.email):
                     return {'message': "Email already exists"}, 409
                 account.email = data.email
+
+            if data.description and len(data.description) > 5000:
+                return {"message": "The description field can't be larger than 5000 characters."}, 431
+
+            if data.sector and len(data.sector) > 30:
+                return {"message": "The sector field can't be larger than 30 characters."}, 431
+
+            if data.location and len(data.location) > 30:
+                return {"message": "The location field can't be larger than 5000 characters."}, 431
+
             if data.description or data.description == '':
                 account.description = data.description
             if data.sector:

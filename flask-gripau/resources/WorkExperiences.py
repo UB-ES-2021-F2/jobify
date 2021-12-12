@@ -109,6 +109,15 @@ class WorkExperiences(Resource):
                     return {
                                "message": "End date cannot be posterior to current date if \"currently\" is false"}, 400
 
+        if data.job_name and len(data.job_name) > 128:
+            return {"message": "The job name field can't be larger than 128 characters."}, 431
+
+        if data.description and len(data.description) > 5000:
+            return {"message": "The description field can't be larger than 5000 characters."}, 431
+
+        if data.company and len(data.company) > 128:
+            return {"message": "The company field can't be larger than 128 characters."}, 431
+
         new_work_experience = WorkExperiencesModel(data.job_name, data.description, data.company, data.start_date, data.end_date, data.currently)
         user.work_experiences.append(new_work_experience)
 

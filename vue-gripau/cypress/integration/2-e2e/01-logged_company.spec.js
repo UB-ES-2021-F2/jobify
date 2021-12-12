@@ -19,6 +19,30 @@ describe('Logged company', () => {
       cy.url().should('eq', 'http://localhost:5000/#/')
     })
   })
+  context('Navigate to a job seeker profile of a job seeker that has applied to a one of our job offers', () => {
+    it('should go to our company (ub) profile page through navbar profile button', () => {
+      cy.get('[id=profileNavbarButton]').click()
+      cy.url().should('eq', 'http://localhost:5000/#/company/universitat123')
+      cy.get('[id=activeProfileNavbarButton]').should('exist')
+      cy.get('[id=profileNavbarButton]').should('not.exist')
+      cy.get('[id=nameCompany]').should('contain', 'ub')
+    })
+    it('should go to the job offer professor ub description page inside our profile', () => {
+      cy.get('[id=jobOfferCard]').first().click()
+      cy.url().should('eq', 'http://localhost:5000/#/job_posting/1')
+      cy.get('h2[id=jobOfferJobName]').should('contain', 'professor')
+      cy.get('[id=companyNameJobOffer]').should('contain', 'ub')
+    })
+    it('should go to the job seeker profile', () => {
+      cy.get('[id=applicantsTable]').should('exist')
+      cy.get('[id=jobSeekerProfileLink]').click()
+      cy.url().should('eq', 'http://localhost:5000/#/job_seeker/gripau')
+    })
+    it('should return to home page through logo in navbar', () => {
+      cy.get('[id=logoNavbar]').click()
+      cy.url().should('eq', 'http://localhost:5000/#/')
+    })
+  })
   context('Navigate to job offer description page through job postings component, post an offer and return to home page', () => {
     it('should go to job postings page through navbar', () => {
       cy.get('[id=jobPostingsNavbarButton]').click()

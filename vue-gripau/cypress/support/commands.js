@@ -39,6 +39,20 @@ Cypress.Commands.add('login_jobseeker', () => {
       cy.setLocalStorage('token', body.token)
     })
 })
+Cypress.Commands.add('login_gripau', () => {
+  cy.request({
+    method: 'POST',
+    url: 'login',
+    body: {
+      username: 'gripau',
+      password: 'Password12'
+    }
+  })
+    .its('body')
+    .then(body => {
+      cy.setLocalStorage('token', body.token)
+    })
+})
 Cypress.Commands.add('login_company', () => {
   cy.request({
     method: 'POST',

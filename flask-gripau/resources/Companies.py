@@ -43,6 +43,8 @@ class Companies(Resource):
         if account:
             try:
                 for offer in account.job_offers:
+                    for application in offer.applications:
+                        db.session.delete(application)
                     db.session.delete(offer)
                 account.delete_from_db(db)
                 return {'message': "Account deleted"}, 200

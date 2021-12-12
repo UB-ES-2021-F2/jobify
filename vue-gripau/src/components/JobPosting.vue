@@ -73,9 +73,9 @@
               <div class="applicants-container">
                 <p class="applicants-title">Applicants</p>
                 <div class="table-wrapper-scroll-y">
-                  <b-table :fields="fields" hover :items="this.applicants_list" class="applicants-table">
+                  <b-table id="applicantsTable" :fields="fields" hover :items="this.applicants_list" class="applicants-table">
                     <template #cell(Profile)="data">
-                      <router-link :to="`/job_seeker/${data.value}`">{{data.value}}</router-link>
+                      <router-link id="jobSeekerProfileLink" :to="`/job_seeker/${data.value}`">{{data.value}}</router-link>
                     </template>
                   </b-table>
                 </div>

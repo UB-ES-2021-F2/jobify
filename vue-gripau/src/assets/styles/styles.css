@@ -436,6 +436,11 @@ button:focus{
   display: block;
   padding-right: 10px;
 }
+
+article#jobOfferCard {
+  margin: auto;
+}
+
 /*
 .table-wrapper-scroll-y::-webkit-scrollbar {
   width: 5px;

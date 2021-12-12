@@ -5,7 +5,32 @@
         <link rel="shortcut icon" type="image/png" href="require('../assets/favicon.png')"/>
         <title>Jobify</title>
     </head>
-    <router-view/>
+    <router-view style="min-height: 100vh"/>
+    <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Footer" style="font-family:'Work Sans', Helvetica, Arial, sans-serif; margin-top: 20px">
+      <div style="padding-inline: 10%">
+        <b-container>
+          <b-row>
+            <b-col style="flex-grow: 0">
+              <img style="max-width: 150px" :src="require('./assets/logoWhite.png')">
+            </b-col>
+            <b-col align-self="center" >
+              <b-card-text>
+                <p style="margin-bottom: 0.3rem">
+                  This website has been created for educational purposes only.
+                </p>
+                <p style="margin: 0">
+                  If you have any questions or suggestions, please don't hesitate to <b><a style="color: white" href="#" @click="onAboutUs" >contact us.</a></b>
+                </p>
+              </b-card-text>
+            </b-col>
+          </b-row>
+        </b-container>
+        <hr style="background-color: #ffc107" />
+        <div align="center">
+          <b>Jobify 2021</b> - University of Barcelona
+        </div>
+      </div>
+    </b-card-footer>
   </div>
 </template>
 
@@ -18,6 +43,11 @@ export default {
       handler (to, from) {
         document.title = to.meta.title || 'Jobify'
       }
+    }
+  },
+  methods: {
+    onAboutUs () {
+      this.$router.push('/about_us')
     }
   }
 }

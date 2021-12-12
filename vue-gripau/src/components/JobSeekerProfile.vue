@@ -152,6 +152,19 @@
               </div>
             </b-col>
           </b-row>
+          <v-row align="center" v-if="edit_mode">
+              <p class="section-title">My Applications</p>
+              <div>
+                <b-table :fields="fields"    :items="this.jobs_applied">
+                  <template v-slot:cell(Company)="slot">
+                    <router-link :to="`/company/${slot.item.Username}`">{{slot.item.Company}}</router-link>
+                  </template>
+                  <template v-slot:cell(Offer)="slot">
+                    <router-link :to="`/job_posting/${slot.item.Reference}`">{{slot.item.Offer}}</router-link>
+                  </template>
+                </b-table>
+              </div>
+          </v-row>
         </div>
 
       </div>
@@ -324,7 +337,9 @@ export default {
       file: null,
       uploadValue: 0,
       previewSrc: null,
-      downloadImage: null
+      downloadImage: null,
+      jobs_applied: [],
+      fields: ['Offer', 'Company']
     }
   },
   methods: {
@@ -369,8 +384,16 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert(' An error occurred modifying bio')
+          this.showToastError('An error occurred modifying bio')
         })
+    },
+    showToastError (error) {
+      /* eslint-disable */
+      this.$bvToast.toast(error, {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
     },
     getValidationState ({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null
@@ -407,6 +430,22 @@ export default {
         }
         return false
       }
+    },
+    getApplicants () {
+      const path = Vue.prototype.$API_BASE_URL + 'applications/' + this.username_profile
+      axios.get(path, {
+        auth: {username: this.token}})
+        .then((res) => {
+          this.jobs_applied = []
+          for (let application in res.data) {
+            this.jobs_applied.push({'Offer': res.data[application].job_offer_name, 'Company': res.data[application].job_offer_company, 'Reference': res.data[application].job_offer_id, 'Username': res.data[application].company_username})
+          }
+        })
+        // eslint-disable-next-line
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error)
+        })
     },
     getWorkExperience () {
       const path = Vue.prototype.$API_BASE_URL + 'work_experience/' + this.username_profile
@@ -456,7 +495,8 @@ export default {
           }
         })
         .catch((error) => {
-          alert(error.response.data.message)
+          this.showToastError('An error occurred modifying Work experience')
+          console.error(error)
         })
     },
     deleteWork (work) {
@@ -469,7 +509,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error deleting work experience')
+          this.showToastError('Error deleting work experience')
         })
     },
     onAddEducation () {
@@ -499,7 +539,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error adding education')
+          this.showToastError('Error adding education')
         })
     },
     submitAddSkill () {
@@ -514,7 +554,7 @@ export default {
         .catch((error) => {
           console.error(error)
           console.log(this.addSkill.skill)
-          alert('Error Adding Skills')
+          this.showToastError('Error Adding Skills')
         })
     },
     onAddSkill () {
@@ -540,7 +580,8 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error deleting education')
+          this.showToastError('Error deleting education')
+
         })
     },
     deleteSkill (skill) {
@@ -552,7 +593,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
-          alert('Error Adding Skills')
+          this.showToastError('Error Adding Skills')
         })
     },
     resetAddWork () {
@@ -644,6 +685,7 @@ export default {
     this.getSkills()
     this.getBio()
     this.downloadAvatar()
+    this.getApplicants()
   },
   computed: mapState({
     token: state => state.token,

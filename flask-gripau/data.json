@@ -1,0 +1,355 @@
+{
+  "jobseekers":
+          [
+            {
+              "username": "lordsergi",
+              "first-name": "Sergi",
+              "last-name": "Bech",
+              "email": "sergi@gmail.com",
+              "bio": "Hi! My name is Sergi and I am last year mathematics and computer science student",
+              "work-experiences":
+                      [
+                        {
+                          "job-name": "Undergraduate researcher",
+                          "description": "Work with climate predictions and machine learning",
+                          "company": "BSC",
+                          "start-date": "2020-06",
+                          "end-date": "2020-12",
+                          "currently": false
+                        }
+                      ],
+              "skills":
+                      [
+                        "python", "programacio", "machine learning", "IA", "maths", "solving problems"
+                      ],
+              "educations":
+                      [
+                        {
+                          "title": "Double degree in mathematics and computer science",
+                          "institution": "UB",
+                          "start-date": "2016-08",
+                          "end-date": "",
+                          "currently": true
+                        }
+                      ],
+              "password": "Password12"
+            },
+            {
+              "username": "drial",
+              "first-name": "David",
+              "last-name": "Rial",
+              "email": "david_rial@gmail.com",
+              "bio": "Hi! My name is David and I am studying maths and computer science and also working as a software developer",
+              "work-experiences":
+                      [
+                        {
+                          "job-name": "Junior software developer",
+                          "description": "Work with database and with large data files",
+                          "company": "UBSolutions",
+                          "start-date": "2021-06",
+                          "end-date": "",
+                          "currently": true
+                        }
+                      ],
+              "skills":
+                      [
+                        "python", "SQL", "java", "HTML", "maths", "solving problems"
+                      ],
+              "educations":
+                      [
+                        {
+                          "title": "Double degree in mathematics and computer science",
+                          "institution": "UB",
+                          "start-date": "2016-08",
+                          "end-date": "",
+                          "currently": true
+                        }
+                      ],
+              "password": "David123"
+            }
+          ],
+  "companies":
+          [
+            {
+              "username": "amazon",
+              "name": "Amazon Inc",
+              "email": "amazon@amazonjobs.com",
+              "description": "Amazon.com is a vast Internet-based enterprise that sells books, music, movies, housewares, electronics, toys, and many other goods, either directly or as the middleman between other retailers and Amazon.coms millions of customers.",
+              "password": "Amazon12",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "Frontend developer",
+                          "salary": "30000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 26,
+                          "posted-month": 9,
+                          "posted-year": 2021,
+                          "description": "We search for a frontend developer to join our company. REQUIREMENTS: react, bootstrap-vue and angular"
+                        },
+                        {
+                          "job-name": "Software junior developer",
+                          "salary": "28000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Part-time",
+                          "weekly-working-hours": 20,
+                          "posted-day": 4,
+                          "posted-month": 12,
+                          "posted-year": 2021,
+                          "description": "We search for a Software junior developer to join our company. REQUIREMENTS: Degree in computer science and some experience developing software"
+                        },
+                         {
+                          "job-name": "Data Science Internship",
+                          "salary": "20000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 10,
+                          "posted-month": 10,
+                          "posted-year": 2021,
+                          "description": "We search for an undergruate student to join our company. \n REQUIREMENTS: Degree in computer science, mathematics or similars. Eager to learn new things."
+                        }
+                      ]
+            },
+                        {
+              "username": "google",
+              "name": "Google",
+              "email": "google@googlejobs.com",
+              "description": "A problem is not truly solved until it is solved for all. Googlers build products that help create opportunities for everyone, whether down the street or across the globe. Bring your insight, imagination and a healthy disregard for the impossible. Bring everything that makes you unique. Together, we can build for everyone.",
+              "password": "Google12",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "Principal Security Architect",
+                          "salary": "40000$/Year",
+                          "location": "Madrid",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 16,
+                          "posted-month": 4,
+                          "posted-year": 2021,
+                          "description": "Be a local sovereignty advocate on technical topics and the local field interface to engineering teams. \n REQUIREMENTS: Experience as a security sales engineer in a cloud computing environment, or in a customer/partner-facing role."
+                        },
+                        {
+                          "job-name": "Software Engineering Intern",
+                          "salary": "28000$/Year",
+                          "location": "Seattle",
+                          "contract-type": "Part-time",
+                          "weekly-working-hours": 20,
+                          "posted-day": 4,
+                          "posted-month": 12,
+                          "posted-year": 2021,
+                          "description": "Join us for a 12-14 week paid internship that offers personal and professional development, an executive speaker series, and community-building. The Software Engineering Internship program will give you an opportunity to work on complex computer science solutions, develop scalable, distributed software systems, and also collaborate on multitudes of smaller projects that have universal appeal. \n REQUIREMENTS: Pursuing a Masters degree program or post secondary or training experience with a focus on subjects in software development or other technical related field. "
+                        },
+                         {
+                          "job-name": "Student Researcher",
+                          "salary": "20000$/Year",
+                          "location": "Paris",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "The Student Researcher Programs primary objective is to foster academic collaborations with students through research at Google. Join us for a paid Student Researcher position that offers the opportunity to work directly with Google research scientists and engineers on cutting-edge research projects. REQUIREMENTS: Currently pursuing a Bachelors, Masters, or PhD degree in Computer Engineering, Computer Science, Electrical Engineering, Math or related technical field."
+                        }
+                      ]
+            },
+            {
+              "username": "hewlett_packard",
+              "name": "Hewlett Packard Enterprise",
+              "email": "hp@hpjobs.com",
+              "description": "In 1939, Bill Hewlett and Dave Packard, college friends turned business partners, started the original Silicon Valley startup in the space of a rented Palo Alto garage. Starting with audio oscillators, the friends built the foundation for a company that would grow to become a global leader in enterprise technology.\n",
+              "password": "Hewlett12",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "AI and Data Consultant",
+                          "salary": "22000$/Year",
+                          "location": "Madrid",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 40,
+                          "posted-day": 2,
+                          "posted-month": 2,
+                          "posted-year": 2021,
+                          "description": "Our AI and Data Practice brings a unique mix of skills (AI/ML, data science, data platforms, data infrastructure, MLOps, data engineering, high-performance compute, AI/data infrastructure partner technologies) and expertise of over 20 years to help our customers accelerate innovation and unlock insights through data transformation services and adoption of artificial intelligence technologies. We are recognized as a global leader in AI IT Services \n REQUIREMENTS: You are a student still enrolled in the University pursuing Bachelors/Мasters degree in computer science, Engineering, Mathematics, Statistics, Physics, or related areas of study."
+                        },
+                        {
+                          "job-name": "Development Test Intern",
+                          "salary": "25000$/Year",
+                          "location": "Nashua",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 4,
+                          "posted-month": 12,
+                          "posted-year": 2021,
+                          "description": "We are looking for a talented individual with problem solving skills and a genuine curiosity for technology to join our QA team with the goal of validating the health of software features. The intern will be responsible for automation of test procedures and processes. The internship is a remote work environment. \n REQUIREMENTS: Enrolled in an accredited Bachelors degree program in Computer Science, Information Systems, or Engineering "
+                        },
+                         {
+                          "job-name": "Embedded Systems Engineering Intern",
+                          "salary": "20000$/Year",
+                          "location": "Bloomington",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "In this internship you will be working as part of a world-class ASIC design team at HPE developing the next generation Slingshot interconnect used in large exascale high performance computer.\n REQUIREMENTS: Candidate is pursuing a Masters degree or PhD in Electrical Engineering, Computer Engineering, Computer Science, or related field"
+                        }
+                      ]
+            },
+              {
+              "username": "glovo",
+              "name": "Glovo",
+              "email": "glovo@jobs.com",
+              "description": "Glovo is a Barcelona-based startup and the fastest-growing delivery player in Europe, Western Asia, and Africa. With food at the core of its business, Glovo delivers any product within your city at any time of day. We currently deliver over 100M+ annual orders and operate in 23 countries and 1080+ cities.\n",
+              "password": "Glovo123",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "iOS Engineer",
+                          "salary": "22000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 4,
+                          "posted-month": 1,
+                          "posted-year": 2021,
+                          "description": "The Payment Experience team is in charge of leveraging our payment integrations to offer amazing payment experiences while protecting Glovo against fraudsters. REQUIREMENTS: You are a student still enrolled in the University pursuing Bachelors/Мasters degree in computer science, Engineering, Mathematics, Statistics, Physics, or related areas of study."
+                        },
+                        {
+                          "job-name": "Development Test Intern",
+                          "salary": "25000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Part-time",
+                          "weekly-working-hours": 20,
+                          "posted-day": 4,
+                          "posted-month": 12,
+                          "posted-year": 2021,
+                          "description": "We are looking for a talented individual with problem solving skills and a genuine curiosity for technology to join our QA team with the goal of validating the health of software features. The intern will be responsible for automation of test procedures and processes. The internship is a remote work environment. \n REQUIREMENTS: Enrolled in an accredited Bachelors degree program in Computer Science, Information Systems, or Engineering "
+                        },
+                         {
+                          "job-name": "Customer Solutions",
+                          "salary": "20000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "Our mission is to empower customers and live ops agents to resolve any undesirable situation with as little friction as possible REQUIREMENTS: Computer Science, or related field degree"
+                        }
+                      ]
+            },
+              {
+              "username": "mercedes",
+              "name": "Mercedes-Benz AG",
+              "email": "mercedes@jobs.com",
+              "description": "Mercedes-Benz produces consumer luxury vehicles and commercial vehicles. Its first Mercedes-Benz-badged vehicles were produced in 1926. In 2018, Mercedes-Benz was the largest seller of premium vehicles in the world, having sold 2.31 million passenger cars.",
+              "password": "Mercedes12",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "Machine Learning Intern",
+                          "salary": "22000$/Year",
+                          "location": "Sunnyvale",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 4,
+                          "posted-month": 1,
+                          "posted-year": 2021,
+                          "description": "The Mercedes-Benz Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022. You will work with our Mercedes-Benz Research & Development North America (MBRDNA) team based in Silicon Valley. REQUIREMENTS: You are a student still enrolled in the University pursuing Bachelors/Мasters degree in computer science, Engineering, Mathematics, Statistics, Physics, or related areas of study."
+                        },
+                        {
+                          "job-name": "Development Test Intern",
+                          "salary": "25000$/Year",
+                          "location": "Germany",
+                          "contract-type": "Part-time",
+                          "weekly-working-hours": 20,
+                          "posted-day": 4,
+                          "posted-month": 12,
+                          "posted-year": 2021,
+                          "description": "We are looking for a talented individual with problem solving skills and a genuine curiosity for technology to join our QA team with the goal of validating the health of software features. The intern will be responsible for automation of test procedures and processes. The internship is a remote work environment. \n REQUIREMENTS: Enrolled in an accredited Bachelors degree program in Computer Science, Information Systems, or Engineering "
+                        },
+                         {
+                          "job-name": "Powertrain intern",
+                          "salary": "20000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "This is a six-month internship position with MBRDNA’s Long Beach Powertrain (VAN NAFTA & PADS) team. Here, you will have the opportunity to work on a wide range of projects and gain experience within the automotive industry. REQUERIMENT: Recent graduate or current student pursuing degree in Automotive Engineering, Electrical Engineering or Mechanical Engineering."
+                        },
+                          {
+                          "job-name": "Human resources internship",
+                          "salary": "20000$/Year",
+                          "location": "Charleston",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "The Human Resources Intern will provide support to the Human Resources staff with a wide range of projects related to HR compliance, recruiting, onboarding/orientation, employee benefits, performance management and volunteer intern programs. REQUERIMENT: Recent graduate (within the past 12 months) or junior/senior currently attaining a bachelor’s or master’s degree with a focus on Human Resources, Human capital, Organizational Leadership, or comparable study is required"
+                        }
+                      ]
+            },
+                          {
+              "username": "tesla",
+              "name": "Tesla",
+              "email": "tesal@jobs.com",
+              "description": "Our mission is to accelerate the world’s transition to sustainable energy. With global temperatures rising, the faster we free ourselves from fossil fuel reliance and achieve a zero-emission future, the better. ",
+              "password": "Tesla123",
+              "job-offers":
+                      [
+                        {
+                          "job-name": "Machine Learning Intern",
+                          "salary": "22000$/Year",
+                          "location": "Sunnyvale",
+                          "contract-type": "Full-time",
+                          "weekly-working-hours": 40,
+                          "posted-day": 4,
+                          "posted-month": 1,
+                          "posted-year": 2021,
+                          "description": "The Tesla Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022. You will work with our Tesla Research & Development North America team based in Silicon Valley. REQUIREMENTS: You are a student still enrolled in the University pursuing Bachelors/Мasters degree in computer science, Engineering, Mathematics, Statistics, Physics, or related areas of study."
+                        },
+                        {
+                          "job-name": "Development Test Intern",
+                          "salary": "25000$/Year",
+                          "location": "Germany",
+                          "contract-type": "Part-time",
+                          "weekly-working-hours": 20,
+                          "posted-day": 4,
+                          "posted-month": 12,
+                          "posted-year": 2021,
+                          "description": "We are looking for a talented individual with problem solving skills and a genuine curiosity for technology to join our QA team with the goal of validating the health of software features. The intern will be responsible for automation of test procedures and processes. The internship is a remote work environment. \n REQUIREMENTS: Enrolled in an accredited Bachelors degree program in Computer Science, Information Systems, or Engineering "
+                        },
+                         {
+                          "job-name": "Associate Software Engineer",
+                          "salary": "20000$/Year",
+                          "location": "Barcelona",
+                          "contract-type": "Part-time",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "Tesla is expanding its Infotainment UI software engineering team responsible for building in-car user interfaces, entertainment (media streaming and video games), autopilot visualization, and our mobile application REQUERIMENT: Proficient in C++, Excellent grasp of fundamental computer science concepts, Experience writing and shipping customer-facing code, Willingness to learn new technologies in any area of the stack, Experience using common design patterns in the software industry ."
+                        },
+                          {
+                          "job-name": "Human resources internship",
+                          "salary": "20000$/Year",
+                          "location": "Charleston",
+                          "contract-type": "Internship",
+                          "weekly-working-hours": 20,
+                          "posted-day": 8,
+                          "posted-month": 3,
+                          "posted-year": 2021,
+                          "description": "The Human Resources Intern will provide support to the Human Resources staff with a wide range of projects related to HR compliance, recruiting, onboarding/orientation, employee benefits, performance management and volunteer intern programs. REQUERIMENT: Recent graduate (within the past 12 months) or junior/senior currently attaining a bachelor’s or master’s degree with a focus on Human Resources, Human capital, Organizational Leadership, or comparable study is required"
+                        }
+                      ]
+            }
+
+          ]
+}

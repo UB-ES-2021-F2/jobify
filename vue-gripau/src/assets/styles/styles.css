@@ -1,7 +1,7 @@
 html, body{
   height: 100%;
 }
-input:focus, button:focus, textarea:focus{
+input:focus, textarea:focus{
   border-color: rgba(255,205, 0, 0.8) !important;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(255,205, 0, 0.6) !important;
   outline: 0 none !important;
@@ -395,20 +395,52 @@ button:focus{
     font-size: 1.5rem;
   }
 
-  .job-offer-field-text {
-  }
-
   .job-offer-field-text svg {
     margin-right: 10px;
   }
 
-.buttons-container {
-  text-align: center;
+.table-wrapper-scroll-y {
+  position: relative;
+  height: 200px;
+  overflow: auto;
+  display: block;
+  padding-right: 10px;
 }
+/*
+.table-wrapper-scroll-y::-webkit-scrollbar {
+  width: 5px;
+}
+
+.table-wrapper-scroll-y::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  margin-right: 5px;
+  background-color: grey;
+}
+
+.table-wrapper-scroll-y::-webkit-scrollbar-track {
+  border-radius: 10px;
+  margin-right: 5px;
+  background-color: #eae9e9;
+}
+*/
+.applicants-container {
+  padding: 10px;
+}
+
+  .applicants-title {
+    font-weight: 900;
+    font-size: 1.2rem;
+  }
+
+  .applicants-table th {
+    border-top: 0px !important;
+  }
+  .applicants-table td {
+    border: 0px !important;
+  }
 
 .job-offer-button-back {
   display: inline-block;
-  margin: auto;
   margin-bottom:20px;
 }
 
@@ -417,20 +449,23 @@ button:focus{
     margin: 0 !important;
   }
 
+.job-offer-button-back button:hover, .job-offer-button-delete button:hover{
+  outline: 0 none !important;
+  margin: 0 !important;
+}
+
   .job-offer-button-back svg {
     display: inline-block;
     color: #9e9e9d;
   }
 
-    .job-offer-button-back:hover button{
-      border: 0 !important;
-      background-color: #ffc107 !important;
-
-    }
+  .job-offer-button-back:hover button{
+    border-color: #ffc107 !important;
+    background-color: #ffc107 !important;
+  }
 
 .job-offer-button-delete {
   display: inline-block;
-  margin: auto;
   margin-bottom: 20px;
 }
 
@@ -439,14 +474,13 @@ button:focus{
     color: #9e9e9d;
   }
 
-    .job-offer-button-delete:hover button{
-      border: 1px solid #dc3545 !important;
-      background-color: #dc3545 !important;
-    }
+  .job-offer-button-delete:hover button{
+    border-color: #dc3545 !important;
+    background-color: #dc3545 !important;
+  }
 
 .job-offer-button-apply {
   display: inline-block;
-  margin: auto;
   margin-bottom: 20px;
   width: 100%;
 }
@@ -456,7 +490,7 @@ button:focus{
   }
 
     .job-offer-button-apply:hover button{
-      border: 1px solid #28a745 !important;
+      border-color: #28a745 !important;
       background-color: #28a745 !important;
     }
 /****** MEDIA ******/
@@ -480,3 +514,6 @@ button:focus{
     margin: 0;
   }
 }
+
+
+

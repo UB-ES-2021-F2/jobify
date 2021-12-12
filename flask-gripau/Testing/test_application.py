@@ -31,7 +31,7 @@ class TestApplication(BaseTestCase):
     def test_json(self):
         new_application = ApplicationModel('test')
         ret = {'id': None, 'job_seeker_username': None, 'job_offer_id': None,
-               'job_offer_name': None, 'info': 'test'}
+               'job_offer_name': None, 'job_offer_company': None, 'company_username': None, 'info': 'test'}
         assert new_application.json() == ret
 
     def test_delete_from_db(self):

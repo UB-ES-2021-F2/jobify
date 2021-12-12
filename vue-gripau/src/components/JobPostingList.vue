@@ -46,38 +46,39 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
                      style="border-radius: 0 !important" />
           </b-row>
           <b-row id="searchFiltersRow">
-            <b-dropdown variant="light" class="ml-4" text="Job type" checkbox-menu allow-focus>
+            <b-dropdown id="filterJobTypeDropdown" variant="light" class="ml-4" text="Job type" checkbox-menu allow-focus>
             <template #button-content>
              <span>
                Job type <font-awesome-icon size="1x" :icon="['fas', 'filter']" />
              </span>
             </template>
             <b-dropdown-form style="font-family: 'Work Sans',sans-serif">
-              <b-form-checkbox v-model="checkedFullTime" id="checkbox-full-time" name="checkbox-full-time">
+              <b-form-checkbox v-model="checkedFullTime" id="checkboxFullTime" name="checkbox-full-time">
                 Full-time
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedPartTime" id="checkbox-part-time" name="checkbox-part-time">
+              <b-form-checkbox v-model="checkedPartTime" id="checkboxPartTime" name="checkbox-part-time">
                 Part-time
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedInternship" id="checkbox-internship" name="checkbox-internship">
+              <b-form-checkbox v-model="checkedInternship" id="checkboxInternship" name="checkbox-internship">
                 Internship
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedFreelance" id="checkbox-freelance" name="checkbox-freelance">
+              <b-form-checkbox v-model="checkedFreelance" id="checkboxFreelance" name="checkbox-freelance">
                 Freelance
               </b-form-checkbox>
-              <b-form-checkbox v-model="checkedOther" id="checkbox-other" name="checkbox-other">
+              <b-form-checkbox v-model="checkedOther" id="checkboxOther" name="checkbox-other">
                 Other
               </b-form-checkbox>
             </b-dropdown-form>
           </b-dropdown>
+              <b-button id="searchButton" variant="warning" :disabled="!(checkedFullTime||checkedPartTime||checkedInternship
+            ||checkedFreelance||checkedOther)" @click="searchJobOffers">
+                Search!
+              </b-button>
           </b-row>
         </b-row>
-        <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
-          <b-button id="searchButton" variant="warning" :disabled="!(checkedFullTime||checkedPartTime||checkedInternship
-          ||checkedFreelance||checkedOther)" @click="searchJobOffers">
-            Search!
-          </b-button>
-        </b-row>
+      </b-container>
+      <b-container fluid v-if="notFound" id="notFoundContainer">
+        <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
       <b-container>
         <job-postings-view
@@ -85,9 +86,6 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
           v-bind:companies_logos = "companies_logos"
           :key = "loaded_logos"
         ></job-postings-view>
-      </b-container>
-      <b-container fluid v-if="notFound" id="notFoundContainer">
-        <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
@@ -327,14 +325,31 @@ export default {
       axios.post(path, values, {
         auth: {username: this.token}})
         .then((res) => {
-          console.log('Job Offer correctly posted')
+          this.showToastSubmitNewOffer()
           this.getJobOffers()
         })
         .catch((error) => {
-          alert(error.response.data.message)
+          console.error(error)
+          this.showToastSubmitNewOfferError()
         })
       this.$bvModal.hide('job-offer-modal')
       this.onReset()
+    },
+    showToastSubmitNewOffer () {
+      /* eslint-disable */
+      this.$bvToast.toast('Job Offer correctly posted', {
+        title: `Information`,
+        variant: 'success',
+        solid: true
+      })
+    },
+    showToastSubmitNewOfferError (error) {
+      /* eslint-disable */
+      this.$bvToast.toast('Error while trying to submit offer ', {
+        title: `Warning`,
+        variant: 'danger',
+        solid: true
+      })
     },
     initJobOfferForm () {
       this.jobOfferForm.jobName = ''

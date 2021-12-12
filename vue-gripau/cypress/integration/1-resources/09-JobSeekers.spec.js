@@ -36,7 +36,7 @@ describe('JobSeekers resource', () => {
         })
     })
   })
-  context('POST jobseejer/username', () => {
+  context('POST jobseeker/username', () => {
     it('should return the modified job seeker account', () => {
       cy.request({
         method: 'PUT',

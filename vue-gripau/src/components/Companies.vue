@@ -41,14 +41,12 @@
                      placeholder="Search company...   "
                      style="border-radius: 0 !important" />
           </b-row>
-        </b-row>
-        <b-row align-h="center" id="searchButtonRow" class="mb-2" justify-content-center>
-          <b-button id="searchButton" variant="warning" @click="searchCompanies">
+          <b-button style="margin-left: 15px" id="searchButton" variant="warning" @click="searchCompanies">
             Search!
           </b-button>
         </b-row>
       </b-container>
-      <b-row>
+      <b-row style="margin-inline: 0">
         <b-col class="mb-4" align="center"  align-self="stretch" v-for="(company) in companies.slice((current_page-1)*per_page, current_page*per_page)" :key="company.id">
           <b-card
             tag="article"
@@ -84,7 +82,7 @@
           </b-card>
         </b-col>
       </b-row>
-      <b-row class="mt-4" align-h="center">
+      <b-row style="margin-inline: 0" class="mt-4" align-h="center">
           <b-col align-self="center" cols="10">
             <b-pagination
               align="center"

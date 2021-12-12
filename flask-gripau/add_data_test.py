@@ -10,6 +10,7 @@ from models.job_seeker import JobSeekersModel
 from models.company import CompanyModel
 from models.education import EducationsModel
 from models.job_offer import JobOfferModel
+from models.application import ApplicationModel
 
 app = Flask(__name__)
 environment = config['development']
@@ -30,8 +31,15 @@ new_job_seeker.educations.append(new_education)
 new_job_seeker.skills.append(new_skill)
 db.session.add(new_job_seeker)
 
+new_job_seeker_2 = JobSeekersModel('gripau', 'Gripau', 'Babau', 'gripau@gmail.com', 'hola, soc un gripau')
+new_job_seeker_2.hash_password('Password12')
+new_application = ApplicationModel()
+new_job_seeker_2.applications.append(new_application)
+db.session.add(new_job_seeker_2)
+
 new_company = CompanyModel('universitat123', 'ub', 'ub@gmail.com', 'hola, som la UB')
 new_job_offer = JobOfferModel('professor', 'professor de EDS', datetime.datetime(2021, 4, 7), 'Barcelona', 5000, 8, 'Full-time')
+new_job_offer.applications.append(new_application)
 new_company.hash_password('Password12')
 new_company.job_offers.append(new_job_offer)
 db.session.add(new_company)

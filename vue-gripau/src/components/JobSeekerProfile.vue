@@ -100,7 +100,7 @@
           <div class="skills-container">
             <div class="badge-container badge badge-pill badge-warning p-2 m-1" v-for="skill in skills" :key="skill">
               <span id="nameSkill">{{ skill }}</span>
-              <b-button id="deleteSkillButton" pill size="sm" class="badge-button badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
+              <b-button id="deleteSkillButton" pill v-if="edit_mode" size="sm" class="badge-button badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
             </div>
           </div>
         </div>
@@ -374,6 +374,8 @@ export default {
     onUserProfile () {
       if (this.is_jobseeker & this.logged) {
         this.$router.push('/job_seeker/' + this.username)
+      } else if (this.is_company && this.logged) {
+        this.$router.push('/company/' + this.username)
       }
     },
     onJobPostings () {
@@ -675,9 +677,32 @@ export default {
           this.downloadAvatar()
         })
       })
+    },
+    refreshComponent () {
+      this.username_profile = this.$route.path.split('job_seeker/')[1].toLowerCase()
+      this.logged = this.$store.state.logged
+      this.username = this.$store.state.username
+      this.is_jobseeker = this.$store.state.isJobSeeker
+      this.is_company = this.$store.state.isCompany
+      this.token = this.$store.state.token
+      this.is_admin = this.$store.state.isAdmin
+      this.edit_mode = this.username === this.username_profile
+      this.getName()
+      this.getWorkExperience()
+      this.getEducation()
+      this.getSkills()
+      this.getBio()
+      this.downloadAvatar()
+      this.getApplicants()
+      if (this.edit_mode){
+        this.getApplicants()
+      }
     }
   },
   watch: {
+    '$route' () {
+      this.refreshComponent()
+    },
     file (val) {
       if (!val) return
       const fileReader = new FileReader()
@@ -686,21 +711,7 @@ export default {
     }
   },
   created () {
-    this.username_profile = this.$route.path.split('job_seeker/')[1].toLowerCase()
-    this.logged = this.$store.state.logged
-    this.username = this.$store.state.username
-    this.is_jobseeker = this.$store.state.isJobSeeker
-    this.is_company = this.$store.state.isCompany
-    this.token = this.$store.state.token
-    this.is_admin = this.$store.state.isAdmin
-    this.edit_mode = this.username === this.username_profile
-    this.getName()
-    this.getWorkExperience()
-    this.getEducation()
-    this.getSkills()
-    this.getBio()
-    this.downloadAvatar()
-    this.getApplicants()
+    this.refreshComponent()
   },
   computed: mapState({
     token: state => state.token,

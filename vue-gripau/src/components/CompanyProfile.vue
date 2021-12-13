@@ -399,9 +399,9 @@ export default {
     },
     onProfile () {
       if (this.is_jobseeker && this.logged) {
-        this.$router.replace({ path: '/job_seeker/' + this.username })
+        this.$router.push({ path: '/job_seeker/' + this.username })
       } else if (this.is_company && this.logged) {
-        this.$router.replace({path: '/company/' + this.username})
+        this.$router.push({path: '/company/' + this.username})
       }
     },
     onHome () {
@@ -655,9 +655,25 @@ export default {
     },
     onSeenOffer () {
       this.jobOfferView = false
+    },
+    refreshComponent () {
+      this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()
+      this.logged = this.$store.state.logged
+      this.username = this.$store.state.username
+      this.is_jobseeker = this.$store.state.isJobSeeker
+      this.is_company = this.$store.state.isCompany
+      this.token = this.$store.state.token
+      this.is_admin = this.$store.state.isAdmin
+      this.edit_mode = this.username === this.company_name_profile
+      this.getCompany()
+      this.downloadAvatar()
+      this.getCompanyJobOffers()
     }
   },
   watch: {
+    '$route' () {
+      this.refreshComponent()
+    },
     file (val) {
       if (!val) return
       const fileReader = new FileReader()
@@ -666,17 +682,7 @@ export default {
     }
   },
   created () {
-    this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()
-    this.logged = this.$store.state.logged
-    this.username = this.$store.state.username
-    this.is_jobseeker = this.$store.state.isJobSeeker
-    this.is_company = this.$store.state.isCompany
-    this.token = this.$store.state.token
-    this.is_admin = this.$store.state.isAdmin
-    this.edit_mode = this.username === this.company_name_profile
-    this.getCompany()
-    this.downloadAvatar()
-    this.getCompanyJobOffers()
+    this.refreshComponent()
   },
   computed: mapState({
     token: state => state.token,

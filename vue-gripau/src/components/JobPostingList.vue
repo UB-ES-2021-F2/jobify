@@ -80,13 +80,11 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
       <b-container fluid v-if="notFound" id="notFoundContainer">
         <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
-      <b-row>
-        <job-postings-view
-          v-bind:job_offers = "job_offers"
-          v-bind:companies_logos = "companies_logos"
-          :key = "loaded_logos"
-        ></job-postings-view>
-      </b-row>
+      <job-postings-view
+        v-bind:job_offers = "job_offers"
+        v-bind:companies_logos = "companies_logos"
+        :key = "loaded_logos"
+      ></job-postings-view>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
                title="Post a job offer"
@@ -244,6 +242,12 @@ export default {
             this.job_offers.push(jobOffer)
           }
           this.getCompaniesLogos()
+          if (this.job_offers.length > 0) {
+            this.notFound = false
+          } else {
+            this.notFound = true
+            this.notFoundMessage = 'Oops, actually we do not have any job offer...'
+          }
         })
         .catch((error) => {
           console.error(error)
@@ -284,6 +288,7 @@ export default {
             this.notFound = false
           } else {
             this.notFound = true
+            this.notFoundMessage = 'Oops, we did not find any job offer matching your search...'
           }
         })
         .catch((error) => {

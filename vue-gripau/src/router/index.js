@@ -11,29 +11,6 @@ import Companies from '@/components/Companies'
 
 Vue.use(Router)
 
-const JobSeeker = {
-  template: `
-    <div class="job-seeker">
-      <router-view></router-view>
-    </div>
-  `
-}
-const Company = {
-  template: `
-    <div class="company">
-      <router-view></router-view>
-    </div>
-  `
-}
-
-const Job = {
-  template: `
-    <div class="job">
-      <router-view></router-view>
-    </div>
-  `
-}
-
 export default new Router({
   // mode: 'history',
   base: process.env.BASE_URL,
@@ -51,20 +28,12 @@ export default new Router({
     {
       path: '/job_seeker/:username',
       name: 'JobSeeker',
-      component: JobSeeker,
-      children: [
-        // JobSeekerProfile will be rendered inside JobSeeker's <router-view> when /job_seeker/:username is matched
-        { path: '', component: JobSeekerProfile }
-      ]
+      component: JobSeekerProfile
     },
     {
       path: '/company/:companyname',
       name: 'Company',
-      component: Company,
-      children: [
-        // JobSeekerProfile will be rendered inside JobSeeker's <router-view> when /job_seeker/:username is matched
-        { path: '', component: CompanyProfile }
-      ]
+      component: CompanyProfile
     },
     {
       path: '/job_postings',
@@ -74,10 +43,7 @@ export default new Router({
     {
       path: '/job_posting/:jobid',
       name: 'JobPosting',
-      component: Job,
-      children: [
-        { path: '', component: JobPosting }
-      ]
+      component: JobPosting
     },
     {
       path: '/companies',

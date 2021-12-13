@@ -100,7 +100,7 @@
           <div class="skills-container">
             <div class="badge-container badge badge-pill badge-warning p-2 m-1" v-for="skill in skills" :key="skill">
               <span id="nameSkill">{{ skill }}</span>
-              <b-button id="deleteSkillButton" pill size="sm" class="badge-button badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
+              <b-button id="deleteSkillButton" pill v-if="edit_mode" size="sm" class="badge-button badge badge-pill badge-warning" @click="deleteSkill(skill)">X</b-button>
             </div>
           </div>
         </div>

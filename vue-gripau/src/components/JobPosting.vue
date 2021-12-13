@@ -313,24 +313,32 @@ export default {
     },
     onSeenOffer () {
       this.$router.go(-1)
+    },
+    refreshComponent () {
+      this.logged = this.$store.state.logged
+      this.username = this.$store.state.username
+      this.is_jobseeker = this.$store.state.isJobSeeker
+      this.is_company = this.$store.state.isCompany
+      this.token = this.$store.state.token
+      this.is_admin = this.$store.state.isAdmin
+      this.id = this.$route.path.split('job_posting/')[1]
+      if (this.logged) {
+        if (this.is_jobseeker) {
+          this.getApplied()
+        } else {
+          this.getApplicants()
+        }
+      }
+      this.getJobOffer(this.id)
+    }
+  },
+  watch: {
+    '$route'() {
+      this.refreshComponent()
     }
   },
   created () {
-    this.logged = this.$store.state.logged
-    this.username = this.$store.state.username
-    this.is_jobseeker = this.$store.state.isJobSeeker
-    this.is_company = this.$store.state.isCompany
-    this.token = this.$store.state.token
-    this.is_admin = this.$store.state.isAdmin
-    this.id = this.$route.path.split('job_posting/')[1]
-    if (this.logged) {
-      if (this.is_jobseeker) {
-        this.getApplied()
-      } else {
-        this.getApplicants()
-      }
-    }
-    this.getJobOffer(this.id)
+    this.refreshComponent()
   },
   computed: mapState({
     token: state => state.token,

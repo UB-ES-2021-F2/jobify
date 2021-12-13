@@ -677,9 +677,29 @@ export default {
           this.downloadAvatar()
         })
       })
+    },
+    refreshComponent () {
+      this.username_profile = this.$route.path.split('job_seeker/')[1].toLowerCase()
+      this.logged = this.$store.state.logged
+      this.username = this.$store.state.username
+      this.is_jobseeker = this.$store.state.isJobSeeker
+      this.is_company = this.$store.state.isCompany
+      this.token = this.$store.state.token
+      this.is_admin = this.$store.state.isAdmin
+      this.edit_mode = this.username === this.username_profile
+      this.getName()
+      this.getWorkExperience()
+      this.getEducation()
+      this.getSkills()
+      this.getBio()
+      this.downloadAvatar()
+      this.getApplicants()
     }
   },
   watch: {
+    '$route' () {
+      this.refreshComponent()
+    },
     file (val) {
       if (!val) return
       const fileReader = new FileReader()
@@ -688,21 +708,7 @@ export default {
     }
   },
   created () {
-    this.username_profile = this.$route.path.split('job_seeker/')[1].toLowerCase()
-    this.logged = this.$store.state.logged
-    this.username = this.$store.state.username
-    this.is_jobseeker = this.$store.state.isJobSeeker
-    this.is_company = this.$store.state.isCompany
-    this.token = this.$store.state.token
-    this.is_admin = this.$store.state.isAdmin
-    this.edit_mode = this.username === this.username_profile
-    this.getName()
-    this.getWorkExperience()
-    this.getEducation()
-    this.getSkills()
-    this.getBio()
-    this.downloadAvatar()
-    this.getApplicants()
+    this.refreshComponent()
   },
   computed: mapState({
     token: state => state.token,

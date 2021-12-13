@@ -97,19 +97,21 @@
                           <b-icon id="sectorIcon" icon="inboxes-fill"></b-icon>
                         </span>
                         <div class="text-edit" id="sectorCompany" v-if="!edit.sector">
-
                           <span>{{company.sector}}</span> <!-- Computer Sience -->
                         </div>
                         <div id="editSectorField" class="text-edit" v-if="edit.sector" fluid>
                           <!--<div class="save-input">-->
-                          <b-form-input id="sectorInput" v-model="modify.sector" rows="1" max-rows="1"/>
+                          <validation-provider name="Company sector"  :rules="{max: 30}" v-slot="validationContext">
+                            <b-form-input id="sectorInput" v-model="modify.sector" rows="1" max-rows="1" :state="getValidationState(validationContext)"/>
+                            <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                            <div class="save-button">
+                              <b-button class="save-button" id="submitEditSectorButton" :disabled="!validationContext.valid" variant="success" @click="modifySector()">
+                                <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                              </b-button>
+                            </div>
+                            <p></p>
+                          </validation-provider>
                           <!--</div>-->
-                          <div class="save-button">
-                            <b-button id="submitEditSectorButton" variant="success" @click="modifySector()">
-                              <b-icon icon="check-circle" font-scale="1.5"></b-icon>
-                            </b-button>
-                          </div>
-                          <p></p>
                         </div>
                         <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editSector()" >
                           <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
@@ -127,11 +129,16 @@
                           <span>{{company.location}}</span> <!-- California, CA. Cupertino -->
                         </div>
                         <div id="editLocationField" class="text-edit" v-if="edit.location">
-                          <b-form-input id="locationInput" v-model="modify.location" rows="1" max-rows="1"/>
-                          <b-button class="save-button" id="submitEditLocationButton" variant="success" @click="modifyLocation()">
-                            <b-icon icon="check-circle" font-scale="1.5"></b-icon>
-                          </b-button>
-                          <p></p>
+                          <validation-provider name="Company location"  :rules="{max: 30}" v-slot="validationContext">
+                            <b-form-input id="locationInput" v-model="modify.location" rows="1" max-rows="1" :state="getValidationState(validationContext)"/>
+                            <b-form-invalid-feedback id="input-2c-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                            <div class="save-button">
+                              <b-button class="save-button" id="submitEditLocationButton" :disabled="!validationContext.valid" variant="success" @click="modifyLocation()">
+                                <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                              </b-button>
+                            </div>
+                            <p></p>
+                          </validation-provider>
                         </div>
                         <button id="enableEditLocationButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editLocation()" >
                           <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>

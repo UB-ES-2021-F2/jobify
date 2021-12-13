@@ -431,7 +431,7 @@ button:focus{
 
 .table-wrapper-scroll-y {
   position: relative;
-  height: 200px;
+  max-height: 200px;
   overflow: auto;
   display: block;
   padding-right: 10px;
@@ -475,6 +475,7 @@ article#jobOfferCard {
   }
 
 .job-offer-button-back {
+  margin: auto;
   display: inline-block;
   margin-bottom:20px;
 }

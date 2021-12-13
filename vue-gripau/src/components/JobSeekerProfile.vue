@@ -694,6 +694,9 @@ export default {
       this.getBio()
       this.downloadAvatar()
       this.getApplicants()
+      if (this.edit_mode){
+        this.getApplicants()
+      }
     }
   },
   watch: {

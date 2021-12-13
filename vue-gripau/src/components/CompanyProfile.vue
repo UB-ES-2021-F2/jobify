@@ -111,7 +111,9 @@
                           </div>
                           <p></p>
                         </div>
-                        <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editSector()" ><b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill></button>
+                        <button id="enableEditSectorButton" v-if="edit_mode" class="btn btn-sm edit-button" @click="editSector()" >
+                          <b-icon-pencil-fill font-scale="1.5" shift-v="-2"></b-icon-pencil-fill>
+                        </button>
                       </div>
                     </div>
                     <!-- /company sector -->
@@ -152,26 +154,19 @@
                 <div id="descriptionCompany2" v-if="(company.description === null || company.description === '') && !edit.description && edit_mode" class="bio-text">
                   <p>Write about your company!</p>
                 </div>
-                <div id="editDescriptionField" v-if="edit.description" fluid>
-
+                <div id="editDescriptionField" v-if="edit.description">
                   <validation-observer ref="observer" v-slot="{ handleSubmit }">
-                    <b-form style="font-family:'Work Sans'" @submit.prevent="handleSubmit(modifyDescription)">
-                      <b-row align="center">
-                        <b-col sm="10">
-                          <ValidationProvider name="description"  rules="max: 1000" v-slot="validationContext">
-                            <b-form-group id="input-group-1">
-                              <b-form-textarea id="descriptionInput" v-model="modify.description" placeholder="Write your bio here..." rows="4" :state="getValidationState(validationContext)"
-                                               aria-describedby="input-1-live-feedback"></b-form-textarea>
-                              <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-                            </b-form-group>
-                          </ValidationProvider>
-                        </b-col>
-                        <b-col align-self="center" sm="1">
-                          <b-button class="save-button" id="submitEditDescriptionButton" variant="success" type="submit">
-                            <b-icon icon="check-circle" font-scale="1.5"></b-icon>
-                          </b-button>
-                        </b-col>
-                      </b-row>
+                    <b-form @submit.prevent="handleSubmit(modifyDescription)">
+                      <ValidationProvider name="description"  rules="max: 1000" v-slot="validationContext">
+                        <b-form-group id="input-group-1">
+                          <b-form-textarea id="descriptionInput" v-model="modify.description" placeholder="Write your bio here..." rows="4" :state="getValidationState(validationContext)"
+                                           aria-describedby="input-1-live-feedback"></b-form-textarea>
+                          <b-form-invalid-feedback id="input-1-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+                        </b-form-group>
+                      </ValidationProvider>
+                      <b-button class="save-button" id="submitEditDescriptionButton" variant="success" type="submit">
+                        <b-icon icon="check-circle" font-scale="1.5"></b-icon>
+                      </b-button>
                     </b-form>
                   </validation-observer>
                   <p></p>
@@ -195,13 +190,13 @@
                 <b-icon icon="patch-plus" font-scale="2"></b-icon>
               </b-link>
               <div class="container">
-                <div class="row" align-h="center">
-                  <b-container>
+                <div class="row">
+                  <div class="col-12 job-offers-company-container">
                     <job-postings-view
                       v-bind:job_offers = "job_offers"
                       v-bind:show_company = false
                     ></job-postings-view>
-                  </b-container>
+                  </div>
                 </div>
               </div>
               <b-modal ref="jobOfferModal"

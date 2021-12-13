@@ -232,15 +232,32 @@ button:focus{
   margin: 20px 0;
 }
 
+.jobseeker-edit-button, .jobseeker-save-button{
+  background-color: transparent;
+  display: inline-block;
+}
+
+.jobseeker-editbio-buttons-container{
+  text-align: center;
+}
+
 .edit-button {
   background-color: transparent;
   display: inline-block;
   width: 10%;
 }
 
+  .edit-button svg {
+    color: gray !important;
+  }
+
 .text-edit, .text-edit input, .text-edit textarea {
   display: inline-block;
   width: 80%;
+}
+
+#editDescriptionField span, #editDescriptionField form, #editDescriptionField .form-group, #editDescriptionField div{
+  height: 100%;
 }
 
 .text-edit textarea {
@@ -256,15 +273,17 @@ button:focus{
   width: 10%;
 }
 
-.save-button button, .save-button {
+.save-button button, .save-button, .jobseeker-save-button button {
   background-color: transparent !important;
   border: 0 !important;
   display: inline-block !important;
+  color: gray;
 }
 
-.save-button button:hover {
+.save-button button:hover, .jobseeker-save-button button:hover {
   background-color: transparent  !important;
   border: 0 !important;
+  color: gray;
 }
 
 .save-button svg {
@@ -284,9 +303,14 @@ button:focus{
   color: gray;
 }
 
-#divBio{
+#divBio {
   margin: 29px  0;
   text-align: justify;
+}
+
+#divSkills {
+  margin: 29px  0;
+  text-align: left;
 }
 
 .custom-file-label::after{
@@ -299,12 +323,12 @@ button:focus{
   height: 80%;
 }
 
-  #editDescriptionField .save-button{
+  #editDescriptionField .save-button, #submitEditBioButton{
     float: left;
     margin-left: 40%;
   }
 
-  #enableEditDescriptionButton{
+  #enableEditDescriptionButton, #enableEditBioButton{
     float: right;
     margin-right: 40%;
     color: gray;
@@ -357,14 +381,20 @@ button:focus{
   display: inline-block
 }
 
-.add-offer{
+.add-offer, .add-skill{
   display: inline-block;
   margin: 0 10px;
   color: unset;
+  background-color: transparent;
 }
 
 .add-offer:hover{
   color: unset;
+}
+
+.job-offers-company-container{
+  text-align: left !important;
+  align-content: start !important;
 }
 
 /****** JOB OFFER ******/
@@ -406,6 +436,11 @@ button:focus{
   display: block;
   padding-right: 10px;
 }
+
+article#jobOfferCard {
+  margin: auto;
+}
+
 /*
 .table-wrapper-scroll-y::-webkit-scrollbar {
   width: 5px;
@@ -489,10 +524,84 @@ button:focus{
     width: 100%;
   }
 
-    .job-offer-button-apply:hover button{
-      border-color: #28a745 !important;
+    .job-offer-button-apply:hover button {
+      border: 1px solid #28a745 !important;
       background-color: #28a745 !important;
     }
+
+/****** JOBSEEKER PROFILE ******/
+
+#divName.jobseeker-name {
+  padding-left: 0 !important;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#nameSkill{
+  display: inline-block;
+  font-size: 14px;
+  font-family: 'Work Sans SemiBold'
+}
+
+.badge-container{
+  background-color: transparent;
+  border: 1px solid #ffc107;
+}
+
+.badge-button, .badge-button:hover{
+  background-color: transparent;
+  border: 0;
+  color: unset;
+}
+#editBioField{
+  height: 75%;
+}
+
+#editBioField span, #editBioField form, #editBioField .form-group, #editBioField div{
+  height: 100%;
+}
+
+textarea#bioInput {
+  resize: none;
+  height: 100%;
+}
+
+#deleteEducationButton, #deleteWorkButton{
+  background-color: transparent;
+}
+
+.jobseeker-description-container{
+  margin-bottom: 25px;
+}
+
+.education-name, .work-name{
+  border-bottom: 2px solid #ffcd01;
+  margin-bottom: 10px;
+}
+
+.education-time svg, .education-time p, .work-time svg, .work-time p{
+  display: inline-block;
+}
+
+.education-title, .work-title{
+  text-align: left;
+  font-family: "Work Sans SemiBold", Montserrat, sans-serif;
+  font-size: 18px;
+}
+
+.delete-education, .delete-work{
+  text-align: right;
+}
+
+#descriptionWorkExperience{
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+#bioField1, #bioField2, #editBioField, #descriptionCompany1, #descriptionCompany2, #editDescriptionField{
+  text-align: justify;
+}
+
 /****** MEDIA ******/
 @media (max-width: 960px) {
   #divBio{

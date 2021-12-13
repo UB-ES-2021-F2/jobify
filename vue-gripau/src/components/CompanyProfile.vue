@@ -22,7 +22,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav v-if="logged" class="ml-auto">
-          <b-nav-item id="activeProfileNavbarButton" active v-if="this.username===this.company_name_profile">{{ this.username }}</b-nav-item>
+          <b-nav-item id="activeProfileNavbarButton" active v-if="this.username===this.company_name_profile" @click="onProfile()">{{ this.username }}</b-nav-item>
           <b-nav-item id="profileNavbarButton" @click="onProfile()" v-else>{{ this.username }}</b-nav-item>
           <button id="logOutNavbarButton" class="btn btn-outline-danger" @click="onLogOut()"> Log Out </button>
         </b-navbar-nav>
@@ -657,6 +657,7 @@ export default {
       this.jobOfferView = false
     },
     refreshComponent () {
+      this.downloadImage = null
       this.company_name_profile = this.$route.path.split('company/')[1].toLowerCase()
       this.logged = this.$store.state.logged
       this.username = this.$store.state.username

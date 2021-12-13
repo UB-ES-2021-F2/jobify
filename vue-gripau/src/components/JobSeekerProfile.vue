@@ -679,6 +679,7 @@ export default {
       })
     },
     refreshComponent () {
+      this.downloadImage = null
       this.username_profile = this.$route.path.split('job_seeker/')[1].toLowerCase()
       this.logged = this.$store.state.logged
       this.username = this.$store.state.username

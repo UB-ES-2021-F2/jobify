@@ -1,6 +1,6 @@
 <template>
   <b-col>
-    <b-row>
+    <b-row style="margin-inline: 0">
       <b-col class="mb-4" align-self="stretch" v-for="(job_offer) in job_offers.slice((current_page-1)*per_page, current_page*per_page)" :key="job_offer.id">
         <job-posting-card
           v-bind="$attrs"

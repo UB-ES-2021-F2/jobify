@@ -702,7 +702,9 @@ export default {
     this.getSkills()
     this.getBio()
     this.downloadAvatar()
-    this.getApplicants()
+    if (edit_mode){
+      this.getApplicants()
+    }
   },
   computed: mapState({
     token: state => state.token,

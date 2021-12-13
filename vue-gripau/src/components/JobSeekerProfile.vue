@@ -374,6 +374,8 @@ export default {
     onUserProfile () {
       if (this.is_jobseeker & this.logged) {
         this.$router.push('/job_seeker/' + this.username)
+      } else if (this.is_company && this.logged) {
+        this.$router.push('/company/' + this.username)
       }
     },
     onJobPostings () {

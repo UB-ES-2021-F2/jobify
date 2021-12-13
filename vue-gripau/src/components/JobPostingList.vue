@@ -80,13 +80,13 @@ import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
       <b-container fluid v-if="notFound" id="notFoundContainer">
         <h2 class="not-found-message" id="notFoundMessage"> {{ notFoundMessage }} </h2>
       </b-container>
-      <b-container>
+      <b-row>
         <job-postings-view
           v-bind:job_offers = "job_offers"
           v-bind:companies_logos = "companies_logos"
           :key = "loaded_logos"
         ></job-postings-view>
-      </b-container>
+      </b-row>
       <b-modal ref="jobOfferModal"
                id="job-offer-modal"
                title="Post a job offer"

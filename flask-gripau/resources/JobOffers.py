@@ -66,6 +66,18 @@ class JobOffers(Resource):
         if not company:
             return {"message": "This company is not registered yet."}, 500
 
+        if data.job_name and len(data.job_name) > 128:
+            return {"message": "The job_name field can't be larger than 128 characters."}, 431
+        if data.contract_type and len(data.contract_type) > 30:
+            return {"message": "The contract_type field can't be larger than 30 characters."}, 431
+        if data.salary and len(data.salary) > 30:
+            return {"message": "The salary field can't be larger than 30 characters."}, 431
+        if data.location and len(data.location) > 30:
+            return {"message": "The location field can't be larger than 5000 characters."}, 431
+        if data.description and len(data.description) > 5000:
+            return {"message": "The description field can't be larger than 5000 characters."}, 431
+        if data.working_hours is not None and data.working_hours > 168:
+            return {"message": "The working hours can't exceed 168 hours/week."}, 406
         offer = JobOfferModel(data.job_name, data.description, date_time_obj, data.location, data.salary,
                               data.working_hours, data.contract_type)
 

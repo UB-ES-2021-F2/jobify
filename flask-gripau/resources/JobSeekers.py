@@ -110,6 +110,12 @@ class JobSeekers(Resource):
                 if CompanyModel.find_by_email(data.email):
                     return {'message': "Email already exists"}, 409
                 account.email = data.email
+            if data.name and len(data.name) > 30:
+                return {"message": "The name field can't be larger than 30 characters."}, 431
+            if data.surname and len(data.surname) > 30:
+                return {"message": "The surname field can't be larger than 30 characters."}, 431
+            if data.bio and len(data.bio) > 5000:
+                return {"message": "The bio field can't be larger than 5000 characters."}, 431
             if data.bio or data.bio == '':
                 account.bio = data.bio
             if data.name:

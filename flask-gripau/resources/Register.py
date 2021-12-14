@@ -5,7 +5,7 @@ from db import db
 import re
 
 reg_password = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$"
-reg_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+reg_email = '(?=^.{0,256}$)(^[a-z0-9]+[\._a-z0-9]*[@]\w+([.]\w{2,3}){1,3}$)'
 
 
 class Register(Resource):
@@ -70,6 +70,15 @@ class Register(Resource):
             return {'message': "Email already exists"}, 409
         if CompanyModel.find_by_email(data.email):
             return {'message': "Email already exists"}, 409
+
+        if data.username and len(data.username) > 30:
+            return {"message": "The username field can't be larger than 30 characters."}, 431
+        if data.name and len(data.name) > 30:
+            return {"message": "The name field can't be larger than 30 characters."}, 431
+        if data.surname and len(data.surname) > 30:
+            return {"message": "The surname field can't be larger than 30 characters."}, 431
+        if data.description and len(data.description) > 5000:
+            return {"message": "The description field can't be larger than 5000 characters."}, 431
 
         # Create account
         if data.is_job_seeker:

@@ -5,7 +5,7 @@ from db import db
 import re
 
 reg_password = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$"
-reg_email = '(?=^.{0,256}$)(^[a-z0-9]+[\._a-z0-9]+[@]\w+[.]\w{2,3}$)'
+reg_email = '(?=^.{0,256}$)(^[a-z0-9]+[\._a-z0-9]*[@]\w+([.]\w{2,3}){1,3}$)'
 
 
 class Register(Resource):

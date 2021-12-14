@@ -218,13 +218,14 @@
                 </b-form-group>
               </ValidationProvider>
 
-              <validation-provider name="Salary"  rules="max:30" v-slot="validationContext">
-                <b-form-group id="input-group-3" label="Salary" label-for="input-3">
-                  <b-form-input id="salaryInput" v-model="jobOfferForm.salary" type="text" :state="getValidationState(validationContext)"
-                                aria-describedby="input-3-live-feedback" placeholder="e.g. '15€/hour'"></b-form-input>
-                  <b-form-invalid-feedback id="input-3-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-                </b-form-group>
-              </validation-provider>
+              <b-form-group id="input-group-3" label="Salary" label-for="input-3">
+                <b-form-row>
+                  <b-col ><b-form-input id="salaryInput" v-model="jobOfferForm.salary" type="number" min=0 max="9999999999999"/></b-col>
+                  <b-col>
+                    <b-form-select id="salaryTypeInput" v-model="jobOfferForm.salary_type"  :options="optionsSalaryType" placeholder="" type="text"></b-form-select>
+                  </b-col>
+                </b-form-row>
+              </b-form-group>
 
               <validation-provider name="Location"  rules="required:true|max: 40" v-slot="validationContext">
                 <b-form-group id="input-group-1" label="Location" label-for="input-1">
@@ -333,6 +334,7 @@ export default {
         workingHours: ''
       },
       optionsContractType: ['Indefinite', 'Fixed-term', 'Zero Hours', 'Internship', 'Self-employment', 'Apprentice'],
+      optionsSalaryType: ['Hour', 'Month', 'Year'],
       file: null,
       uploadValue: 0,
       previewSrc: null,
@@ -562,8 +564,8 @@ export default {
       if (this.jobOfferForm.contractType !== '' && this.jobOfferForm.contractType !== null) {
         values.contract_type = this.jobOfferForm.contractType
       }
-      if (this.jobOfferForm.salary !== '' && this.jobOfferForm.salary !== null) {
-        values.salary = this.jobOfferForm.salary
+      if (this.jobOfferForm.salary !== '' && this.jobOfferForm.salary !== null && this.jobOfferForm.salary_type !== '' && this.jobOfferForm.salary_type !== null) {
+        values.salary = this.jobOfferForm.salary + '€/' + this.jobOfferForm.salary_type
       }
       if (!isNaN(this.jobOfferForm.workingHours) && this.jobOfferForm.workingHours !== '') {
         values.working_hours = this.jobOfferForm.workingHours
@@ -624,6 +626,7 @@ export default {
       this.jobOfferForm.jobName = ''
       this.jobOfferForm.description = ''
       this.jobOfferForm.salary = ''
+      this.jobOfferForm.salary_type = ''
       this.jobOfferForm.vacancyNumber = ''
       this.jobOfferForm.location = ''
       this.jobOfferForm.contractType = ''

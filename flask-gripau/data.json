@@ -113,7 +113,7 @@
                         }
                       ]
             },
-                        {
+            {
               "username": "google",
               "name": "Google",
               "email": "google@googlejobs.com",
@@ -199,7 +199,7 @@
                         }
                       ]
             },
-              {
+            {
               "username": "glovo",
               "name": "Glovo",
               "email": "glovo@jobs.com",
@@ -242,7 +242,7 @@
                         }
                       ]
             },
-              {
+            {
               "username": "mercedes",
               "name": "Mercedes-Benz AG",
               "email": "mercedes@jobs.com",
@@ -296,7 +296,7 @@
                         }
                       ]
             },
-                          {
+            {
               "username": "tesla",
               "name": "Tesla",
               "email": "tesla@jobs.com",
@@ -349,7 +349,159 @@
                           "description": "The Human Resources Intern will provide support to the Human Resources staff with a wide range of projects related to HR compliance, recruiting, onboarding/orientation, employee benefits, performance management and volunteer intern programs. REQUERIMENT: Recent graduate (within the past 12 months) or junior/senior currently attaining a bachelor’s or master’s degree with a focus on Human Resources, Human capital, Organizational Leadership, or comparable study is required"
                         }
                       ]
+            },
+            {
+              "username": "microsoft",
+              "name": "Microsoft",
+              "email": "microsoft@outlook.com",
+              "description": "microsoft",
+              "password": "Microsoft1",
+              "job-offers":
+              [
+                {
+                  "job-name": "Principal Security Architect",
+                  "salary": "40000$/Year",
+                  "location": "Madrid",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 16,
+                  "posted-month": 4,
+                  "posted-year": 2021,
+                  "description": "Be a local sovereignty advocate on technical topics and the local field interface to engineering teams. \n REQUIREMENTS: Experience as a security sales engineer in a cloud computing environment, or in a customer/partner-facing role."
+                },
+                {
+                  "job-name": "Software Engineering Intern",
+                  "salary": "28000$/Year",
+                  "location": "Seattle",
+                  "contract-type": "Part-time",
+                  "weekly-working-hours": 20,
+                  "posted-day": 4,
+                  "posted-month": 12,
+                  "posted-year": 2021,
+                  "description": "Join us for a 12-14 week paid internship that offers personal and professional development, an executive speaker series, and community-building. The Software Engineering Internship program will give you an opportunity to work on complex computer science solutions, develop scalable, distributed software systems, and also collaborate on multitudes of smaller projects that have universal appeal. \n REQUIREMENTS: Pursuing a Masters degree program or post secondary or training experience with a focus on subjects in software development or other technical related field. "
+                },
+                {
+                  "job-name": "Student Researcher",
+                  "salary": "20000$/Year",
+                  "location": "Paris",
+                  "contract-type": "Internship",
+                  "weekly-working-hours": 20,
+                  "posted-day": 8,
+                  "posted-month": 3,
+                  "posted-year": 2021,
+                  "description": "The Student Researcher Programs primary objective is to foster academic collaborations with students through research at Google. Join us for a paid Student Researcher position that offers the opportunity to work directly with Google research scientists and engineers on cutting-edge research projects. REQUIREMENTS: Currently pursuing a Bachelors, Masters, or PhD degree in Computer Engineering, Computer Science, Electrical Engineering, Math or related technical field."
+                }
+              ]
+            },
+            {
+              "username": "volkswagen",
+              "name": "Volkswagen",
+              "email": "volkswagen@jobs.com",
+              "description": "Volkswagen produces the best consumer vehicles in the world. ",
+              "password": "Volkswagen1",
+              "job-offers":
+              [
+                {
+                  "job-name": "Machine Learning Intern",
+                  "salary": "22000$/Year",
+                  "location": "Sunnyvale",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 4,
+                  "posted-month": 1,
+                  "posted-year": 2021,
+                  "description": "The Volkswagen Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022."
+                },
+                {
+                  "job-name": "Machine Learning Engineer",
+                  "salary": "38000$/Year",
+                  "location": "Sunnyvale",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 4,
+                  "posted-month": 1,
+                  "posted-year": 2021,
+                  "description": "The Volkswagen Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022."
+                },
+                {
+                  "job-name": "Machine Learning Senior Engineer",
+                  "salary": "58000$/Year",
+                  "location": "Sunnyvale",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 4,
+                  "posted-month": 1,
+                  "posted-year": 2021,
+                  "description": "The Volkswagen Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022."
+                }
+              ]
+            },
+            {
+              "username": "seat",
+              "name": "Seat",
+              "email": "seat@jobs.com",
+              "description": "Seat produces the best consumer vehicles in the world. ",
+              "password": "Seat1234",
+              "job-offers":
+              [
+                {
+                  "job-name": "Machine Learning Motorsport Intern",
+                  "salary": "22000$/Year",
+                  "location": "Barcelona",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 4,
+                  "posted-month": 1,
+                  "posted-year": 2021,
+                  "description": "The Seat Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022."
+                },
+                {
+                  "job-name": "Machine Learning Motorsport Engineer",
+                  "salary": "38000$/Year",
+                  "location": "Barcelona",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 4,
+                  "posted-month": 1,
+                  "posted-year": 2021,
+                  "description": "The Seat Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022."
+                },
+                {
+                  "job-name": "Machine Learning Motorsport Senior Engineer",
+                  "salary": "58000$/Year",
+                  "location": "Barcelona",
+                  "contract-type": "Full-time",
+                  "weekly-working-hours": 40,
+                  "posted-day": 4,
+                  "posted-month": 1,
+                  "posted-year": 2021,
+                  "description": "The Seat Data and AI team is seeking a Machine Learning Engineering Intern to join our ML Product Development Team for the Fall semester and/or the Winter of 2022."
+                }
+              ]
+            },
+            {
+              "username": "samsung",
+              "name": "Samsung",
+              "email": "samsung@jobs.com",
+              "description": "Samsung, designed for. ",
+              "password": "Samsung1",
+              "job-offers": []
+            },
+            {
+              "username": "ub",
+              "name": "Universitat de Barcelona",
+              "email": "ubarcelona@ub.com",
+              "description": "La UB és la principal universitat de l'Estat, amb una oferta acadèmica de qualitat i uns estàndards de recerca excel·lents a escala mundial.",
+              "password": "Ub123456",
+              "job-offers": []
+            },
+            {
+              "username": "jobify",
+              "name": "Jobify",
+              "email": "jobify@jobs.com",
+              "description": "Jobify is a communication platform whose ambition is to inspire each person during the development of their professional career.",
+              "password": "Jobify12",
+              "job-offers": []
             }
-
           ]
 }

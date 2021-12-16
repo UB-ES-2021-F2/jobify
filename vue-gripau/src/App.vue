@@ -5,7 +5,7 @@
         <link rel="shortcut icon" type="image/png" href="require('../assets/favicon.png')"/>
         <title>Jobify</title>
     </head>
-    <router-view style="min-height: 100vh"/>
+    <router-view style="min-height: 80vh"/>
     <b-card-footer footer-bg-variant="dark" footer-text-variant="white" title="Footer" style="font-family:'Work Sans', Helvetica, Arial, sans-serif; margin-top: 20px">
       <div style="padding-inline: 10%">
         <b-container>
@@ -19,7 +19,7 @@
                   This website has been created for educational purposes only.
                 </p>
                 <p style="margin: 0">
-                  If you have any questions or suggestions, please don't hesitate to <b><a style="color: white" href="#" @click="onAboutUs" >contact us.</a></b>
+                  If you have any questions or suggestions, please don't hesitate to <b><a style="color: white" @click="onAboutUs" >contact us.</a></b>
                 </p>
               </b-card-text>
             </b-col>
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     onAboutUs () {
-      this.$router.push('/about_us')
+      this.$router.push('/abbout_us')
     }
   }
 }
